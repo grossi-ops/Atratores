@@ -1,4 +1,5 @@
-# 3M — Helical Attractors on Contact 3-Manifolds
+# 3M — Helical Attractors on Contact 3-Manifolds WEBSITE grossi-ops,github.io/Atratores/index.html ENGLISH
+VEJA PORTUGUES _ ARQUIVOS PARA DOWNLOAD EM PDF E HTML VIDE REPOSITORIO
 
 **Chapter 10 of *Principia Orthogona*, Volume IV**
 **Companion site for the XII Bienal da SBM 2026 mini-curso**
