@@ -1,0 +1,39 @@
+title: Orthogenesis
+description: >-
+  A Lean 4 formalization of the colony / cell expansion model and the
+  C → K → F → U operator chain.
+author: <AUTHOR NAME>
+url: https://<ORG>.github.io
+baseurl: /orthogenesis
+
+# Theme
+theme: minima
+
+# Markdown + math
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
+
+# MathJax via CDN
+mathjax: true
+
+# Navigation
+header_pages:
+  - index.md
+  - modules.md
+  - math.md
+  - roadmap.md
+
+# Build
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude from build
+exclude:
+  - README.md
+  - vendor/
+  - .sass-cache/
+  - Gemfile
+  - Gemfile.lock
