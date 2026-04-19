@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helical Attractor · dm³ Contact Flow · 3D Simulator</title>
+<style>
+:root{--t:#2dd4bf;--bg:#030a09;--bg2:#0c1a18;--bd:rgba(45,212,191,.18);--mu:#4d7a76;--gd:#c9a84c;--tx:#e0faf8;--blue:#4a9eff;--red:#e05a3a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--tx);font-family:'Courier New',monospace;font-size:.72rem;}
+#canvas-wrap{position:absolute;inset:0;}
+canvas{display:block;width:100%;height:100%;}
+.hud{position:absolute;pointer-events:none;}
+.title{top:.8rem;left:1rem;color:var(--t);font-weight:700;letter-spacing:.1em;font-size:.74rem;text-transform:uppercase;}
+.title span{color:var(--mu);font-weight:400;}
+.meta{top:.8rem;right:1rem;text-align:right;color:var(--mu);font-size:.62rem;letter-spacing:.08em;line-height:1.7;}
+.meta span{color:var(--t);}
+.legend{bottom:.8rem;left:1rem;color:var(--mu);font-size:.62rem;line-height:1.7;background:rgba(6,15,14,.7);padding:.5rem .7rem;border-left:2px solid var(--bd);}
+.legend .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+.controls{position:absolute;bottom:.8rem;right:1rem;background:rgba(6,15,14,.85);border:1px solid var(--bd);border-radius:6px;padding:.9rem 1rem;min-width:230px;pointer-events:auto;}
+.c-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.55rem;gap:.6rem;}
+.c-row label{color:var(--mu);letter-spacing:.04em;font-size:.62rem;text-transform:uppercase;}
+.c-row label span{color:var(--t);}
+.c-row input[type=range]{width:120px;accent-color:var(--t);cursor:pointer;}
+.btns{display:flex;gap:.4rem;margin-top:.3rem;}
+.btn{flex:1;background:transparent;border:1px solid var(--bd);color:var(--mu);padding:.35rem;font-family:inherit;font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .15s;}
+.btn:hover,.btn.on{color:var(--t);border-color:var(--t);}
+.readout{position:absolute;top:3rem;right:1rem;background:rgba(6,15,14,.85);border:1px solid var(--bd);border-radius:4px;padding:.5rem .8rem;font-size:.62rem;color:var(--mu);line-height:1.7;min-width:160px;}
+.readout .ro{display:flex;justify-content:space-between;}
+.readout .ro b{color:var(--t);font-weight:400;}
+@media(max-width:600px){.controls{min-width:unset;left:.5rem;right:.5rem;bottom:.5rem;}.c-row input[type=range]{width:90px;}.meta{font-size:.58rem;}.readout{top:2.6rem;right:.5rem;}}
+a.back{position:absolute;top:.8rem;left:50%;transform:translateX(-50%);color:var(--mu);text-decoration:none;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .8rem;border:1px solid var(--bd);border-radius:3px;background:rgba(6,15,14,.7);pointer-events:auto;}
+a.back:hover{color:var(--t);border-color:var(--t);}
+</style>
+</head>
+<body>
+<div id="canvas-wrap"></div>
+<div class="hud title">dm³ Contact Flow <span>· Helix Γ on r=1 · ε=2</span></div>
+<a class="back" href="../index.html">← Vol. IV</a>
+<div class="hud meta">
+  α = dz − r² dθ<br>
+  <span>ṙ</span> = r(1−r²) + ε(r−1)e<sup>−z</sup><br>
+  <span>θ̇</span> = 1,&nbsp; <span>ż</span> = r² − ε(r−1)²e<sup>−z</sup>
+</div>
+<div class="readout">
+  <div class="ro"><span>r(t)</span><b id="rR">—</b></div>
+  <div class="ro"><span>z(t)</span><b id="rZ">—</b></div>
+  <div class="ro"><span>|r−1|</span><b id="rE">—</b></div>
+  <div class="ro"><span>μ̂</span><b id="rM">—</b></div>
+  <div class="ro"><span>frame</span><b id="rF">0</b></div>
+</div>
+<div class="legend">
+  <div><span class="dot" style="background:var(--gd);"></span>Γ — Reeb helix on r=1</div>
+  <div><span class="dot" style="background:var(--blue);"></span>r(0) &gt; 1 — converging to Γ*</div>
+  <div><span class="dot" style="background:var(--red);"></span>r(0) &lt; r* — escaping (z → −∞)</div>
+  <div style="margin-top:.4rem;opacity:.7;">Drag to rotate · scroll to zoom · right-drag to pan</div>
+</div>
+<div class="controls">
+  <div class="c-row"><label>r₀ <span id="vr">1.80</span></label><input type="range" id="sr" min="0.2" max="3.5" step="0.05" value="1.8"></div>
+  <div class="c-row"><label>ε <span id="ve">2.00</span></label><input type="range" id="se" min="0" max="5" step="0.1" value="2"></div>
+  <div class="c-row"><label>N <span id="vn">6</span></label><input type="range" id="sn" min="1" max="12" step="1" value="6"></div>
+  <div class="c-row"><label>speed <span id="vs">1.0×</span></label><input type="range" id="ss" min="0.2" max="4" step="0.1" value="1"></div>
+  <div class="btns">
+    <button class="btn on" id="bPlay">⏸ Pause</button>
+    <button class="btn" id="bReset">↺ Reset</button>
+  </div>
+  <div class="btns" style="margin-top:.3rem;">
+    <button class="btn" id="bShell">Shell</button>
+    <button class="btn" id="bGrid">Grid</button>
+    <button class="btn" id="bSpread">Spread</button>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+// ───────── dm³ ODE ─────────
+function ode(r,z,eps){
+  const ez=Math.exp(-Math.min(z,30));
+  return{
+    dr:r*(1-r*r)+eps*(r-1)*ez,
+    dz:r*r-eps*(r-1)*(r-1)*ez
+  };
+}
+function rk4(r,z,eps,dt){
+  const k1=ode(r,z,eps);
+  const k2=ode(r+0.5*dt*k1.dr,z+0.5*dt*k1.dz,eps);
+  const k3=ode(r+0.5*dt*k2.dr,z+0.5*dt*k2.dz,eps);
+  const k4=ode(r+dt*k3.dr,z+dt*k3.dz,eps);
+  return{
+    dr:(k1.dr+2*k2.dr+2*k3.dr+k4.dr)/6,
+    dz:(k1.dz+2*k2.dz+2*k3.dz+k4.dz)/6
+  };
+}
+// ───────── Three.js Scene ─────────
+const wrap=document.getElementById('canvas-wrap');
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x030a09);
+scene.fog=new THREE.Fog(0x030a09,18,50);
+const camera=new THREE.PerspectiveCamera(48,1,0.1,200);
+camera.position.set(5.5,3.2,5.5);
+camera.lookAt(0,2,0);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+wrap.appendChild(renderer.domElement);
+function resize(){
+  const w=wrap.clientWidth,h=wrap.clientHeight;
+  camera.aspect=w/h;camera.updateProjectionMatrix();
+  renderer.setSize(w,h);
+}
+window.addEventListener('resize',resize);
+resize();
+// ───────── Orbit camera (minimal custom) ─────────
+const orbit={az:0.8,el:0.45,dist:9,target:new THREE.Vector3(0,2,0),drag:false,pan:false,lx:0,ly:0};
+function updateCam(){
+  const cosEl=Math.cos(orbit.el),sinEl=Math.sin(orbit.el);
+  const cosAz=Math.cos(orbit.az),sinAz=Math.sin(orbit.az);
+  camera.position.set(
+    orbit.target.x+orbit.dist*cosEl*cosAz,
+    orbit.target.y+orbit.dist*sinEl,
+    orbit.target.z+orbit.dist*cosEl*sinAz
+  );
+  camera.lookAt(orbit.target);
+}
+updateCam();
+const el=renderer.domElement;
+el.addEventListener('mousedown',e=>{orbit.drag=(e.button===0);orbit.pan=(e.button===2);orbit.lx=e.clientX;orbit.ly=e.clientY;e.preventDefault();});
+el.addEventListener('contextmenu',e=>e.preventDefault());
+window.addEventListener('mouseup',()=>{orbit.drag=false;orbit.pan=false;});
+window.addEventListener('mousemove',e=>{
+  if(orbit.drag){
+    orbit.az-=(e.clientX-orbit.lx)*.008;
+    orbit.el=Math.max(-1.4,Math.min(1.4,orbit.el+(e.clientY-orbit.ly)*.008));
+    orbit.lx=e.clientX;orbit.ly=e.clientY;updateCam();
+  } else if(orbit.pan){
+    const dx=(e.clientX-orbit.lx)*.008,dy=(e.clientY-orbit.ly)*.008;
+    const right=new THREE.Vector3().subVectors(camera.position,orbit.target).cross(new THREE.Vector3(0,1,0)).normalize();
+    const up=new THREE.Vector3(0,1,0);
+    orbit.target.add(right.multiplyScalar(-dx*orbit.dist*.1)).add(up.multiplyScalar(dy*orbit.dist*.1));
+    orbit.lx=e.clientX;orbit.ly=e.clientY;updateCam();
+  }
+});
+el.addEventListener('wheel',e=>{
+  orbit.dist=Math.max(2,Math.min(30,orbit.dist*(1+e.deltaY*.001)));
+  updateCam();e.preventDefault();
+},{passive:false});
+// Touch
+let touches={};
+el.addEventListener('touchstart',e=>{
+  if(e.touches.length===1){orbit.drag=true;orbit.lx=e.touches[0].clientX;orbit.ly=e.touches[0].clientY;}
+  else if(e.touches.length===2){touches.pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}
+  e.preventDefault();
+},{passive:false});
+el.addEventListener('touchmove',e=>{
+  if(e.touches.length===1&&orbit.drag){
+    orbit.az-=(e.touches[0].clientX-orbit.lx)*.008;
+    orbit.el=Math.max(-1.4,Math.min(1.4,orbit.el+(e.touches[0].clientY-orbit.ly)*.008));
+    orbit.lx=e.touches[0].clientX;orbit.ly=e.touches[0].clientY;updateCam();
+  } else if(e.touches.length===2){
+    const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    if(touches.pinch){orbit.dist=Math.max(2,Math.min(30,orbit.dist*(touches.pinch/d)));updateCam();}
+    touches.pinch=d;
+  }
+  e.preventDefault();
+},{passive:false});
+el.addEventListener('touchend',()=>{orbit.drag=false;touches={};});
+// ───────── Static geometry ─────────
+// The unit cylinder (semi-transparent shell)
+let shellOn=false;
+const shellGeom=new THREE.CylinderGeometry(1,1,12,48,1,true);
+const shellMat=new THREE.MeshBasicMaterial({color:0x2dd4bf,transparent:true,opacity:0.04,side:THREE.DoubleSide,wireframe:false});
+const shell=new THREE.Mesh(shellGeom,shellMat);
+shell.position.y=4;shell.visible=false;scene.add(shell);
+// The Γ reference helix (r=1, z=θ, θ∈[0,12π])
+const helixPts=[];
+for(let i=0;i<=600;i++){
+  const t=(i/600)*12*Math.PI;
+  helixPts.push(new THREE.Vector3(Math.cos(t),t,Math.sin(t)));
+}
+const helixGeom=new THREE.BufferGeometry().setFromPoints(helixPts);
+const helixMat=new THREE.LineBasicMaterial({color:0xc9a84c,linewidth:2});
+const helix=new THREE.Line(helixGeom,helixMat);
+scene.add(helix);
+// Glowing tube-helix for emphasis
+const helixTubeCurve=new THREE.CatmullRomCurve3(helixPts);
+const helixTubeGeom=new THREE.TubeGeometry(helixTubeCurve,400,0.02,8,false);
+const helixTubeMat=new THREE.MeshBasicMaterial({color:0xffd98a,transparent:true,opacity:.6});
+scene.add(new THREE.Mesh(helixTubeGeom,helixTubeMat));
+// Axes (thin dim)
+function axisLine(from,to,col){
+  const g=new THREE.BufferGeometry().setFromPoints([from,to]);
+  return new THREE.Line(g,new THREE.LineBasicMaterial({color:col,transparent:true,opacity:.5}));
+}
+scene.add(axisLine(new THREE.Vector3(0,0,0),new THREE.Vector3(2.6,0,0),0x4d7a76));
+scene.add(axisLine(new THREE.Vector3(0,0,0),new THREE.Vector3(0,12,0),0x4d7a76));
+scene.add(axisLine(new THREE.Vector3(0,0,0),new THREE.Vector3(0,0,2.6),0x4d7a76));
+// Grid
+let gridOn=true;
+const grid=new THREE.GridHelper(6,12,0x2dd4bf,0x1a3a38);
+grid.material.opacity=.15;grid.material.transparent=true;
+scene.add(grid);
+// Basin warning rings at r=1 and r=0.80
+function ring(r,y,col,op){
+  const pts=[];
+  for(let i=0;i<=64;i++){const t=(i/64)*Math.PI*2;pts.push(new THREE.Vector3(r*Math.cos(t),y,r*Math.sin(t)));}
+  const g=new THREE.BufferGeometry().setFromPoints(pts);
+  return new THREE.Line(g,new THREE.LineDashedMaterial({color:col,dashSize:.12,gapSize:.08,transparent:true,opacity:op}));
+}
+for(let y=0;y<=12;y+=2){
+  const r1=ring(1,y,0xc9a84c,.35);r1.computeLineDistances();scene.add(r1);
+  const r2=ring(0.8,y,0xe05a3a,.2);r2.computeLineDistances();scene.add(r2);
+}
+// Labels — HTML overlays are cheaper; keep minimal
+// ───────── Particle system ─────────
+let parts=[];
+const DT=0.01;
+let state={r0:1.8,eps:2,N:6,spread:0.4,speed:1,play:true,frame:0};
+function makeLineMat(col){return new THREE.LineBasicMaterial({color:col,transparent:true,opacity:.85});}
+function particleColor(r){
+  if(r<0.8)return 0xe05a3a;
+  if(Math.abs(r-1)<0.05)return 0xc9a84c;
+  return 0x4a9eff;
+}
+function clearParts(){
+  parts.forEach(p=>{
+    scene.remove(p.lineObj);p.lineObj.geometry.dispose();
+    scene.remove(p.head);p.head.geometry.dispose();
+  });
+  parts=[];
+}
+function init(){
+  clearParts();
+  for(let i=0;i<state.N;i++){
+    const a=(i/state.N)*Math.PI*2;
+    const r=Math.max(0.05,state.r0+Math.cos(a)*state.spread);
+    const theta=a;
+    parts.push({
+      r:r,theta:theta,z:0,alive:true,
+      hist:[{x:r*Math.cos(theta),y:0,z:r*Math.sin(theta)}],
+      lineObj:null,head:null,col:particleColor(r),prevR:r,orb:0
+    });
+  }
+  // Reference particle on Γ itself for scale
+  parts.forEach(p=>{
+    const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(p.hist[0].x,p.hist[0].y,p.hist[0].z)]);
+    p.lineObj=new THREE.Line(g,makeLineMat(p.col));
+    scene.add(p.lineObj);
+    const hg=new THREE.SphereGeometry(0.06,8,8);
+    const hm=new THREE.MeshBasicMaterial({color:p.col});
+    p.head=new THREE.Mesh(hg,hm);
+    p.head.position.set(p.hist[0].x,p.hist[0].y,p.hist[0].z);
+    scene.add(p.head);
+  });
+}
+function step(){
+  const subSteps=Math.max(1,Math.round(state.speed*2));
+  for(let s=0;s<subSteps;s++){
+    parts.forEach(p=>{
+      if(!p.alive)return;
+      const d=rk4(p.r,p.z,state.eps,DT);
+      p.prevR=p.r;
+      p.r+=d.dr*DT;
+      p.z+=d.dz*DT;
+      p.theta+=1*DT;
+      // Detect orbit crossing (r crossing 1 downward)
+      if(p.prevR>1&&p.r<=1)p.orb++;
+      if(p.r<0.01||p.r>12||p.z>14||p.z<-8){p.alive=false;return;}
+      const x=p.r*Math.cos(p.theta),y=p.z,zc=p.r*Math.sin(p.theta);
+      p.hist.push({x,y,z:zc});
+      if(p.hist.length>900)p.hist.shift();
+      // Rebuild geometry periodically (every frame)
+      const positions=new Float32Array(p.hist.length*3);
+      for(let k=0;k<p.hist.length;k++){
+        positions[k*3]=p.hist[k].x;positions[k*3+1]=p.hist[k].y;positions[k*3+2]=p.hist[k].z;
+      }
+      p.lineObj.geometry.dispose();
+      p.lineObj.geometry=new THREE.BufferGeometry();
+      p.lineObj.geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
+      // Update color based on current r
+      const nc=particleColor(p.r);
+      if(nc!==p.col){
+        p.col=nc;
+        p.lineObj.material.color.setHex(nc);
+        p.head.material.color.setHex(nc);
+      }
+      p.head.position.set(x,y,zc);
+    });
+  }
+}
+// ───────── Readout update ─────────
+const elR=document.getElementById('rR'),elZ=document.getElementById('rZ'),elE=document.getElementById('rE'),elM=document.getElementById('rM'),elF=document.getElementById('rF');
+function readout(){
+  const p=parts.find(q=>q.alive);
+  if(!p)return;
+  elR.textContent=p.r.toFixed(4);
+  elZ.textContent=p.z.toFixed(2);
+  elE.textContent=Math.abs(p.r-1).toFixed(5);
+  if(p.hist.length>60){
+    const a=p.hist[p.hist.length-60],b=p.hist[p.hist.length-1];
+    const ra=Math.hypot(a.x,a.z),rb=Math.hypot(b.x,b.z);
+    const e1=Math.abs(ra-1),e2=Math.abs(rb-1);
+    if(e1>1e-8&&e2>1e-8){
+      const mu=Math.log(e2/e1)/(60*DT);
+      elM.textContent=mu.toFixed(3);
+    }
+  }
+  elF.textContent=state.frame;
+}
+// ───────── UI wiring ─────────
+const bind=(id,key,fmt)=>{
+  const s=document.getElementById(id),l=document.getElementById(id.replace('s','v'));
+  s.addEventListener('input',()=>{
+    state[key]=+s.value;l.textContent=fmt?fmt(+s.value):s.value;
+    init();
+  });
+  if(fmt)l.textContent=fmt(+s.value);
+};
+bind('sr','r0',v=>v.toFixed(2));
+bind('se','eps',v=>v.toFixed(2));
+bind('sn','N',v=>v);
+bind('ss','speed',v=>v.toFixed(1)+'×');
+document.getElementById('bPlay').addEventListener('click',e=>{
+  state.play=!state.play;e.currentTarget.textContent=state.play?'⏸ Pause':'▶ Play';
+  e.currentTarget.className=state.play?'btn on':'btn';
+});
+document.getElementById('bReset').addEventListener('click',()=>init());
+document.getElementById('bShell').addEventListener('click',e=>{
+  shellOn=!shellOn;shell.visible=shellOn;
+  e.currentTarget.className=shellOn?'btn on':'btn';
+});
+document.getElementById('bGrid').addEventListener('click',e=>{
+  gridOn=!gridOn;grid.visible=gridOn;
+  e.currentTarget.className=gridOn?'btn on':'btn';
+});
+document.getElementById('bSpread').addEventListener('click',e=>{
+  state.spread=state.spread>0.9?0.2:state.spread+0.2;init();
+  e.currentTarget.textContent='Spread '+state.spread.toFixed(1);
+});
+// ───────── Render loop ─────────
+function loop(){
+  if(state.play)step();
+  state.frame++;
+  if(state.frame%4===0)readout();
+  renderer.render(scene,camera);
+  requestAnimationFrame(loop);
+}
+init();loop();
+})();
+</script>
+</body>
+</html>

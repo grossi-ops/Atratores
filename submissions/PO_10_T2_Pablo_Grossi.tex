@@ -1,0 +1,37 @@
+% =====================================================================
+%  PO 10 (re-skin) · XII Bienal da SBM · UFRN, Natal-RN · agosto de 2026
+%  Wrapper that takes the existing Helical Attractors PO_10 paper and
+%  applies the same UFRN + XII Bienal 2026 institutional header/footer
+%  used in OF_T2 and CO_T2. The original PDF is preserved untouched on
+%  the web (totogt.github.io/3M/PO_10_Pablo_Grossi.pdf); this is the
+%  Bienal-submission re-skin only.
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=0pt,headheight=18mm,headsep=0pt,top=24mm,bottom=14mm]{geometry}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{pdfpages}
+
+% ─── Cabeçalho e rodapé institucionais (UFRN + XII Bienal SBM 2026) ──
+\newcommand{\institutionalheader}{%
+  \fancyhf{}%
+  \fancyhead[L]{\raisebox{-0.35\height}{\includegraphics[height=9mm]{assets/ufrn-logo.png}}}%
+  \fancyhead[R]{\raisebox{-0.35\height}{\includegraphics[height=13mm]{assets/bienal-2026-logo.png}}}%
+  \fancyfoot[L]{\tiny\textcopyright\ 2026 Pablo N. Grossi / G6 LLC \textbullet\ CC BY 4.0 \textbullet\ XII Bienal da SBM 2026}%
+  \fancyfoot[R]{\tiny \thepage}%
+  \renewcommand{\headrulewidth}{0.3pt}%
+  \renewcommand{\footrulewidth}{0.3pt}%
+}
+\pagestyle{fancy}\institutionalheader
+\fancypagestyle{plain}{\institutionalheader}
+
+\begin{document}
+
+\includepdf[pages=-,
+            pagecommand={\thispagestyle{fancy}},
+            scale=0.86,
+            offset=0 -10mm,
+            fitpaper=false]{PO_10_Pablo_Grossi_source.pdf}
+
+\end{document}

@@ -1,0 +1,138 @@
+% =====================================================================
+%  Pôster (Long Abstract) · XII Bienal da SBM · UFRN, Natal-RN · 2026
+%  Autor: Pablo Nogueira Grossi (G6 LLC)
+%  Track: 10 · Geometria e Topologia (Contact 3-manifolds, ODEs)
+%  Título: Helical Attractors on Contact 3-Manifolds
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm,top=2.8cm,bottom=2.2cm,headheight=18mm,headsep=6mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+% ─── Cabeçalho e rodapé institucionais (UFRN + XII Bienal SBM 2026) ──
+\newcommand{\institutionalheader}{%
+  \fancyhf{}%
+  \fancyhead[L]{\raisebox{-0.35\height}{\includegraphics[height=9mm]{assets/ufrn-logo.png}}}%
+  \fancyhead[R]{\raisebox{-0.35\height}{\includegraphics[height=13mm]{assets/bienal-2026-logo.png}}}%
+  \fancyfoot[L]{\tiny\textcopyright\ 2026 Pablo N. Grossi / G6 LLC \textbullet\ CC BY 4.0 \textbullet\ XII Bienal da SBM 2026}%
+  \fancyfoot[R]{\tiny \thepage}%
+  \renewcommand{\headrulewidth}{0.3pt}%
+  \renewcommand{\footrulewidth}{0.3pt}%
+}
+\pagestyle{fancy}\institutionalheader
+\fancypagestyle{plain}{\institutionalheader}
+
+\title{\textbf{Helical Attractors on Contact 3-Manifolds}\\[0.3em]
+\large A Toy ODE Study on $(\mathbb{R}^3,\alpha = dz - r^2\,d\theta)$}
+\author{Pablo Nogueira Grossi\\
+\small G6 LLC \textbullet\ Newark, NJ\\
+\small \texttt{brodananda@gmail.com} \textbullet\ ORCID: 0009-0000-6496-2186}
+\date{Submissão (Pôster · Long Abstract) à XII Bienal da SBM --- UFRN, Natal-RN --- 2026}
+
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\maketitle
+
+% =====================================================================
+\section*{Modalidade e Categoria}
+\noindent
+\textbf{Modalidade:} Pôster --- Long Abstract (3 páginas).\quad
+\textbf{Código de tema:} T10 (Geometria e Topologia: variedades de contato, sistemas dinâmicos, formalização).\quad
+\textbf{Material digital complementar (\emph{living book}):} \url{https://totogt.github.io/3M/}.
+
+% =====================================================================
+\section*{English Abstract}
+
+We introduce a one-parameter toy ODE on the contact 3-manifold $(\mathbb{R}^3,\alpha)$ with contact form $\alpha = dz - r^2\,d\theta$ and Reeb field $R = \partial_z$. Writing a state as $(r,\theta,z)\in(0,\infty)\times S^1\times\mathbb{R}$, the system --- which we call $\mathrm{dm}^3$ --- is
+\begin{equation}\label{eq:dm3}
+\dot r = r(1 - r^2) + \varepsilon(r-1)\,e^{-z},\qquad
+\dot \theta = 1,\qquad
+\dot z = r^2 - \varepsilon(r-1)^2\,e^{-z},
+\end{equation}
+with fixed coupling $\varepsilon = 2$. The cylinder $\Gamma = \{r=1\}$ is invariant and carries the helical flow $\dot\theta = 1$, $\dot z = 1$, a lift of the Reeb orbit; the question is whether $\Gamma$ attracts.
+
+\textbf{Main result (Theorem~2.1).} Let $u(t) = r(t) - 1$. For any initial data with $|u(0)| < 1/3$ and $z(0) \geq \log 2$, the solution exists for all $t \geq 0$ and satisfies
+\[
+|u(t)| \leq |u(0)|\,e^{-2t}
+\quad\text{for all } t \geq 0,
+\]
+so every such orbit converges exponentially to $\Gamma$ at the rate $\mu = -2$ given by the Jacobian eigenvalue of the radial part at $r=1$. The proof is a Gronwall argument: squaring the radial equation yields $\tfrac{1}{2}\tfrac{d}{dt}u^2 \leq -2u^2 - 3u^3 - u^4 + \varepsilon u^2 e^{-z}$, and the bound on $z(0)$ forces the last term to be dominated by the quadratic on the relevant window.
+
+\textbf{Numerical findings (Table~1).} A DOP853 integrator at $\mathrm{rtol}=10^{-10}$, $\mathrm{atol}=10^{-12}$ confirms the rate and, more importantly, reveals \emph{asymmetry}: the outer basin $r(0)>1$ converges for every tested initial condition up to $r(0)=2.5$, while the inner basin $r(0)<1$ converges only for $r(0) \geq 0.80$. The collapse threshold $r_\star \approx 0.80$ is strictly stricter than the Gronwall ball $\varepsilon_0 = 1/3$ (which would give $r(0) \in (2/3, 4/3)$), a gap between theory and numerics that is itself the object of the chapter's Conjecture~2.2.
+
+\textbf{Contact-geometric reading.} The asymmetry $r_\star \neq 2-r_\star$ is diagnostic: it is the fingerprint of the coupling term $\varepsilon(r-1)^2 e^{-z}$ in $\dot z$, which is \emph{not} symmetric under $u \mapsto -u$ because it couples to the non-integrable direction of $\alpha$. A symmetric basin would indicate that the attractor is reducible to a 2D problem transverse to $R$; the observed asymmetry indicates that the full 3-manifold contact structure is essential to the convergence.
+
+\textbf{Reproducibility.} All numerics reproduce via a public Python/DOP853 lab; a Lean~4 skeleton (AXLE Issue~\#12) isolates the one nontrivial obligation (a Lipschitz bound on the coupling operator). Eight chapters of the book develop the framework and formalisation path; the present abstract reports Chapter~2.
+
+% =====================================================================
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}rrc@{\hskip 1.5em}rrc@{}}
+\toprule
+\multicolumn{3}{c}{\textbf{Outer basin} $r(0)>1$} & \multicolumn{3}{c}{\textbf{Inner basin} $r(0)<1$} \\
+\cmidrule(lr){1-3}\cmidrule(l){4-6}
+$r(0){-}1$ & $\hat\mu$ & outcome & $r(0)$ & $\dot z(0.3)$ & outcome \\
+\midrule
+$+0{,}10$ & $-1{,}849$ & conv. & $0{,}90$ & $+0{,}15$ & conv. \\
+$+0{,}33$ & $-1{,}922$ & conv. & $0{,}80$ & $+0{,}03$ & \emph{limiar} \\
+$+0{,}50$ & $-1{,}948$ & conv. & $0{,}70$ & $-0{,}24$ & collapses \\
+$+1{,}00$ & $-1{,}961$ & conv. & $0{,}50$ & $-0{,}62$ & collapses \\
+$+1{,}50$ & $-1{,}959$ & conv. & $0{,}30$ & $-0{,}93$ & collapses \\
+\bottomrule
+\end{tabular}
+\caption{Table 1 of the chapter. Empirical contraction rate $\hat\mu$ (slope of $\log|r(t)-1|$ on $t\in[5,15]$) and early vertical velocity $\dot z(0{,}3)$ as inner-basin diagnostic. Note $\hat\mu \to -2$ from above and the inner edge $r_\star\approx 0{,}80 > 2/3$.}
+\end{table}
+
+% =====================================================================
+\section*{Resumo (em Português)}
+
+Apresentamos uma ODE-brinquedo de um parâmetro na variedade de contato $(\mathbb{R}^3,\alpha)$, com forma de contato $\alpha = dz - r^2\,d\theta$ e campo de Reeb $R = \partial_z$. O sistema $\mathrm{dm}^3$ está dado pela equação~\eqref{eq:dm3}, com $\varepsilon = 2$. O cilindro $\Gamma = \{r=1\}$ é invariante e carrega o fluxo helicoidal $(\dot\theta,\dot z) = (1,1)$, um levantamento da órbita de Reeb.
+
+O \emph{Teorema~2.1} afirma que, para condições iniciais $|r(0)-1|<1/3$ e $z(0)\geq\log 2$, as trajetórias convergem exponencialmente a $\Gamma$ à taxa $\mu = -2$, dada pelo autovalor jacobiano radial em $r=1$. A demonstração combina Gronwall com um controle explícito do termo de acoplamento $\varepsilon(r-1)e^{-z}$.
+
+A integração numérica (DOP853, $\mathrm{rtol}=10^{-10}$) reproduz a taxa e revela uma \emph{assimetria de bacia}: a bacia externa ($r(0)>1$) converge em todos os testes até $r(0)=2{,}5$, enquanto a interna ($r(0)<1$) colapsa abaixo de $r(0)\approx 0{,}80$, com convergência confirmada para $r(0)\geq 0{,}80$. O limiar $r_\star\approx 0{,}80$ é estritamente mais estrito do que o raio de Gronwall $\varepsilon_0 = 1/3$. Essa assimetria é diagnóstica da estrutura de contato: indica que a convergência depende da direção não-integrável de $\alpha$, e não se reduz a uma análise 2D transversal ao campo de Reeb.
+
+\textbf{Contribuição do pôster.} (i)~Formalização explícita do sistema $\mathrm{dm}^3$ como levantamento natural da órbita de Reeb; (ii)~prova auto-contida do Teorema 2.1 com constante $\varepsilon_0$ ótima dentro da técnica; (iii)~tabela numérica reprodutível e identificação do gap $r_\star > \varepsilon_0$ como \emph{conjectura aberta} (Conjectura~2.2 do capítulo); (iv)~um esqueleto Lean~4 (AXLE, Issue~\#12) que isola a única obrigação não-trivial da formalização.
+
+% =====================================================================
+\section*{Materiais Digitais --- \emph{Living Book}}
+
+O pôster é a porta de entrada de um \emph{livro vivo} completo, que desenvolve o programa em oito capítulos:
+
+\begin{enumerate}[leftmargin=2em,itemsep=0.1em]
+  \item \textbf{Publisher hub:} \url{https://totogt.github.io/3M/} --- capa, DOI, ladrilhos de capítulos, simulador 3D embutido.
+  \item \textbf{Capítulo E (GTCT para Todos):} \url{https://totogt.github.io/3M/chE-gtct.html} --- nove axiomas, quatro teoremas, doze operadores.
+  \item \textbf{Minicurso (3 sessões de 60 min):} \url{https://totogt.github.io/3M/sessions/} --- S1~geometria de contato, S2~Teorema~2.1 e bacia assimétrica, S3~esqueleto Lean 4.
+  \item \textbf{Simulador 3D (Three.js):} \url{https://totogt.github.io/3M/sims/helical-attractor.html}.
+  \item \textbf{Laboratório numérico (Python/DOP853):} \url{https://github.com/TOTOGT/3M/blob/main/labs/dm3_numeric.py} --- reproduz a Tabela~1.
+  \item \textbf{Formalização (Lean 4 / Mathlib 4):} \url{https://github.com/TOTOGT/AXLE} --- Issue~\#12 (\texttt{kappa\_lipschitz}).
+\end{enumerate}
+
+% =====================================================================
+\section*{Bibliografia (mínima)}
+
+\begin{enumerate}[leftmargin=2em,itemsep=0em,label={[\arabic*]}]
+  \item GROSSI, P.~N. Helical Attractors on Contact 3-Manifolds. In: \emph{Principia Orthogona}, Vol.~IV. G6 LLC, 2026. \url{https://totogt.github.io/3M/}.
+  \item GEIGES, H. \emph{An Introduction to Contact Topology}. Cambridge: CUP, 2008.
+  \item HAIRER, E.; N\o{}RSETT, S.~P.; WANNER, G. \emph{Solving Ordinary Differential Equations I}. 2.~ed. Springer, 1993 (DOP853).
+  \item MATHLIB~4 COMMUNITY. \emph{Mathlib}. \url{https://leanprover-community.github.io/mathlib4_docs}.
+\end{enumerate}
+
+\vspace{0.6em}
+\noindent\rule{\linewidth}{0.3pt}\\[0.3em]
+\footnotesize
+\emph{Submissão à XII Bienal da Sociedade Brasileira de Matemática. UFRN, Natal-RN, 3--7 de agosto de 2026. Categoria: Pôster (Long Abstract, 3 pp.). Código T10 (Geometria e Topologia; ajustar conforme portal). Companion submissions: OF\_T2 (Oficina: Escada de Recorrência), CO\_T2 (Comunicação Oral: Princípio do Cajueiro).}
+
+\end{document}

@@ -1,0 +1,295 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.3.30)  19 APR 2026 14:16
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**PO_10_T2_Pablo_Grossi.tex
+(./PO_10_T2_Pablo_Grossi.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-01-21>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks16
+)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+))
+\Gm@cnth=\count193
+\Gm@cntv=\count194
+\c@Gm@tempcnt=\count195
+\Gm@bindingoffset=\dimen139
+\Gm@wd@mp=\dimen140
+\Gm@odd@mp=\dimen141
+\Gm@even@mp=\dimen142
+\Gm@layoutwidth=\dimen143
+\Gm@layoutheight=\dimen144
+\Gm@layouthoffset=\dimen145
+\Gm@layoutvoffset=\dimen146
+\Gm@dimlist=\toks17
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen147
+\Gin@req@width=\dimen148
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2021/01/28 v4.0.1 Extensive control of page headers and foote
+rs
+\f@nch@headwidth=\skip49
+\f@nch@O@elh=\skip50
+\f@nch@O@erh=\skip51
+\f@nch@O@olh=\skip52
+\f@nch@O@orh=\skip53
+\f@nch@O@elf=\skip54
+\f@nch@O@erf=\skip55
+\f@nch@O@olf=\skip56
+\f@nch@O@orf=\skip57
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+Package: pdfpages 2022/01/29 v0.5u Insert pages of external PDF documents (AM)
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2020/11/24 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count196
+\calc@Bcount=\count197
+\calc@Adimen=\dimen149
+\calc@Bdimen=\dimen150
+\calc@Askip=\skip58
+\calc@Bskip=\skip59
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count198
+\calc@Cskip=\skip60
+)
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+Package: eso-pic 2020/10/14 v3.0a eso-pic (RN)
+\ESO@tempdima=\dimen151
+\ESO@tempdimb=\dimen152
+
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2021/10/31 v2.13 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1352.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1356.
+Package xcolor Info: Model `RGB' extended on input line 1368.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1370.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1374.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1375.
+))
+\AM@pagewidth=\dimen153
+\AM@pageheight=\dimen154
+\AM@fboxrule=\dimen155
+
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pppdftex.def
+File: pppdftex.def 2022/01/29 v0.5u Pdfpages driver for pdfTeX (AM)
+)
+\pdfpages@includegraphics@status=\count199
+\AM@pagebox=\box50
+\AM@global@opts=\toks18
+\AM@pagecnt=\count266
+\AM@toc@title=\toks19
+\c@AM@survey=\count267
+\AM@templatesizebox=\box51
+)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count268
+\l__pdf_internal_box=\box52
+)
+No file PO_10_T2_Pablo_Grossi.aux.
+\openout1 = `PO_10_T2_Pablo_Grossi.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(0.0pt, 597.50787pt, 0.0pt)
+* v-part:(T,H,B)=(68.2866pt, 736.92639pt, 39.83385pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=597.50787pt
+* \textheight=736.92639pt
+* \oddsidemargin=-72.26999pt
+* \evensidemargin=-72.26999pt
+* \topmargin=-55.19833pt
+* \headheight=51.21495pt
+* \headsep=0.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=50.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count269
+\scratchdimen=\dimen156
+\scratchbox=\box53
+\nofMPsegments=\count270
+\nofMParguments=\count271
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count272
+\MPscratchDim=\dimen157
+\MPnumerator=\count273
+\makeMPintoPDFobject=\count274
+\everyMPtoPDFconversion=\toks21
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+)
+<PO_10_Pablo_Grossi_source.pdf, id=1, 597.50786pt x 845.04686pt>
+File: PO_10_Pablo_Grossi_source.pdf Graphic file (type pdf)
+<use PO_10_Pablo_Grossi_source.pdf>
+Package pdftex.def Info: PO_10_Pablo_Grossi_source.pdf  used on input line 35.
+(pdftex.def)             Requested size: 597.5064pt x 845.0448pt.
+File: PO_10_Pablo_Grossi_source.pdf Graphic file (type pdf)
+<use PO_10_Pablo_Grossi_source.pdf>
+Package pdftex.def Info: PO_10_Pablo_Grossi_source.pdf  used on input line 35.
+(pdftex.def)             Requested size: 597.5064pt x 845.0448pt.
+<PO_10_Pablo_Grossi_source.pdf, id=4, page=1, 597.50786pt x 845.04686pt>
+File: PO_10_Pablo_Grossi_source.pdf Graphic file (type pdf)
+<use PO_10_Pablo_Grossi_source.pdf, page 1>
+Package pdftex.def Info: PO_10_Pablo_Grossi_source.pdf , page1 used on input li
+ne 35.
+(pdftex.def)             Requested size: 597.5064pt x 845.0448pt.
+File: PO_10_Pablo_Grossi_source.pdf Graphic file (type pdf)
+<use PO_10_Pablo_Grossi_source.pdf, page 1>
+Package pdftex.def Info: PO_10_Pablo_Grossi_source.pdf , page1 used on input li
+ne 35.
+(pdftex.def)             Requested size: 513.85585pt x 726.73903pt.
+File: PO_10_Pablo_Grossi_source.pdf Graphic file (type pdf)
+<use PO_10_Pablo_Grossi_source.pdf, page 1>
+Package pdftex.def Info: PO_10_Pablo_Grossi_source.pdf , page1 used on input li
+ne 35.
+(pdftex.def)             Requested size: 513.85585pt x 726.73903pt.
+File: PO_10_Pablo_Grossi_source.pdf Graphic file (type pdf)
+<use PO_10_Pablo_Grossi_source.pdf, page 1>
+Package pdftex.def Info: PO_10_Pablo_Grossi_source.pdf , page1 used on input li
+ne 35.
+(pdftex.def)             Requested size: 513.85585pt x 726.73903pt.
+<assets/ufrn-logo.png, id=5, 2634.84375pt x 843.15pt>
+File: assets/ufrn-logo.png Graphic file (type png)
+<use assets/ufrn-logo.png>
+Package pdftex.def Info: assets/ufrn-logo.png  used on input line 35.
+(pdftex.def)             Requested size: 80.0068pt x 25.60747pt.
+<assets/bienal-2026-logo.png, id=6, 770.88pt x 770.88pt>
+File: assets/bienal-2026-logo.png Graphic file (type png)
+<use assets/bienal-2026-logo.png>
+Package pdftex.def Info: assets/bienal-2026-logo.png  used on input line 35.
+(pdftex.def)             Requested size: 36.98181pt x 36.98857pt.
+File: PO_10_Pablo_Grossi_source.pdf Graphic file (type pdf)
+<use PO_10_Pablo_Grossi_source.pdf, page 1>
+Package pdftex.def Info: PO_10_Pablo_Grossi_source.pdf , page1 used on input li
+ne 35.
+(pdftex.def)             Requested size: 513.85585pt x 726.73903pt.
+ [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./PO_10_Pablo_Grossi_sourc
+e.pdf> <./assets/ufrn-logo.png (PNG copy)> <./assets/bienal-2026-logo.png (PNG 
+copy)>]
+(./PO_10_T2_Pablo_Grossi.aux) ) 
+Here is how much of TeX's memory you used:
+ 3372 strings out of 480247
+ 53647 string characters out of 5896151
+ 350517 words of memory out of 5000000
+ 21310 multiletter control sequences out of 15000+600000
+ 470200 words of font info for 31 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 61i,18n,75p,219b,495s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </sessions/magical-cool-carson/.texlive2021/tex
+mf-var/fonts/pk/ljfour/jknappen/ec/tcrm0600.600pk></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr6.pfb>
+Output written on PO_10_T2_Pablo_Grossi.pdf (1 page, 2625142 bytes).
+PDF statistics:
+ 32 PDF objects out of 1000 (max. 8388607)
+ 16 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+
