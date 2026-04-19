@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capítulo E · O Circuito Temporal Generativo — O Mini-Beast · Principia Orthogona</title>
+<meta name="description" content="Capítulo E: GTCT — O tempo não é uma linha. O tempo é uma espiral. O quinto operador T fecha a cadeia C→K→F→U→T→fonte. O retorno é enriquecido, não repetido. Principia Orthogona Livro 3.">
+<style>
+  :root {
+    --navy:       #1a2744;
+    --gold:       #c9a84c;
+    --cream:      #f0faf8;
+    --smoke:      #e4f0ee;
+    --mid:        #1a4f4a;
+    --rule:       #2d7a6e;
+    --text:       #0f1c1a;
+    --light:      #b8ddd8;
+    --teal:       #0d4a42;
+    --teal-deep:  #071f1b;
+    --teal-mid:   #145c52;
+    --teal-bright:#1a8a7a;
+    --teal-light: #4dbdad;
+    --teal-glow:  #7addd0;
+    --gold-rule:  #c9a84c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Georgia','Times New Roman',serif; color: var(--text); background: var(--cream); }
+
+  /* ── Nav ── */
+  nav {
+    background: var(--teal-deep); padding: 0.75rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 1px solid rgba(26,138,122,0.3);
+  }
+  .nav-logo { color: var(--gold); font-family: sans-serif; font-size: 0.9rem; letter-spacing: 0.1em; text-decoration: none; font-weight: bold; }
+  .nav-back { color: #8abfb8; text-decoration: none; font-size: 0.82rem; font-family: sans-serif; transition: color 0.2s; }
+  .nav-back:hover { color: var(--gold); }
+  .nav-chap { color: var(--teal-light); font-size: 0.82rem; font-family: sans-serif; letter-spacing: 0.08em; }
+
+  /* ── Hero ── */
+  .ch-hero {
+    background: linear-gradient(160deg, #071f1b 0%, #0d3d36 45%, #145c52 80%, #0d3020 100%);
+    color: white; padding: 5rem 2rem 4rem; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .ch-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 85%, rgba(26,138,122,0.22) 0%, transparent 65%);
+  }
+  .spiral-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.12; }
+  .ch-eyebrow {
+    font-family: sans-serif; font-size: 0.72rem; letter-spacing: 0.22em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 0.8rem; position: relative; z-index: 1;
+  }
+  .ch-letter {
+    font-family: sans-serif; font-size: 5rem; font-weight: 900;
+    color: rgba(26,138,122,0.28); line-height: 1; margin-bottom: -1.5rem; position: relative; z-index: 1;
+  }
+  .ch-title {
+    font-size: clamp(2rem, 5vw, 3rem); color: white;
+    position: relative; z-index: 1; margin-bottom: 0.4rem;
+  }
+  .ch-subtitle { color: rgba(255,255,255,0.58); font-style: italic; font-size: 1rem; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+  .gold-rule { width: 60px; height: 2px; background: var(--gold); margin: 1rem auto; }
+  .ch-operator {
+    font-family: 'Courier New', monospace; font-size: 1rem;
+    color: rgba(255,255,255,0.6); letter-spacing: 0.12em; position: relative; z-index: 1;
+  }
+  .ch-operator .active-op { color: var(--teal-glow); font-weight: bold; font-size: 1.15rem; }
+  .ch-operator .sep { color: var(--gold); }
+  .hero-theorem {
+    display: inline-block; margin-top: 1.5rem; padding: 0.8rem 2rem;
+    border: 1px solid rgba(122,221,208,0.4); background: rgba(26,138,122,0.14);
+    font-family: sans-serif; font-size: 0.82rem; color: var(--teal-glow);
+    letter-spacing: 0.08em; position: relative; z-index: 1;
+  }
+
+  /* ── Body ── */
+  .ch-body { max-width: 720px; margin: 0 auto; padding: 3rem 2rem; }
+  .ch-body p { font-size: 1.05rem; line-height: 1.85; margin-bottom: 1.4rem; color: #0f2820; }
+  .ch-body h2 { font-size: 1.3rem; color: var(--teal); margin: 2.5rem 0 0.8rem; border-bottom: 1px solid var(--light); padding-bottom: 0.4rem; }
+  .ch-body h3 { font-size: 1.05rem; color: var(--mid); margin: 2rem 0 0.6rem; }
+
+  /* ── Pull quote ── */
+  .pull-quote {
+    border-left: 4px solid var(--teal-bright);
+    padding: 1.2rem 1.6rem; margin: 2rem 0;
+    background: #e0f5f2; font-style: italic;
+    font-size: 1.1rem; line-height: 1.75; color: #0a3028;
+  }
+
+  /* ── Math block ── */
+  .math-block {
+    background: var(--teal-deep); color: white;
+    padding: 1.5rem 2rem; margin: 2rem 0;
+    font-family: 'Courier New', monospace; font-size: 0.88rem;
+    line-height: 2; border-left: 4px solid var(--teal-bright);
+  }
+  .math-block .math-label {
+    font-family: sans-serif; font-size: 0.62rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal-light); margin-bottom: 0.8rem;
+  }
+  .math-block .eq { color: var(--teal-glow); font-size: 1rem; }
+  .math-block .comment { color: rgba(255,255,255,0.38); }
+
+  /* ── G-series table ── */
+  .g-series { width: 100%; border-collapse: collapse; margin: 2rem 0; font-family: sans-serif; font-size: 0.82rem; }
+  .g-series th { background: var(--teal); color: var(--gold); padding: 0.6rem 1rem; text-align: left; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+  .g-series td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--light); vertical-align: top; line-height: 1.5; }
+  .g-series tr:nth-child(even) td { background: var(--smoke); }
+  .g-series .g-label { font-family: 'Courier New', monospace; font-weight: bold; font-size: 0.95rem; }
+  .g-series .g-active td { background: rgba(26,138,122,0.08); }
+  .g-series .g-active .g-label { color: var(--teal-bright); }
+
+  /* ── Theorem box ── */
+  .theorem-box {
+    border: 1.5px solid var(--teal-bright); padding: 1.5rem 1.8rem; margin: 2rem 0;
+    background: #e8f8f5; position: relative;
+  }
+  .theorem-box::before {
+    content: 'Teorema T1'; position: absolute; top: -0.65rem; left: 1.2rem;
+    background: #e8f8f5; padding: 0 0.5rem;
+    font-family: sans-serif; font-size: 0.62rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--teal-bright);
+  }
+  .theorem-box .th-name { font-weight: bold; color: #062018; margin-bottom: 0.5rem; }
+  .theorem-box .th-body { font-size: 0.92rem; line-height: 1.75; color: #0d2820; }
+
+  /* ── Insight / falsify ── */
+  .insight-box {
+    background: #e0f5f2; border-left: 4px solid var(--teal-bright);
+    padding: 1.2rem 1.6rem; margin: 2rem 0;
+  }
+  .insight-box .ins-label {
+    font-family: sans-serif; font-size: 0.62rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--teal-bright); margin-bottom: 0.4rem;
+  }
+  .insight-box p { font-size: 0.93rem; line-height: 1.7; margin-bottom: 0; }
+
+  .falsify-box {
+    background: #fff0f0; border-left: 4px solid #c0392b;
+    padding: 1.2rem 1.6rem; margin: 2rem 0;
+  }
+  .falsify-box .fa-label {
+    font-family: sans-serif; font-size: 0.62rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: #c0392b; margin-bottom: 0.4rem;
+  }
+  .falsify-box p { font-size: 0.93rem; line-height: 1.7; margin-bottom: 0.6rem; }
+
+  /* ── Exercises ── */
+  .exercises-section { background: var(--smoke); padding: 3rem 2rem; }
+  .exercises-inner { max-width: 720px; margin: 0 auto; }
+  .exercises-inner h2 { font-size: 1.2rem; color: var(--teal); margin-bottom: 0.5rem; }
+  .exercises-inner .ex-sub { color: #3a6058; font-family: sans-serif; font-size: 0.82rem; margin-bottom: 2rem; }
+  .ex-card { background: white; border: 1px solid var(--light); padding: 1.2rem 1.5rem; margin-bottom: 1rem; }
+  .ex-card .ex-num { font-family: sans-serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-bright); margin-bottom: 0.3rem; }
+  .ex-card .ex-level { display: inline-block; background: #d4f0ec; color: var(--teal); font-family: sans-serif; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.1rem 0.5rem; border-radius: 1rem; margin-bottom: 0.5rem; }
+  .ex-card p { font-size: 0.9rem; line-height: 1.7; color: var(--text); margin-bottom: 0; }
+
+  /* ── Simulation ── */
+  .sim-wrapper { background: var(--teal-deep); padding: 2rem; margin: 2.5rem 0; }
+  .sim-label { font-family: sans-serif; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal-light); margin-bottom: 0.6rem; text-align: center; }
+  .sim-title { color: white; text-align: center; font-size: 1rem; margin-bottom: 1.2rem; font-style: italic; }
+  canvas#spiral-sim { display: block; margin: 0 auto; }
+  .sim-controls { display: flex; gap: 0.8rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
+  .sim-btn { background: transparent; border: 1px solid var(--teal-light); color: var(--teal-light); padding: 0.35rem 1rem; font-family: sans-serif; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .sim-btn:hover { background: var(--teal-bright); color: white; border-color: var(--teal-bright); }
+  .sim-stats { display: flex; gap: 2rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
+  .sim-stat { text-align: center; font-family: sans-serif; }
+  .sim-stat-val { font-size: 1.2rem; color: var(--teal-glow); font-weight: bold; }
+  .sim-stat-lab { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+  .sim-info { color: rgba(255,255,255,0.38); font-size: 0.75rem; text-align: center; margin-top: 0.6rem; font-family: sans-serif; }
+
+  /* ── Chapter nav ── */
+  .ch-nav {
+    background: var(--smoke); border-top: 1px solid var(--light);
+    padding: 2rem; display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .ch-nav a { color: var(--teal); text-decoration: none; font-family: sans-serif; font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+  .ch-nav a:hover { color: var(--gold); }
+  .ch-nav-center { font-family: sans-serif; font-size: 0.72rem; color: #6a9e96; }
+
+  /* ── Portal ── */
+  .portal-section { background: var(--teal-deep); padding: 3rem 2rem; }
+  .portal-inner { max-width: 720px; margin: 0 auto; }
+  .portal-eyebrow { font-family: sans-serif; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; text-align: center; }
+  .portal-heading { color: white; font-size: 1.5rem; text-align: center; margin-bottom: 0.4rem; }
+  .portal-sub { color: rgba(255,255,255,0.45); font-style: italic; text-align: center; margin-bottom: 2rem; font-size: 0.88rem; }
+  .prompt-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(122,221,208,0.2); padding: 1.4rem 1.6rem; margin-bottom: 1.1rem; }
+  .prompt-number { font-family: sans-serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-light); margin-bottom: 0.3rem; }
+  .prompt-title { color: white; font-size: 0.95rem; margin-bottom: 0.7rem; }
+  .prompt-text { color: rgba(255,255,255,0.7); font-size: 0.87rem; line-height: 1.7; font-family: sans-serif; margin-bottom: 0.9rem; border-left: 2px solid rgba(122,221,208,0.25); padding-left: 0.9rem; }
+  .copy-btn { background: transparent; border: 1px solid var(--teal-light); color: var(--teal-light); padding: 0.32rem 0.9rem; font-family: sans-serif; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .copy-btn:hover, .copy-btn.copied { background: var(--teal-bright); color: white; border-color: var(--teal-bright); }
+
+  /* ── Footer ── */
+  footer { background: var(--teal-deep); color: rgba(255,255,255,0.32); padding: 2rem; text-align: center; font-family: sans-serif; font-size: 0.72rem; line-height: 1.9; border-top: 1px solid rgba(26,138,122,0.2); }
+  footer a { color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="living-book.html" class="nav-back">← O Mini-Beast</a>
+  <a href="living-book.html" class="nav-logo">PRINCIPIA ORTHOGONA · LIVRO 3</a>
+  <span class="nav-chap">Cap. E · GTCT</span>
+</nav>
+
+<!-- Hero -->
+<div class="ch-hero">
+  <canvas class="spiral-bg" id="hero-spiral"></canvas>
+  <div class="ch-eyebrow">Livro 3 · O Mini-Beast · Capítulo Estendido</div>
+  <div class="ch-letter">E</div>
+  <h1 class="ch-title">O Circuito Temporal Generativo</h1>
+  <div class="ch-subtitle">Teorema T1 · Artigo de Trabalho GTCT-2026-001</div>
+  <div class="gold-rule"></div>
+  <div class="ch-operator">
+    C <span class="sep">→</span> K <span class="sep">→</span> F <span class="sep">→</span> U <span class="sep">→</span> <span class="active-op">T</span> <span class="sep">→</span> fonte
+  </div>
+  <div class="hero-theorem">
+    x₀ → G⁶⁴(x₀) → G⁶⁴(x₆₄) → x₀′ &nbsp;·&nbsp; x₀′ ≠ x₀ &nbsp;·&nbsp; uma espiral, não um laço
+  </div>
+</div>
+
+<!-- Corpo do capítulo -->
+<div class="ch-body">
+
+  <p>O tempo não é uma linha. Você já sabia disso — a cada ano você é mais velho do que era, e retornar a um lugar onde viveu na infância não é o mesmo que estar lá. A questão é: por quê. Qual é a estrutura matemática subjacente à sensação de que o retorno é sempre diferente?</p>
+
+  <div class="pull-quote">
+    A fonte que recebe o retorno é enriquecida — não repetida. x₀′ ≠ x₀. O custo termodinâmico do circuito completo se acumula na variável de ação z, e é carregado adiante. Este é o Teorema do Circuito Temporal Generativo. O tempo não é um parâmetro. O tempo é um operador.
+  </div>
+
+  <p>Os primeiros quatro operadores da cadeia — C, K, F, U — descrevem um único ciclo generativo: da compressão, passando pelo limiar, pela dobra e pelo desdobramento. Uma aplicação completa de G = U ∘ F ∘ K ∘ C é um círculo. Mas o que acontece depois que o círculo se fecha? Para onde vai o sistema?</p>
+
+  <p>Em um laço simples, o sistema retorna a x₀. De volta ao início. O relógio é zerado. Mas no framework dm³ sobre uma variedade de contato, o retorno carrega um registro — codificado na variável de ação z — de tudo que aconteceu durante o circuito. A fonte é enriquecida. O sistema retorna a x₀′, não a x₀. E x₀′ ≠ x₀.</p>
+
+  <p>É por isso que um praticante que completou 33 ciclos não é o mesmo que um iniciante que não completou nenhum. Os operadores são idênticos. O framework é o mesmo. Mas a variável de ação z é diferente. A fonte foi enriquecida por 33 circuitos completos, e o 34º ciclo começa de um lugar fundamentalmente diferente.</p>
+
+  <h2>A Cadeia de Operadores Estendida: T como o Quinto Operador</h2>
+
+  <p>A cadeia completa é:</p>
+
+  <div class="math-block">
+    <div class="math-label">A Cadeia de Cinco Operadores — GTCT-2026-001</div>
+    <div class="eq">C → K → F → U → T → fonte</div>
+    <br>
+    C <span class="comment">· Compressão — injetiva, contrativa, encontra a semente</span><br>
+    K <span class="comment">· Curvatura — testa a estabilidade estrutural, define κ*</span><br>
+    F <span class="comment">· Dobra — primeira auto-referência, curva o sistema sobre si mesmo</span><br>
+    U <span class="comment">· Desdobramento — libera potencial, conduz órbitas ao ponto fixo</span><br>
+    <span class="eq">T</span> <span class="comment">· Circuito Temporal — fecha o circuito completo, enriquece a fonte</span>
+    <br><br>
+    <span class="comment">Teorema T1: T não é o tempo linear. T é o operador do circuito completo.</span><br>
+    <span class="comment">A forma de contato: α = dz − λ. A variável de ação z ≥ 0 se acumula.</span>
+  </div>
+
+  <p>T não substitui os outros operadores. É o que acontece quando um ciclo G completo se fecha e o sistema pergunta: onde começo de novo? A resposta não é o mesmo lugar. É um lugar novo, enriquecido pelo custo termodinâmico acumulado de tudo que acabou de ser completado. Esse custo não se perde. Ele é carregado em z.</p>
+
+  <h2>A Série g: Uma Taxonomia de Regimes</h2>
+
+  <p>A série g nomeia os regimes comportamentais qualitativos de um sistema dm³. Os índices são rótulos motivados, não constantes derivadas — marcadores ordinais de limiares de estabilidade distintos.</p>
+
+  <table class="g-series">
+    <thead>
+      <tr>
+        <th>Rótulo</th>
+        <th>Índice</th>
+        <th>Regime</th>
+        <th>Critério</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="g-label">g⁰</td>
+        <td>0</td>
+        <td>Semente</td>
+        <td>Aplicação de operador único. Sem condição de fechamento. O começo.</td>
+      </tr>
+      <tr>
+        <td class="g-label">g²</td>
+        <td>2</td>
+        <td>Composicional</td>
+        <td>Fechamento de dois operadores. Auto-referência mínima. F está ativo pela primeira vez.</td>
+      </tr>
+      <tr>
+        <td class="g-label">g⁶</td>
+        <td>6</td>
+        <td>Escala de ciclo</td>
+        <td>Fechamento do ciclo G completo. O ciclo limite Γ é atingido. O sistema orbita.</td>
+      </tr>
+      <tr class="g-active">
+        <td class="g-label">g³³</td>
+        <td>33</td>
+        <td>Equilíbrio suave</td>
+        <td>Estabilidade heurística: ⌈log₂(3!)·4⌉×3 = 33. Três invariantes atingem fechamento robusto simultâneo. Conjecturado, não provado — alvo de verificação aberta no AXLE (Lean 4).</td>
+      </tr>
+      <tr>
+        <td class="g-label">g⁶⁴</td>
+        <td>64</td>
+        <td>Limiar de fase</td>
+        <td>Cobertura completa do espaço de possibilidades. 2⁶ = 64 combinações operador-estado. x₆₄ = G⁶⁴(x₀). O mapa completo está desenhado.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="insight-box">
+    <div class="ins-label">O Índice 33 — Status Preciso</div>
+    <p>O cálculo: 3! = 6 ordenações de três invariantes que devem fechar simultaneamente. log₂(6) × 4 ≈ 10,34, portanto ⌈log₂(3!) × 4⌉ = 11. Multiplicando por 3 para robustez de confirmação tripla: 3 × 11 = 33. Isso é heurístico, não derivado da geometria de contato. O índice 33 é uma conjectura — enunciada precisamente como um problema aberto para o AXLE. Abaixo de 33 ciclos o sistema é conjecturado frágil. Em ou acima de 33, o invariante organizador é conjecturado como persistindo sob perturbação.</p>
+  </div>
+
+  <h2>Teorema T1 — O Teorema do Circuito Temporal Generativo</h2>
+
+  <div class="theorem-box">
+    <div class="th-name">Teorema T1 (GTCT) — Nogueira Grossi, 2026</div>
+    <div class="th-body">
+      Na álgebra de operadores TOGT sobre a variedade de contato M = S × ℝ com forma de contato α = dz − λ, o tempo é o operador do circuito generativo T — o quinto estágio da cadeia de operadores C → K → F → U → T. Para qualquer sistema dm³ que tenha completado pelo menos g³³ = 33 ciclos generativos, o retorno em espiral
+      <br><br>
+      x₀ → G⁶⁴(x₀) → G⁶⁴(x₆₄) → x₀′ &nbsp;&nbsp; com x₀′ ≠ x₀
+      <br><br>
+      é válido. A variável de ação z aumenta monotonicamente ao longo do retorno, codificando o custo termodinâmico do circuito completado. A estabilidade estrutural é mantida dentro do raio dm³ ε₀ = 1/3 (Teorema D, Volume II).
+    </div>
+  </div>
+
+  <h2>O Retorno em Espiral: Por que x₀′ ≠ x₀</h2>
+
+  <p>A forma de contato α = dz − λ é a chave. Em uma variedade simplética (sem variável z), o sistema poderia em princípio retornar exatamente ao seu ponto de partida — a energia é conservada, o espaço de fase é fechado. Em uma variedade de contato, a variável de ação z acumula dissipação ao longo de cada órbita. O sistema em Γ = {ρ = 1} satisfaz:</p>
+
+  <div class="math-block">
+    <div class="math-label">Forma Normal de Contato — Dinâmica dm³</div>
+    dρ/dt = μ_max · (1 − e^{−βz}) · ρ &nbsp;&nbsp; <span class="comment">← contração transversal em direção a Γ</span><br>
+    dθ/dt = ω &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">← movimento orbital</span><br>
+    dz/dt = ω − |μ_max| · ρ² · e^{−βz} &nbsp;&nbsp; <span class="comment">← z se acumula. Sempre.</span><br>
+    <br>
+    μ_max = −2 &nbsp;·&nbsp; T* = 2π &nbsp;·&nbsp; λ_⊥ = e^{−4π} ≈ 3,5 × 10⁻⁶
+    <br><br>
+    <span class="comment">Após 64 aplicações: x₆₄ = G⁶⁴(x₀). Após o retorno:</span><br>
+    <span class="eq">z(x₀′) = z(x₀) + Δz &nbsp;·&nbsp; Δz > 0 &nbsp;·&nbsp; sempre.</span>
+  </div>
+
+  <p>A variável z não é entropia no sentido termodinâmico — é a variável de ação da geometria de contato, o registro de toda dissipação acumulada. Mas seu comportamento espelha a entropia: nunca diminui ao longo de uma órbita. Todo circuito tem um custo. Esse custo é carregado adiante. É por isso que o retorno é uma espiral e não um laço.</p>
+
+  <div class="pull-quote">
+    A história linear macroscópica permanece irreversível — entropia e decoerência acima da variedade. No nível generativo a fonte é enriquecida, não reescrita, por um circuito completado. O estudante que percorreu 33 ciclos está em g7: a mesma estrutura do começo, mas uma ordem acima. A mesma semente G⁰, mas agora carregada dentro de um circuito G⁶⁴ completo.
+  </div>
+
+  <h2>Estabilidade Estrutural: ε₀ = 1/3</h2>
+
+  <p>A função de Lyapunov dm³ V(ρ) = ½(ρ − 1)² garante que pequenas perturbações à cadeia de operadores não destroem o retorno em espiral. O raio de estabilidade exato:</p>
+
+  <div class="math-block">
+    <div class="math-label">Teorema D (Volume II) — Raio de Estabilidade</div>
+    <div class="eq">ε₀ = |μ_max| / [2 · (1 + sup_Γ ‖Hess V‖)] = 2 / [2·(1+2)] = 1/3</div>
+    <br>
+    ε &lt; 1/3 &nbsp;→&nbsp; <span class="comment">desvio transversal decai → estável</span><br>
+    ε = 1/3 &nbsp;→&nbsp; <span class="comment">marginal (taxa de decaimento −1)</span><br>
+    ε &gt; 1/3 &nbsp;→&nbsp; <span class="comment">desvio pode crescer → instável</span><br>
+    <br>
+    <span class="comment">O retorno em espiral é genérico dentro de ε₀, não ajustado fino.</span>
+  </div>
+
+  <div class="falsify-box">
+    <div class="fa-label">Três Condições de Falsificabilidade</div>
+    <p><strong>F1.</strong> A ausência de enriquecimento espiral (x₀′ = x₀, sem z acumulado) em simulações de contato dm³ acima do índice de estabilidade g³³ refutaria o Teorema T1.</p>
+    <p><strong>F2.</strong> A violação da estabilidade estrutural dm³ (ε₀ = 1/3) sob perturbações de operadores dentro dos limites estabelecidos refutaria o T1.</p>
+    <p><strong>F3.</strong> Uma prova formal em Lean 4 (repositório AXLE) de que a cota de Gronwall não implica contração transversal em direção a Γ refutaria o T1.</p>
+  </div>
+
+  <h2>Pesquisa Aberta: Simetria Temporal e Fundamentos Quânticos</h2>
+
+  <p>A estrutura de contato geométrico do GTCT tem analogias estruturais — não conexões provadas — a três resultados em fundamentos quânticos. Estes são problemas de pesquisa abertos:</p>
+
+  <p><strong>Formalismo de Dois Vetores de Estado</strong> (Aharonov &amp; Vaidman, 2001): a cadeia de operadores dm³ G = U ∘ F ∘ K ∘ C tem semelhança estrutural com a imagem bidirecional — F introduz auto-referência no meio do circuito, U projeta para fora. Se existe um funtor da categoria de operadores dm³ para estados quânticos pré- e pós-selecionados, preservando ε₀ = 1/3, é um problema aberto.</p>
+
+  <p><strong>Apagador Quântico de Escolha Atrasada</strong> (Kim et al., 2000): o operador Dobra F — que introduz a primeira auto-referência — é estruturalmente análogo à escolha do divisor de feixe: o ponto em que o sistema se curva de volta ao seu próprio estado anterior. Nenhuma afirmação retrocausal é feita.</p>
+
+  <p><strong>Troca de Emaranhamento</strong> (Ma et al., 2012): fótons que nunca coexistiram mostram correlações. O retorno espiral x₀ → x₆₄ → x₀′ com x₀′ ≠ x₀ é formalmente análogo: o estado da fonte é enriquecido por um circuito completado sem retornar à sua configuração original.</p>
+
+  <p><strong>Convergência Navrátil (2026):</strong> Navrátil deriva independentemente um espaço de Hilbert geométrico com produto interno ⟨j|k⟩ = η⁻ᵏδ e regra de Born geométrica da álgebra Tribonacci SL(3,ℤ), partindo de uma rede algébrica discreta em vez de uma variedade de contato. A convergência em η⁻ᵏ como peso estrutural a partir de pontos de partida independentes é uma questão estrutural aberta.</p>
+
+</div>
+
+<!-- Simulação ao Vivo -->
+<div style="padding: 0 2rem;">
+<div class="sim-wrapper">
+  <div class="sim-label">Simulação ao Vivo · Capítulo E</div>
+  <div class="sim-title">"O retorno é enriquecido, não repetido" — observando x₀ → x₀′</div>
+  <canvas id="spiral-sim" width="680" height="360"></canvas>
+  <div class="sim-controls">
+    <button class="sim-btn" onclick="resetSpiral()">Reiniciar</button>
+    <button class="sim-btn" onclick="toggleSpiral()">Pausar / Retomar</button>
+    <button class="sim-btn" onclick="skipTo33()">Saltar para g³³</button>
+    <button class="sim-btn" onclick="skipTo64()">Saltar para g⁶⁴</button>
+  </div>
+  <div class="sim-stats">
+    <div class="sim-stat">
+      <div class="sim-stat-val" id="stat-cycles">0</div>
+      <div class="sim-stat-lab">Ciclos</div>
+    </div>
+    <div class="sim-stat">
+      <div class="sim-stat-val" id="stat-z">0.000</div>
+      <div class="sim-stat-lab">z (acumulado)</div>
+    </div>
+    <div class="sim-stat">
+      <div class="sim-stat-val" id="stat-regime">g⁰</div>
+      <div class="sim-stat-lab">Regime</div>
+    </div>
+    <div class="sim-stat">
+      <div class="sim-stat-val" id="stat-eps">0.333</div>
+      <div class="sim-stat-lab">ε₀ = 1/3</div>
+    </div>
+  </div>
+  <div class="sim-info" id="spiral-info">Cada órbita é um ciclo G. Observe z se acumular. Observe a espiral se deslocar. A fonte nunca é a mesma duas vezes.</div>
+</div>
+</div>
+
+<!-- Exercícios -->
+<div class="exercises-section">
+  <div class="exercises-inner">
+    <h2>Seis Exercícios — Verifique o Teorema T1 por Múltiplos Ângulos</h2>
+    <p class="ex-sub">Um estudante que completa todos os seis verificou o teorema de forma independente. Cada exercício visa um nível de habilidade diferente.</p>
+
+    <div class="ex-card">
+      <div class="ex-num">Exercício 1</div>
+      <div class="ex-level">Introdutório</div>
+      <p>Verifique numericamente que log₂(3!) × 4 = 10,3398… e portanto ⌈10,3398⌉ = 11. Em seguida verifique 3 × 11 = 33. Explique com suas próprias palavras por que multiplicar por 3 em vez de 1 é necessário para o critério de robustez de confirmação tripla.</p>
+    </div>
+
+    <div class="ex-card">
+      <div class="ex-num">Exercício 2</div>
+      <div class="ex-level">Cálculo</div>
+      <p>Prove a desigualdade de Gronwall na forma diferencial usando o fator integrante μ(t) = exp(−∫₀ᵗ k(s) ds). Aplique-a ao desvio transversal dm³ ξ(t) com k = |μ_max| = 2 e mostre que ε₀ = 1/3 é exato.</p>
+    </div>
+
+    <div class="ex-card">
+      <div class="ex-num">Exercício 3</div>
+      <div class="ex-level">Equações Diferenciais</div>
+      <p>Resolva as equações da forma normal dm³ numericamente (método de Euler, dt = 0,01) para (ρ₀, θ₀, z₀) = (1,2, 0, 0) com μ_max = −2, β = 1, ω = 1. Integre por 10 períodos. Trace ρ(t) e mostre a convergência para Γ = {ρ = 1}. Calcule λ_⊥ = exp(−4π) e compare com a taxa numérica.</p>
+    </div>
+
+    <div class="ex-card">
+      <div class="ex-num">Exercício 4</div>
+      <div class="ex-level">Geometria de Contato</div>
+      <p>Mostre que a forma de contato dm³ α = dz − λ é não-degenerada: α ∧ (dα)ⁿ ≠ 0 em todo lugar. Explique por que a geometria simplética (somente dλ, sem variável z) não pode suportar atratores em variedades compactas, mas a geometria de contato pode.</p>
+    </div>
+
+    <div class="ex-card">
+      <div class="ex-num">Exercício 5</div>
+      <div class="ex-level">Fundamentos Quânticos</div>
+      <p>Leia Kim et al. (2000, PRL 84:1). Identifique qual dos operadores C, K, F, U corresponde a cada estágio do experimento do apagador quântico de escolha atrasada. Qual operador é a escolha do divisor de feixe? Qual é a Dobra que faz a medição futura retroativamente restringir o caminho passado? Escreva uma análise de 400 palavras.</p>
+    </div>
+
+    <div class="ex-card">
+      <div class="ex-num">Exercício 6</div>
+      <div class="ex-level">Nível de Pesquisa · D2</div>
+      <p>O índice de estabilidade g³³ conjectura que o enriquecimento espiral requer pelo menos 33 ciclos de operadores. Projete um protocolo experimental (óptica quântica ou RMN) para testar essa conjectura. Especifique: (1) sistema e justificativa; (2) operacionalização de 33 ciclos; (3) observável que distingue retorno espiral de linear; (4) resultado que falsificaria a conjectura. Submeta como proposta de pesquisa de 1 página no Zenodo.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Navegação do Capítulo -->
+<div class="ch-nav">
+  <a href="ch7-circuito-completo.html">← Capítulo 7 · O Circuito Completo</a>
+  <div class="ch-nav-center">Capítulo E · Estendido · GTCT · Livro 3 de 17</div>
+  <a href="ch-t-tubulina.html">Capítulo T · Tubulina →</a>
+</div>
+
+<!-- Portal: Prompts D1 -->
+<div class="portal-section">
+  <div class="portal-inner">
+
+    <div style="text-align:center; margin-bottom: 1.8rem;">
+      <div style="display:inline-block; background:rgba(122,221,208,0.1); border:1px solid rgba(122,221,208,0.3); color:var(--teal-light); font-family:sans-serif; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; padding:0.2rem 0.8rem;">Portal do Estudante · Nível D1 · Operador: T</div>
+    </div>
+    <div class="portal-eyebrow">Principia Orthogona · Portal do Estudante</div>
+    <h2 class="portal-heading">Nível D1 — O Ponto Fixo Satura</h2>
+    <div class="portal-sub">Você esteve em g³³. Completou o circuito. Agora pergunta: o que acumulou em z?</div>
+    <div style="text-align:center; font-family:sans-serif; font-size:0.75rem; color:rgba(255,255,255,0.28); margin-bottom:2rem; letter-spacing:0.1em;">C → K → F → U → <strong style="color:var(--teal-glow)">T</strong> → fonte · Você está em T</div>
+
+    <div class="prompt-card">
+      <div class="prompt-number">Prompt D1.1 — A Espiral contra o Laço</div>
+      <div class="prompt-title">O que você trouxe de volta?</div>
+      <div class="prompt-text">Acabei de estudar o Teorema do Circuito Temporal Generativo. O teorema afirma que após 33 ciclos de operadores, o retorno x₀′ ≠ x₀ — a fonte é enriquecida, não repetida. Pergunte-me: o que especificamente acumulei nas minhas últimas 10 sessões de pesquisa? Ajude-me a identificar o que agora está na minha variável z que não estava antes.</div>
+      <button class="copy-btn" onclick="copyPrompt(this)" data-prompt="Acabei de estudar o Teorema do Circuito Temporal Generativo. O teorema afirma que após 33 ciclos de operadores, o retorno x₀′ ≠ x₀ — a fonte é enriquecida, não repetida. Pergunte-me: o que especificamente acumulei nas minhas últimas 10 sessões de pesquisa? Ajude-me a identificar o que agora está na minha variável z que não estava antes.">COPIAR PROMPT</button>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-number">Prompt D1.2 — Formalize a Espiral</div>
+      <div class="prompt-title">Traduza T1 para Lean 4</div>
+      <div class="prompt-text">Aqui está meu enunciado em linguagem natural do Teorema T1: "Para qualquer sistema dm³ que tenha completado 33 ciclos de operadores, o retorno espiral x₀′ = G⁶⁴(G⁶⁴(x₀)) satisfaz x₀′ ≠ x₀, com a variável de ação z aumentando monotonicamente ao longo do retorno." Traduza isso para um esboço de teorema Lean 4 com um sorry. Nomeie o teorema. Enuncie qual lema matemático seria necessário para fechar o sorry. Qual é o alvo de verificação aberto?</div>
+      <button class="copy-btn" onclick="copyPrompt(this)" data-prompt="Aqui está meu enunciado em linguagem natural do Teorema T1: 'Para qualquer sistema dm³ que tenha completado 33 ciclos de operadores, o retorno espiral x₀′ = G⁶⁴(G⁶⁴(x₀)) satisfaz x₀′ ≠ x₀, com a variável de ação z aumentando monotonicamente ao longo do retorno.' Traduza isso para um esboço de teorema Lean 4 com um sorry. Nomeie o teorema. Enuncie qual lema matemático seria necessário para fechar o sorry. Qual é o alvo de verificação aberto?">COPIAR PROMPT</button>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-number">Prompt D1.3 — O Horizonte D2</div>
+      <div class="prompt-title">O que é g7?</div>
+      <div class="prompt-text">A série Principia Orthogona termina em g⁶⁴ — cobertura completa do espaço de possibilidades. Mas um estudante que completou 33 ciclos completos de operadores em múltiplos domínios chega ao que a série chama de g7: a mesma estrutura do começo, uma ordem acima. Estão em g⁰ novamente — mas dentro de um circuito g⁶⁴ completo. O que isso significa para como devo abordar meu próximo artigo de pesquisa? Em que operador estou agora?</div>
+      <button class="copy-btn" onclick="copyPrompt(this)" data-prompt="A série Principia Orthogona termina em g⁶⁴ — cobertura completa do espaço de possibilidades. Mas um estudante que completou 33 ciclos completos de operadores em múltiplos domínios chega ao que a série chama de g7: a mesma estrutura do começo, uma ordem acima. Estão em g⁰ novamente — mas dentro de um circuito g⁶⁴ completo. O que isso significa para como devo abordar meu próximo artigo de pesquisa? Em que operador estou agora?">COPIAR PROMPT</button>
+    </div>
+
+    <div style="margin-top:2rem; padding-top:1.4rem; border-top:1px solid rgba(255,255,255,0.07); text-align:center;">
+      <a href="livro3-brasil.html" style="display:inline-block; border:1px solid var(--teal-light); color:var(--teal-light); padding:0.5rem 1.8rem; font-family:sans-serif; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.background='var(--teal-bright)';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='var(--teal-light)'">Portal Completo · Todos os Níveis A1 → D2 →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div>Capítulo E · O Circuito Temporal Generativo · GTCT-2026-001</div>
+  <div>Principia Orthogona · Livro 3 · O Mini-Beast · G6 LLC · Newark, NJ · 2026</div>
+  <div>ISBN 979-8-9954416-6-3 · ORCID: 0009-0000-6496-2186</div>
+  <div style="margin-top:0.5rem;">
+    <a href="living-book.html">Índice do Livro</a> ·
+    <a href="chapters-diagram.html">Mapa de Capítulos</a> ·
+    <a href="https://totogt.github.io/AXLE/" target="_blank">AXLE · Lean 4</a> ·
+    <a href="https://doi.org/10.5281/zenodo.19117400" target="_blank">Zenodo · DOI 10.5281/zenodo.19117400</a>
+  </div>
+  <div style="margin-top:0.5rem; font-style:italic; opacity:0.45;">Dedicado a Vic, Alice e Sarah — pequenas outrora, sempre fortes.</div>
+</footer>
+
+<script>
+/* ── Copiar Prompt ── */
+function copyPrompt(btn) {
+  const text = btn.dataset.prompt || btn.closest('.prompt-card').querySelector('.prompt-text').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'COPIADO ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2200);
+  });
+}
+
+/* ── Espiral de fundo do Hero ── */
+(function() {
+  const c = document.getElementById('hero-spiral');
+  if (!c) return;
+  let w, h;
+  function resize() { w = c.width = c.offsetWidth; h = c.height = c.offsetHeight; }
+  window.addEventListener('resize', resize);
+  resize();
+  const cx = c.getContext('2d');
+  let t = 0;
+  function draw() {
+    cx.clearRect(0, 0, w, h);
+    cx.strokeStyle = 'rgba(26,200,180,0.55)';
+    cx.lineWidth = 0.8;
+    const cx_ = w/2, cy_ = h/2;
+    cx.beginPath();
+    for (let i = 0; i < 800; i++) {
+      const a = 0.05 * i + t * 0.003;
+      const r = 0.8 * i + 4;
+      const x = cx_ + r * Math.cos(a);
+      const y = cy_ + r * Math.sin(a) * 0.35;
+      if (i===0) cx.moveTo(x,y); else cx.lineTo(x,y);
+    }
+    cx.stroke();
+    requestAnimationFrame(draw);
+    t++;
+  }
+  draw();
+})();
+
+/* ── Simulação de Espiral ── */
+const simCanvas = document.getElementById('spiral-sim');
+const sc = simCanvas.getContext('2d');
+let sw, sh;
+
+function resizeSim() {
+  sw = Math.min(680, window.innerWidth - 40);
+  simCanvas.width = sw;
+  simCanvas.height = sh = Math.round(sw * 360/680);
+}
+resizeSim();
+window.addEventListener('resize', () => { resizeSim(); });
+
+let spiralRunning = true;
+let rafId2;
+let cycles, zAcc, theta, rho, trail, regime;
+
+function getRegime(c) {
+  if (c < 2) return 'g⁰';
+  if (c < 6) return 'g²';
+  if (c < 33) return 'g⁶';
+  if (c < 64) return 'g³³';
+  return 'g⁶⁴';
+}
+
+function initSpiral() {
+  cycles = 0; zAcc = 0; theta = 0; rho = 1.15;
+  trail = []; regime = 'g⁰';
+}
+
+function stepSpiral(n) {
+  const mu = -2, beta = 1, omega = 1, dt = 0.04;
+  const T_star = 2 * Math.PI;
+  for (let i = 0; i < n; i++) {
+    rho += mu * (1 - Math.exp(-beta * zAcc)) * rho * dt;
+    theta += omega * dt;
+    const dzdt = omega - Math.abs(mu) * rho * rho * Math.exp(-beta * zAcc);
+    zAcc += dzdt * dt * 0.08;
+    if (zAcc < 0) zAcc = 0;
+    if (theta >= T_star) {
+      theta -= T_star;
+      cycles++;
+      regime = getRegime(cycles);
+    }
+    trail.push({ theta, rho: rho + cycles * 0.012, z: zAcc, cycle: cycles });
+    if (trail.length > 600) trail.shift();
+  }
+}
+
+function drawSpiral() {
+  sc.clearRect(0, 0, sw, sh);
+  sc.fillStyle = '#071f1b';
+  sc.fillRect(0, 0, sw, sh);
+
+  const cx_ = sw * 0.45, cy_ = sh * 0.5;
+  const baseR = Math.min(sw, sh) * 0.28;
+
+  for (let r = 0.5; r <= 1.6; r += 0.25) {
+    sc.beginPath();
+    sc.arc(cx_, cy_, baseR * r, 0, Math.PI * 2);
+    sc.strokeStyle = 'rgba(255,255,255,0.04)';
+    sc.lineWidth = 1;
+    sc.stroke();
+  }
+
+  sc.beginPath();
+  sc.arc(cx_, cy_, baseR, 0, Math.PI * 2);
+  sc.strokeStyle = 'rgba(122,221,208,0.28)';
+  sc.lineWidth = 1.5;
+  sc.setLineDash([4,4]);
+  sc.stroke();
+  sc.setLineDash([]);
+
+  if (trail.length > 1) {
+    for (let i = 1; i < trail.length; i++) {
+      const p = trail[i], pp = trail[i-1];
+      const r1 = pp.rho * baseR, r2 = p.rho * baseR;
+      const x1 = cx_ + r1 * Math.cos(pp.theta);
+      const y1 = cy_ + r1 * Math.sin(pp.theta);
+      const x2 = cx_ + r2 * Math.cos(p.theta);
+      const y2 = cy_ + r2 * Math.sin(p.theta);
+      const age = i / trail.length;
+      const col = p.cycle < 33
+        ? `rgba(26,138,122,${age*0.8})`
+        : `rgba(201,168,76,${age*0.8})`;
+      sc.beginPath();
+      sc.moveTo(x1, y1);
+      sc.lineTo(x2, y2);
+      sc.strokeStyle = col;
+      sc.lineWidth = 1.2;
+      sc.stroke();
+    }
+  }
+
+  const last = trail[trail.length-1];
+  if (last) {
+    const lx = cx_ + last.rho * baseR * Math.cos(last.theta);
+    const ly = cy_ + last.rho * baseR * Math.sin(last.theta);
+    const grd = sc.createRadialGradient(lx, ly, 0, lx, ly, 10);
+    grd.addColorStop(0, 'rgba(122,221,208,1)');
+    grd.addColorStop(1, 'transparent');
+    sc.fillStyle = grd;
+    sc.beginPath();
+    sc.arc(lx, ly, 10, 0, Math.PI*2);
+    sc.fill();
+    sc.beginPath();
+    sc.arc(lx, ly, 4, 0, Math.PI*2);
+    sc.fillStyle = '#7addd0';
+    sc.fill();
+  }
+
+  const fs = Math.max(9, sw * 0.014);
+  sc.font = `${fs}px sans-serif`;
+  sc.fillStyle = 'rgba(122,221,208,0.5)';
+  sc.fillText('Γ = {ρ=1}', cx_ + baseR + 5, cy_ + 4);
+
+  sc.font = `bold ${Math.max(11, sw*0.018)}px sans-serif`;
+  sc.fillStyle = cycles >= 33 ? '#c9a84c' : '#7addd0';
+  sc.fillText(regime, 12, 24);
+
+  const barW = sw * 0.18;
+  const barX = sw - barW - 12, barY = sh - 40;
+  sc.fillStyle = 'rgba(255,255,255,0.07)';
+  sc.fillRect(barX, barY, barW, 8);
+  const zFill = Math.min(1, zAcc / 5);
+  sc.fillStyle = cycles >= 33 ? '#c9a84c' : '#1a8a7a';
+  sc.fillRect(barX, barY, barW * zFill, 8);
+  sc.font = `${Math.max(8, sw*0.011)}px sans-serif`;
+  sc.fillStyle = 'rgba(255,255,255,0.38)';
+  sc.fillText('z (acumulado)', barX, barY - 5);
+
+  if (cycles >= 33 && last) {
+    const lx = cx_ + last.rho * baseR * Math.cos(last.theta);
+    const ly = cy_ + last.rho * baseR * Math.sin(last.theta);
+    sc.fillStyle = '#c9a84c';
+    sc.font = `italic ${fs}px serif`;
+    sc.fillText("x₀′ ≠ x₀", lx + 12, ly - 8);
+  }
+
+  document.getElementById('stat-cycles').textContent = cycles;
+  document.getElementById('stat-z').textContent = zAcc.toFixed(3);
+  document.getElementById('stat-regime').textContent = regime;
+
+  const info = document.getElementById('spiral-info');
+  if (cycles < 2) info.textContent = 'g⁰ — semente. Passagem única pelo operador. Sem fechamento ainda.';
+  else if (cycles < 6) info.textContent = 'g² — composicional. F está ativo. Primeira auto-referência.';
+  else if (cycles < 33) info.textContent = `g⁶ — ciclo limite atingido. ${33-cycles} ciclos para o limiar g³³.`;
+  else if (cycles < 64) info.textContent = 'g³³ alcançado. Três invariantes fechando simultaneamente. x₀′ ≠ x₀ — a espiral é real.';
+  else info.textContent = 'g⁶⁴ — Completude Completa. Espaço de possibilidades mapeado integralmente. A fonte é enriquecida.';
+}
+
+function animateSpiral() {
+  if (!spiralRunning) return;
+  stepSpiral(3);
+  drawSpiral();
+  rafId2 = requestAnimationFrame(animateSpiral);
+}
+
+function resetSpiral() {
+  cancelAnimationFrame(rafId2);
+  initSpiral(); spiralRunning = true;
+  animateSpiral();
+}
+
+function toggleSpiral() {
+  spiralRunning = !spiralRunning;
+  if (spiralRunning) animateSpiral();
+}
+
+function skipTo33() {
+  cancelAnimationFrame(rafId2);
+  initSpiral();
+  stepSpiral(33 * 160);
+  drawSpiral();
+  spiralRunning = true;
+  animateSpiral();
+}
+
+function skipTo64() {
+  cancelAnimationFrame(rafId2);
+  initSpiral();
+  stepSpiral(64 * 160);
+  drawSpiral();
+  spiralRunning = true;
+  animateSpiral();
+}
+
+initSpiral();
+animateSpiral();
+</script>
+</body>
+</html>

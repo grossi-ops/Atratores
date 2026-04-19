@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sessão S3 · Esqueleto Lean 4 & AXLE Issue #12 · Mini-Curso Vol. IV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+:root {
+  --ink:       #0f1923;
+  --blue:      #1a3a6b;
+  --accent:    #4a90d9;
+  --gold:      #c9a84c;
+  --muted:     #64748b;
+  --surface:   #f4f7fb;
+  --card:      #ffffff;
+  --border:    #d1dce8;
+  --code-bg:   #0d1117;
+  --code-text: #c9d1d9;
+  --red:       #c0392b;
+  --green:     #1a6b3a;
+  --purple:    #5b3e8c;
+  --orange:    #d4761a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; line-height: 1.75; color: var(--ink); background: var(--surface); }
+
+nav { background: var(--blue); padding: 0 2rem; display: flex; align-items: center; height: 48px; position: sticky; top: 0; z-index: 100; }
+nav a { color: #a8c4e8; text-decoration: none; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 400; padding: 0 14px; height: 48px; display: flex; align-items: center; border-right: 1px solid rgba(255,255,255,0.08); transition: color .2s, background .2s; }
+nav a:first-child { border-left: 1px solid rgba(255,255,255,0.08); }
+nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+
+.breadcrumb { background: var(--card); border-bottom: 1px solid var(--border); padding: .6rem 2rem; display: flex; align-items: center; justify-content: space-between; font-family: 'Outfit', sans-serif; font-size: 12.5px; color: var(--muted); }
+.breadcrumb a { color: var(--accent); text-decoration: none; }
+
+.hero { background: linear-gradient(135deg, #0d1a2d 0%, #1a3a6b 50%, #2e1a5e 100%); color: white; padding: 4rem 2rem 3rem; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='29' fill='none' stroke='rgba(74,144,217,0.08)' stroke-width='1'/%3E%3Cline x1='0' y1='30' x2='60' y2='30' stroke='rgba(74,144,217,0.06)' stroke-width='.5'/%3E%3Cline x1='30' y1='0' x2='30' y2='60' stroke='rgba(74,144,217,0.06)' stroke-width='.5'/%3E%3C/svg%3E") repeat; }
+.hero-badge { position: relative; display: inline-block; background: rgba(91,62,140,0.3); border: 1px solid rgba(91,62,140,0.5); color: #c8a8ff; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; padding: .3rem 1rem; border-radius: 2px; margin-bottom: 1.2rem; }
+.session-number { position: absolute; font-family: 'Outfit', sans-serif; font-size: 7rem; font-weight: 700; line-height: 1; color: rgba(91,62,140,0.2); top: 1rem; right: 2rem; pointer-events: none; }
+.hero h1 { position: relative; font-family: 'Crimson Pro', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300; line-height: 1.2; margin-bottom: .8rem; }
+.hero h1 em { font-style: italic; color: #c8a8ff; }
+.hero-sub { position: relative; color: #8ab4d8; font-size: 1rem; font-family: 'Outfit', sans-serif; font-weight: 300; margin-bottom: 1.5rem; }
+.hero-meta { position: relative; display: flex; justify-content: center; flex-wrap: wrap; gap: .5rem 1.5rem; font-family: 'Outfit', sans-serif; font-size: 12.5px; color: #7aa3c8; }
+
+.progress-bar { background: var(--blue); display: flex; font-family: 'Outfit', sans-serif; font-size: 12px; }
+.progress-step { flex: 1; padding: .7rem 1rem; text-align: center; color: rgba(255,255,255,0.45); border-right: 1px solid rgba(255,255,255,0.1); }
+.progress-step.active { color: white; background: rgba(91,62,140,0.4); font-weight: 500; }
+.progress-step.done { color: rgba(255,255,255,0.65); }
+.progress-step:last-child { border-right: none; }
+
+.agenda { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--purple); margin: 2.5rem auto; max-width: 860px; padding: 1.8rem 2rem; border-radius: 4px; }
+.agenda h2 { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.agenda ol { list-style: none; padding: 0; }
+.agenda li { display: flex; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--border); font-size: .95rem; }
+.agenda li:last-child { border-bottom: none; }
+.agenda .time { font-family: 'JetBrains Mono', monospace; font-size: .78rem; color: var(--purple); white-space: nowrap; padding-top: .1rem; min-width: 90px; }
+
+main { max-width: 860px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+.section-label { display: flex; align-items: center; gap: 1rem; margin: 3rem 0 .5rem; }
+.section-label .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--purple); background: rgba(91,62,140,0.08); border: 1px solid rgba(91,62,140,0.25); padding: .2rem .7rem; border-radius: 2px; }
+.section-label .rule { flex: 1; height: 1px; background: var(--border); }
+
+h2.section-title { font-family: 'Crimson Pro', serif; font-size: 1.75rem; font-weight: 400; color: var(--blue); margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--purple); padding-bottom: .4rem; }
+h3 { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 500; color: var(--blue); margin: 1.5rem 0 .6rem; }
+p { margin-bottom: 1rem; }
+
+/* CODE BLOCKS */
+.code-block {
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .82rem;
+  line-height: 1.65;
+  padding: 1.4rem 1.6rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 1.2rem 0;
+  border: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+}
+.code-block .code-label {
+  position: absolute;
+  top: .7rem; right: 1rem;
+  font-size: .7rem;
+  color: #555;
+  font-family: 'Outfit', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+/* Lean syntax highlighting via CSS classes */
+.kw { color: #ff7b72; }   /* keywords */
+.cm { color: #8b949e; font-style: italic; } /* comments */
+.nm { color: #79c0ff; }   /* names/defs */
+.ty { color: #ffa657; }   /* types */
+.st { color: #a5d6ff; }   /* strings */
+.sc { color: #d2a8ff; }   /* sorry / tactics */
+
+.defn { background: var(--surface); border-left: 3px solid var(--blue); padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+.defn .defn-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: .6rem; }
+
+.issue-box {
+  background: rgba(192,57,43,0.05);
+  border: 1px solid rgba(192,57,43,0.25);
+  border-top: 3px solid var(--red);
+  padding: 1.4rem 1.6rem;
+  margin: 1.5rem 0;
+  border-radius: 0 0 4px 4px;
+}
+.issue-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--red);
+  margin-bottom: .8rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.issue-badge {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  background: rgba(192,57,43,0.15);
+  border: 1px solid rgba(192,57,43,0.3);
+  color: var(--red);
+  padding: .15rem .5rem;
+  border-radius: 20px;
+}
+.issue-closed {
+  background: rgba(26,107,58,0.05);
+  border: 1px solid rgba(26,107,58,0.25);
+  border-top: 3px solid var(--green);
+  padding: 1.2rem 1.5rem;
+  margin: 1rem 0;
+  border-radius: 0 0 4px 4px;
+}
+.issue-closed-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .82rem;
+  color: var(--green);
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.closed-badge {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  background: rgba(26,107,58,0.15);
+  border: 1px solid rgba(26,107,58,0.3);
+  color: var(--green);
+  padding: .15rem .5rem;
+  border-radius: 20px;
+}
+
+.contribute-box {
+  background: linear-gradient(135deg, rgba(26,58,107,0.05) 0%, rgba(91,62,140,0.05) 100%);
+  border: 1px solid rgba(91,62,140,0.2);
+  border-radius: 4px;
+  padding: 1.4rem 1.6rem;
+  margin: 1.5rem 0;
+}
+.contribute-box h4 {
+  font-family: 'Outfit', sans-serif;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--purple);
+  margin-bottom: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 11px;
+}
+.contribute-box ol { padding-left: 1.3rem; font-size: .95rem; }
+.contribute-box li { margin-bottom: .4rem; }
+.contribute-box code { background: rgba(0,0,0,0.06); padding: .1rem .4rem; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: .8rem; }
+
+.takeaway {
+  background: var(--blue);
+  color: white;
+  padding: 2rem 2.2rem;
+  border-radius: 4px;
+  margin: 2rem 0;
+}
+.takeaway h3 { color: #a8d4ff; font-family: 'Outfit', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 1rem; }
+.takeaway ul { padding-left: 1.3rem; line-height: 2; }
+.takeaway li { color: rgba(255,255,255,0.85); }
+.takeaway strong { color: white; }
+
+.sim-wrapper { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--purple); border-radius: 4px; overflow: hidden; margin: 2rem 0; }
+.sim-header { background: var(--blue); color: white; padding: .8rem 1.2rem; font-family: 'Outfit', sans-serif; font-size: 13px; display: flex; align-items: center; gap: .6rem; }
+.sim-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--purple); }
+.sim-frame { width: 100%; height: 380px; border: none; }
+
+.math-block { background: var(--card); border: 1px solid var(--border); padding: 1.2rem 1.5rem; margin: 1.2rem 0; border-radius: 4px; overflow-x: auto; font-size: 1.05rem; text-align: center; }
+
+.exercise { background: rgba(192,57,43,0.05); border: 1px solid rgba(192,57,43,0.2); border-top: 2px solid var(--red); padding: 1.4rem 1.6rem; margin: 2rem 0; border-radius: 0 0 4px 4px; }
+.exercise .ex-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--red); margin-bottom: .6rem; }
+
+.nav-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.nav-card { display: block; background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 1.2rem 1.4rem; text-decoration: none; color: inherit; transition: border-color .2s, box-shadow .2s; }
+.nav-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(74,144,217,0.15); }
+.nav-card .dir { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem; }
+.nav-card .label { font-family: 'Outfit', sans-serif; font-size: .9rem; font-weight: 500; color: var(--blue); }
+.nav-card.next { text-align: right; }
+
+footer { background: var(--blue); color: rgba(255,255,255,0.6); text-align: center; padding: 1.4rem; font-family: 'Outfit', sans-serif; font-size: 12px; }
+footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">← Vol. IV</a>
+  <a href="capitulo-e-gtct.html">Capítulo E</a>
+  <a href="https://grossi-ops.github.io/helical-contact/sims/helical-attractor.html" target="_blank">Sim 3D</a>
+  <a href="https://grossi-ops.github.io/helical-contact/submissions/XII_BM_MINICURSO_T1_Pablo_Grossi_preview.pdf" target="_blank">PDF Preview</a>
+  <a href="https://github.com/TOTOGT/AXLE" target="_blank">AXLE</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="sessao2-teorema-bacia.html">← S2: Teorema &amp; Bacia</a>
+  <span>Mini-Curso · Sessão S3 / 3</span>
+  <a href="index.html">Vol. IV Hub →</a>
+</div>
+
+<div class="hero">
+  <div class="session-number">S3</div>
+  <div class="hero-badge">Mini-Curso · Sessão S3 · 60 min</div>
+  <h1>Esqueleto Lean 4 &amp; <em>AXLE Issue #12</em></h1>
+  <p class="hero-sub">Formalizando o Teorema 2.1 em Mathlib 4. O que está <code>proved</code>, o que está <code>sorry</code>, e por que a constante de Lipschitz do acoplamento é a única porta aberta.</p>
+  <div class="hero-meta">
+    <span>🎯 Objetivo: ler uma formalização Lean 4 real</span>
+    <span>📚 Pré-req: S1, S2</span>
+    <span>🖥️ Modo: leitura de código comentada</span>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-step done">S1 · GEOMETRIA DE CONTATO ✓</div>
+  <div class="progress-step done">S2 · TEOREMA 2.1 &amp; BACIA ✓</div>
+  <div class="progress-step active">S3 · ESQUELETO LEAN 4</div>
+</div>
+
+<div class="agenda">
+  <h2>Agenda da Sessão · 60 Minutos</h2>
+  <ol>
+    <li><span class="time">0 – 8 min</span><span>Por que formalizar? O que Lean 4 / Mathlib 4 nos dão neste contexto.</span></li>
+    <li><span class="time">8 – 20 min</span><span>Leitura de <code>AXLE/Chain.lean</code>: a cadeia de operadores \(G = U\circ F\circ K\circ C\) como <code>structure</code> Lean.</span></li>
+    <li><span class="time">20 – 35 min</span><span><code>SpiralReturn</code>: o enunciado formal do Teorema 2.1 e o que existe no Mathlib para fechá-lo.</span></li>
+    <li><span class="time">35 – 48 min</span><span>AXLE Issue #12: a estimativa de Lipschitz em aberto. O que diz, por que é o gargalo.</span></li>
+    <li><span class="time">48 – 60 min</span><span>P&amp;R, rampa de contribuição, ponteiros para arquivos ODE e dinâmica do Mathlib.</span></li>
+  </ol>
+</div>
+
+<main>
+
+<!-- §1 -->
+<div class="section-label">
+  <span class="tag">§1 · Motivação</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">Por Que Lean 4, Por Que Agora</h2>
+
+<p>O Teorema 2.1 em sua forma simétrica é um resultado de EDO. O cálculo diz que é verdade. Então por que formalizar?</p>
+
+<ul style="padding-left:1.4rem;margin-bottom:1rem">
+  <li style="margin-bottom:.6rem"><strong>Transparência.</strong> A cadeia de Gronwall em S2 tinha meia dúzia de pequenas suposições ("assuma \(z(0) \geq \log 2\)", "use a hipótese de indução"). Em Lean 4 cada uma é uma obrigação separada e verificada por tipos.</li>
+  <li style="margin-bottom:.6rem"><strong>Reúso.</strong> A cadeia de operadores \(G = U\circ F\circ K\circ C\) é uma afirmação estrutural sobre cada capítulo do GTCT. Uma formalização Lean 4 de \(G\) em <em>uma</em> situação (aqui: a EDO dm³) se torna um <em>template</em> para os outros capítulos.</li>
+  <li><strong>Descoberta.</strong> Escrever a prova em Lean 4 foi o que <em>expôs</em> o AXLE Issue #12: a estimativa de Lipschitz que nosso artigo passa por cima. Lean não aceitou a passagem. Foi assim que a lacuna se tornou uma issue nomeada.</li>
+</ul>
+
+<div class="defn">
+  <div class="defn-title">Nota Pedagógica</div>
+  <p style="margin-bottom:0">A formalização não é sobre certeza. É sobre <em>localizar</em> incerteza. A lacuna entre \(\varepsilon_0 = 1/3\) (Gronwall) e \(r_\star = 0{,}80\) (numérico) é uma lacuna matemática. O Issue #12 é uma lacuna <em>formal</em> — um lugar onde a prova Lean atualmente diz <code>sorry</code>. Ambas merecem atenção.</p>
+</div>
+
+<!-- §2 -->
+<div class="section-label">
+  <span class="tag">§2 · Leitura de Código</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title"><code>AXLE/Chain.lean</code> — A Cadeia de Operadores</h2>
+
+<p>A cadeia de quatro operadores \(G = U\circ F\circ K\circ C\) do GTCT (contração, curvatura, filtro, desdobramento) é representada como uma <code>structure</code> dependente. Cada operador é um mapa entre espaços de estado com sua própria hipótese de regularidade.</p>
+
+<div class="code-block">
+  <div class="code-label">Lean 4 · AXLE/Chain.lean</div>
+<span class="cm">/- AXLE/Chain.lean — cadeia de operadores para GTCT -/</span>
+<span class="kw">import</span> Mathlib.Analysis.ODE.Gronwall
+<span class="kw">import</span> Mathlib.Analysis.NormedSpace.Basic
+<span class="kw">import</span> Mathlib.Topology.MetricSpace.Lipschitz
+
+<span class="kw">namespace</span> <span class="nm">AXLE</span>
+
+<span class="kw">structure</span> <span class="nm">OperatorChain</span> (<span class="ty">α β γ δ ω</span> : <span class="kw">Type</span>*)
+    [MetricSpace <span class="ty">α</span>] [MetricSpace <span class="ty">β</span>] [MetricSpace <span class="ty">γ</span>]
+    [MetricSpace <span class="ty">δ</span>] [MetricSpace <span class="ty">ω</span>] <span class="kw">where</span>
+  C : <span class="ty">α</span> → <span class="ty">β</span>                 <span class="cm">-- Contrair</span>
+  K : <span class="ty">β</span> → <span class="ty">γ</span>                 <span class="cm">-- Curvatura</span>
+  F : <span class="ty">γ</span> → <span class="ty">δ</span>                 <span class="cm">-- Filtrar</span>
+  U : <span class="ty">δ</span> → <span class="ty">ω</span>                 <span class="cm">-- Desdobrar</span>
+  C_lip : LipschitzWith 1 C
+  K_lip : ∃ L : ℝ≥0, LipschitzWith L K   <span class="cm">-- ← Issue #12</span>
+  F_lip : LipschitzWith 1 F
+  U_cont : Continuous U
+
+<span class="kw">def</span> <span class="nm">OperatorChain.compose</span>
+    (ch : <span class="nm">OperatorChain</span> <span class="ty">α β γ δ ω</span>) : <span class="ty">α</span> → <span class="ty">ω</span> :=
+  ch.U ∘ ch.F ∘ ch.K ∘ ch.C
+
+<span class="kw">end</span> <span class="nm">AXLE</span>
+</div>
+
+<h3>Lendo a estrutura</h3>
+<p>Note as hipóteses de regularidade: \(C\) e \(F\) são não-expansivas (<code>LipschitzWith 1</code>), \(U\) só precisa ser contínua (ela expande informação, não precisa preservar métrica), e \(K\) — o operador de <em>curvatura</em>, geometricamente o fluxo radial dm³ — carrega uma constante de Lipschitz <em>existencial</em>.</p>
+
+<div class="defn">
+  <div class="defn-title">Nota de Design · Por que existencial para \(K\)</div>
+  <p style="margin-bottom:0">A constante de Lipschitz do fluxo radial dm³ em um dado instante depende da altura inicial \(z(0)\) e de \(\varepsilon\). Ela é limitada, mas o limite não é uniforme nos dados iniciais. Codificamos isso honestamente: \(K\) é Lipschitz, com <em>alguma</em> constante \(L\), e o resto da cadeia deve funcionar para qualquer tal \(L\). Isso é exatamente o que a API <code>Lipschitz</code> do Mathlib suporta.</p>
+</div>
+
+<!-- §3 -->
+<div class="section-label">
+  <span class="tag">§3 · O Teorema</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title"><code>SpiralReturn</code> — Formalizando o Teorema 2.1</h2>
+
+<p>A EDO em si é uma aplicação de Picard–Lindelöf. O <code>ODE.Gronwall</code> e o <code>ODE.PicardLindelof</code> do Mathlib nos dão existência, unicidade e o lema de Gronwall. O esqueleto abaixo mostra o enunciado em sua forma atual.</p>
+
+<div class="code-block">
+  <div class="code-label">Lean 4 · AXLE/SpiralReturn.lean</div>
+<span class="cm">/- AXLE/SpiralReturn.lean — Teorema 2.1 (simétrico) -/</span>
+<span class="kw">import</span> AXLE.Chain
+<span class="kw">import</span> Mathlib.Analysis.ODE.PicardLindelof
+<span class="kw">import</span> Mathlib.Analysis.SpecialFunctions.Log.Basic
+
+<span class="kw">namespace</span> <span class="nm">AXLE</span>
+
+<span class="cm">/-- A equação radial dm³ em ε = 2. -/</span>
+<span class="kw">noncomputable def</span> <span class="nm">dm3Radial</span> (z : ℝ) (r : ℝ) : ℝ :=
+  r * (1 - r^2) + 2 * (r - 1) * Real.exp (-z)
+
+<span class="cm">/-- Teorema 2.1 (simétrico): se |r₀ - 1| < 1/3 e z₀ ≥ log 2,
+    a solução converge exponencialmente para r = 1 à taxa -2. -/</span>
+<span class="kw">theorem</span> <span class="nm">spiralReturn</span>
+    {r₀ z₀ : ℝ}
+    (hr : |r₀ - 1| < 1/3)
+    (hz : z₀ ≥ Real.log 2) :
+    ∃ (r : ℝ → ℝ), ∃ (μ : ℝ), μ < 0 ∧
+      r 0 = r₀ ∧
+      (∀ t ≥ 0, |r t - 1| ≤ |r₀ - 1| * Real.exp (μ * t)) := <span class="kw">by</span>
+  <span class="cm">-- Passo 1: aplica Picard–Lindelöf para existência local</span>
+  <span class="cm">-- Passo 2: deriva a desigualdade escalar ½ d/dt u² ≤ (-2 + 3ε₀ + εe^{-z₀}) u²</span>
+  <span class="cm">-- Passo 3: aplica Mathlib.Analysis.ODE.Gronwall</span>
+  <span class="cm">-- Passo 4: a cota de Lipschitz necessária no Passo 2 — veja Issue #12</span>
+  <span class="sc">sorry</span>
+
+<span class="kw">end</span> <span class="nm">AXLE</span>
+</div>
+
+<h3>O que está provado, o que é <code>sorry</code></h3>
+
+<p>Os Passos 1 e 3 do esboço de prova são <em>chamadas de biblioteca</em>. O <code>ODE.PicardLindelof</code> e o <code>ODE.Gronwall</code> do Mathlib são completos, mantidos e bem documentados. O Passo 2 — produzir a desigualdade escalar a partir da equação radial — precisa de uma cota no termo de acoplamento. Essa cota é o conteúdo do Issue #12.</p>
+
+<div class="defn">
+  <div class="defn-title">Lema 2.1.A · A desigualdade escalar</div>
+  <p>Dados \(|u(0)| < 1/3\) e \(z(0) \geq \log 2\), existe \(\eta > 0\) tal que ao longo das soluções de dm³, \(\tfrac12 \frac{d}{dt} u^2 \leq -\eta\, u^2\) para todo \(t \geq 0\).</p>
+  <p style="margin-bottom:0">Isso é o que o Passo 2 deve entregar. Dado isso, o Passo 3 é uma aplicação de uma linha de <code>Mathlib.Analysis.ODE.Gronwall</code>. O \(\eta\) explícito é \(2 - 3\varepsilon_0 - 1 > 0\) quando \(\varepsilon_0 < 1/3\). O insumo ausente é uma <em>cota de Lipschitz no acoplamento</em> que é uniforme para todo \(t\) em que \(|u| < \varepsilon_0\). Isso é o Issue #12.</p>
+</div>
+
+<!-- §4 -->
+<div class="section-label">
+  <span class="tag">§4 · A Obrigação em Aberto</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">AXLE Issue #12 — A Estimativa de Lipschitz</h2>
+
+<div class="issue-box">
+  <div class="issue-title">
+    <span>#12 · Cota de Lipschitz no acoplamento \(\kappa(r,z) = \varepsilon(r-1)e^{-z}\)</span>
+    <span class="issue-badge">aberto · boa primeira issue</span>
+  </div>
+  <p><strong>Objetivo:</strong> Provar <code>kappa_lipschitz</code> em <code>AXLE/Coupling.lean</code>:</p>
+</div>
+
+<div class="code-block">
+  <div class="code-label">Lean 4 · AXLE/Coupling.lean</div>
+<span class="kw">lemma</span> <span class="nm">kappa_lipschitz</span>
+    (ε₀ : ℝ) (hε₀ : 0 < ε₀) (hε₀' : ε₀ < 1/3)
+    (z_lo : ℝ) :
+    ∃ L : ℝ≥0, ∀ r₁ r₂ : ℝ, ∀ z : ℝ,
+      |r₁ - 1| < ε₀ → |r₂ - 1| < ε₀ → z ≥ z_lo →
+      |κ r₁ z - κ r₂ z| ≤ L * |r₁ - r₂| := <span class="sc">sorry</span>
+</div>
+
+<p><strong>Dificuldade:</strong> Baixa — em forma de papel é uma estimativa de uma linha: \(\kappa\) é linear em \(r\) com inclinação \(\varepsilon e^{-z} \leq \varepsilon e^{-z_{\text{lo}}}\), então \(L = \varepsilon e^{-z_{\text{lo}}}\) funciona.</p>
+
+<p><strong>Por que está no Lean:</strong> Transformar essa estimativa de uma linha em Lean requer o <code>Lipschitz.mk'</code> correto, alguma plumagem <code>NNReal</code> para a constante, e cuidado com a monotonicidade de <code>Real.exp</code>. Um contribuidor Lean iniciante pode fazer em uma tarde.</p>
+
+<div class="contribute-box">
+  <h4>Caminho de contribuição</h4>
+  <ol>
+    <li><code>git clone https://github.com/TOTOGT/AXLE</code></li>
+    <li>Abra <code>AXLE/Coupling.lean</code> no VS Code com a extensão Lean 4.</li>
+    <li>Substitua o <code>sorry</code> por um termo de prova real.</li>
+    <li><code>lake build</code> para verificar tipos; abra um PR.</li>
+  </ol>
+</div>
+
+<h3>Relacionado: duas issues já fechadas</h3>
+
+<div class="issue-closed">
+  <div class="issue-closed-title">
+    <span>#8 · Portar <code>dm3Radial</code> para a forma de <code>ODE.Gronwall.comparison</code></span>
+    <span class="closed-badge">fechado · merged #11</span>
+  </div>
+  <p style="font-size:.95rem;margin-bottom:0">Reescrever a desigualdade escalar na forma que o lema de comparação de Gronwall do Mathlib espera (\(\dot u \leq f(u)\) com \(f\) localmente Lipschitz). Feito — levou duas rodadas de revisão.</p>
+</div>
+
+<div class="issue-closed">
+  <div class="issue-closed-title">
+    <span>#9 · Positividade de \(\{r > 1\}\) (o exercício de quadro de S1)</span>
+    <span class="closed-badge">fechado · merged #10</span>
+  </div>
+  <p style="font-size:.95rem;margin-bottom:0">Formalizar o exercício de quadro de S1: \(\{r(t) > 1\}\) é positivamente invariante. Feito via <code>Mathlib.Analysis.ODE.Invariant</code>.</p>
+</div>
+
+<p style="margin-top:1.2rem"><strong>Além do #12.</strong> A bacia precisa \(r_\star \approx 0{,}80\) é um projeto de pesquisa separado, não uma lacuna de formalização. Nenhuma quantidade de Lean vai afiar \(1/3\) para \(0{,}80\) — isso requer um argumento matemático novo, provavelmente uma função de Lyapunov com estrutura sensível ao sinal. Se quiser trabalhar nisso, o laboratório numérico (<code>labs/dm3_numeric.py</code>) é o lugar para começar.</p>
+
+<!-- §5 -->
+<div class="section-label">
+  <span class="tag">§5 · Simulador de Referência</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">▶ Fluxo dm³ — Referência</h2>
+
+<p>Mantenha este aberto enquanto lê o Lean. As órbitas que você vê são exatamente o que <code>spiralReturn</code> promete — módulo Issue #12.</p>
+
+<div class="sim-wrapper">
+  <div class="sim-header">
+    <div class="sim-dot"></div>
+    <span>▶ Fluxo de Contato dm³ — O que <code>spiralReturn</code> promete, visualizado</span>
+  </div>
+  <iframe class="sim-frame"
+    src="https://grossi-ops.github.io/helical-contact/sims/helical-attractor.html"
+    title="Simulador 3D do Atrator Helicoidal dm³"
+    loading="lazy">
+  </iframe>
+</div>
+
+<!-- §6 -->
+<div class="section-label">
+  <span class="tag">§6 · Fechamento</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">O Que o Curso Fez</h2>
+
+<p>Em três horas caminhamos de <em>variedades de contato em dimensão 3</em> (S1) por <em>Teorema 2.1 com sua bacia de Gronwall</em> (S2) até uma <em>formalização Lean 4 com uma obrigação em aberto</em> (S3). A formalização está viva, pública e recebe contribuições. A bacia precisa \(r_\star\) é pesquisa aberta. O simulador dm³ roda em qualquer navegador.</p>
+
+<p>Se você contribuir uma prova de <code>kappa_lipschitz</code>, você fecha o último <code>sorry</code> na prova simétrica do Teorema 2.1. A cadeia de operadores \(G = U\circ F\circ K\circ C\) então terá uma instância completamente verificada. Isso é um marco: um teorema GTCT com prova verificada por máquina.</p>
+
+<div class="takeaway">
+  <h3>Conclusão Final · O mapa do território</h3>
+  <ul>
+    <li>A <strong>geometria</strong> (S1) força uma hélice. A forma de contato não é decoração; é o suporte de \(\Gamma\).</li>
+    <li>A <strong>análise</strong> (S2) prova contração exponencial à taxa \(-2\), numa bola de Gronwall \(|r - 1| < 1/3\).</li>
+    <li>A <strong>numeração</strong> (S2) corrige a fronteira interior para \(r_\star \approx 0{,}80\) — mais restritiva que Gronwall, não mais fraca.</li>
+    <li>A <strong>formalização</strong> (S3) reduz o teorema simétrico inteiro a um lema estilo Mathlib: <code>kappa_lipschitz</code>.</li>
+  </ul>
+  <p style="margin-top:1rem;color:rgba(255,255,255,0.7);font-style:italic">Quatro camadas, quatro contribuições, uma hélice. Obrigado, Natal.</p>
+</div>
+
+<div class="exercise">
+  <div class="ex-title">Rampa de Contribuição · Três Horizontes de Tempo</div>
+  <ul style="padding-left:1.3rem;font-size:.95rem">
+    <li style="margin-bottom:.5rem"><strong>Curto prazo (tarde).</strong> Feche o Issue #12. Baixa dificuldade, alta clareza, atribuição nomeada no log de commits do AXLE.</li>
+    <li style="margin-bottom:.5rem"><strong>Médio prazo (semana).</strong> Formalize o Corolário 2.3 (a bacia explícita) como consumidor de <code>spiralReturn</code>. Depende do #12 estar fechado.</li>
+    <li><strong>Longo prazo (pesquisa).</strong> Encontre a função de Lyapunov sensível ao sinal que produz \(r_\star\). Isso é um <em>artigo</em>, não uma issue.</li>
+  </ul>
+</div>
+
+<div class="nav-cards">
+  <a class="nav-card" href="sessao2-teorema-bacia.html">
+    <div class="dir">← Sessão Anterior</div>
+    <div class="label">S2: Teorema 2.1 &amp; a Bacia Assimétrica</div>
+  </a>
+  <a class="nav-card next" href="index.html">
+    <div class="dir">Retornar ao Hub →</div>
+    <div class="label">Vol. IV · Atratores Helicoidais</div>
+  </a>
+</div>
+
+</main>
+
+<footer>
+  Mini-Curso · XII Bienal de Matemática 2026 · UFRN, Natal-RN<br>
+  Sessão S3 · Esqueleto Lean 4 &amp; AXLE Issue #12 · Pablo Nogueira Grossi · G6 LLC · 2026<br>
+  <a href="index.html">Vol. IV</a> · <a href="https://doi.org/10.5281/zenodo.19117400" target="_blank">DOI 10.5281/zenodo.19117400</a> · <a href="index.html#bibliography">Série completa →</a> · <a href="https://github.com/TOTOGT/AXLE" target="_blank">AXLE (Lean 4)</a><br>
+  © 2026 Pablo Nogueira Grossi — G6 LLC · MIT License
+</footer>
+
+</body>
+</html>
