@@ -1,4 +1,4 @@
-  ---website: totogt.github.io/geometry
+  ---
 layout: default
 title: Orthogenesis
 nav_order: 1
@@ -13,9 +13,10 @@ MathJax = {
 
 # Orthogenesis
 
+
 *A Lean 4 formalization of the colony / cell expansion model and the C → K → F → U operator chain.*
 
-[Source on GitHub](https://github.com/<ORG>/orthogenesis){: .btn } [Release v0.1.0](https://github.com/<ORG>/orthogenesis/releases/tag/v0.1.0){: .btn }
+[Source on GitHub](https://github.com/TOTOGT/geometry){: .btn } [Release v0.1.0](https://totogt.github.io/geometry){: .btn }
 
 ---
 
