@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helical Attractors on Contact 3-Manifolds · Principia Orthogona Vol. IV · GTCT T1</title>
+<meta name="description" content="The IMPA Edition of Generative Temporal Contact Theory. Chapter 10 + Chapter E, Lean 4 formalisation, interactive simulator, 3-hour mini-course for XII Bienal de Matemática 2026.">
+<meta property="og:title" content="Helical Attractors on Contact 3-Manifolds — Vol. IV, GTCT T1">
+<meta property="og:description" content="Principia Orthogona Vol. IV. DOI 10.5281/zenodo.19117400. Interactive dm³ simulator, Lean 4 proofs, 3-hour mini-course.">
+<style>
+:root{
+  --t:#2dd4bf; --td:#0d9488; --tg:rgba(45,212,191,0.12);
+  --bg:#060f0e; --bg2:#0c1a18; --bg3:#122320;
+  --tx:#e0faf8; --mu:#4d7a76; --gd:#c9a84c;
+  --bd:rgba(45,212,191,0.18);
+  --c:#4a9eff; --k:#e05a3a; --f:#50c878; --u:#c084fc;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:Georgia,'Times New Roman',serif;line-height:1.78;min-height:100vh;}
+/* NAV */
+nav{display:flex;flex-wrap:wrap;gap:.5rem;padding:.7rem 1.5rem;background:rgba(6,15,14,.93);border-bottom:1px solid var(--bd);font-family:'Courier New',monospace;font-size:.76rem;position:sticky;top:0;z-index:100;}
+nav a{color:var(--t);text-decoration:none;padding:.2rem .6rem;border:1px solid var(--bd);border-radius:3px;transition:background .2s;}
+nav a:hover{background:var(--tg);}
+nav .spacer{flex:1;}
+nav .buy{background:var(--t);color:var(--bg);font-weight:700;}
+nav .buy:hover{background:#99f6e4;}
+/* HERO — two-column cover-forward */
+.hero{position:relative;overflow:hidden;padding:4rem 1.5rem 3.5rem;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(45,212,191,.09) 0%,transparent 70%);pointer-events:none;}
+.hero-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:minmax(280px,380px) 1fr;gap:3rem;align-items:center;position:relative;}
+.cover-wrap{position:relative;}
+.cover-wrap::after{content:'';position:absolute;inset:-6px;border:1px solid var(--bd);border-radius:4px;pointer-events:none;}
+.cover-img{display:block;width:100%;height:auto;box-shadow:0 30px 80px rgba(45,212,191,.18),0 10px 30px rgba(0,0,0,.5);border-radius:2px;}
+.cover-caption{font-family:'Courier New',monospace;font-size:.62rem;color:var(--mu);letter-spacing:.12em;text-transform:uppercase;margin-top:.9rem;text-align:center;}
+.hero-text .op-badge{display:inline-block;font-family:'Courier New',monospace;font-size:.72rem;font-weight:700;letter-spacing:.16em;color:var(--bg);background:var(--t);padding:.28rem .95rem;border-radius:3px;margin-bottom:1.2rem;}
+.hero-text h1{font-size:clamp(1.8rem,4vw,3.2rem);font-weight:400;color:var(--tx);line-height:1.15;margin-bottom:.5rem;}
+.hero-text h1 em{color:var(--t);font-style:italic;}
+.hero-text .sub{font-size:1rem;color:#a0d8d4;font-style:italic;margin-bottom:1rem;line-height:1.55;}
+.hero-text .byline{font-family:'Courier New',monospace;font-size:.78rem;color:var(--mu);margin-bottom:1.3rem;letter-spacing:.04em;}
+.hero-text .byline span{color:var(--t);}
+.chain-row{display:flex;gap:.4rem;align-items:center;font-family:'Courier New',monospace;font-size:.95rem;letter-spacing:.08em;flex-wrap:wrap;margin-bottom:1.4rem;}
+.chain-op{padding:.2rem .6rem;border-radius:3px;}
+.co-c{color:var(--c);background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.25);}
+.co-k{color:var(--k);background:rgba(224,90,58,.1);border:1px solid rgba(224,90,58,.25);}
+.co-f{color:var(--f);background:rgba(80,200,120,.1);border:1px solid rgba(80,200,120,.25);}
+.co-u{color:var(--u);background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.25);}
+.co-t{color:var(--t);background:rgba(45,212,191,.12);border:1px solid var(--bd);font-weight:700;}
+.co-arr{color:var(--mu);}
+.cta-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.4rem;}
+.cta{display:inline-flex;align-items:center;gap:.5rem;font-family:'Courier New',monospace;font-size:.82rem;letter-spacing:.05em;padding:.7rem 1.2rem;text-decoration:none;border-radius:4px;border:1px solid var(--bd);color:var(--t);transition:all .15s;}
+.cta:hover{background:var(--tg);border-color:var(--t);}
+.cta.primary{background:var(--t);color:var(--bg);font-weight:700;border-color:var(--t);}
+.cta.primary:hover{background:#99f6e4;}
+.cta .sm{font-size:.66rem;opacity:.7;display:block;letter-spacing:.12em;text-transform:uppercase;}
+.isbn-strip{font-family:'Courier New',monospace;font-size:.7rem;color:var(--mu);padding-top:.9rem;border-top:1px solid rgba(45,212,191,.08);}
+.isbn-strip span{color:var(--t);}
+@media(max-width:760px){.hero-grid{grid-template-columns:1fr;gap:2rem;}.cover-wrap{max-width:320px;margin:0 auto;}}
+/* SECTION scaffolding */
+.section{max-width:1100px;margin:0 auto;padding:3rem 1.5rem 0;}
+.section h2{font-size:1.4rem;font-weight:400;color:var(--t);border-bottom:1px solid var(--bd);padding-bottom:.4rem;margin-bottom:1.3rem;}
+.slabel{font-family:'Courier New',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);margin-bottom:.3rem;}
+.section p{margin-bottom:1rem;color:var(--tx);max-width:820px;}
+.section em{color:var(--t);font-style:normal;}
+/* COMPANION TILES */
+.tile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:1.2rem;}
+.tile{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;padding:1.3rem 1.4rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.55rem;transition:all .2s;position:relative;overflow:hidden;}
+.tile::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--t);opacity:0;transition:opacity .2s;}
+.tile:hover{border-color:var(--t);background:rgba(45,212,191,.04);transform:translateY(-2px);}
+.tile:hover::after{opacity:1;}
+.tile .kind{font-family:'Courier New',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--t);}
+.tile h3{font-size:1.02rem;color:#cffaf6;font-weight:400;line-height:1.35;}
+.tile .desc{font-size:.86rem;color:var(--mu);line-height:1.65;flex:1;}
+.tile .cta-line{font-family:'Courier New',monospace;font-size:.72rem;color:var(--t);letter-spacing:.06em;margin-top:.3rem;}
+.tile .cta-line::after{content:' →';transition:transform .15s;}
+.tile:hover .cta-line::after{transform:translateX(2px);}
+.tile.kind-c::after{background:var(--c);}
+.tile.kind-k::after{background:var(--k);}
+.tile.kind-f::after{background:var(--f);}
+.tile.kind-u::after{background:var(--u);}
+.tile.kind-gold::after{background:var(--gd);}
+/* MACHINE inset */
+.machine-wrap{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:1.5rem;margin:1.6rem 0 2rem;}
+.machine-wrap h3{font-family:'Courier New',monospace;font-size:.95rem;color:var(--t);margin-bottom:.4rem;font-weight:400;}
+.machine-sub{font-size:.85rem;color:var(--mu);margin-bottom:1rem;max-width:720px;}
+.sim-frame{display:block;width:100%;height:540px;border:none;background:#030a09;border-radius:6px;}
+@media(max-width:600px){.sim-frame{height:680px;}}
+.sim-caption{font-family:'Courier New',monospace;font-size:.7rem;color:var(--mu);margin-top:.7rem;display:flex;gap:1.2rem;flex-wrap:wrap;}
+.sim-caption span{color:var(--t);}
+/* SESSION STRIP */
+.session-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:1rem;}
+.s-card{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:1.4rem 1.5rem;text-decoration:none;color:inherit;position:relative;transition:all .2s;}
+.s-card:hover{border-color:var(--t);background:rgba(45,212,191,.04);}
+.s-card .num{font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.18em;color:var(--t);margin-bottom:.35rem;}
+.s-card .dur{font-family:'Courier New',monospace;font-size:.62rem;color:var(--mu);float:right;padding:.1rem .4rem;border:1px solid var(--bd);border-radius:2px;}
+.s-card h3{font-size:1.02rem;color:#cffaf6;font-weight:400;line-height:1.3;margin-bottom:.5rem;margin-top:.3rem;}
+.s-card .topics{font-size:.82rem;color:var(--mu);line-height:1.6;}
+.s-card .topics em{color:var(--t);font-style:normal;}
+.s-card .go{font-family:'Courier New',monospace;font-size:.7rem;color:var(--t);margin-top:.8rem;letter-spacing:.06em;}
+.s-card .go::after{content:' →';}
+/* Invariants strip */
+.inv-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:rgba(45,212,191,.08);border-radius:6px;overflow:hidden;margin-top:1rem;}
+.inv{background:var(--bg2);padding:1rem 1.1rem;text-align:center;}
+.inv .s{font-family:'Courier New',monospace;font-size:1.6rem;color:var(--t);line-height:1;}
+.inv .n{font-family:'Courier New',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-top:.35rem;}
+/* EPIGRAPH */
+.epigraph{background:rgba(45,212,191,.05);border-left:3px solid var(--t);padding:1.2rem 1.5rem;margin:1.3rem 0;font-style:italic;color:#a0d8d4;font-size:.95rem;line-height:1.85;max-width:820px;}
+.epigraph .pt{color:var(--mu);font-size:.88rem;margin-top:.5rem;}
+.insight{background:rgba(201,168,76,.06);border-left:3px solid var(--gd);padding:1rem 1.4rem;margin:1.2rem 0;font-style:italic;color:#f0dda8;font-size:.93rem;line-height:1.75;max-width:820px;}
+/* FOOTER */
+footer{background:#030a09;border-top:1px solid var(--bd);padding:2.4rem 1.5rem 2rem;text-align:center;font-family:'Courier New',monospace;font-size:.74rem;color:var(--mu);line-height:2;margin-top:3rem;}
+footer strong{color:#cffaf6;font-family:Georgia,serif;font-weight:400;font-style:italic;font-size:.95rem;}
+footer a{color:var(--t);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+footer .doi-badge{display:inline-block;margin-top:.8rem;padding:.3rem .8rem;border:1px solid var(--bd);border-radius:3px;color:var(--t);font-size:.68rem;letter-spacing:.1em;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" style="background:var(--tg);">Vol. IV</a>
+  <a href="chE-gtct.html">Chapter E</a>
+  <a href="sessions/session1-contact-geometry.html">Mini-curso</a>
+  <a href="sims/helical-attractor.html">3D Sim</a>
+  <a href="https://totogt.github.io/AXLE">Principia Orthogona</a>
+  <a href="https://github.com/TOTOGT/GTCT">Lean / GTCT</a>
+  <span class="spacer"></span>
+  <a class="buy" href="https://brodanova6.gumroad.com/l/soundworks">Buy Book →</a>
+</nav>
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-grid">
+    <div class="cover-wrap">
+      <img src="assets/book-cover.png" alt="Helical Attractors on Contact 3-Manifolds — book cover" class="cover-img">
+      <div class="cover-caption">Principia Orthogona · Vol. IV · GTCT T1</div>
+    </div>
+    <div class="hero-text">
+      <div class="op-badge">PRINCIPIA ORTHOGONA · VOL. IV · IMPA EDITION</div>
+      <h1>Helical Attractors on<br><em>Contact 3-Manifolds</em></h1>
+      <div class="sub">A numerical and formal study of the dm³ system — contact geometry, exponential convergence, and the asymmetric basin Gronwall cannot see.</div>
+      <div class="byline">Pablo Nogueira Grossi · <span>G6 LLC · Newark, NJ · 2026</span></div>
+      <div class="chain-row">
+        <span class="chain-op co-c">C</span><span class="co-arr">→</span>
+        <span class="chain-op co-k">K</span><span class="co-arr">→</span>
+        <span class="chain-op co-f">F</span><span class="co-arr">→</span>
+        <span class="chain-op co-u">U</span><span class="co-arr">→</span>
+        <span class="chain-op co-t">T</span><span class="co-arr">→</span>
+        <span style="color:var(--mu);">Γ*</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta primary" href="https://doi.org/10.5281/zenodo.19117400">
+          <span><span class="sm">DOI · Zenodo Open Access</span>10.5281/zenodo.19117400</span>
+        </a>
+        <a class="cta" href="submissions/XII_BM_MINICURSO_T1_Pablo_Grossi_preview.pdf">
+          <span><span class="sm">Mini-curso · XII Bienal UFRN</span>3-page preview (PDF)</span>
+        </a>
+      </div>
+      <div class="cta-row">
+        <a class="cta" href="sims/helical-attractor.html">▶ Interactive 3D simulator</a>
+        <a class="cta" href="https://brodanova6.gumroad.com/l/soundworks">Buy Book 3</a>
+      </div>
+      <div class="isbn-strip">
+        <span>Series:</span> Principia Orthogona · <span>Volume:</span> IV (GTCT T1) · <span>Edition:</span> IMPA · <span>License:</span> MIT · <span>ORCID:</span> 0009-0000-6496-2186
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ EPIGRAPH ═══ -->
+<div class="section">
+  <div class="epigraph">
+    "The internal basin boundary is asymmetric: real r* ≈ 0.80, not the r = 2/3 that symmetric Gronwall predicts. The study of this correction remains open for scientific initiation. Its study is yours. No one can take it from you."
+    <div class="pt">"A fronteira interna real da bacia é assimétrica: r* ≈ 0,80, não r = 2/3. Seu estudo é seu. Ninguém pode tirá-lo de você." — § 5 do mini-curso</div>
+  </div>
+</div>
+<!-- ═══ THE DM³ INVARIANTS ═══ -->
+<div class="section">
+  <div class="slabel">Canonical Invariants · Contact Form α = dz − r² dθ</div>
+  <h2>The dm³ System at a Glance</h2>
+  <p>The ODE lives on (M, ξ) = (ℝ³, ker α) in cylindrical coordinates, with ε = 2 throughout:
+  <span style="font-family:'Courier New',monospace;color:var(--t);display:block;margin:.6rem 0;background:var(--bg2);border:1px solid var(--bd);padding:.8rem 1rem;border-radius:4px;font-size:.9rem;">
+  &nbsp;&nbsp;ṙ = r(1−r²) + ε(r−1)e<sup>−z</sup>,&nbsp;&nbsp;&nbsp;θ̇ = 1,&nbsp;&nbsp;&nbsp;ż = r² − ε(r−1)²e<sup>−z</sup>
+  </span>
+  The limit set is a <em>helix</em> — the Reeb orbit Γ on the unit cylinder r = 1. Non-integrability of ξ forces any planar periodic limit to become helical in 3D.</p>
+  <div class="inv-strip">
+    <div class="inv"><div class="s">−2</div><div class="n">μ · Lyapunov</div></div>
+    <div class="inv"><div class="s">2π</div><div class="n">T* · period</div></div>
+    <div class="inv"><div class="s">2</div><div class="n">τ · embodiment</div></div>
+    <div class="inv"><div class="s">1/3</div><div class="n">ε₀ · Gronwall</div></div>
+    <div class="inv"><div class="s">0.80</div><div class="n">r* · real basin</div></div>
+  </div>
+</div>
+<!-- ═══ 3D SIM INSET ═══ -->
+<div class="section">
+  <div class="slabel">Interactive Visualisation</div>
+  <h2>The Helical Attractor — 3D Simulator</h2>
+  <div class="machine-wrap">
+    <h3>▶ dm³ Contact Flow · Reeb Helix Γ on r = 1</h3>
+    <div class="machine-sub">Blue trajectory spiraling in from r(0) &gt; 1 · gold Γ helix on the unit cylinder · red cautionary curve from r(0) &lt; r*. Drag to rotate · scroll to zoom · adjust ε, r₀, and N.</div>
+    <iframe class="sim-frame" src="sims/helical-attractor.html" title="Helical Attractor 3D Simulator" loading="lazy"></iframe>
+    <div class="sim-caption">
+      <span>Engine:</span> Three.js r128 &nbsp;·&nbsp;
+      <span>Integrator:</span> RK4 dt = 0.01 &nbsp;·&nbsp;
+      <span>Opens standalone:</span> <a href="sims/helical-attractor.html" style="color:var(--t);">sims/helical-attractor.html</a>
+    </div>
+  </div>
+</div>
+<!-- ═══ COMPANION MATERIAL ═══ -->
+<div class="section">
+  <div class="slabel">Companion Materials · All MIT · All Linkable</div>
+  <h2>Read, Simulate, Prove, Teach</h2>
+  <p>Volume IV is published as a living document: the book is the anchor, and everything around it is open and reproducible. Each tile below opens a distinct surface of the same mathematical object.</p>
+  <div class="tile-grid">
+    <a class="tile kind-c" href="chE-gtct.html">
+      <div class="kind">Bonus Chapter · E</div>
+      <h3>GTCT for Everyone</h3>
+      <div class="desc">Nine axioms, twelve operators, four theorems, one fixed point — made accessible to ESL students and STEM teachers. Bilingual EN/PT. Embedded G-orbit machine. Seven CEFR prompt levels A1 → D1.</div>
+      <div class="cta-line">Read Chapter E</div>
+    </a>
+    <a class="tile kind-gold" href="submissions/XII_BM_MINICURSO_T1_Pablo_Grossi_preview.pdf">
+      <div class="kind">Mini-Curso · XII Bienal 2026</div>
+      <h3>3-page Preview · Natal, UFRN</h3>
+      <div class="desc">The accepted SBM mini-course abstract: sistema dm³, teorema de atrator helicoidal, correção assimétrica da bacia de atração, e ligação com a formalização em Lean 4. Três sessões × 60 min.</div>
+      <div class="cta-line">Download preview PDF</div>
+    </a>
+    <a class="tile kind-u" href="PO_10_Pablo_Grossi.pdf">
+      <div class="kind">SBM Submission · Chapter 10</div>
+      <h3>3-page Bilingual PT / EN</h3>
+      <div class="desc">The polished Sociedade Brasileira de Matemática submission: Theorem 2.1 (exponential convergence µ → −2), the Gronwall-derived symmetric radius ε₀ = 1/3, and the numerical correction to r* ≈ 0.80.</div>
+      <div class="cta-line">Read the submission</div>
+    </a>
+    <a class="tile kind-t" href="sessions/session1-contact-geometry.html">
+      <div class="kind">Mini-Curso · Session S1</div>
+      <h3>Contact Geometry &amp; the dm³ System</h3>
+      <div class="desc">The arena: contact manifolds, Reeb vector fields, and the helical ODE. Interactive embed of the simulator. Ends with the Gronwall ε₀ = 1/3 derivation ready for S2.</div>
+      <div class="cta-line">Open Session 1 handout</div>
+    </a>
+    <a class="tile kind-k" href="sessions/session2-theorem-basin.html">
+      <div class="kind">Mini-Curso · Session S2</div>
+      <h3>Theorem 2.1 &amp; the Asymmetric Basin</h3>
+      <div class="desc">The proof sketch for exponential convergence and the pedagogical correction: symmetric r-balls misclassify the basin. Numerics confirm r* ≈ 0.80. Reproduce Table 1 yourself.</div>
+      <div class="cta-line">Open Session 2 handout</div>
+    </a>
+    <a class="tile kind-f" href="sessions/session3-lean-skeleton.html">
+      <div class="kind">Mini-Curso · Session S3</div>
+      <h3>Lean 4 Skeleton &amp; the Open Sorry</h3>
+      <div class="desc">Walk through <code style="color:var(--t);">Chain.lean</code> — the C→K→F→U structures on metric spaces, the Spiral Return statement, and the open <code style="color:var(--t);">kappa_lipschitz</code> proof obligation (AXLE Issue #12).</div>
+      <div class="cta-line">Open Session 3 handout</div>
+    </a>
+    <a class="tile kind-c" href="labs/dm3_numeric.py">
+      <div class="kind">Numeric Lab · Python</div>
+      <h3>DOP853 High-Precision Reproducer</h3>
+      <div class="desc">Runnable script that integrates (1) with rtol = 10⁻¹⁰, fits log|r − 1|, and reproduces the 5-row Table 1 — including the basin-boundary scan that corrects the Gronwall estimate.</div>
+      <div class="cta-line">View the Python script</div>
+    </a>
+    <a class="tile kind-u" href="https://github.com/TOTOGT/AXLE">
+      <div class="kind">Formal Verification · Lean 4</div>
+      <h3>AXLE Repository</h3>
+      <div class="desc">The axis of the operator chain: <code style="color:var(--t);">G = U∘F∘K∘C</code> formalised over metric/normed spaces, the Spiral Return theorem, the open <code style="color:var(--t);">kappa_lipschitz</code> obligation, and all Mathlib 4 dependencies.</div>
+      <div class="cta-line">github.com/TOTOGT/AXLE</div>
+    </a>
+    <a class="tile kind-k" href="https://github.com/TOTOGT/GTCT">
+      <div class="kind">Simulation Source · Python + Lean</div>
+      <h3>GTCT Repository</h3>
+      <div class="desc">The wider GTCT workshop: Python integrators, FINDINGS.md with the full 24-orbit table, LaTeX sources for the preprint, and the Lean stubs mirrored into AXLE.</div>
+      <div class="cta-line">github.com/TOTOGT/GTCT</div>
+    </a>
+    <a class="tile kind-gold" href="https://doi.org/10.5281/zenodo.19117400">
+      <div class="kind">Open Access · DOI</div>
+      <h3>Zenodo Canonical Record</h3>
+      <div class="desc">Citable archival record of Volume IV, including the preprint PDF, Python sources, Lean proofs, and figure assets. Versioned; each revision gets its own DOI suffix.</div>
+      <div class="cta-line">doi.org/10.5281/zenodo.19117400</div>
+    </a>
+    <a class="tile kind-f" href="https://totogt.github.io/AXLE/impa-portal.html">
+      <div class="kind">IMPA Portal</div>
+      <h3>For Reviewers &amp; Visitors</h3>
+      <div class="desc">The reviewer-facing landing: the four Theorems of GTCT, how the Lean proofs relate to the preprint, and a directed path through the Principia Orthogona series from G¹ to G⁵.</div>
+      <div class="cta-line">Open the IMPA portal</div>
+    </a>
+    <a class="tile kind-t" href="https://totogt.github.io/AXLE">
+      <div class="kind">Series Home</div>
+      <h3>Principia Orthogona</h3>
+      <div class="desc">The full homepage for the series: five volumes from the operator framework (G¹) through The Seed (G⁵). Sister site to this one, sharing the formal backbone but with different emphasis.</div>
+      <div class="cta-line">totogt.github.io/AXLE</div>
+    </a>
+  </div>
+</div>
+<!-- ═══ 3-HOUR COURSE ═══ -->
+<div class="section">
+  <div class="slabel">3-Hour Course Program · XII Bienal de Matemática 2026 · UFRN, Natal</div>
+  <h2>The Mini-Curso in Three 60-Minute Sessions</h2>
+  <p>Three sessions. Three surfaces of one system. <em>Pre-requisites:</em> undergraduate ODE. Lean 4 is <em>not</em> assumed. Every artefact below is open, linkable, and reproducible; together they constitute the full handout set distributed to enrolled students.</p>
+  <div class="session-strip">
+    <a class="s-card" href="sessions/session1-contact-geometry.html">
+      <span class="dur">60 min</span>
+      <div class="num">SESSION S1</div>
+      <h3>Contact Geometry &amp; the dm³ System</h3>
+      <div class="topics">The contact 3-manifold <em>(M, ξ)</em>, Reeb field, the helical ODE with ε = 2, intuition for <em>why</em> the attractor must be a helix, and an embedded run of the simulator.</div>
+      <div class="go">Open S1</div>
+    </a>
+    <a class="s-card" href="sessions/session2-theorem-basin.html">
+      <span class="dur">60 min</span>
+      <div class="num">SESSION S2</div>
+      <h3>Theorem 2.1 &amp; the Asymmetric Basin</h3>
+      <div class="topics">Linearisation at r = 1 giving <em>µ → −2</em>, the Gronwall sketch for the symmetric ε₀ = 1/3 ball, the numerical correction <em>r* ≈ 0.80</em>, and a live reproduction of Table 1.</div>
+      <div class="go">Open S2</div>
+    </a>
+    <a class="s-card" href="sessions/session3-lean-skeleton.html">
+      <span class="dur">60 min</span>
+      <div class="num">SESSION S3</div>
+      <h3>Lean 4 Skeleton &amp; the Open Sorry</h3>
+      <div class="topics">Reading <code style="color:var(--t);">Chain.lean</code>, the operator structures over metric spaces, the Spiral Return statement, and the <em>kappa_lipschitz</em> obligation still open as AXLE Issue #12.</div>
+      <div class="go">Open S3</div>
+    </a>
+  </div>
+  <div class="insight">Every session leaves one open problem in the student's hands. The asymmetric basin boundary r* is open for iniciação científica. The kappa_lipschitz obligation is open for Lean contributors. This is Axiom 9 (Honest Incompleteness) made pedagogical.</div>
+</div>
+<!-- ═══ SERIES ═══ -->
+<div class="section">
+  <div class="slabel">The Principia Orthogona Series</div>
+  <h2>Where Vol. IV Sits</h2>
+  <p>Volume IV is the IMPA Edition — the slim, formal, numerically rigorous companion to the full Book 3. It is designed to be read in a week, taught in three hours, and formally verified line-by-line.</p>
+  <table class="op-table" style="width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.6rem;">
+    <thead>
+      <tr style="border-bottom:1px solid var(--bd);color:var(--t);">
+        <th style="text-align:left;padding:.5rem .7rem;font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;">Vol</th>
+        <th style="text-align:left;padding:.5rem .7rem;font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;">Title</th>
+        <th style="text-align:left;padding:.5rem .7rem;font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;">ISBN / DOI</th>
+      </tr>
+    </thead>
+    <tbody style="color:var(--tx);">
+      <tr><td style="padding:.45rem .7rem;font-family:'Courier New',monospace;color:var(--c);">G¹</td><td style="padding:.45rem .7rem;">The Orthogonal Operator Framework</td><td style="padding:.45rem .7rem;font-family:'Courier New',monospace;font-size:.82rem;color:var(--mu);">979-8-9954416-2-5</td></tr>
+      <tr><td style="padding:.45rem .7rem;font-family:'Courier New',monospace;color:var(--k);">G²</td><td style="padding:.45rem .7rem;">TOGT: Applications Across Domains</td><td style="padding:.45rem .7rem;font-family:'Courier New',monospace;font-size:.82rem;color:var(--mu);">979-8-9954416-4-9</td></tr>
+      <tr><td style="padding:.45rem .7rem;font-family:'Courier New',monospace;color:var(--f);">G³</td><td style="padding:.45rem .7rem;">The Mini-Beast: Biological Instantiations</td><td style="padding:.45rem .7rem;font-family:'Courier New',monospace;font-size:.82rem;color:var(--mu);">979-8-9954416-6-3</td></tr>
+      <tr style="background:rgba(45,212,191,.06);"><td style="padding:.55rem .7rem;font-family:'Courier New',monospace;color:var(--u);font-weight:700;">G⁴</td><td style="padding:.55rem .7rem;color:#cffaf6;"><strong>Helical Attractors on Contact 3-Manifolds</strong> · GTCT T1 — The IMPA Edition <span style="color:var(--mu);">(this volume)</span></td><td style="padding:.55rem .7rem;font-family:'Courier New',monospace;font-size:.82rem;color:var(--t);">10.5281/zenodo.19117400</td></tr>
+      <tr><td style="padding:.45rem .7rem;font-family:'Courier New',monospace;color:var(--t);">G⁵</td><td style="padding:.45rem .7rem;">The Seed — Complete Completeness</td><td style="padding:.45rem .7rem;font-family:'Courier New',monospace;font-size:.82rem;color:var(--mu);">979-8-9954416-5-6</td></tr>
+    </tbody>
+  </table>
+</div>
+<footer>
+  <p><strong>Helical Attractors on Contact 3-Manifolds</strong></p>
+  <p>Principia Orthogona Vol. IV · GTCT T1 — The IMPA Edition</p>
+  <p>Pablo Nogueira Grossi · G6 LLC · Newark, New Jersey · 2026</p>
+  <p>
+    <a href="https://doi.org/10.5281/zenodo.19117400" class="doi-badge">DOI 10.5281/zenodo.19117400</a>
+  </p>
+  <p style="margin-top:.8rem;">
+    <a href="https://brodanova6.gumroad.com/l/soundworks">Buy on Gumroad</a> &nbsp;·&nbsp;
+    <a href="https://totogt.github.io/AXLE/impa-portal.html">IMPA Portal</a> &nbsp;·&nbsp;
+    <a href="https://totogt.github.io/AXLE">Principia Orthogona</a> &nbsp;·&nbsp;
+    <a href="https://github.com/TOTOGT/GTCT">GTCT</a> &nbsp;·&nbsp;
+    <a href="https://github.com/TOTOGT/AXLE">AXLE</a>
+  </p>
+  <p style="margin-top:.5rem;font-size:.66rem;color:#1a3a38;">© 2026 Pablo Nogueira Grossi — G6 LLC · MIT License · ORCID: 0009-0000-6496-2186</p>
+  <p style="margin-top:.4rem;font-size:.64rem;color:#1a3a38;">This is a living document. Updates published continuously on GitHub. The ring is not a circle. It is a spiral that generates time as it tightens.</p>
+</footer>
+</body>
+</html>
