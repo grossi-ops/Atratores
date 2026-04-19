@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atratores Helicoidais em Variedades de Contato — Vol. IV · GTCT T1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+:root {
+  --ink:     #0f1923;
+  --blue:    #1a3a6b;
+  --accent:  #4a90d9;
+  --gold:    #c9a84c;
+  --muted:   #64748b;
+  --surface: #f4f7fb;
+  --card:    #ffffff;
+  --border:  #d1dce8;
+  --red:     #c0392b;
+  --green:   #1a6b3a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; line-height: 1.75; color: var(--ink); background: var(--surface); }
+
+/* NAV */
+nav { background: var(--blue); padding: 0 2rem; display: flex; align-items: center; height: 48px; position: sticky; top: 0; z-index: 100; }
+nav a { color: #a8c4e8; text-decoration: none; font-family: 'Outfit', sans-serif; font-size: 13px; padding: 0 14px; height: 48px; display: flex; align-items: center; border-right: 1px solid rgba(255,255,255,0.08); transition: color .2s, background .2s; }
+nav a:first-child { border-left: 1px solid rgba(255,255,255,0.08); }
+nav a:hover, nav a.active { color: #fff; background: rgba(255,255,255,0.08); }
+
+/* HERO */
+.hero {
+  background: linear-gradient(160deg, #060e1a 0%, #0d2040 40%, #1a3a6b 80%, #0d2040 100%);
+  color: white;
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(74,144,217,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,144,217,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.hero-eyebrow {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.2rem;
+  position: relative;
+}
+.hero h1 {
+  position: relative;
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  max-width: 750px;
+}
+.hero h1 em { font-style: italic; color: #6db3f2; }
+.hero-sub {
+  position: relative;
+  color: #8ab4d8;
+  font-size: 1.05rem;
+  max-width: 620px;
+  margin-bottom: 2rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+}
+.hero-author {
+  position: relative;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .8rem;
+  color: #4d7aa8;
+  margin-bottom: 2rem;
+}
+.hero-badges {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+.hero-badge {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11.5px;
+  padding: .35rem .9rem;
+  border-radius: 2px;
+}
+.hero-btns {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  justify-content: center;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: .6rem 1.4rem;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: transform .15s, box-shadow .15s;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.btn-primary { background: var(--accent); color: white; }
+.btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.8); }
+
+/* INVARIANTS BAR */
+.invariants {
+  background: #0d1927;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  border-bottom: 1px solid rgba(74,144,217,0.2);
+}
+.inv-item {
+  padding: 1rem 2rem;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.inv-item:last-child { border-right: none; }
+.inv-val { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+.inv-label { font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: #4d7aa8; }
+
+/* QUOTE */
+.quote-bar {
+  background: var(--blue);
+  color: rgba(255,255,255,0.75);
+  text-align: center;
+  padding: 1.5rem 2rem;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.quote-bar strong { color: white; font-style: normal; }
+
+/* SESSIONS GRID */
+.sessions-section { background: var(--card); padding: 4rem 2rem; }
+.sessions-section h2 { text-align: center; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 2.5rem; }
+
+.sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.session-card {
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .2s, box-shadow .2s;
+  display: flex;
+  flex-direction: column;
+}
+.session-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(26,58,107,0.12); }
+.session-num {
+  background: var(--blue);
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.session-time { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.session-body { padding: 1.2rem; flex: 1; }
+.session-body h3 { font-family: 'Outfit', sans-serif; font-size: .95rem; font-weight: 600; color: var(--blue); margin-bottom: .5rem; }
+.session-body p { font-size: .9rem; color: var(--muted); line-height: 1.5; margin: 0; }
+.session-foot { padding: .8rem 1.2rem; border-top: 1px solid var(--border); font-family: 'Outfit', sans-serif; font-size: 12px; color: var(--accent); }
+
+/* MATERIALS GRID */
+.materials-section { padding: 4rem 2rem; max-width: 1060px; margin: 0 auto; }
+.materials-section > h2 { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
+.materials-section > p { font-size: 1rem; color: var(--ink); margin-bottom: 2rem; }
+.materials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.mat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.2rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.mat-card:hover { border-color: var(--accent); }
+.mat-tag { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.mat-card h3 { font-family: 'Outfit', sans-serif; font-size: .95rem; font-weight: 600; color: var(--blue); }
+.mat-card p { font-size: .88rem; color: var(--muted); line-height: 1.5; margin: 0; }
+
+/* TABLE */
+.vol-section { background: var(--blue); padding: 3rem 2rem; }
+.vol-section h2 { color: rgba(255,255,255,0.5); font-family: 'Outfit', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: .15em; text-align: center; margin-bottom: 1.5rem; }
+.vol-table { max-width: 700px; margin: 0 auto; border-collapse: collapse; width: 100%; font-family: 'Outfit', sans-serif; font-size: .9rem; }
+.vol-table th { color: rgba(255,255,255,0.5); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; padding: .5rem .8rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.vol-table td { padding: .7rem .8rem; border-bottom: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.75); }
+.vol-table tr.current td { color: white; font-weight: 500; }
+.vol-table tr.current td:first-child { color: var(--accent); }
+
+footer { background: #060e1a; color: rgba(255,255,255,0.45); text-align: center; padding: 2rem; font-family: 'Outfit', sans-serif; font-size: 12px; line-height: 2; }
+footer a { color: var(--accent); text-decoration: none; }
+footer .final-quote { font-style: italic; color: rgba(255,255,255,0.3); font-size: 11px; margin-top: .8rem; }
+
+@media (max-width: 700px) {
+  .sessions-grid { grid-template-columns: 1fr; }
+  .inv-item { flex: 1 1 33%; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="active">Vol. IV</a>
+  <a href="capitulo-e-gtct.html">Capítulo E</a>
+  <a href="sessao1-geometria-contato.html">Mini-Curso</a>
+  <a href="https://grossi-ops.github.io/helical-contact/sims/helical-attractor.html" target="_blank">Sim 3D</a>
+  <a href="https://totogt.github.io/AXLE" target="_blank">Principia Orthogona</a>
+  <a href="https://github.com/TOTOGT/GTCT" target="_blank">Lean / GTCT</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-eyebrow">Principia Orthogona · Vol. IV · GTCT T1</div>
+  <h1>Atratores Helicoidais em <em>Variedades de Contato</em></h1>
+  <p class="hero-sub">Um estudo numérico e formal do sistema dm³ — geometria de contato, convergência exponencial, e a bacia assimétrica que o Gronwall não vê.</p>
+  <div class="hero-author">Pablo Nogueira Grossi · G6 LLC · Newark, NJ · 2026</div>
+  <div class="hero-badges">
+    <span class="hero-badge">Série: Principia Orthogona</span>
+    <span class="hero-badge">Volume: IV (GTCT T1)</span>
+    <span class="hero-badge">Edição: IMPA</span>
+    <span class="hero-badge">Licença: MIT</span>
+    <span class="hero-badge">ORCID: 0009-0000-6496-2186</span>
+  </div>
+  <div class="hero-btns">
+    <a class="btn btn-primary" href="sessao1-geometria-contato.html">▶ Mini-Curso PT</a>
+    <a class="btn btn-outline" href="https://grossi-ops.github.io/helical-contact/sims/helical-attractor.html" target="_blank">Simulador 3D Interativo</a>
+    <a class="btn btn-outline" href="https://doi.org/10.5281/zenodo.19117400" target="_blank">DOI · Zenodo Open Access</a>
+  </div>
+</section>
+
+<!-- INVARIANTS -->
+<div class="invariants">
+  <div class="inv-item"><div class="inv-val">\(-2\)</div><div class="inv-label">μ · Lyapunov</div></div>
+  <div class="inv-item"><div class="inv-val">\(2\pi\)</div><div class="inv-label">T* · período</div></div>
+  <div class="inv-item"><div class="inv-val">\(2\)</div><div class="inv-label">τ · embodiment</div></div>
+  <div class="inv-item"><div class="inv-val">\(1/3\)</div><div class="inv-label">ε₀ · Gronwall</div></div>
+  <div class="inv-item"><div class="inv-val">\(0{,}80\)</div><div class="inv-label">r* · bacia real</div></div>
+</div>
+
+<!-- QUOTE -->
+<div class="quote-bar">
+  <p>"A fronteira interna da bacia é assimétrica: real \(r_\star \approx 0{,}80\), não o \(r = 2/3\) que o Gronwall simétrico prediz. Seu estudo é seu. Ninguém pode tirá-lo de você." — §5 do mini-curso</p>
+</div>
+
+<!-- SESSIONS -->
+<section class="sessions-section">
+  <h2>Programa de 3 Horas · XII Bienal de Matemática 2026 · UFRN, Natal</h2>
+  <div class="sessions-grid">
+    <a class="session-card" href="sessao1-geometria-contato.html">
+      <div class="session-num">
+        <span>SESSÃO S1</span>
+        <span class="session-time">60 min</span>
+      </div>
+      <div class="session-body">
+        <h3>Geometria de Contato &amp; o Sistema dm³</h3>
+        <p>A variedade de contato \((M, \xi)\), o campo de Reeb, a EDO helicoidal com \(\varepsilon = 2\), intuição de <em>por que</em> o atrator deve ser uma hélice, e uma execução embutida do simulador.</p>
+      </div>
+      <div class="session-foot">Abrir S1 →</div>
+    </a>
+    <a class="session-card" href="sessao2-teorema-bacia.html">
+      <div class="session-num">
+        <span>SESSÃO S2</span>
+        <span class="session-time">60 min</span>
+      </div>
+      <div class="session-body">
+        <h3>Teorema 2.1 &amp; a Bacia Assimétrica</h3>
+        <p>Linearização em \(r = 1\) dando \(\mu \to -2\), o esboço de Gronwall para a bola simétrica \(\varepsilon_0 = 1/3\), a correção numérica \(r_\star \approx 0{,}80\), e reprodução ao vivo da Tabela 1.</p>
+      </div>
+      <div class="session-foot">Abrir S2 →</div>
+    </a>
+    <a class="session-card" href="sessao3-esqueleto-lean.html">
+      <div class="session-num">
+        <span>SESSÃO S3</span>
+        <span class="session-time">60 min</span>
+      </div>
+      <div class="session-body">
+        <h3>Esqueleto Lean 4 &amp; AXLE Issue #12</h3>
+        <p>Lendo <code>Chain.lean</code>, as estruturas de operadores sobre espaços métricos, o enunciado do Retorno Espiral, e a obrigação <em>kappa_lipschitz</em> ainda aberta como AXLE Issue #12.</p>
+      </div>
+      <div class="session-foot">Abrir S3 →</div>
+    </a>
+  </div>
+</section>
+
+<!-- MATERIALS -->
+<section class="materials-section">
+  <h2>Materiais Complementares · Todos MIT · Todos Linkáveis</h2>
+  <p>Volume IV é publicado como documento vivo: o livro é a âncora, e tudo ao redor é aberto e reproduzível.</p>
+  <div class="materials-grid">
+    <a class="mat-card" href="sessao1-geometria-contato.html">
+      <div class="mat-tag">Mini-Curso · Sessão S1</div>
+      <h3>Geometria de Contato &amp; o Sistema dm³</h3>
+      <p>A arena: variedades de contato, campos de Reeb, e a EDO helicoidal. Embed interativo do simulador.</p>
+    </a>
+    <a class="mat-card" href="sessao2-teorema-bacia.html">
+      <div class="mat-tag">Mini-Curso · Sessão S2</div>
+      <h3>Teorema 2.1 &amp; a Bacia Assimétrica</h3>
+      <p>Esboço de prova de convergência exponencial e a correção pedagógica: bolas simétricas classificam erroneamente a bacia.</p>
+    </a>
+    <a class="mat-card" href="sessao3-esqueleto-lean.html">
+      <div class="mat-tag">Mini-Curso · Sessão S3</div>
+      <h3>Esqueleto Lean 4 &amp; Issue Aberta</h3>
+      <p>Percorra <code>Chain.lean</code> — as estruturas C→K→F→U, o enunciado do Retorno Espiral, e a obrigação aberta <code>kappa_lipschitz</code>.</p>
+    </a>
+    <a class="mat-card" href="https://grossi-ops.github.io/helical-contact/sims/helical-attractor.html" target="_blank">
+      <div class="mat-tag">Simulação · Three.js</div>
+      <h3>Simulador 3D Interativo dm³</h3>
+      <p>RK4 em tempo real, controles de \(\varepsilon\), \(r_0\) e \(N\). Arraste para girar, scroll para zoom.</p>
+    </a>
+    <a class="mat-card" href="https://grossi-ops.github.io/helical-contact/labs/dm3_numeric.py" target="_blank">
+      <div class="mat-tag">Lab Numérico · Python</div>
+      <h3>Reprodutor DOP853 de Alta Precisão</h3>
+      <p>Script executável que integra (1) com rtol = 10⁻¹⁰ e reproduz a Tabela 1 de 5 linhas — incluindo a varredura da fronteira da bacia.</p>
+    </a>
+    <a class="mat-card" href="https://grossi-ops.github.io/helical-contact/PO_10_Pablo_Grossi.pdf" target="_blank">
+      <div class="mat-tag">Submissão SBM · Bilingue PT/EN</div>
+      <h3>Capítulo 10 — 3 Páginas PT/EN</h3>
+      <p>A submissão polida à SBM: Teorema 2.1, o raio simétrico de Gronwall \(\varepsilon_0 = 1/3\), e a correção numérica para \(r_\star \approx 0{,}80\).</p>
+    </a>
+    <a class="mat-card" href="https://github.com/TOTOGT/AXLE" target="_blank">
+      <div class="mat-tag">Verificação Formal · Lean 4</div>
+      <h3>Repositório AXLE</h3>
+      <p>O eixo da cadeia de operadores: <code>G = U∘F∘K∘C</code> formalizado sobre espaços métricos/normados, o Teorema do Retorno Espiral e a obrigação <code>kappa_lipschitz</code> aberta.</p>
+    </a>
+    <a class="mat-card" href="https://doi.org/10.5281/zenodo.19117400" target="_blank">
+      <div class="mat-tag">Acesso Aberto · DOI</div>
+      <h3>Registro Canônico Zenodo</h3>
+      <p>Registro de arquivo citável do Volume IV, incluindo o preprint PDF, fontes Python, provas Lean e assets de figuras. Versionado.</p>
+    </a>
+    <a class="mat-card" href="https://totogt.github.io/AXLE/impa-portal.html" target="_blank">
+      <div class="mat-tag">Portal IMPA</div>
+      <h3>Para Revisores &amp; Visitantes</h3>
+      <p>Os quatro Teoremas do GTCT, como as provas Lean se relacionam com o preprint, e um caminho direto pela série Principia Orthogona de G¹ a G⁵.</p>
+    </a>
+  </div>
+</section>
+
+<!-- BIBLIOGRAPHY -->
+<a id="bibliography"></a>
+<section style="background:var(--surface);padding:3.5rem 2rem;">
+<div style="max-width:900px;margin:0 auto;">
+  <h2 style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem">Série Principia Orthogona · Registros Zenodo</h2>
+  <p style="font-size:.95rem;color:var(--muted);margin-bottom:1.8rem">Todos os depósitos abaixo são de acesso aberto. Cite pelo DOI correspondente.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:.875rem;font-family:'Outfit',sans-serif;">
+    <thead>
+      <tr style="background:var(--blue);color:white;">
+        <th style="padding:.6rem .9rem;text-align:left;font-weight:500;font-size:11px;letter-spacing:.06em;">Data</th>
+        <th style="padding:.6rem .9rem;text-align:left;font-weight:500;font-size:11px;letter-spacing:.06em;">Título</th>
+        <th style="padding:.6rem .9rem;text-align:left;font-weight:500;font-size:11px;letter-spacing:.06em;">DOI / Zenodo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background:rgba(74,144,217,0.06);">
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Mar 17, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>Principia Orthogona, Vol. I</strong>: The Mathematics of Generative Transitions</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://doi.org/10.5281/zenodo.15018023" target="_blank" style="color:var(--accent)">10.5281/zenodo.15018023</a></td>
+      </tr>
+      <tr>
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Mar 19–20, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>Principia Orthogona — Generative Contact Mechanics</strong> + dm³ Toy Model (Vols. I–IV bundle)</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://doi.org/10.5281/zenodo.19117400" target="_blank" style="color:var(--accent)">10.5281/zenodo.19117400</a></td>
+      </tr>
+      <tr style="background:rgba(74,144,217,0.06);">
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Mar 22, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>The G6 Crystal</strong>: A dm³-Derived Architectural Form for Resonance-Stable Tall Structures</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://zenodo.org/search?q=Grossi+G6+Crystal&l=list" target="_blank" style="color:var(--accent)">Zenodo · Mar 22</a></td>
+      </tr>
+      <tr>
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Mar 24, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>Biological Transitions</strong> as Multi-Agent Realisations of the Generative Operator Pipeline (TO/TOGT)</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://zenodo.org/search?q=Grossi+Biological+Transitions+TOGT&l=list" target="_blank" style="color:var(--accent)">Zenodo · Mar 24</a></td>
+      </tr>
+      <tr style="background:rgba(74,144,217,0.06);">
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Apr 2, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>Principia Orthogona, Vol. II</strong>: Contact Realization of Generative Transitions</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://zenodo.org/search?q=Grossi+Principia+Orthogona+Volume+Two&l=list" target="_blank" style="color:var(--accent)">Zenodo · Apr 2</a></td>
+      </tr>
+      <tr>
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Apr 2, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>The dm³ Operator</strong>: Explicit Toy Model and Global Dynamic Analysis</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://zenodo.org/search?q=Grossi+dm3+Operator+Toy+Model&l=list" target="_blank" style="color:var(--accent)">Zenodo · Apr 2</a></td>
+      </tr>
+      <tr style="background:rgba(74,144,217,0.06);">
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Apr 5, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>The Number 33</strong>: A Stability Threshold in Electron Gases, Neurons, Sunflowers, and the Collatz Map</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://zenodo.org/search?q=Grossi+number+33+stability&l=list" target="_blank" style="color:var(--accent)">Zenodo · Apr 5</a></td>
+      </tr>
+      <tr>
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Apr 10, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>The dm³ Criticality Principle</strong>: Curvature, Generative Dynamics, and the Dimension Three Spine</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://zenodo.org/search?q=Grossi+dm3+Criticality+Principle&l=list" target="_blank" style="color:var(--accent)">Zenodo · Apr 10</a></td>
+      </tr>
+      <tr style="background:rgba(74,144,217,0.06);">
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Apr 10, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>Wavenumber 6</strong>: The Orthogenetic Stability Generator of Nested Infinities</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://zenodo.org/search?q=Grossi+Wavenumber+6+Orthogenetic&l=list" target="_blank" style="color:var(--accent)">Zenodo · Apr 10</a></td>
+      </tr>
+      <tr>
+        <td style="padding:.6rem .9rem;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border);">Apr 12, 2026</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);"><strong>The GTCT</strong>: Complete Proofs, Derivations, and Applications (v2)</td>
+        <td style="padding:.6rem .9rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;"><a href="https://zenodo.org/search?q=Grossi+Generative+Time+Circuit+Theorem&l=list" target="_blank" style="color:var(--accent)">Zenodo · Apr 12</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:.8rem;color:var(--muted);margin-top:1rem">⚠ Alguns DOIs individuais ainda não estão disponíveis publicamente — use os links de busca do Zenodo acima para acessar. O DOI canônico citável para o Vol. IV é <code style="background:rgba(0,0,0,0.05);padding:.1rem .4rem;border-radius:3px;font-family:'JetBrains Mono',monospace">10.5281/zenodo.19117400</code>.</p>
+</div>
+</section>
+
+<!-- VOLUME TABLE -->
+<section class="vol-section">
+  <h2>A Série Principia Orthogona</h2>
+  <table class="vol-table">
+    <thead>
+      <tr><th>Vol</th><th>Título</th><th>ISBN / DOI</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>G¹</td><td>The Orthogonal Operator Framework</td><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem">979-8-9954416-2-5</td></tr>
+      <tr><td>G²</td><td>TOGT: Applications Across Domains</td><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem">979-8-9954416-4-9</td></tr>
+      <tr><td>G³</td><td>The Mini-Beast: Biological Instantiations</td><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem">979-8-9954416-6-3</td></tr>
+      <tr class="current"><td>G⁴</td><td><strong>Atratores Helicoidais em Variedades de Contato</strong> · GTCT T1 — Edição IMPA (este volume)</td><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem">10.5281/zenodo.19117400</td></tr>
+      <tr><td>G⁵</td><td>The Seed — Complete Completeness</td><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem">979-8-9954416-5-6</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <strong style="color:white">Atratores Helicoidais em Variedades de Contato</strong><br>
+  Principia Orthogona Vol. IV · GTCT T1 — Edição IMPA<br>
+  Pablo Nogueira Grossi · G6 LLC · Newark, New Jersey · 2026<br>
+  <a href="https://doi.org/10.5281/zenodo.19117400" target="_blank">DOI 10.5281/zenodo.19117400</a> ·
+  <a href="https://totogt.github.io/AXLE/impa-portal.html" target="_blank">Portal IMPA</a> ·
+  <a href="https://totogt.github.io/AXLE" target="_blank">Principia Orthogona</a> ·
+  <a href="https://github.com/TOTOGT/GTCT" target="_blank">GTCT</a> ·
+  <a href="https://github.com/TOTOGT/AXLE" target="_blank">AXLE</a><br>
+  © 2026 Pablo Nogueira Grossi — G6 LLC · MIT License · ORCID: 0009-0000-6496-2186
+  <div class="final-quote">Este é um documento vivo. Atualizações publicadas continuamente no GitHub. O anel não é um círculo. É uma espiral que gera tempo enquanto se aperta.</div>
+</footer>
+
+</body>
+</html>

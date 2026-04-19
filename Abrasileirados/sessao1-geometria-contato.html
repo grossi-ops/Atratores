@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sessão S1 · Geometria de Contato & o Sistema dm³ · Mini-Curso Vol. IV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+:root {
+  --ink:       #0f1923;
+  --blue:      #1a3a6b;
+  --accent:    #4a90d9;
+  --gold:      #c9a84c;
+  --muted:     #64748b;
+  --surface:   #f4f7fb;
+  --card:      #ffffff;
+  --border:    #d1dce8;
+  --code-bg:   #0f1923;
+  --code-text: #a8d4ff;
+  --red:       #c0392b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav {
+  background: var(--blue);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 48px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+nav a {
+  color: #a8c4e8;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 0 14px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: color .2s, background .2s;
+}
+nav a:first-child { border-left: 1px solid rgba(255,255,255,0.08); }
+nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+
+/* ── BREADCRUMB ──────────────────────────────────── */
+.breadcrumb {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: .6rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.breadcrumb a { color: var(--accent); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+
+/* ── HERO ─────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--blue) 0%, #0d2347 100%);
+  color: white;
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='29' fill='none' stroke='rgba(74,144,217,0.08)' stroke-width='1'/%3E%3Cline x1='0' y1='30' x2='60' y2='30' stroke='rgba(74,144,217,0.06)' stroke-width='.5'/%3E%3Cline x1='30' y1='0' x2='30' y2='60' stroke='rgba(74,144,217,0.06)' stroke-width='.5'/%3E%3C/svg%3E") repeat;
+}
+.hero-badge {
+  position: relative;
+  display: inline-block;
+  background: rgba(74,144,217,0.2);
+  border: 1px solid rgba(74,144,217,0.4);
+  color: #a8d4ff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  padding: .3rem 1rem;
+  border-radius: 2px;
+  margin-bottom: 1.2rem;
+}
+.session-number {
+  position: relative;
+  font-family: 'Outfit', sans-serif;
+  font-size: 7rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(74,144,217,0.2);
+  position: absolute;
+  top: 1rem; right: 2rem;
+  pointer-events: none;
+  user-select: none;
+}
+.hero h1 {
+  position: relative;
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: .8rem;
+}
+.hero h1 em { font-style: italic; color: #a8d4ff; }
+.hero-sub {
+  position: relative;
+  color: #8ab4d8;
+  font-size: 1rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+.hero-meta {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12.5px;
+  color: #7aa3c8;
+}
+.hero-meta span { display: flex; align-items: center; gap: .4rem; }
+
+/* ── PROGRESS BAR ────────────────────────────────── */
+.progress-bar {
+  background: var(--blue);
+  display: flex;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+}
+.progress-step {
+  flex: 1;
+  padding: .7rem 1rem;
+  text-align: center;
+  color: rgba(255,255,255,0.45);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  transition: background .2s;
+}
+.progress-step.active {
+  color: white;
+  background: rgba(74,144,217,0.3);
+  font-weight: 500;
+}
+.progress-step:last-child { border-right: none; }
+
+/* ── AGENDA CARD ─────────────────────────────────── */
+.agenda {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  margin: 2.5rem auto;
+  max-width: 860px;
+  padding: 1.8rem 2rem;
+  border-radius: 4px;
+}
+.agenda h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.agenda ol {
+  list-style: none;
+  padding: 0;
+}
+.agenda li {
+  display: flex;
+  gap: 1rem;
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .95rem;
+}
+.agenda li:last-child { border-bottom: none; }
+.agenda .time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .78rem;
+  color: var(--accent);
+  white-space: nowrap;
+  padding-top: .1rem;
+  min-width: 90px;
+}
+
+/* ── MAIN LAYOUT ─────────────────────────────────── */
+main { max-width: 860px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+/* ── SECTION ─────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0 .5rem;
+}
+.section-label .tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  background: rgba(74,144,217,0.08);
+  border: 1px solid rgba(74,144,217,0.2);
+  padding: .2rem .7rem;
+  border-radius: 2px;
+}
+.section-label .rule { flex: 1; height: 1px; background: var(--border); }
+
+h2.section-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--blue);
+  margin-bottom: 1.2rem;
+  border-bottom: 1.5px solid var(--accent);
+  padding-bottom: .4rem;
+}
+
+h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--blue);
+  margin: 1.5rem 0 .6rem;
+}
+
+p { margin-bottom: 1rem; }
+
+/* ── DEFINITION BOX ──────────────────────────────── */
+.defn {
+  background: var(--surface);
+  border-left: 3px solid var(--blue);
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.defn .defn-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: .6rem;
+}
+
+/* ── CLAIM / INSIGHT BOX ─────────────────────────── */
+.claim {
+  background: rgba(201,168,76,0.08);
+  border-left: 3px solid var(--gold);
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.claim .claim-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .6rem;
+}
+
+/* ── EXERCISE BOX ────────────────────────────────── */
+.exercise {
+  background: rgba(192,57,43,0.05);
+  border: 1px solid rgba(192,57,43,0.2);
+  border-top: 2px solid var(--red);
+  padding: 1.4rem 1.6rem;
+  margin: 2rem 0;
+  border-radius: 0 0 4px 4px;
+}
+.exercise .ex-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: .6rem;
+}
+
+/* ── MATH ────────────────────────────────────────── */
+.math-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1.2rem 1.5rem;
+  margin: 1.2rem 0;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 1.05rem;
+  text-align: center;
+}
+
+/* ── SIMULATOR ───────────────────────────────────── */
+.sim-wrapper {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+.sim-header {
+  background: var(--blue);
+  color: white;
+  padding: .8rem 1.2rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.sim-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.sim-frame { width: 100%; height: 480px; border: none; }
+
+/* ── EXPERIMENT LIST ─────────────────────────────── */
+.experiments {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.2rem 1.5rem;
+  margin: 1rem 0;
+}
+.experiments h4 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .8rem;
+}
+.experiments ol {
+  padding-left: 1.3rem;
+  font-size: .95rem;
+}
+.experiments li { margin-bottom: .5rem; }
+
+/* ── FORESHADOW ──────────────────────────────────── */
+.foreshadow {
+  background: linear-gradient(135deg, rgba(26,58,107,0.06) 0%, rgba(74,144,217,0.06) 100%);
+  border: 1px solid rgba(74,144,217,0.25);
+  border-radius: 4px;
+  padding: 1.4rem 1.6rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: var(--blue);
+}
+
+/* ── NAV CARDS ───────────────────────────────────── */
+.nav-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.nav-card {
+  display: block;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.2rem 1.4rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s, box-shadow .2s;
+}
+.nav-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(74,144,217,0.15); }
+.nav-card .dir {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .4rem;
+}
+.nav-card .label {
+  font-family: 'Outfit', sans-serif;
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--blue);
+}
+.nav-card.next { text-align: right; }
+.nav-card.next .dir::before { content: '→ '; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  background: var(--blue);
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  padding: 1.4rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+}
+footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">← Vol. IV</a>
+  <a href="capitulo-e-gtct.html">Capítulo E</a>
+  <a href="https://grossi-ops.github.io/helical-contact/sims/helical-attractor.html" target="_blank">Sim 3D</a>
+  <a href="https://grossi-ops.github.io/helical-contact/submissions/XII_BM_MINICURSO_T1_Pablo_Grossi_preview.pdf" target="_blank">PDF Preview</a>
+  <a href="https://github.com/TOTOGT/AXLE" target="_blank">AXLE</a>
+</nav>
+
+<div class="breadcrumb">
+  <span><a href="index.html">← Vol. IV Início</a> · Mini-Curso · Sessão S1 / 3</span>
+  <a href="sessao2-teorema-bacia.html">S2: Teorema & Bacia →</a>
+</div>
+
+<div class="hero">
+  <div class="session-number">S1</div>
+  <div class="hero-badge">Mini-Curso · Sessão S1 · 60 min</div>
+  <h1>Geometria de Contato &amp; o <em>Sistema dm³</em></h1>
+  <p class="hero-sub">A arena: variedade de contato em dimensão 3, o campo de Reeb, e a EDO dissipativa cujo atrator é uma hélice. A geometria o força.</p>
+  <div class="hero-meta">
+    <span>🎯 Objetivo: geometria de contato por exemplo trabalhado</span>
+    <span>📚 Pré-req: EDO graduação</span>
+    <span>🖥️ Modo: aula + simulador ao vivo</span>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-step active">S1 · GEOMETRIA DE CONTATO</div>
+  <div class="progress-step">S2 · TEOREMA 2.1 &amp; BACIA</div>
+  <div class="progress-step">S3 · ESQUELETO LEAN 4</div>
+</div>
+
+<div class="agenda">
+  <h2>Agenda da Sessão · 60 Minutos</h2>
+  <ol>
+    <li><span class="time">0 – 12 min</span><span>Variedades de contato. Por que \(\alpha = dz - r^2\,d\theta\) em \(\mathbb{R}^3\) é o protótipo.</span></li>
+    <li><span class="time">12 – 25 min</span><span>O campo de Reeb. Por que a não-integrabilidade de \(\xi = \ker\alpha\) transforma órbitas periódicas em hélices.</span></li>
+    <li><span class="time">25 – 40 min</span><span>A EDO dm³: forma normal de Hopf com acoplamento sensitivo ao contato \(\varepsilon(r-1)e^{-z}\).</span></li>
+    <li><span class="time">40 – 55 min</span><span>Simulador ao vivo. Trajetórias de múltiplos \(r(0)\); o que espirala para dentro, o que escapa.</span></li>
+    <li><span class="time">55 – 60 min</span><span>Transição para S2: a bola simétrica de Gronwall \(\varepsilon_0 = 1/3\) que vamos corrigir depois.</span></li>
+  </ol>
+</div>
+
+<main>
+
+<!-- ── §1 ─────────────────────────────────────────── -->
+<div class="section-label">
+  <span class="tag">§1 · Fundação</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">O Que é uma Variedade de Contato em Dimensão 3?</h2>
+
+<p>A dinâmica clássica gosta da geometria <em>simpléctica</em> — espaços de fase de dimensão par, fluxos que preservam área. Mas sistemas vivos, clima, o relógio circadiano: todos acontecem em dimensões ímpares e todos <em>giram</em>. A geometria de contato é a prima de dimensão ímpar da geometria simpléctica. É o cenário natural para fluxos rotativos dissipativos.</p>
+
+<div class="defn">
+  <div class="defn-title">Definição 1.1 · Variedade de Contato em Dimensão 3</div>
+  <p>Uma <em>variedade de contato em dimensão 3</em> é um par \((M, \xi)\) onde \(M\) é uma 3-variedade suave e \(\xi\) é um campo de planos <em>totalmente não-integrável</em>. A não-integrabilidade é capturada por uma 1-forma \(\alpha\) com \(\xi = \ker\alpha\) e</p>
+  \[\alpha \wedge d\alpha \;\ne\; 0 \quad \text{em todo ponto de } M.\]
+  <p style="margin-bottom:0">A forma \(\alpha\) é chamada <em>forma de contato</em>. Não-integrabilidade significa: em nenhum ponto existe uma pequena superfície integral 2-dimensional tangente a \(\xi\). Geometricamente: os planos giram tão violentamente que recusam-se a se montar em superfícies.</p>
+</div>
+
+<h3>O protótipo: \(\mathbb{R}^3\) com \(\alpha = dz - r^2\,d\theta\)</h3>
+
+<p>Use coordenadas cilíndricas \((r, \theta, z)\) em \(\mathbb{R}^3 \setminus \{r = 0\}\). Defina</p>
+
+<div class="math-block">\[\alpha \;=\; dz \;-\; r^2\,d\theta.\]</div>
+
+<p>Calcule \(d\alpha = -2r\,dr\wedge d\theta\), então</p>
+
+<div class="math-block">\[\alpha \wedge d\alpha \;=\; (dz - r^2\,d\theta)\wedge(-2r\,dr\wedge d\theta) \;=\; -2r\,dz\wedge dr\wedge d\theta \;\ne\; 0.\]</div>
+
+<p>Isso prova que \((\mathbb{R}^3, \ker\alpha)\) é uma variedade de contato em dimensão 3. Os planos \(\xi\) giram em torno do eixo \(z\) por um ângulo que cresce com \(r\) — eles "sobregiram" para longe da vertical.</p>
+
+<!-- ── §2 ─────────────────────────────────────────── -->
+<div class="section-label">
+  <span class="tag">§2 · O Fluxo de Reeb Força Hélices</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">O Campo Vetorial de Reeb</h2>
+
+<div class="defn">
+  <div class="defn-title">Definição 2.1 · Campo de Reeb</div>
+  <p>Dada uma forma de contato \(\alpha\) em \(M\), o <em>campo vetorial de Reeb</em> \(R\) é o único campo vetorial satisfazendo</p>
+  \[\alpha(R) = 1, \qquad d\alpha(R, \cdot) = 0.\]
+  <p style="margin-bottom:0">É a "direção do tempo" natural em \((M, \xi)\) — transversal a todo plano de contato, e seu fluxo preserva \(\alpha\).</p>
+</div>
+
+<p>Para o protótipo \(\alpha = dz - r^2\,d\theta\), verifica-se que \(R = \partial_z\). O fluxo de Reeb é portanto translação vertical. A <em>órbita-modelo</em> que nos interessa é aquela que vive no cilindro \(r = 1\) e espirala uniformemente: \(\dot\theta = 1,\, \dot z = 1\). Essa é a <em>hélice</em>.</p>
+
+<div class="claim">
+  <div class="defn-title" style="color:var(--gold)">Afirmação · A Helicidade é Forçada</div>
+  <p>Órbitas periódicas planas não podem se levantar para a dinâmica de contato em \(\mathbb{R}^3\) sem se tornarem helicoidais.</p>
+  <p style="margin-bottom:0">Dada a não-integrabilidade \(\alpha\wedge d\alpha \ne 0\), qualquer trajetória fechada em um plano transversal a \(\xi\) deve ter componente \(dz\) não-nula por revolução. No protótipo: \(\oint dz = \oint r^2\,d\theta = 2\pi r^2 \ne 0\). Uma revolução em \(\theta\) força exatamente \(2\pi r^2\) unidades de subida vertical. Esta é a razão geométrica pela qual o atrator abaixo é uma hélice, não um círculo.</p>
+</div>
+
+<!-- ── §3 ─────────────────────────────────────────── -->
+<div class="section-label">
+  <span class="tag">§3 · O Personagem Principal</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">O Sistema dm³</h2>
+
+<p>Estudamos o sistema autônomo em \(M = \mathbb{R}^3\) (em coordenadas cilíndricas) com acoplamento fixo \(\varepsilon = 2\):</p>
+
+<div class="math-block">
+\[\dot r \;=\; r(1 - r^2) \;+\; \varepsilon(r - 1)\,e^{-z}, \qquad \dot\theta \;=\; 1, \qquad \dot z \;=\; r^2 \;-\; \varepsilon(r - 1)^2\,e^{-z}.\]
+</div>
+<p style="text-align:center;font-size:.85rem;color:var(--muted);margin-top:-.5rem">Equação (1) · a EDO dm³ · preprint §2</p>
+
+<h3>Anatomia da equação radial</h3>
+
+<ul style="padding-left:1.4rem;margin-bottom:1rem">
+  <li style="margin-bottom:.6rem"><strong>\(r(1-r^2)\)</strong> — a <em>forma normal de Hopf</em>. Sozinha, tem um ponto fixo repulsivo em \(r=0\) e um círculo atrator em \(r=1\). Linearizando em \(r=1\) obtemos autovalor \(\lambda = -2\).</li>
+  <li><strong>\(\varepsilon(r-1)e^{-z}\)</strong> — o <em>acoplamento de contato</em>. Duas propriedades: (i) se anula identicamente em \(r=1\), então \(r=1\) permanece invariante; (ii) decai exponencialmente com a altura \(z\), então bem "acima da hélice" é desprezível.</li>
+</ul>
+
+<h3>Anatomia da equação vertical</h3>
+
+<p>No atrator \(r=1\) o termo de acoplamento se anula e \(\dot z = r^2 = 1\): velocidade vertical é exatamente 1. Combinado com \(\dot\theta = 1\), trajetórias em \(r = 1\) são parametrizadas por \((\cos t, \sin t, t)\) — a <em>hélice unitária</em>. Este é nosso \(\Gamma\): a órbita de Reeb de \(\alpha\) restrita a \(r=1\).</p>
+
+<div class="claim">
+  <div class="defn-title" style="color:var(--gold)">Observação · \(\Gamma\) não é uma conveniência teórica</div>
+  <p style="margin-bottom:0">É forçado por três fatos: (i) o termo de Hopf prende \(r=1\); (ii) o acoplamento de contato se anula ali; (iii) a forma de contato exige que \(\dot z\) seja igual a \(r^2\) no conjunto limite. Os três independentemente apontam para o mesmo objeto. O atrator não poderia ser outra coisa.</p>
+</div>
+
+<h3>Por que \(\varepsilon\) importa</h3>
+
+<p>Ponha \(\varepsilon = 0\). O sistema se desacopla. Agora ponha \(\varepsilon = 2\). O termo de acoplamento é <em>assimétrico</em> em \(r\) (linear em \(r-1\)) e cresce <em>exponencialmente</em> quando \(z\) é negativo. Essa combinação assimetria/exponencial é a fonte da surpresa pedagógica que vamos expor em S2: a bacia de atração de \(\Gamma\) <em>não é</em> uma vizinhança simétrica de \(r=1\).</p>
+
+<div class="foreshadow">
+  <strong>Antecipando S2:</strong> Uma estimativa de Gronwall nos dará uma bola simétrica \(|r-1| < 1/3\) de convergência garantida. A numeração mostrará que a fronteira interna real está em \(r \approx 0{,}80\), não em \(r = 2/3\). A estimativa simétrica não é apenas grosseira — ela <em>classifica erroneamente</em> órbitas. Esta é a contribuição pedagógica central do curso.
+</div>
+
+<!-- ── §4 ─────────────────────────────────────────── -->
+<div class="section-label">
+  <span class="tag">§4 · Explore</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">Simulador ao Vivo — Veja a Hélice se Formar</h2>
+
+<div class="sim-wrapper">
+  <div class="sim-header">
+    <div class="sim-dot"></div>
+    <span>▶ Fluxo de Contato dm³ — Vista 3D · Arraste para girar · scroll para zoom</span>
+  </div>
+  <iframe class="sim-frame"
+    src="https://grossi-ops.github.io/helical-contact/sims/helical-attractor.html"
+    title="Simulador 3D do Atrator Helicoidal dm³"
+    loading="lazy">
+  </iframe>
+</div>
+
+<div class="experiments">
+  <h4>Experimentos guiados para o segmento de 15 minutos</h4>
+  <ol>
+    <li><strong>Confirme a hélice.</strong> Defina \(r_0 = 1{,}0\), \(\varepsilon = 0\). Observe a trajetória aderir a \(r=1\) enquanto sobe. Aumente \(\varepsilon\) para \(2\) — a trajetória ainda aterrissa na hélice; o acoplamento não perturba \(\Gamma\) em si.</li>
+    <li><strong>Bacia exterior.</strong> Experimente \(r_0 \in \{1{,}1,\, 1{,}5,\, 2{,}5\}\) com \(\varepsilon = 2\). Todas convergem. Note com que rapidez se aproximam de \(r=1\).</li>
+    <li><strong>Armadilha interior.</strong> Experimente \(r_0 = 0{,}9,\, 0{,}8,\, 0{,}7\). Algo interessante acontece entre 0,9 e 0,7. Você vai <em>sentir</em> a fronteira assimétrica antes de prová-la.</li>
+    <li><strong>Leia \(\mu\).</strong> Note que a taxa \(\hat\mu\) converge para um número perto de \(-2\) enquanto \(r\) se aproxima de \(1\). Esta é a observação-chave para S2.</li>
+  </ol>
+</div>
+
+<!-- ── §5 ─────────────────────────────────────────── -->
+<div class="section-label">
+  <span class="tag">§5 · O Que Vem a Seguir</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">Transição para a Sessão S2</h2>
+
+<p>Você agora viu:</p>
+<ul style="padding-left:1.4rem;margin-bottom:1rem">
+  <li>a forma de contato \(\alpha = dz - r^2\,d\theta\) e por que ela força atratores helicoidais;</li>
+  <li>a EDO dm³ (1) e o papel do acoplamento \(\varepsilon(r-1)e^{-z}\);</li>
+  <li>evidência experimental de que uma grande bacia exterior flui para \(\Gamma\) — mas \(r_0\) pequeno pode não fluir.</li>
+</ul>
+
+<p>Em <strong>S2</strong> provamos a convergência exponencial rigorosamente: a linearização dá autovalor \(-2\), Gronwall dá uma bola simétrica \(|r-1| < 1/3\) de contração garantida, e o integrador DOP853 de alta precisão nos dá a Tabela 1 — que <em>corrige</em> a fronteira interior para \(r_\star \approx 0{,}80\). A correção é o coração pedagógico do curso.</p>
+
+<div class="exercise">
+  <div class="ex-title">Exercício de Quadro · Para levar para S2</div>
+  <p><strong>Verifique que \(\{r > 1\}\) é positivamente invariante.</strong></p>
+  <p style="margin-bottom:0">Mostre que ao longo das soluções de (1), se \(r(0) > 1\) então \(r(t) > 1\) para todo \(t \geq 0\). <em>Dica:</em> calcule \(\dot r\) em \(r = 1\). O sinal do acoplamento de contato em \(r = 1\) é zero; o que \(r(1-r^2)\) contribui em \(r = 1 + \delta\) para \(\delta > 0\) pequeno? Esta invariância é o que permite o argumento de Gronwall rodar sem ambiguidade de sinal.</p>
+</div>
+
+<p style="font-style:italic;color:var(--blue);text-align:center;margin-top:1.5rem">A bacia exterior é fácil. A fronteira interior é difícil. Esse é o curso inteiro em uma frase. Leve isso para S2.</p>
+
+<!-- ── NAV ─────────────────────────────────────────── -->
+<div class="nav-cards">
+  <a class="nav-card" href="index.html">
+    <div class="dir">← Anterior</div>
+    <div class="label">Vol. IV · Início</div>
+  </a>
+  <a class="nav-card next" href="sessao2-teorema-bacia.html">
+    <div class="dir">Próxima Sessão →</div>
+    <div class="label">S2: Teorema 2.1 &amp; a Bacia Assimétrica</div>
+  </a>
+</div>
+
+</main>
+
+<footer>
+  Mini-Curso · XII Bienal de Matemática 2026 · UFRN, Natal-RN<br>
+  Sessão S1 · Geometria de Contato &amp; o Sistema dm³ · Pablo Nogueira Grossi · G6 LLC · 2026<br>
+  <a href="index.html">Vol. IV</a> · <a href="https://doi.org/10.5281/zenodo.19117400" target="_blank">DOI 10.5281/zenodo.19117400</a> · <a href="index.html#bibliography">Série completa →</a> · <a href="https://github.com/TOTOGT/AXLE" target="_blank">AXLE (Lean 4)</a><br>
+  © 2026 Pablo Nogueira Grossi — G6 LLC · MIT License
+</footer>
+
+</body>
+</html>

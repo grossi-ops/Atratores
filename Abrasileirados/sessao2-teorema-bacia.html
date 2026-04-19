@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sessão S2 · Teorema 2.1 & a Bacia Assimétrica · Mini-Curso Vol. IV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+:root {
+  --ink:       #0f1923;
+  --blue:      #1a3a6b;
+  --accent:    #4a90d9;
+  --gold:      #c9a84c;
+  --muted:     #64748b;
+  --surface:   #f4f7fb;
+  --card:      #ffffff;
+  --border:    #d1dce8;
+  --code-bg:   #0f1923;
+  --code-text: #a8d4ff;
+  --red:       #c0392b;
+  --green:     #1a6b3a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; line-height: 1.75; color: var(--ink); background: var(--surface); }
+
+nav { background: var(--blue); padding: 0 2rem; display: flex; align-items: center; height: 48px; position: sticky; top: 0; z-index: 100; }
+nav a { color: #a8c4e8; text-decoration: none; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 400; padding: 0 14px; height: 48px; display: flex; align-items: center; border-right: 1px solid rgba(255,255,255,0.08); transition: color .2s, background .2s; }
+nav a:first-child { border-left: 1px solid rgba(255,255,255,0.08); }
+nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+
+.breadcrumb { background: var(--card); border-bottom: 1px solid var(--border); padding: .6rem 2rem; display: flex; align-items: center; justify-content: space-between; font-family: 'Outfit', sans-serif; font-size: 12.5px; color: var(--muted); }
+.breadcrumb a { color: var(--accent); text-decoration: none; }
+
+.hero { background: linear-gradient(135deg, #0d2347 0%, #1a3a6b 60%, #0d3a2f 100%); color: white; padding: 4rem 2rem 3rem; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='29' fill='none' stroke='rgba(74,144,217,0.08)' stroke-width='1'/%3E%3Cline x1='0' y1='30' x2='60' y2='30' stroke='rgba(74,144,217,0.06)' stroke-width='.5'/%3E%3Cline x1='30' y1='0' x2='30' y2='60' stroke='rgba(74,144,217,0.06)' stroke-width='.5'/%3E%3C/svg%3E") repeat; }
+.hero-badge { position: relative; display: inline-block; background: rgba(74,144,217,0.2); border: 1px solid rgba(74,144,217,0.4); color: #a8d4ff; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; padding: .3rem 1rem; border-radius: 2px; margin-bottom: 1.2rem; }
+.session-number { position: absolute; font-family: 'Outfit', sans-serif; font-size: 7rem; font-weight: 700; line-height: 1; color: rgba(74,144,217,0.15); top: 1rem; right: 2rem; pointer-events: none; }
+.hero h1 { position: relative; font-family: 'Crimson Pro', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300; line-height: 1.2; margin-bottom: .8rem; }
+.hero h1 em { font-style: italic; color: #a8d4ff; }
+.hero-sub { position: relative; color: #8ab4d8; font-size: 1rem; font-family: 'Outfit', sans-serif; font-weight: 300; margin-bottom: 1.5rem; }
+.hero-meta { position: relative; display: flex; justify-content: center; flex-wrap: wrap; gap: .5rem 1.5rem; font-family: 'Outfit', sans-serif; font-size: 12.5px; color: #7aa3c8; }
+
+.progress-bar { background: var(--blue); display: flex; font-family: 'Outfit', sans-serif; font-size: 12px; }
+.progress-step { flex: 1; padding: .7rem 1rem; text-align: center; color: rgba(255,255,255,0.45); border-right: 1px solid rgba(255,255,255,0.1); }
+.progress-step.active { color: white; background: rgba(74,144,217,0.3); font-weight: 500; }
+.progress-step:last-child { border-right: none; }
+.progress-step.done { color: rgba(255,255,255,0.65); }
+
+.agenda { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--accent); margin: 2.5rem auto; max-width: 860px; padding: 1.8rem 2rem; border-radius: 4px; }
+.agenda h2 { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.agenda ol { list-style: none; padding: 0; }
+.agenda li { display: flex; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--border); font-size: .95rem; }
+.agenda li:last-child { border-bottom: none; }
+.agenda .time { font-family: 'JetBrains Mono', monospace; font-size: .78rem; color: var(--accent); white-space: nowrap; padding-top: .1rem; min-width: 90px; }
+
+main { max-width: 860px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+.section-label { display: flex; align-items: center; gap: 1rem; margin: 3rem 0 .5rem; }
+.section-label .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); background: rgba(74,144,217,0.08); border: 1px solid rgba(74,144,217,0.2); padding: .2rem .7rem; border-radius: 2px; }
+.section-label .rule { flex: 1; height: 1px; background: var(--border); }
+
+h2.section-title { font-family: 'Crimson Pro', serif; font-size: 1.75rem; font-weight: 400; color: var(--blue); margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--accent); padding-bottom: .4rem; }
+h3 { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 500; color: var(--blue); margin: 1.5rem 0 .6rem; }
+p { margin-bottom: 1rem; }
+
+.theorem { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--blue); padding: 1.4rem 1.6rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+.theorem .thm-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: .7rem; }
+
+.corollary { background: rgba(26,107,58,0.06); border-left: 3px solid var(--green); padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+.corollary .cor-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--green); margin-bottom: .6rem; }
+
+.defn { background: var(--surface); border-left: 3px solid var(--blue); padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+.defn .defn-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: .6rem; }
+
+.warning { background: rgba(192,57,43,0.06); border: 1px solid rgba(192,57,43,0.2); border-left: 4px solid var(--red); padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+.warning .w-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--red); margin-bottom: .6rem; }
+
+.exercise { background: rgba(192,57,43,0.05); border: 1px solid rgba(192,57,43,0.2); border-top: 2px solid var(--red); padding: 1.4rem 1.6rem; margin: 2rem 0; border-radius: 0 0 4px 4px; }
+.exercise .ex-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--red); margin-bottom: .6rem; }
+
+.math-block { background: var(--card); border: 1px solid var(--border); padding: 1.2rem 1.5rem; margin: 1.2rem 0; border-radius: 4px; overflow-x: auto; font-size: 1.05rem; text-align: center; }
+
+/* TABLE */
+.table-wrapper { overflow-x: auto; margin: 1.5rem 0; }
+table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: .85rem; }
+thead tr { background: var(--blue); color: white; }
+thead th { padding: .7rem 1rem; text-align: left; font-weight: 500; }
+tbody tr:nth-child(even) { background: var(--surface); }
+tbody td { padding: .6rem 1rem; border-bottom: 1px solid var(--border); }
+.converge { color: var(--green); font-weight: 600; }
+.edge { color: var(--gold); font-weight: 600; }
+.collapse { color: var(--red); font-weight: 600; }
+
+.sim-wrapper { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 4px; overflow: hidden; margin: 2rem 0; }
+.sim-header { background: var(--blue); color: white; padding: .8rem 1.2rem; font-family: 'Outfit', sans-serif; font-size: 13px; display: flex; align-items: center; gap: .6rem; }
+.sim-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.sim-frame { width: 100%; height: 480px; border: none; }
+
+.demo-steps { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.2rem 1.5rem; margin: 1rem 0; }
+.demo-steps h4 { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .8rem; }
+.demo-steps ol { padding-left: 1.3rem; font-size: .95rem; }
+.demo-steps li { margin-bottom: .5rem; }
+
+.insight { background: rgba(201,168,76,0.08); border-left: 3px solid var(--gold); padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+
+.nav-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.nav-card { display: block; background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 1.2rem 1.4rem; text-decoration: none; color: inherit; transition: border-color .2s, box-shadow .2s; }
+.nav-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(74,144,217,0.15); }
+.nav-card .dir { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem; }
+.nav-card .label { font-family: 'Outfit', sans-serif; font-size: .9rem; font-weight: 500; color: var(--blue); }
+.nav-card.next { text-align: right; }
+
+footer { background: var(--blue); color: rgba(255,255,255,0.6); text-align: center; padding: 1.4rem; font-family: 'Outfit', sans-serif; font-size: 12px; }
+footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">← Vol. IV</a>
+  <a href="capitulo-e-gtct.html">Capítulo E</a>
+  <a href="https://grossi-ops.github.io/helical-contact/sims/helical-attractor.html" target="_blank">Sim 3D</a>
+  <a href="https://grossi-ops.github.io/helical-contact/submissions/XII_BM_MINICURSO_T1_Pablo_Grossi_preview.pdf" target="_blank">PDF Preview</a>
+  <a href="https://github.com/TOTOGT/AXLE" target="_blank">AXLE</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="sessao1-geometria-contato.html">← S1: Geometria de Contato</a>
+  <span>Mini-Curso · Sessão S2 / 3</span>
+  <a href="sessao3-esqueleto-lean.html">S3: Esqueleto Lean 4 →</a>
+</div>
+
+<div class="hero">
+  <div class="session-number">S2</div>
+  <div class="hero-badge">Mini-Curso · Sessão S2 · 60 min</div>
+  <h1>Teorema 2.1 &amp; a <em>Bacia Assimétrica</em></h1>
+  <p class="hero-sub">A linearização dá autovalor \(-2\). Gronwall dá uma bola simétrica \(|r-1|&lt;1/3\). O DOP853 diz que a borda interna real é \(r_\star \approx 0{,}80\). A lacuna é o curso.</p>
+  <div class="hero-meta">
+    <span>🎯 Objetivo: provar contração exponencial e expor a assimetria</span>
+    <span>📚 Pré-req: S1</span>
+    <span>🖥️ Modo: aula + demo numérica</span>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-step done">S1 · GEOMETRIA DE CONTATO ✓</div>
+  <div class="progress-step active">S2 · TEOREMA 2.1 &amp; BACIA</div>
+  <div class="progress-step">S3 · ESQUELETO LEAN 4</div>
+</div>
+
+<div class="agenda">
+  <h2>Agenda da Sessão · 60 Minutos</h2>
+  <ol>
+    <li><span class="time">0 – 10 min</span><span>Recapitulação S1. Enunciado do Teorema 2.1.</span></li>
+    <li><span class="time">10 – 25 min</span><span>Linearização em \(r=1\). O autovalor \(\mu = -2\).</span></li>
+    <li><span class="time">25 – 40 min</span><span>O esboço de Gronwall. Por que \(\varepsilon_0 = 1/3\) é o que a estimativa permite.</span></li>
+    <li><span class="time">40 – 52 min</span><span>Tabela 1. Numérica DOP853. A borda interna real em \(r_\star \approx 0{,}80\).</span></li>
+    <li><span class="time">52 – 60 min</span><span>Por que a lacuna. Transição para S3: o que o Lean 4 pode e não pode fechar.</span></li>
+  </ol>
+</div>
+
+<main>
+
+<!-- §1 -->
+<div class="section-label">
+  <span class="tag">§1 · O Enunciado</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">Teorema 2.1 — Contração Exponencial a \(\Gamma\)</h2>
+
+<p>Recordamos o sistema dm³ de S1 com acoplamento fixo \(\varepsilon = 2\):</p>
+
+<div class="math-block">
+\[\dot r \;=\; r(1 - r^2) \;+\; \varepsilon(r - 1)\,e^{-z}, \qquad \dot\theta \;=\; 1, \qquad \dot z \;=\; r^2 \;-\; \varepsilon(r - 1)^2\,e^{-z}.\]
+</div>
+
+<div class="theorem">
+  <div class="thm-title">Teorema 2.1 · Atrator Helicoidal (versão simétrica)</div>
+  <p>Existe \(\varepsilon_0 > 0\) tal que toda solução com \(|r(0) - 1| < \varepsilon_0\) satisfaz</p>
+  \[\limsup_{t\to\infty} \frac{1}{t}\,\log|r(t) - 1| \;\leq\; -2,\]
+  <p style="margin-bottom:0">e consequentemente \(r(t) \to 1\), \(z(t)/t \to 1\), \(\theta(t) - t \to \text{const}\); i.e. a trajetória converge para a hélice \(\Gamma = \{r = 1\}\) à taxa exatamente \(e^{-2t}\). O argumento elementar de Gronwall fornece \(\varepsilon_0 = 1/3\).</p>
+</div>
+
+<p>Leia o teorema com atenção: a <em>taxa</em> \(\mu = -2\) é precisa — é o autovalor Jacobiano, não uma cota de Lyapunov. A <em>bacia</em> \(\varepsilon_0\) é onde o problema vive.</p>
+
+<!-- §2 -->
+<div class="section-label">
+  <span class="tag">§2 · De Onde Vem \(-2\)</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">Linearização em \(r = 1\)</h2>
+
+<p>Ponha \(u = r - 1\) e expanda a equação radial. Em \(r = 1\) o acoplamento se anula identicamente, então até primeira ordem o termo \(\varepsilon\) não contribui para a parte linear. O termo de Hopf: \(r(1-r^2) = -2u + O(u^2)\). Portanto:</p>
+
+<div class="math-block">
+\[\dot u \;=\; -2 u \;+\; O(u^2) \;+\; O(\varepsilon\, u\, e^{-z}).\]
+</div>
+
+<p>A contribuição linear-em-\(u\) do acoplamento \(\varepsilon(r-1)e^{-z} = \varepsilon\,u\,e^{-z}\) é explícita: carrega um fator \(e^{-z(t)}\). Como \(\dot z \to 1\) ao longo de qualquer órbita próxima, \(z(t) \to +\infty\) e \(e^{-z(t)} \to 0\). A parte linear de acoplamento é uma <em>perturbação decadente</em> da taxa estrita \(-2\).</p>
+
+<div class="defn">
+  <div class="defn-title">Observação 2.2 · O autovalor é exato</div>
+  <p style="margin-bottom:0">Linearizando o sistema completo em qualquer ponto \((\theta, z)\) do ciclo limite \(\Gamma = \{r=1\}\) obtemos um Jacobiano bloco-triangular cujo <em>autovalor radial</em> é \(\mu = \partial_r\,\dot r \big|_{r=1} = 1 - 3r^2 + \varepsilon\,e^{-z}\big|_{r=1} = -2 + \varepsilon\,e^{-z}\). Quando \(z\to\infty\) a perturbação some e o autovalor tende a \(-2\). É por isso que <em>toda</em> trajetória numérica na Tabela 1 lerá um \(\hat\mu\) perto mas levemente menos negativo que \(-2\).</p>
+</div>
+
+<h3>De onde vem \(-2\) em uma linha?</h3>
+<p>De \(\tfrac{d}{dr}\bigl[r - r^3\bigr]_{r=1} = 1 - 3 = -2\). A forma normal de Hopf sozinha entrega a taxa. O acoplamento de contato não a altera. Todo outro termo no sistema é ordem superior em \(u\) ou suprimido por \(e^{-z}\).</p>
+
+<!-- §3 -->
+<div class="section-label">
+  <span class="tag">§3 · De Onde Vem \(1/3\)</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">O Esboço de Gronwall</h2>
+
+<p>Queremos uma bacia não-linear e explícita — o conjunto de \(r(0)\) iniciais para os quais podemos <em>provar</em> que \(r(t) \to 1\). O caminho mais limpo é um argumento de Gronwall estilo energia em \(u = r - 1\).</p>
+
+<h3>Passo 1. A desigualdade escalar.</h3>
+<p>Multiplique a equação radial por \(u\) e expanda \(r(1-r^2) = -2u - 3u^2 - u^3\). Obtém-se:</p>
+<div class="math-block">
+\[\tfrac{1}{2}\,\dfrac{d}{dt} u^2 \;=\; -2u^2 \;-\; 3u^3 \;-\; u^4 \;+\; \varepsilon\,u^2\,e^{-z}.\]
+</div>
+<p>Os termos perigosos para análise de \(u\) pequeno são \(-3u^3\) (que pode mudar de sinal) e o termo \(\varepsilon\) (positivo e que só decai com \(z\)). Guardamos o resto como \(-2u^2 - u^4 \leq -2u^2\).</p>
+
+<h3>Passo 2. Cote as partes ruins.</h3>
+<p>Assuma \(|u(0)| < \varepsilon_0\) e, como hipótese de indução, \(|u(t)| < \varepsilon_0\) para todo \(t\) considerado. Então \(|3u^3| \leq 3\varepsilon_0 u^2\). Agrupando:</p>
+<div class="math-block">
+\[\tfrac{1}{2}\,\dfrac{d}{dt} u^2 \;\leq\; -2u^2 \;+\; 3\varepsilon_0\, u^2 \;+\; \varepsilon\,e^{-z(0)}\, u^2.\]
+</div>
+
+<h3>Passo 3. Resolva para \(\varepsilon_0\).</h3>
+<p>Para \(\varepsilon = 2\) fixo e \(z(0) \geq 0\), o fator exponencial é no máximo \(1\). Pinçando em \(z(0) \geq \log\varepsilon = \log 2\) reduz a cota a:</p>
+<div class="math-block">
+\[-2 + 3\varepsilon_0 + 1 < 0, \quad\text{i.e.}\quad \varepsilon_0 < 1/3.\]
+</div>
+
+<div class="insight">
+  <p><strong>O número \(1/3\) é um artefato algébrico da estimativa de Gronwall.</strong> É o que a cota de valor absoluto do <em>pior caso</em> permite. Trata \(+u\) e \(-u\) de forma idêntica — uma simetria que a EDO original não respeita.</p>
+</div>
+
+<div class="corollary">
+  <div class="cor-title">Corolário 2.3 · Bacia explícita de Gronwall</div>
+  <p style="margin-bottom:0">Se \(|r(0) - 1| < 1/3\) então \(r(t) \to 1\) exponencialmente. Em particular, qualquer \(r(0) \in (2/3,\, 4/3)\) está na bacia de atração de \(\Gamma\), e \(|r(t) - 1| \leq |r(0)-1|\,e^{\mu t}\) para algum \(\mu \leq -\eta < 0\).</p>
+</div>
+
+<!-- §4 -->
+<div class="section-label">
+  <span class="tag">§4 · O Que a Numeração Realmente Diz</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">Tabela 1 — DOP853 @ rtol \(10^{-10}\), atol \(10^{-12}\)</h2>
+
+<p>Integramos (1) com \(\theta(0) = 0\), \(z(0) = 0\), e variamos \(r(0)\). Para cada execução registramos a taxa de contração empírica \(\hat\mu\), definida como a inclinação de \(\log|r(t) - 1|\) em \(t \in [5, 20]\).</p>
+
+<div class="table-wrapper">
+<table>
+  <thead>
+    <tr>
+      <th>\(r(0) - 1\)</th>
+      <th>\(\hat\mu\) (exterior)</th>
+      <th style="border-left:2px solid rgba(255,255,255,0.2)">\(r(0)\)</th>
+      <th>\(\min_{t\le 30} \dot z\)</th>
+      <th>resultado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>\(+0{,}10\)</td><td>\(-1{,}849\)</td>
+      <td style="border-left:1px solid var(--border)">\(0{,}90\)</td><td>\(+0{,}15\)</td><td class="converge">converge</td>
+    </tr>
+    <tr>
+      <td>\(+0{,}33\)</td><td>\(-1{,}890\)</td>
+      <td style="border-left:1px solid var(--border)">\(0{,}80\)</td><td>\(-0{,}02\)</td><td class="edge">limiar · borda da bacia</td>
+    </tr>
+    <tr>
+      <td>\(+0{,}50\)</td><td>\(-1{,}907\)</td>
+      <td style="border-left:1px solid var(--border)">\(0{,}70\)</td><td>\(-0{,}18\)</td><td class="collapse">colapsa</td>
+    </tr>
+    <tr>
+      <td>\(+1{,}00\)</td><td>\(-1{,}932\)</td>
+      <td style="border-left:1px solid var(--border)">\(0{,}50\)</td><td>\(-0{,}48\)</td><td class="collapse">colapsa</td>
+    </tr>
+    <tr>
+      <td>\(+1{,}50\)</td><td>\(-1{,}959\)</td>
+      <td style="border-left:1px solid var(--border)">\(0{,}30\)</td><td>\(-0{,}93\)</td><td class="collapse">colapsa</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Lendo a tabela.</h3>
+<ul style="padding-left:1.4rem;margin-bottom:1rem">
+  <li style="margin-bottom:.5rem"><strong>Coluna exterior.</strong> Todo \(r(0) > 1\) converge. \(\hat\mu\) é próximo de \(-2\) e se aproxima monotonicamente de baixo à medida que \(r(0) - 1\) cresce. Nenhum valor até \(1{,}5\) se comporta mal.</li>
+  <li><strong>Coluna interior.</strong> \(r(0) = 0{,}90\) converge. \(r(0) = 0{,}80\) está na borda — \(\dot z\) frisa zero mas a órbita sobrevive. Abaixo de \(r(0) = 0{,}80\) a trajetória cai verticalmente (\(\dot z\) negativo), \(e^{-z}\) explode, o acoplamento domina, e \(r\) abandona toda vizinhança de \(1\) em tempo finito.</li>
+</ul>
+
+<div class="warning">
+  <div class="w-title">⚠ A Assimetria Não é Pequena</div>
+  <p>Gronwall disse \(r(0) \in (2/3,\, 4/3) = (0{,}667,\, 1{,}333)\). A realidade diz \(r(0) \in (0{,}80,\, +\infty)\). A fronteira <em>exterior</em> de Gronwall é vácua — não há fronteira exterior nessa janela. A fronteira <em>interior</em> está em \(r_\star \approx 0{,}80\), mais <em>restritiva</em> que o palpite de Gronwall de \(2/3 \approx 0{,}667\). Gronwall teria declarado \(r(0) = 0{,}70\) seguro; DOP853 diz que colapsa.</p>
+</div>
+
+<h3>O que dá errado geometricamente</h3>
+<p>Em \(r(0) < 1\), o termo de Hopf \(r(1-r^2)\) empurra \(r\) para cima, bom. Mas o acoplamento de contato \(\varepsilon(r-1)e^{-z}\) tem sinal <em>oposto</em> — e pior, quando \(r < 1\) a equação vertical adquire uma contribuição <em>negativa</em> \(-\varepsilon(r-1)^2 e^{-z}\). Se \(r\) começa muito pequeno, \(\dot z\) pode ser dominado; \(z\) cai; \(e^{-z}\) explode; o acoplamento fica descontrolado. O termo de Hopf, limitado próximo de \(r=1\), não consegue nos salvar.</p>
+
+<!-- §5 -->
+<div class="section-label">
+  <span class="tag">§5 · Veja no Simulador</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">Demo Numérica ao Vivo</h2>
+
+<div class="sim-wrapper">
+  <div class="sim-header">
+    <div class="sim-dot"></div>
+    <span>▶ Fluxo de Contato dm³ — Observe a borda interna · Defina \(\varepsilon = 2\) e varie \(r_0\) de 0,85 até 0,75</span>
+  </div>
+  <iframe class="sim-frame"
+    src="https://grossi-ops.github.io/helical-contact/sims/helical-attractor.html"
+    title="Simulador 3D do Atrator Helicoidal dm³"
+    loading="lazy">
+  </iframe>
+</div>
+
+<div class="demo-steps">
+  <h4>Demo guiada (8 min)</h4>
+  <ol>
+    <li>\(r_0 = 0{,}90\), \(\varepsilon = 2\). Espiral limpa subindo para \(r = 1\). Observe cor ficar azul.</li>
+    <li>\(r_0 = 0{,}80\). Trajetória achata; há um momento visível onde a órbita paira. Cor muda para dourado e recupera.</li>
+    <li>\(r_0 = 0{,}70\). Trajetória cai abaixo do anel \(r = 0{,}80\) (dourado) e fica vermelha. A leitura de \(z\) começa a diminuir.</li>
+    <li>\(r_0 = 1{,}50\) para contraste. Converge rápido. A bacia exterior não tem problemas.</li>
+  </ol>
+</div>
+
+<!-- §6 -->
+<div class="section-label">
+  <span class="tag">§6 · O Que Vem a Seguir</span>
+  <div class="rule"></div>
+</div>
+<h2 class="section-title">Transição para a Sessão S3</h2>
+
+<p>Temos agora dois números em tensão:</p>
+<ul style="padding-left:1.4rem;margin-bottom:1rem">
+  <li><strong>\(\varepsilon_0 = 1/3\)</strong> — o que a desigualdade de Gronwall do livro-texto permite;</li>
+  <li><strong>\(r_\star \approx 0{,}80\)</strong> — o que o fluxo real faz.</li>
+</ul>
+
+<p>Em <strong>S3</strong> traduzimos a prova do Teorema 2.1 — a versão simétrica — para Lean 4 / Mathlib 4. O esqueleto formal está no AXLE (<code>Chain.lean</code>, <code>SpiralReturn</code>). A obrigação aberta é a estimativa de Lipschitz do acoplamento, rastreada como AXLE Issue #12.</p>
+
+<div class="exercise">
+  <div class="ex-title">Exercício de Quadro · Para levar para S3</div>
+  <p><strong>Mostre que Gronwall não pode dar \(\varepsilon_0 > 1/3\) para esta forma da estimativa.</strong></p>
+  <p style="margin-bottom:0">Fixe \(\varepsilon = 2\), \(z(0) \geq \log 2\). Argumente que a desigualdade \(-2 + 3\varepsilon_0 + 1 < 0\) é apertada — os coeficientes \(2, 3, 1\) são exatamente o que \(r(1-r^2)\) e o acoplamento produzem; não há folga para recuperar. Conclua: <em>qualquer melhora deve mudar a estimativa, não ajustar suas constantes.</em> É precisamente por isso que a fronteira interna precisa \(r_\star\) requer uma técnica de prova diferente — uma sensível ao sinal, não apenas à magnitude.</p>
+</div>
+
+<p style="font-style:italic;color:var(--blue);text-align:center;margin-top:1.5rem">A cota de Gronwall não está errada. Ela é <em>grosseira</em>. Uma cota grosseira é uma perda de informação. Localizar essa informação — o que uma estimativa com sinal poderia capturar que uma de valor absoluto não pode — é trabalho em aberto.</p>
+
+<div class="nav-cards">
+  <a class="nav-card" href="sessao1-geometria-contato.html">
+    <div class="dir">← Sessão Anterior</div>
+    <div class="label">S1: Geometria de Contato &amp; o Sistema dm³</div>
+  </a>
+  <a class="nav-card next" href="sessao3-esqueleto-lean.html">
+    <div class="dir">Próxima Sessão →</div>
+    <div class="label">S3: Esqueleto Lean 4 &amp; AXLE Issue #12</div>
+  </a>
+</div>
+
+</main>
+
+<footer>
+  Mini-Curso · XII Bienal de Matemática 2026 · UFRN, Natal-RN<br>
+  Sessão S2 · Teorema 2.1 &amp; a Bacia Assimétrica · Pablo Nogueira Grossi · G6 LLC · 2026<br>
+  <a href="index.html">Vol. IV</a> · <a href="https://doi.org/10.5281/zenodo.19117400" target="_blank">DOI 10.5281/zenodo.19117400</a> · <a href="index.html#bibliography">Série completa →</a> · <a href="https://github.com/TOTOGT/AXLE" target="_blank">AXLE (Lean 4)</a><br>
+  © 2026 Pablo Nogueira Grossi — G6 LLC · MIT License
+</footer>
+
+</body>
+</html>

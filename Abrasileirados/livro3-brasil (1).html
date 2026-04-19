@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mini-Beast · Livro 3 · Principia Orthogona · Para o Brasil</title>
+<meta name="description" content="O Mini-Beast — Livro 3 da série Principia Orthogona. Uma equação. Biologia, plasma, mercados, geometria neural. Para estudantes ESL, professores STEM e pesquisadores do Brasil.">
+<style>
+:root {
+  --navy:  #1a2744;
+  --gold:  #c9a84c;
+  --cream: #faf7f0;
+  --smoke: #f0ece4;
+  --mid:   #3a4f7a;
+  --rule:  #8a7340;
+  --text:  #1c1c1c;
+  --green: #2d5a27;
+  --light: #e8e2d4;
+  --red:   #8b1a1a;
+  --teal:  #1a5c5c;
+  --spiral:#7a3aaa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Georgia','Times New Roman',serif; color: var(--text); background: var(--cream); }
+
+/* ── NAV ─────────────────────────────────────────── */
+nav {
+  background: var(--navy); padding: .75rem 2rem;
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem;
+}
+.nav-logo { color: var(--gold); font-weight: bold; font-size: .9rem; letter-spacing: .1em; text-decoration: none; font-family: sans-serif; }
+.nav-links { display: flex; gap: 1.2rem; list-style: none; flex-wrap: wrap; }
+.nav-links a { color: #ccc; text-decoration: none; font-size: .8rem; font-family: sans-serif; transition: color .2s; }
+.nav-links a:hover, .nav-links a.buy { color: var(--gold); }
+
+/* ── HERO ─────────────────────────────────────────── */
+.hero {
+  background: var(--navy);
+  color: white;
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(201,168,76,.08) 0%, transparent 60%);
+}
+.eyebrow {
+  font-family: sans-serif; font-size: .72rem; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: .8rem; position: relative;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  color: white; line-height: 1.1; margin-bottom: .4rem; position: relative;
+}
+.hero-sub {
+  color: var(--gold); font-style: italic; font-size: 1.15rem;
+  margin-bottom: 1rem; position: relative;
+}
+.gold-rule { width: 60px; height: 2px; background: var(--gold); margin: 1.2rem auto; }
+.hero-desc {
+  max-width: 660px; margin: 0 auto 1.5rem;
+  color: #bbb; font-size: .97rem; line-height: 1.9; position: relative;
+}
+.hero-tags {
+  display: flex; flex-wrap: wrap; gap: .6rem;
+  justify-content: center; margin: 1.4rem 0; position: relative;
+}
+.hero-tag {
+  background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.35);
+  color: var(--gold); font-family: sans-serif; font-size: .75rem;
+  padding: .3rem .8rem; letter-spacing: .06em;
+}
+.isbn-strip { font-family: monospace; font-size: .75rem; color: #777; margin-top: .8rem; position: relative; }
+
+/* ── OP BANNER ───────────────────────────────────── */
+.op-banner {
+  background: var(--gold); color: var(--navy);
+  text-align: center; padding: .85rem 2rem;
+  font-size: 1.3rem; font-weight: bold; letter-spacing: .18em; font-family: sans-serif;
+}
+
+/* ── BUY STRIP ───────────────────────────────────── */
+.buy-strip {
+  background: #0b1220;
+  padding: 2.8rem 2rem;
+  text-align: center;
+}
+.buy-strip h2 {
+  font-family: sans-serif; font-size: .7rem; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem;
+}
+.buy-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto 1.5rem;
+}
+.buy-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(201,168,76,.25);
+  padding: 1.6rem 1.4rem;
+  text-align: left;
+  position: relative;
+  transition: border-color .2s, background .2s;
+}
+.buy-card:hover { border-color: var(--gold); background: rgba(201,168,76,.06); }
+.buy-card.featured { border-color: var(--gold); background: rgba(201,168,76,.08); }
+.buy-card.featured::before {
+  content: 'RECOMENDADO';
+  position: absolute; top: -1px; right: 1.2rem;
+  background: var(--gold); color: var(--navy);
+  font-family: sans-serif; font-size: .6rem; font-weight: bold;
+  letter-spacing: .1em; padding: .2rem .6rem;
+}
+.buy-book { font-family: sans-serif; font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
+.buy-title { color: white; font-size: 1.05rem; margin-bottom: .3rem; line-height: 1.3; }
+.buy-vol { font-family: sans-serif; font-size: .75rem; color: rgba(255,255,255,.5); margin-bottom: .8rem; }
+.buy-price { font-family: sans-serif; font-size: 1.8rem; font-weight: bold; color: var(--gold); margin-bottom: .3rem; }
+.buy-price small { font-size: .75rem; font-weight: normal; color: rgba(201,168,76,.7); }
+.buy-includes { list-style: none; margin-bottom: 1.2rem; }
+.buy-includes li {
+  font-family: sans-serif; font-size: .77rem; color: rgba(255,255,255,.7);
+  padding: .25rem 0; border-bottom: 1px solid rgba(255,255,255,.05);
+  display: flex; align-items: flex-start; gap: .5rem; line-height: 1.4;
+}
+.buy-includes li::before { content: '✓'; color: var(--gold); flex-shrink: 0; font-weight: bold; }
+.btn-buy {
+  display: block; width: 100%;
+  background: var(--gold); color: var(--navy);
+  border: none; padding: .8rem 1.2rem;
+  font-family: sans-serif; font-size: .85rem; font-weight: bold;
+  letter-spacing: .06em; cursor: pointer; text-decoration: none;
+  text-align: center; transition: background .2s;
+}
+.btn-buy:hover { background: #b8943d; }
+.btn-buy-outline {
+  display: block; width: 100%;
+  background: transparent; color: var(--gold);
+  border: 1px solid rgba(201,168,76,.4);
+  padding: .8rem 1.2rem;
+  font-family: sans-serif; font-size: .82rem;
+  letter-spacing: .06em; cursor: pointer; text-decoration: none;
+  text-align: center; transition: border-color .2s, color .2s;
+  margin-top: .6rem;
+}
+.btn-buy-outline:hover { border-color: var(--gold); color: white; }
+.buy-note { font-family: sans-serif; font-size: .72rem; color: rgba(255,255,255,.35); margin-top: .8rem; line-height: 1.6; }
+
+/* ── SECTIONS ────────────────────────────────────── */
+section { padding: 3.5rem 2rem; }
+.section-inner { max-width: 960px; margin: 0 auto; }
+.section-label {
+  font-family: sans-serif; font-size: .7rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--rule); margin-bottom: .4rem;
+}
+h2 {
+  font-size: clamp(1.2rem, 2.8vw, 1.75rem);
+  border-bottom: 2px solid var(--gold); padding-bottom: .3rem;
+  display: inline-block; margin-bottom: 1.5rem;
+}
+
+/* ── CHAPTER GRID ────────────────────────────────── */
+.chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px,1fr)); gap: 1.4rem; margin-top: 1rem; }
+.ch-card {
+  background: white; border-top: 3px solid var(--gold);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06); text-decoration: none;
+  color: inherit; display: block; transition: box-shadow .2s, border-top-color .2s;
+}
+.ch-card:hover { box-shadow: 0 6px 20px rgba(201,168,76,.2); border-top-color: var(--mid); }
+.ch-card.bonus { border-top-color: var(--teal); }
+.ch-card.coming { border-top-color: var(--light); opacity: .7; cursor: default; }
+.ch-card.featured-ch { border-top-color: var(--spiral); border-top-width: 4px; }
+.ch-head { padding: 1.2rem 1.2rem .6rem; display: flex; align-items: flex-start; gap: .8rem; }
+.ch-num { font-family: sans-serif; font-size: 1.5rem; font-weight: bold; color: var(--gold); min-width: 2.2rem; line-height: 1; }
+.ch-week { font-family: sans-serif; font-size: .63rem; letter-spacing: .15em; text-transform: uppercase; color: var(--rule); margin-bottom: .2rem; }
+.ch-title { font-size: 1rem; font-weight: bold; color: var(--navy); line-height: 1.3; }
+.ch-sub { font-size: .8rem; color: #666; margin-top: .2rem; font-style: italic; }
+.ch-body { padding: .4rem 1.2rem 1.2rem; }
+.ch-desc { font-size: .85rem; line-height: 1.65; color: #444; }
+.ch-tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .7rem; }
+.tag { font-family: sans-serif; font-size: .63rem; padding: .15rem .45rem; letter-spacing: .05em; }
+.tag-bio   { background: #dbeafe; color: #1e40af; }
+.tag-phys  { background: #fce7f3; color: #9d174d; }
+.tag-fin   { background: #dcfce7; color: #166534; }
+.tag-math  { background: #fef3c7; color: #92400e; }
+.tag-bonus { background: var(--teal); color: white; }
+.tag-spiral{ background: #f5f0fc; color: var(--spiral); border: 1px solid #d4b8f0; }
+.tag-free  { background: var(--green); color: white; }
+.tag-pt    { background: #009c3b; color: white; }
+.ch-cta { font-family: sans-serif; font-size: .72rem; color: var(--mid); font-weight: bold; letter-spacing: .05em; margin-top: .8rem; }
+
+/* ── CHAPTER E SPOTLIGHT ─────────────────────────── */
+.ch-e-spotlight {
+  background: linear-gradient(135deg, #0e0820 0%, #1a2744 50%, #2a1a44 100%);
+  padding: 3.5rem 2rem;
+  position: relative; overflow: hidden;
+}
+.ch-e-spotlight::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(122,58,170,.18) 0%, transparent 65%);
+}
+.ch-e-inner { max-width: 900px; margin: 0 auto; position: relative; }
+.ch-e-badge {
+  display: inline-block;
+  background: rgba(122,58,170,.2); border: 1px solid rgba(192,122,238,.4);
+  color: #c07aee; font-family: sans-serif; font-size: .65rem;
+  letter-spacing: .2em; text-transform: uppercase; padding: .3rem .9rem; margin-bottom: 1rem;
+}
+.ch-e-header { display: flex; align-items: flex-start; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.ch-e-letter {
+  font-family: sans-serif; font-size: 5rem; font-weight: 900;
+  color: rgba(122,58,170,.3); line-height: 1; flex-shrink: 0;
+}
+.ch-e-titles h3 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: white; margin-bottom: .4rem; }
+.ch-e-titles p { color: rgba(255,255,255,.6); font-style: italic; font-size: .95rem; margin-bottom: .8rem; }
+.ch-e-chain {
+  font-family: 'Courier New', monospace; font-size: .95rem;
+  color: rgba(255,255,255,.5); letter-spacing: .1em;
+}
+.ch-e-chain .act { color: #c07aee; font-weight: bold; font-size: 1.1rem; }
+.ch-e-chain .sep { color: var(--gold); }
+.ch-e-content { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media(max-width:640px){ .ch-e-content { grid-template-columns: 1fr; } }
+.ch-e-box {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  padding: 1.2rem 1.4rem;
+}
+.ch-e-box h4 {
+  font-family: sans-serif; font-size: .65rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: .7rem;
+}
+.ch-e-box ul { list-style: none; }
+.ch-e-box li {
+  font-family: sans-serif; font-size: .8rem; color: rgba(255,255,255,.7);
+  padding: .25rem 0; border-bottom: 1px solid rgba(255,255,255,.05);
+  display: flex; gap: .5rem; line-height: 1.4;
+}
+.ch-e-box li::before { content: '→'; color: #c07aee; flex-shrink: 0; }
+.ch-e-quote {
+  border-left: 3px solid var(--spiral);
+  padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+  background: rgba(122,58,170,.1);
+  font-style: italic; color: rgba(255,255,255,.8);
+  font-size: 1rem; line-height: 1.8;
+}
+.ch-e-cta {
+  display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;
+}
+.btn-spiral {
+  background: var(--spiral); color: white;
+  padding: .85rem 2rem; font-family: sans-serif;
+  font-size: .88rem; font-weight: bold; letter-spacing: .06em;
+  text-decoration: none; transition: background .2s;
+  border: none; cursor: pointer;
+}
+.btn-spiral:hover { background: #6a2a9a; }
+
+/* ── ACCESS / HOW-TO ─────────────────────────────── */
+.how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1rem; margin-top: 1.2rem; }
+.how-step {
+  background: white; border-top: 3px solid var(--gold);
+  padding: 1.2rem; display: flex; gap: .9rem; align-items: flex-start;
+}
+.how-num {
+  background: var(--navy); color: var(--gold);
+  font-family: sans-serif; font-size: .8rem; font-weight: bold;
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.how-text h4 { font-family: sans-serif; font-size: .85rem; color: var(--navy); margin-bottom: .3rem; }
+.how-text p { font-size: .82rem; color: #555; line-height: 1.55; }
+.how-text a { color: var(--mid); }
+
+/* ── TESTIMONIAL / SEED ──────────────────────────── */
+.seed-box {
+  background: var(--navy); color: white;
+  padding: 2rem; margin: 1.5rem 0; border-left: 4px solid var(--gold);
+}
+.seed-label { font-family: sans-serif; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .6rem; }
+.seed-text { font-style: italic; line-height: 1.9; font-size: .96rem; }
+.seed-num { color: var(--gold); font-weight: bold; margin-right: .4rem; }
+
+/* ── ALL BOOKS ───────────────────────────────────── */
+.books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 1.2rem; margin-top: 1.2rem; }
+.book-card {
+  background: white; border: 1px solid var(--light);
+  border-top: 4px solid var(--navy);
+  padding: 1.2rem; text-decoration: none; color: inherit;
+  transition: box-shadow .2s, border-top-color .2s;
+}
+.book-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); border-top-color: var(--gold); }
+.book-vol { font-family: sans-serif; font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--rule); margin-bottom: .4rem; }
+.book-title { font-size: .95rem; font-weight: bold; color: var(--navy); line-height: 1.3; margin-bottom: .3rem; }
+.book-isbn { font-family: monospace; font-size: .7rem; color: #888; margin-bottom: .7rem; }
+.book-desc { font-size: .8rem; color: #555; line-height: 1.55; margin-bottom: .8rem; }
+.book-btn {
+  display: block; background: var(--navy); color: var(--gold);
+  text-align: center; padding: .55rem; font-family: sans-serif;
+  font-size: .75rem; font-weight: bold; letter-spacing: .06em;
+  text-decoration: none; transition: background .2s;
+}
+.book-btn:hover { background: var(--mid); }
+.book-btn.free { background: var(--green); color: white; }
+.book-btn.free:hover { background: #1e3f18; }
+
+/* ── PARAMETER TABLE ─────────────────────────────── */
+.param-table { width: 100%; border-collapse: collapse; font-size: .85rem; overflow-x: auto; display: block; }
+.param-table th { background: var(--navy); color: var(--gold); padding: .5rem .7rem; text-align: left; font-family: sans-serif; font-size: .68rem; letter-spacing: .1em; white-space: nowrap; }
+.param-table td { padding: .5rem .7rem; border-bottom: 1px solid var(--light); font-family: monospace; font-size: .82rem; vertical-align: middle; white-space: nowrap; }
+.param-table tr:nth-child(even) td { background: var(--smoke); }
+.param-table .domain { font-family: serif; }
+
+/* ── ZENODO STRIP ────────────────────────────────── */
+.zenodo-strip {
+  background: var(--smoke);
+  border-top: 1px solid var(--light);
+  border-bottom: 1px solid var(--light);
+  padding: 1.8rem 2rem;
+}
+.zenodo-inner { max-width: 900px; margin: 0 auto; }
+.zenodo-inner h3 { font-family: sans-serif; font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rule); margin-bottom: 1rem; }
+.doi-list { display: flex; flex-direction: column; gap: .5rem; }
+.doi-row {
+  display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap;
+  font-size: .82rem; padding: .4rem 0; border-bottom: 1px solid var(--light);
+}
+.doi-row:last-child { border-bottom: none; }
+.doi-date { font-family: sans-serif; font-size: .7rem; color: var(--rule); white-space: nowrap; min-width: 80px; }
+.doi-title { flex: 1; color: var(--navy); }
+.doi-link { font-family: monospace; font-size: .72rem; color: var(--mid); text-decoration: none; white-space: nowrap; }
+.doi-link:hover { color: var(--gold); text-decoration: underline; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  background: var(--navy); color: #666;
+  padding: 2.5rem 2rem; text-align: center;
+  font-family: sans-serif; font-size: .76rem; line-height: 2;
+}
+.footer-logo { color: var(--gold); font-size: 1rem; font-weight: bold; margin-bottom: .5rem; }
+footer a { color: #888; text-decoration: none; }
+footer a:hover { color: var(--gold); }
+.footer-flags { font-size: 1.4rem; margin: .6rem 0; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">THE MINI-BEAST · LIVRO 3</a>
+  <ul class="nav-links">
+    <li><a href="#capitulos">Capítulos</a></li>
+    <li><a href="#capitulo-e">Capítulo E</a></li>
+    <li><a href="#livros">Todos os Livros</a></li>
+    <li><a href="#zenodo">Zenodo / DOI</a></li>
+    <li><a href="#comprar" class="buy">Comprar →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">Principia Orthogona · Livro 3 · G6 LLC · Newark NJ · 2026</div>
+  <h1>The Mini-Beast</h1>
+  <div class="hero-sub">Uma equação. Muitas salas.</div>
+  <div class="gold-rule"></div>
+  <p class="hero-desc">
+    Dois professores. Duas salas de aula. Uma forma.<br>
+    Um matemático desenhando a lemniscata. Um geólogo desenhando a analema.<br>
+    Nenhum sabia que o outro estava desenhando a mesma curva.<br>
+    <em>O estudante sentado nos dois ambientes sabia. Esse estudante construiu a matemática para provar.</em><br><br>
+    Este livro é a prova — aplicada.
+  </p>
+  <div class="hero-tags">
+    <span class="hero-tag">📚 Geometria de Contato</span>
+    <span class="hero-tag">🧬 Biologia</span>
+    <span class="hero-tag">⚡ Plasma</span>
+    <span class="hero-tag">📈 Mercados</span>
+    <span class="hero-tag">🧠 Geometria Neural</span>
+    <span class="hero-tag">🇧🇷 Para o Brasil</span>
+  </div>
+  <p class="isbn-strip">ISBN 979-8-9954416-6-3 (eBook PDF) · Documento vivo — atualizado à medida que o piloto se expande</p>
+</div>
+
+<!-- OPERATOR BANNER -->
+<div class="op-banner">C → K → F → U → T → fonte</div>
+
+<!-- BUY STRIP -->
+<div class="buy-strip" id="comprar">
+  <h2>Adquira o Livro</h2>
+  <div class="buy-cards">
+
+    <!-- Book 3 only -->
+    <div class="buy-card featured">
+      <div class="buy-book">Livro 3</div>
+      <div class="buy-title">The Mini-Beast</div>
+      <div class="buy-vol">Principia Orthogona · Vol. G³ · Biological Instantiations</div>
+      <div class="buy-price">$15 <small>USD · acesso vitalício</small></div>
+      <ul class="buy-includes">
+        <li>Todos os capítulos principais (0–6)</li>
+        <li>Capítulo E — GTCT para Todos</li>
+        <li>Capítulo T — Topologia e o Limiar</li>
+        <li>Capítulo W — Cristal G6 &amp; Schumann</li>
+        <li>Série Grega (π · φ · μ · η…)</li>
+        <li>Acesso a novos capítulos conforme publicados</li>
+        <li>7 níveis TOGT/CEFR por capítulo (A1 → D1)</li>
+        <li>Convite para repositório privado GitHub</li>
+      </ul>
+      <a class="btn-buy" href="https://brodanova6.gumroad.com/l/soundworks" target="_blank">Comprar na Gumroad — $15</a>
+      <a class="btn-buy-outline" href="https://zenodo.org/search?q=grossi+pablo+principia+orthogona&sort=newest" target="_blank">Ver registros Zenodo (Open Access)</a>
+    </div>
+
+    <!-- Trilogy -->
+    <div class="buy-card">
+      <div class="buy-book">Trilogia Completa</div>
+      <div class="buy-title">Principia Orthogona</div>
+      <div class="buy-vol">Volumes G¹ · G² · G³ · G⁴ + conteúdo bônus</div>
+      <div class="buy-price">$45 <small>USD · todos os 4 volumes</small></div>
+      <ul class="buy-includes">
+        <li>Vol. G¹ — The Mathematics of Generative Transitions</li>
+        <li>Vol. G² — TOGT: Applications Across Domains</li>
+        <li>Vol. G³ — The Mini-Beast (este livro)</li>
+        <li>Vol. G⁴ — Helical Attractors (Edição IMPA)</li>
+        <li>Atualizações de todos os volumes conforme publicados</li>
+        <li>Acesso ao AXLE (Lean 4 formal verification)</li>
+      </ul>
+      <a class="btn-buy" href="https://brodanova6.gumroad.com/l/soundworks" target="_blank">Comprar a Trilogia — $45</a>
+      <a class="btn-buy-outline" href="https://totogt.github.io/AXLE/impa-portal.html" target="_blank">Portal IMPA (revisores)</a>
+    </div>
+
+    <!-- Chapter E free preview -->
+    <div class="buy-card">
+      <div class="buy-book">Acesso Gratuito</div>
+      <div class="buy-title">Capítulo E — Prévia</div>
+      <div class="buy-vol">GTCT para Todos · Bilíngue EN/PT</div>
+      <div class="buy-price">Grátis <small>sem pagamento necessário</small></div>
+      <ul class="buy-includes">
+        <li>Prévia completa do Capítulo E</li>
+        <li>Nove axiomas — doze operadores</li>
+        <li>Simulador G-orbit embutido</li>
+        <li>7 níveis CEFR com prompts copiáveis</li>
+        <li>Zenodo: todos os preprints Open Access</li>
+        <li>Repositório AXLE público (GitHub)</li>
+      </ul>
+      <a class="btn-buy" href="ch-e-gtct.html" target="_blank" style="background:var(--teal);">Ler Capítulo E — Grátis</a>
+      <a class="btn-buy-outline" href="https://doi.org/10.5281/zenodo.19117400" target="_blank">DOI 10.5281/zenodo.19117400</a>
+    </div>
+
+  </div>
+  <p class="buy-note">
+    Após o pagamento: envie seu nome de usuário GitHub + confirmação de pagamento para
+    <strong style="color:rgba(255,255,255,.6)">grossi@g6llc.com</strong> — acesso concedido em até 24h.<br>
+    Dúvidas? Escreva para o mesmo endereço.
+  </p>
+</div>
+
+<!-- CHAPTER E SPOTLIGHT -->
+<div class="ch-e-spotlight" id="capitulo-e">
+  <div class="ch-e-inner">
+    <div class="ch-e-badge">Capítulo em Destaque · Incluído no Livro 3</div>
+    <div class="ch-e-header">
+      <div class="ch-e-letter">E</div>
+      <div class="ch-e-titles">
+        <h3>Capítulo E — GTCT para Todos</h3>
+        <p>O Circuito Temporal Generativo — O Volume IMPA IV tornado acessível</p>
+        <div class="ch-e-chain">
+          C <span class="sep">→</span> K <span class="sep">→</span> F <span class="sep">→</span> U <span class="sep">→</span> <span class="act">T</span> <span class="sep">→</span> fonte
+        </div>
+      </div>
+    </div>
+
+    <div class="ch-e-quote">
+      "O tempo não é um recipiente. É um operador generativo. Não contém eventos. Os produz."
+    </div>
+
+    <div class="ch-e-content">
+      <div class="ch-e-box">
+        <h4>O que você encontrará</h4>
+        <ul>
+          <li>Nove axiomas do GTCT em linguagem acessível</li>
+          <li>Doze operadores — o que cada um faz</li>
+          <li>Quatro teoremas principais — um ponto fixo</li>
+          <li>Simulador G-orbit interativo embutido</li>
+          <li>A matemática do tempo, identidade e emergência</li>
+          <li>7 prompts CEFR: do A1 ao D1 (pesquisa)</li>
+          <li>Versão bilíngue EN/PT disponível</li>
+        </ul>
+      </div>
+      <div class="ch-e-box">
+        <h4>Por que este capítulo importa</h4>
+        <ul>
+          <li>Conecta o Volume IMPA IV ao ensino STEM</li>
+          <li>Nível A1: uma criança entende o operador C</li>
+          <li>Nível D1: um pesquisador fecha o Issue #12</li>
+          <li>A bacia assimétrica r★ ≈ 0,80 como problema aberto</li>
+          <li>Ponte entre inglês acadêmico e matemática formal</li>
+          <li>Verificado formalmente via AXLE (Lean 4)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ch-e-cta">
+      <a class="btn-spiral" href="ch-e-gtct.html" target="_blank">▶ Ler Capítulo E Agora</a>
+      <a class="btn-buy-outline" href="#comprar" style="border-color:rgba(192,122,238,.4);color:#c07aee;">Comprar Acesso Completo →</a>
+      <a class="btn-buy-outline" href="https://grossi-ops.github.io/helical-contact/sessions/session3-lean-skeleton.html" target="_blank" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.5);">Versão EN (sessão S3)</a>
+    </div>
+  </div>
+</div>
+
+<!-- CORE CHAPTERS -->
+<section id="capitulos" style="background:var(--cream);">
+<div class="section-inner">
+  <div class="section-label">Conteúdo do Livro 3</div>
+  <h2>Capítulos Principais</h2>
+  <p style="margin-bottom:1.5rem;font-size:.95rem;color:#555;">Uma equação. Seis domínios. Todos os capítulos abaixo incluídos na compra do Livro 3.</p>
+
+  <div class="chapter-grid">
+
+    <a href="access-required_copy.html" class="ch-card">
+      <div class="ch-head">
+        <div class="ch-num">0</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo 0 · Todos os níveis</div>
+          <div class="ch-title">Uma Equação, Muitas Salas</div>
+          <div class="ch-sub">A dualidade lemniscata / analema · O que é o Mini-Beast</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">Introduz a sequência de operadores por meio de exemplos da vida cotidiana. A semente é a mesma. Apenas o solo é diferente.</p>
+        <div class="ch-tags">
+          <span class="tag tag-math">Introdução</span>
+          <span class="tag tag-bio">Todos os níveis</span>
+        </div>
+        <div class="ch-cta">Acessar Capítulo 0 →</div>
+      </div>
+    </a>
+
+    <a href="access-required_copy.html" class="ch-card">
+      <div class="ch-head">
+        <div class="ch-num">1</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo 1 · A1–D1</div>
+          <div class="ch-title">O Framework dm³: Uma Revisão</div>
+          <div class="ch-sub">Operadores C · K · F · U · Forma normal de contato</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">Definições completas dos quatro operadores. A curvatura crítica κ★. O sistema de três equações em coordenadas cilíndricas. Tabela de parâmetros para 4 sistemas biológicos.</p>
+        <div class="ch-tags">
+          <span class="tag tag-math">C → K → F → U</span>
+          <span class="tag tag-bio">κ★ · ε₀=1/3</span>
+        </div>
+        <div class="ch-cta">Acessar Capítulo 1 →</div>
+      </div>
+    </a>
+
+    <a href="access-required_copy.html" class="ch-card">
+      <div class="ch-head">
+        <div class="ch-num">2</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo 2 · B1–C2</div>
+          <div class="ch-title">Instanciações Biológicas: As Quatro Órbitas</div>
+          <div class="ch-sub">Eixo HPA · Oscilações Neurais · Relógio Circadiano · Imune</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">Quatro sistemas biológicos como transições dm³. Parâmetros verificados, condições de falsificabilidade explícitas, e prompts de pesquisa por nível CEFR.</p>
+        <div class="ch-tags">
+          <span class="tag tag-bio">HPA · Circadiano</span>
+          <span class="tag tag-bio">Neural · Imune</span>
+        </div>
+        <div class="ch-cta">Acessar Capítulo 2 →</div>
+      </div>
+    </a>
+
+    <a href="access-required_copy.html" class="ch-card">
+      <div class="ch-head">
+        <div class="ch-num">3</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo 3 · B1–C1</div>
+          <div class="ch-title">Reconexão de Plasma</div>
+          <div class="ch-sub">Ponto-X · Dobra · Nova topologia</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">A transição de reconexão magnética como operador F clássico. A dobra topológica no ponto-X. μ_max, ω, β para plasma tokamak e vento solar.</p>
+        <div class="ch-tags">
+          <span class="tag tag-phys">Plasma</span>
+          <span class="tag tag-phys">Ponto-X</span>
+        </div>
+        <div class="ch-cta">Acessar Capítulo 3 →</div>
+      </div>
+    </a>
+
+    <a href="access-required_copy.html" class="ch-card">
+      <div class="ch-head">
+        <div class="ch-num">4</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo 4 · B2–C1</div>
+          <div class="ch-title">Volatilidade de Mercado</div>
+          <div class="ch-sub">Trajetórias de preço · Mudanças de regime · κ★</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">Mercados financeiros como sistemas dm³. Limiares de curvatura em crises (2008, COVID). A bacia de atração como "zona de segurança" do trader.</p>
+        <div class="ch-tags">
+          <span class="tag tag-fin">Mercados</span>
+          <span class="tag tag-fin">Volatilidade</span>
+        </div>
+        <div class="ch-cta">Acessar Capítulo 4 →</div>
+      </div>
+    </a>
+
+    <a href="access-required_copy.html" class="ch-card">
+      <div class="ch-head">
+        <div class="ch-num">5</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo 5 · C1–C2</div>
+          <div class="ch-title">Geometria do Encaixe Neural</div>
+          <div class="ch-sub">Ponte de coerência · Seis órbitas como um sistema</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">A geometria de alta dimensão das representações neurais como variedade dm³. O Teorema da Ponte de Coerência unifica todas as seis órbitas do livro.</p>
+        <div class="ch-tags">
+          <span class="tag tag-bio">Neural</span>
+          <span class="tag tag-math">Geometria</span>
+        </div>
+        <div class="ch-cta">Acessar Capítulo 5 →</div>
+      </div>
+    </a>
+
+    <a href="access-required_copy.html" class="ch-card">
+      <div class="ch-head">
+        <div class="ch-num">6</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo 6 · C2–D1</div>
+          <div class="ch-title">O Enxame</div>
+          <div class="ch-sub">Inteligência coletiva · Mente coletiva · Contribuições Nobel</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">Sistemas multiagente como realisações do pipeline G=U∘F∘K∘C. Pesquisa de iniciação científica. Contribuições abertas para o Codex do Mini-Beast.</p>
+        <div class="ch-tags">
+          <span class="tag tag-math">Multiagente</span>
+          <span class="tag tag-bio">Iniciação Científica</span>
+        </div>
+        <div class="ch-cta">Acessar Capítulo 6 →</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+</section>
+
+<!-- EXPANSION / BONUS CHAPTERS -->
+<section style="background:var(--smoke);">
+<div class="section-inner">
+  <div class="section-label">Adições Vivas — Incluídas na Compra</div>
+  <h2>Capítulos Bônus</h2>
+
+  <div class="chapter-grid">
+
+    <a href="ch-e-gtct.html" class="ch-card featured-ch">
+      <div class="ch-head">
+        <div class="ch-num" style="color:var(--spiral);">E</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo E · Bônus · Todos os níveis</div>
+          <div class="ch-title">GTCT para Todos</div>
+          <div class="ch-sub">Circuito Temporal Generativo · Volume IMPA IV tornado acessível</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">Nove axiomas. Doze operadores. Quatro teoremas. Um ponto fixo. A matemática do tempo, identidade e emergência — para estudantes ESL e professores STEM. Bilíngue EN/PT.</p>
+        <div class="ch-tags">
+          <span class="tag tag-spiral">Destaque</span>
+          <span class="tag tag-math">Nove Axiomas</span>
+          <span class="tag tag-pt">Bilíngue PT</span>
+          <span class="tag tag-free">Prévia grátis</span>
+        </div>
+        <div class="ch-cta">Ler Capítulo E →</div>
+      </div>
+    </a>
+
+    <a href="access-required_copy.html" class="ch-card bonus">
+      <div class="ch-head">
+        <div class="ch-num" style="color:var(--teal);">T</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo T · Adição Viva · C1</div>
+          <div class="ch-title">Topologia e o Limiar</div>
+          <div class="ch-sub">T★ = 2π · Por que o período é exatamente 2π · Geometria de Reeb</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">A variedade de contato M = ℝ²×ℝ e seu período invariante canônico T★ = 2π. Por que 2π aparece em todo sistema dm³ — não por convenção, mas por necessidade geométrica.</p>
+        <div class="ch-tags">
+          <span class="tag tag-bonus">Adição Viva</span>
+          <span class="tag tag-math">T★ = 2π</span>
+        </div>
+        <div class="ch-cta">Acessar Capítulo T →</div>
+      </div>
+    </a>
+
+    <a href="access-required_copy.html" class="ch-card bonus">
+      <div class="ch-head">
+        <div class="ch-num" style="color:var(--teal);">W</div>
+        <div class="ch-meta">
+          <div class="ch-week">Capítulo W · B2–C1</div>
+          <div class="ch-title">O Cristal de Wigner em Sistemas Vivos</div>
+          <div class="ch-sub">Cristal G6 · Forma arquitetônica dm³ · Ressonância de Schumann</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">Seis aplicações de G geram uma torre hexagonal com razão de aspecto 66 = 33·τ. Acoplamento passivo com Schumann n=4 a 33,516 Hz. O Hexágono Polar de Saturno como sistema dm³ visível.</p>
+        <div class="ch-tags">
+          <span class="tag tag-bonus">Adição Viva</span>
+          <span class="tag tag-phys">Cristal G6</span>
+        </div>
+        <div class="ch-cta">Acessar Capítulo W →</div>
+      </div>
+    </a>
+
+    <a href="access-required_copy.html" class="ch-card bonus">
+      <div class="ch-head">
+        <div class="ch-num" style="color:var(--teal);font-size:1.1rem;">π φ μ…</div>
+        <div class="ch-meta">
+          <div class="ch-week">Série Grega · Adição Viva · C1–D1</div>
+          <div class="ch-title">A Escada de Recorrência</div>
+          <div class="ch-sub">π · φ · μ · η · Δ · Σ · Ω → τ = 2</div>
+        </div>
+      </div>
+      <div class="ch-body">
+        <p class="ch-desc">Sete capítulos sobre sequências de recorrência como órbitas dm³. Fibonacci (subcrítico, φ), Lyapunov (μ_max = −2), Tribonacci → Hexabonacci aproximando-se de τ = 2.</p>
+        <div class="ch-tags">
+          <span class="tag tag-bonus">Adição Viva</span>
+          <span class="tag tag-math">Fibonacci · τ=2</span>
+        </div>
+        <div class="ch-cta">Acessar Série Grega →</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+</section>
+
+<!-- PARAMETER TABLE -->
+<section style="background:var(--cream);">
+<div class="section-inner">
+  <div class="section-label">Referência Matemática</div>
+  <h2>Invariantes Canônicos do Sistema dm³</h2>
+  <p style="font-size:.9rem;color:#555;margin-bottom:1.2rem">Todos os valores abaixo são verificados no preprint e formalizados no repositório AXLE (Lean 4).</p>
+  <table class="param-table">
+    <thead>
+      <tr>
+        <th>Sistema</th>
+        <th>μ_max (s⁻¹)</th>
+        <th>ω (rad/s)</th>
+        <th>β</th>
+        <th>κ★</th>
+        <th>Domínio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>dm³ Canônico</strong></td>
+        <td>−2</td>
+        <td>1</td>
+        <td>2</td>
+        <td>1/3</td>
+        <td class="domain">Protótipo (r=1, ε=2)</td>
+      </tr>
+      <tr>
+        <td>Eixo HPA</td>
+        <td>−0.38</td>
+        <td>0.21</td>
+        <td>1.9</td>
+        <td>0.15–0.22</td>
+        <td class="domain">Biológico</td>
+      </tr>
+      <tr>
+        <td>Oscilações Neurais</td>
+        <td>−0.55</td>
+        <td>0.45</td>
+        <td>2.1</td>
+        <td>0.25–0.35</td>
+        <td class="domain">Biológico</td>
+      </tr>
+      <tr>
+        <td>Relógio Circadiano</td>
+        <td>−0.29</td>
+        <td>7.27×10⁻⁵</td>
+        <td>1.6</td>
+        <td>0.08–0.12</td>
+        <td class="domain">Biológico</td>
+      </tr>
+      <tr>
+        <td>Adaptação Imune</td>
+        <td>−0.44</td>
+        <td>0.18</td>
+        <td>2.0</td>
+        <td>0.11–0.19</td>
+        <td class="domain">Biológico</td>
+      </tr>
+      <tr>
+        <td>Cristal G6 (Torre)</td>
+        <td>−2</td>
+        <td>2π</td>
+        <td>2</td>
+        <td>τ·ε₀ = 2/3</td>
+        <td class="domain">Arquitetônico</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- SEED SENTENCES -->
+<section style="background:var(--navy);padding:3rem 2rem;">
+<div class="section-inner">
+  <div class="section-label" style="color:#5a7a5a;">Frases-Semente do Livro 3</div>
+  <h2 style="color:white;border-bottom-color:var(--gold);">O que você carregará</h2>
+  <div class="seed-box">
+    <div class="seed-label">Semente 1 — A Introdução</div>
+    <div class="seed-text"><span class="seed-num">•</span>"A semente é a mesma. Apenas o solo é diferente." O sistema dm³ não muda. A biologia, o plasma, o mercado — são solos. A equação é o DNA.</div>
+  </div>
+  <div class="seed-box">
+    <div class="seed-label">Semente 2 — Capítulo E (GTCT)</div>
+    <div class="seed-text"><span class="seed-num">•</span>"O tempo não é uma linha. É uma espiral. O quinto operador T fecha a cadeia C→K→F→U→T→fonte. O retorno é enriquecido, não repetido."</div>
+  </div>
+  <div class="seed-box">
+    <div class="seed-label">Semente 3 — O Atrator Helicoidal</div>
+    <div class="seed-text"><span class="seed-num">•</span>"A fronteira interna real da bacia é assimétrica: r★ ≈ 0,80, não r = 2/3 que o Gronwall simétrico prediz. Seu estudo é seu. Ninguém pode tirá-lo de você."</div>
+  </div>
+  <div class="seed-box">
+    <div class="seed-label">Semente 4 — A Glaciação</div>
+    <div class="seed-text"><span class="seed-num">•</span>"A geleira é invisível. A água é real." A geometria de contato é a geleira. Os dados biológicos, de plasma, de mercado — são a água que flui dela.</div>
+  </div>
+</div>
+</section>
+
+<!-- HOW TO ACCESS -->
+<section style="background:var(--smoke);">
+<div class="section-inner">
+  <div class="section-label">Como Acessar</div>
+  <h2>Três Passos para o Livro</h2>
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="how-num">1</div>
+      <div class="how-text">
+        <h4>Compre na Gumroad</h4>
+        <p>Pagamento único — <a href="https://brodanova6.gumroad.com/l/soundworks" target="_blank">brodanova6.gumroad.com</a>. Aceita cartão internacional e PayPal. Recibo imediato.</p>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">2</div>
+      <div class="how-text">
+        <h4>Envie seu GitHub</h4>
+        <p>Encaminhe seu nome de usuário GitHub + confirmação de pagamento para <strong>grossi@g6llc.com</strong>.</p>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">3</div>
+      <div class="how-text">
+        <h4>Acesso em 24h</h4>
+        <p>Você recebe um convite para o repositório privado GitHub. Aceite e todos os capítulos ficam disponíveis imediatamente — e para sempre.</p>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">★</div>
+      <div class="how-text">
+        <h4>Zenodo — Sempre Grátis</h4>
+        <p>Todos os preprints e o Vol. IV (Edição IMPA) estão em <a href="https://doi.org/10.5281/zenodo.19117400" target="_blank">Zenodo Open Access</a>. O Capítulo E tem prévia pública.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ALL BOOKS -->
+<section id="livros">
+<div class="section-inner">
+  <div class="section-label">Série Principia Orthogona</div>
+  <h2>Todos os Volumes</h2>
+  <p style="font-size:.92rem;color:#555;margin-bottom:1.5rem">Cada volume é autônomo. A trilogia é a obra completa.</p>
+
+  <div class="books-grid">
+
+    <div class="book-card">
+      <div class="book-vol">Vol. G¹</div>
+      <div class="book-title">The Mathematics of Generative Transitions</div>
+      <div class="book-isbn">ISBN 979-8-9954416-2-5</div>
+      <div class="book-desc">A sequência de operadores C→K→F→U. O limiar de curvatura κ★. Classificação de singularidades Whitney A1–A3. A fundação matemática de toda a série.</div>
+      <a class="book-btn" href="https://brodanova6.gumroad.com/l/soundworks" target="_blank">Comprar</a>
+    </div>
+
+    <div class="book-card">
+      <div class="book-vol">Vol. G²</div>
+      <div class="book-title">TOGT: Applications Across Domains</div>
+      <div class="book-isbn">ISBN 979-8-9954416-4-9</div>
+      <div class="book-desc">A realização de contato geométrico do Vol. I. Teorema de equivalência de limiar. Quatro bifurcações dm³ como tipos de singularidade Whitney.</div>
+      <a class="book-btn" href="https://brodanova6.gumroad.com/l/soundworks" target="_blank">Comprar</a>
+    </div>
+
+    <div class="book-card" style="border-top-color:var(--gold);">
+      <div class="book-vol">Vol. G³ ← ESTE LIVRO</div>
+      <div class="book-title">The Mini-Beast: Biological Instantiations</div>
+      <div class="book-isbn">ISBN 979-8-9954416-6-3</div>
+      <div class="book-desc">Seis domínios. Biologia, plasma, mercados, geometria neural, cristal G6, série grega. O piloto para ESL, STEM e pesquisa de iniciação científica.</div>
+      <a class="book-btn" href="https://brodanova6.gumroad.com/l/soundworks" target="_blank">Comprar — $15</a>
+    </div>
+
+    <div class="book-card">
+      <div class="book-vol">Vol. G⁴ · Edição IMPA</div>
+      <div class="book-title">Helical Attractors on Contact 3-Manifolds</div>
+      <div class="book-isbn">DOI: 10.5281/zenodo.19117400</div>
+      <div class="book-desc">O sistema dm³ formal. Teorema 2.1 (convergência exponencial). Bacia assimétrica r★≈0,80. Mini-Curso em 3 sessões. AXLE Issue #12 em aberto.</div>
+      <a class="book-btn free" href="https://doi.org/10.5281/zenodo.19117400" target="_blank">Open Access — Grátis</a>
+    </div>
+
+    <div class="book-card">
+      <div class="book-vol">Vol. G⁵</div>
+      <div class="book-title">The Seed — Complete Completeness</div>
+      <div class="book-isbn">ISBN 979-8-9954416-5-6</div>
+      <div class="book-desc">O volume final da série. Completude completa. Em preparação.</div>
+      <a class="book-btn" href="https://brodanova6.gumroad.com/l/soundworks" target="_blank">Pré-venda</a>
+    </div>
+
+    <div class="book-card" style="border-top-color:var(--teal);">
+      <div class="book-vol">Mini-Curso PT · XII Bienal</div>
+      <div class="book-title">Sessões S1–S3 em Português</div>
+      <div class="book-isbn">UFRN · Natal-RN · 2026</div>
+      <div class="book-desc">As três sessões de 60 minutos do Vol. IV traduzidas e adaptadas para o Brasil. Com simulador 3D embutido e código Lean 4 comentado em PT.</div>
+      <a class="book-btn free" href="index.html" target="_blank">Acessar — Grátis</a>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ZENODO DOIs -->
+<div class="zenodo-strip" id="zenodo">
+  <div class="zenodo-inner">
+    <h3>Registros Zenodo · Open Access · Citar pelo DOI</h3>
+    <div class="doi-list">
+      <div class="doi-row">
+        <span class="doi-date">Mar 17, 2026</span>
+        <span class="doi-title"><strong>Principia Orthogona Vol. I</strong> — The Mathematics of Generative Transitions</span>
+        <a class="doi-link" href="https://doi.org/10.5281/zenodo.15018023" target="_blank">10.5281/zenodo.15018023</a>
+      </div>
+      <div class="doi-row">
+        <span class="doi-date">Mar 19–20, 2026</span>
+        <span class="doi-title"><strong>Generative Contact Mechanics + dm³ Toy Model</strong> (Vol. IV bundle canônico)</span>
+        <a class="doi-link" href="https://doi.org/10.5281/zenodo.19117400" target="_blank">10.5281/zenodo.19117400 ★</a>
+      </div>
+      <div class="doi-row">
+        <span class="doi-date">Apr 2, 2026</span>
+        <span class="doi-title"><strong>Principia Orthogona Vol. II</strong> — Contact Realization of Generative Transitions</span>
+        <a class="doi-link" href="https://zenodo.org/search?q=Grossi+Principia+Orthogona+Volume+Two&sort=newest" target="_blank">Zenodo → Abr 2</a>
+      </div>
+      <div class="doi-row">
+        <span class="doi-date">Apr 2, 2026</span>
+        <span class="doi-title"><strong>The dm³ Operator</strong> — Explicit Toy Model and Global Dynamic Analysis</span>
+        <a class="doi-link" href="https://zenodo.org/search?q=Grossi+dm3+Operator+Toy+Model&sort=newest" target="_blank">Zenodo → Abr 2</a>
+      </div>
+      <div class="doi-row">
+        <span class="doi-date">Apr 5, 2026</span>
+        <span class="doi-title"><strong>The Number 33</strong> — Stability Threshold in Electron Gases, Neurons, Sunflowers, and the Collatz Map</span>
+        <a class="doi-link" href="https://zenodo.org/search?q=Grossi+number+33+stability&sort=newest" target="_blank">Zenodo → Abr 5</a>
+      </div>
+      <div class="doi-row">
+        <span class="doi-date">Apr 10, 2026</span>
+        <span class="doi-title"><strong>The dm³ Criticality Principle</strong> — Curvature, Generative Dynamics, Dimension Three Spine</span>
+        <a class="doi-link" href="https://zenodo.org/search?q=Grossi+dm3+Criticality+Principle&sort=newest" target="_blank">Zenodo → Abr 10</a>
+      </div>
+      <div class="doi-row">
+        <span class="doi-date">Apr 10, 2026</span>
+        <span class="doi-title"><strong>Wavenumber 6</strong> — The Orthogenetic Stability Generator of Nested Infinities</span>
+        <a class="doi-link" href="https://zenodo.org/search?q=Grossi+Wavenumber+6+Orthogenetic&sort=newest" target="_blank">Zenodo → Abr 10</a>
+      </div>
+      <div class="doi-row">
+        <span class="doi-date">Apr 12, 2026</span>
+        <span class="doi-title"><strong>GTCT</strong> — Complete Proofs, Derivations, and Applications (v2)</span>
+        <a class="doi-link" href="https://zenodo.org/search?q=Grossi+Generative+Time+Circuit+Theorem&sort=newest" target="_blank">Zenodo → Abr 12</a>
+      </div>
+    </div>
+    <p style="font-size:.72rem;color:var(--rule);margin-top:.8rem">★ DOI canônico citável para o Vol. IV. Os DOIs individuais adicionais serão atualizados conforme publicação.</p>
+  </div>
+</div>
+
+<!-- QUOTE -->
+<div style="background:var(--navy);padding:3.5rem 2rem;text-align:center;">
+  <p style="font-style:italic;color:white;font-size:clamp(1rem,2.5vw,1.45rem);max-width:680px;margin:0 auto 1rem;line-height:1.9;">
+    "A geleira é invisível. A água é real."
+  </p>
+  <p style="font-family:sans-serif;font-size:.78rem;color:var(--rule);">— The Mini-Beast, Introdução · G6 LLC 2026</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;">
+    <a href="https://brodanova6.gumroad.com/l/soundworks" target="_blank"
+       style="background:var(--gold);color:var(--navy);padding:.9rem 2rem;font-family:sans-serif;font-size:.9rem;font-weight:bold;text-decoration:none;display:inline-block;">
+      Comprar o Livro 3 — $15 →
+    </a>
+    <a href="ch-e-gtct.html" target="_blank"
+       style="background:transparent;border:1px solid rgba(201,168,76,.4);color:var(--gold);padding:.9rem 2rem;font-family:sans-serif;font-size:.9rem;text-decoration:none;display:inline-block;">
+      Ler Capítulo E — Grátis
+    </a>
+    <a href="index.html"
+       style="background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);padding:.9rem 2rem;font-family:sans-serif;font-size:.9rem;text-decoration:none;display:inline-block;">
+      Mini-Curso PT (S1–S3)
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">THE MINI-BEAST · PRINCIPIA ORTHOGONA LIVRO 3</div>
+  <div class="footer-flags">🇧🇷 🇺🇸</div>
+  © 2026 Pablo Nogueira Grossi · G6 LLC · Newark, New Jersey<br>
+  ISBN 979-8-9954416-6-3 (eBook PDF) · ORCID: <a href="https://orcid.org/0009-0000-6496-2186" target="_blank">0009-0000-6496-2186</a><br>
+  Zenodo: <a href="https://doi.org/10.5281/zenodo.19117400" target="_blank">doi.org/10.5281/zenodo.19117400</a> ·
+  AXLE: <a href="https://github.com/TOTOGT/AXLE" target="_blank">github.com/TOTOGT/AXLE</a> ·
+  Gumroad: <a href="https://brodanova6.gumroad.com/l/soundworks" target="_blank">brodanova6.gumroad.com</a><br>
+  Site EN: <a href="https://grossi-ops.github.io/helical-contact/" target="_blank">grossi-ops.github.io/helical-contact</a> ·
+  Mini-Curso PT: <a href="index.html">sessões S1–S3</a>
+</footer>
+
+</body>
+</html>
