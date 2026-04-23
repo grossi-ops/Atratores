@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cimática com Máquinas · Figuras de Chladni · XII Bienal SBM · G6 LLC</title>
+<meta name="description" content="Exposição interativa: Figuras de Chladni, ressonância e a matemática do som estacionário. Sete máquinas de som. XII Bienal da SBM 2026, UFRN, Natal-RN.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+:root {
+  --sand:  #f0e8d8;
+  --sand2: #e8dcc8;
+  --dust:  #d8c8a8;
+  --ink:   #1a1410;
+  --sepia: #4a3828;
+  --gold:  #c8901c;
+  --rust:  #8c3a18;
+  --teal:  #1a5a58;
+  --bone:  #faf4e8;
+  --rule:  #c8a870;
+  --mid:   #7a6448;
+  --pale:  #e0d4bc;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bone);
+  color:var(--ink);
+  font-family:'Source Serif 4',Georgia,serif;
+  font-size:17px;
+  line-height:1.82;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* ── NAV ── */
+nav{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;
+  padding:.7rem 1.8rem;
+  background:var(--ink);
+  border-bottom:2px solid var(--gold);
+  position:sticky;top:0;z-index:100;
+  font-family:'Space Mono',monospace;font-size:.7rem;
+}
+nav a{color:var(--dust);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(200,160,70,.2);border-radius:2px;white-space:nowrap;transition:all .2s;}
+nav a:hover{color:var(--gold);border-color:var(--gold);}
+nav .spacer{flex:1;}
+nav .highlight{background:var(--gold);color:var(--ink);font-weight:700;border-color:var(--gold);}
+nav .highlight:hover{background:#e0a030;}
+
+/* ── HERO ── */
+.hero{
+  position:relative;overflow:hidden;
+  background:var(--ink);
+  padding:5rem 2rem 4rem;
+  border-bottom:3px solid var(--gold);
+}
+.hero::after{
+  content:'';position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse at 30% 60%, rgba(200,144,28,.08) 0%, transparent 55%),
+             radial-gradient(ellipse at 70% 20%, rgba(26,90,88,.06) 0%, transparent 45%);
+  pointer-events:none;
+}
+.hero-inner{max-width:960px;margin:0 auto;position:relative;z-index:1;}
+.ex-tag{
+  display:inline-block;
+  font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(200,144,28,.4);
+  padding:.28rem .9rem;border-radius:2px;margin-bottom:1.4rem;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,5.5vw,4.2rem);
+  font-weight:400;color:var(--sand);
+  line-height:1.08;margin-bottom:.6rem;
+}
+.hero h1 em{color:var(--gold);font-style:italic;}
+.hero h1 .latin{color:var(--dust);font-size:.72em;display:block;margin-top:.2rem;}
+.hero-rule{width:80px;height:2px;background:var(--gold);margin:1.2rem 0;}
+.hero-desc{
+  font-size:1.02rem;color:#a09080;
+  max-width:640px;line-height:1.85;margin-bottom:1.5rem;
+}
+.hero-meta{
+  font-family:'Space Mono',monospace;font-size:.72rem;
+  color:var(--mid);line-height:2;
+}
+.hero-meta strong{color:var(--dust);}
+.hero-ctas{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.6rem;}
+.cta-btn{
+  display:inline-block;
+  font-family:'Space Mono',monospace;font-size:.75rem;
+  letter-spacing:.06em;padding:.75rem 1.4rem;
+  text-decoration:none;border-radius:2px;
+  transition:all .18s;
+}
+.cta-primary{background:var(--gold);color:var(--ink);font-weight:700;}
+.cta-primary:hover{background:#e0a030;}
+.cta-outline{border:1px solid rgba(200,144,28,.4);color:var(--gold);}
+.cta-outline:hover{background:rgba(200,144,28,.08);}
+
+/* ── SECTION CHROME ── */
+.section{max-width:960px;margin:0 auto;padding:3.5rem 2rem 0;}
+.s-label{
+  font-family:'Space Mono',monospace;font-size:.62rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--rule);
+  margin-bottom:.4rem;
+}
+h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.5rem,3vw,2.2rem);font-weight:400;
+  color:var(--sepia);border-bottom:1px solid var(--dust);
+  padding-bottom:.4rem;margin-bottom:1.3rem;
+  display:inline-block;
+}
+h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.25rem;font-weight:400;color:var(--sepia);
+  margin:1.6rem 0 .5rem;
+}
+p{margin-bottom:1rem;color:var(--ink);}
+em.hi{color:var(--rust);font-style:normal;font-weight:600;}
+
+/* ── CHLADNI CANVAS ── */
+.chladni-hero{
+  background:var(--ink);
+  border:1px solid rgba(200,144,28,.2);
+  border-radius:6px;overflow:hidden;
+  margin:1.5rem 0 2rem;
+  position:relative;
+}
+.chladni-controls{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;
+  padding:.9rem 1.2rem;
+  background:#0e0e14;border-bottom:1px solid rgba(200,144,28,.15);
+  font-family:'Space Mono',monospace;font-size:.72rem;
+}
+.chladni-controls label{color:var(--dust);min-width:36px;}
+.chladni-controls input[type=range]{accent-color:var(--gold);flex:1;min-width:80px;max-width:160px;}
+.chladni-controls .val{color:var(--gold);min-width:44px;text-align:right;}
+.chladni-controls button{
+  font-family:'Space Mono',monospace;font-size:.68rem;
+  padding:.3rem .7rem;border-radius:2px;
+  border:1px solid rgba(200,144,28,.3);background:transparent;
+  color:var(--dust);cursor:pointer;transition:all .15s;
+}
+.chladni-controls button:hover{background:rgba(200,144,28,.08);border-color:var(--gold);}
+.chladni-controls button.on{background:rgba(200,144,28,.15);color:var(--gold);border-color:var(--gold);}
+canvas#chladni{display:block;width:100%;max-height:400px;background:#060608;}
+.chladni-caption{
+  padding:.6rem 1.2rem;font-family:'Space Mono',monospace;
+  font-size:.65rem;color:var(--mid);
+  display:flex;gap:1.5rem;flex-wrap:wrap;
+  border-top:1px solid rgba(200,144,28,.1);
+}
+.chladni-caption span{color:var(--rule);}
+
+/* ── CORIOLIS BLOCK ── */
+.coriolis-block{
+  background:linear-gradient(135deg,rgba(26,90,88,.08) 0%,rgba(200,144,28,.04) 100%);
+  border:1px solid rgba(26,90,88,.2);border-left:4px solid var(--teal);
+  padding:1.5rem 1.8rem;border-radius:0 6px 6px 0;margin:1.5rem 0;
+}
+.coriolis-block .cb-head{
+  font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--teal);margin-bottom:.6rem;
+}
+.coriolis-block p{color:var(--sepia);font-size:.96rem;}
+.coriolis-block .math{
+  font-family:'Space Mono',monospace;font-size:.82rem;
+  color:var(--teal);background:rgba(26,90,88,.08);
+  padding:.6rem 1rem;border-radius:4px;margin:.8rem 0;
+  display:block;
+}
+
+/* ── MACHINE GRID ── */
+.machine-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1rem;margin:1.2rem 0 2rem;
+}
+.m-card{
+  background:#fff;
+  border:1px solid var(--dust);border-top:3px solid var(--gold);
+  border-radius:4px;padding:1.2rem 1.3rem;
+  text-decoration:none;color:inherit;display:block;
+  transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.m-card:hover{
+  border-top-color:var(--rust);
+  box-shadow:0 4px 18px rgba(200,144,28,.15);
+  transform:translateY(-2px);
+}
+.m-card.featured{border-top-color:var(--teal);}
+.m-card.featured:hover{border-top-color:var(--rust);}
+.m-icon{font-size:26px;display:block;margin-bottom:.5rem;}
+.m-name{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;color:var(--sepia);
+  margin-bottom:.25rem;font-weight:400;
+}
+.m-sub{font-size:.82rem;color:var(--mid);font-style:italic;margin-bottom:.5rem;line-height:1.55;}
+.m-hz{
+  font-family:'Space Mono',monospace;font-size:.66rem;
+  color:var(--rule);line-height:1.7;
+}
+.m-tag{
+  display:inline-block;margin-top:.5rem;
+  font-family:'Space Mono',monospace;font-size:.58rem;
+  padding:.1rem .4rem;border-radius:2px;
+  border:1px solid rgba(200,144,28,.3);color:var(--gold);
+}
+.m-open{border-color:rgba(26,90,88,.3);color:var(--teal);}
+
+/* ── THEOREM / QUOTE BLOCK ── */
+.theorem-block{
+  background:var(--ink);color:var(--sand);
+  padding:1.8rem 2rem;margin:1.8rem 0;border-radius:4px;
+  border-left:4px solid var(--gold);
+  position:relative;
+}
+.theorem-block .th-label{
+  font-family:'Space Mono',monospace;font-size:.62rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;
+}
+.theorem-block p{color:#c8c0b0;font-size:.95rem;line-height:1.85;}
+.theorem-block .th-math{
+  font-family:'Space Mono',monospace;font-size:.85rem;
+  color:var(--gold);margin:.8rem 0;display:block;
+}
+.theorem-block .attribution{
+  font-family:'Space Mono',monospace;font-size:.65rem;
+  color:var(--mid);margin-top:1rem;
+}
+
+/* ── EPIGRAPH ── */
+.epigraph{
+  border-left:2px solid var(--rule);
+  padding:1rem 1.5rem;margin:1.5rem 0;
+  font-style:italic;color:var(--mid);
+  font-size:.95rem;line-height:1.85;
+  background:rgba(200,168,112,.05);
+}
+.epigraph .source{
+  font-style:normal;font-family:'Space Mono',monospace;
+  font-size:.65rem;color:var(--rule);margin-top:.5rem;display:block;
+}
+
+/* ── EXHIBITION PROGRAM ── */
+.program-grid{display:grid;grid-template-columns:1fr;gap:.6rem;margin:1.2rem 0;}
+.prog-row{
+  display:flex;gap:1rem;align-items:flex-start;
+  padding:.8rem 1rem;background:#fff;
+  border:1px solid var(--dust);border-radius:4px;
+}
+.prog-num{
+  font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;
+  color:var(--gold);min-width:28px;flex-shrink:0;padding-top:.1rem;
+}
+.prog-body h4{font-family:'Playfair Display',serif;font-size:1rem;font-weight:400;color:var(--sepia);}
+.prog-body p{font-size:.85rem;color:var(--mid);line-height:1.65;margin:.2rem 0 0;}
+
+/* ── SCIENTIFIC NOTE ── */
+.sci-note{
+  background:rgba(140,58,24,.05);
+  border:1px solid rgba(140,58,24,.15);border-left:4px solid var(--rust);
+  padding:1.2rem 1.5rem;border-radius:0 4px 4px 0;
+  margin:1.5rem 0;
+}
+.sci-note .sn-head{
+  font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--rust);margin-bottom:.5rem;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);color:var(--mid);
+  border-top:2px solid var(--gold);
+  padding:2.5rem 2rem;margin-top:4rem;
+  font-family:'Space Mono',monospace;font-size:.68rem;line-height:2.2;
+  text-align:center;
+}
+footer strong{color:var(--sand);font-family:'Playfair Display',serif;font-weight:400;font-style:italic;font-size:.95rem;}
+footer a{color:var(--rule);text-decoration:none;}
+footer a:hover{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html">← Vol. IV</a>
+  <a href="wellness-soundworks.html">🔊 Máquinas</a>
+  <a href="#chladni">Figuras de Chladni</a>
+  <a href="#coriolis">Equador</a>
+  <a href="#machines">As Sete Máquinas</a>
+  <a href="#program">Programa</a>
+  <a href="PO_10_Pablo_Grossi.pdf">Pôster T10</a>
+  <span class="spacer"></span>
+  <a class="highlight" href="229-ballantine.html">Clínica livre → 229 Ballantine</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="ex-tag">Exposição Interativa · XII Bienal SBM · UFRN, Natal-RN · 2026 · Eixo T10</div>
+    <h1>
+      Cimática com Máquinas
+      <em>Figuras de Chladni, ressonância<br>e a matemática do som estacionário</em>
+      <span class="latin">Cymatics · Standing Waves · Contact Geometry · dm³</span>
+    </h1>
+    <div class="hero-rule"></div>
+    <p class="hero-desc">
+      Uma placa de metal. Um arco de violino. Areia fina. E uma equação que governa tudo — do ralo de pia ao polo de Saturno. Esta exposição é uma porta: para o público geral, ela mostra padrões. Para o pesquisador, ela conecta a cimática à geometria de contato, ao sistema dm³, e a um problema em aberto sobre a bacia interna do atrator helicoidal.
+    </p>
+    <div class="hero-meta">
+      <strong>Proponente:</strong> Pablo Nogueira Grossi &nbsp;·&nbsp;
+      <strong>Afiliação:</strong> Pesquisador independente — G6 LLC, Newark, NJ (EUA)<br>
+      <strong>ORCID:</strong> 0009-0000-6496-2186 &nbsp;·&nbsp;
+      <strong>Eixo:</strong> T10 — Geometria e Topologia &nbsp;·&nbsp;
+      <strong>DOI:</strong> 10.5281/zenodo.19379385
+    </div>
+    <div class="hero-ctas">
+      <a class="cta-btn cta-primary" href="#chladni">▶ Abrir simulador de Chladni</a>
+      <a class="cta-btn cta-outline" href="#machines">Sete máquinas de som →</a>
+      <a class="cta-btn cta-outline" href="Ex_T10_Pablo_Grossi.pdf">Proposta PDF →</a>
+    </div>
+  </div>
+</div>
+
+<!-- CHLADNI SIMULATOR -->
+<div class="section" id="chladni">
+  <div class="s-label">Estação 1 — Simulador interativo</div>
+  <h2>Figuras de Chladni</h2>
+  <p>Em 1787, Ernst Chladni passou um arco de violino pela borda de uma placa metálica coberta de areia fina. A areia migrou para os <em class="hi">nós de vibração</em> — os pontos de repouso entre as ondas estacionárias — revelando padrões geométricos que mudam com a frequência. Cada padrão é uma solução da equação de onda bidimensional sobre a placa.</p>
+
+  <div class="chladni-hero">
+    <div class="chladni-controls">
+      <label>m</label>
+      <input type="range" id="chladniM" min="1" max="8" step="1" value="3">
+      <span class="val" id="chladniMv">3</span>
+      <label style="margin-left:.5rem">n</label>
+      <input type="range" id="chladniN" min="1" max="8" step="1" value="2">
+      <span class="val" id="chladniNv">2</span>
+      <label style="margin-left:.5rem">partículas</label>
+      <input type="range" id="chladniP" min="2000" max="20000" step="500" value="8000">
+      <span class="val" id="chladniPv">8000</span>
+      <button id="btnChladniPlay" class="on">Animar</button>
+      <button id="btnChladniSnap">Snapshot</button>
+      <button id="btnChladniClear">Limpar</button>
+    </div>
+    <canvas id="chladni" width="900" height="380"></canvas>
+    <div class="chladni-caption">
+      <span>Padrão:</span> sin(mπx)·sin(nπy) − sin(nπx)·sin(mπy) = 0
+      <span>Modo atual:</span> <span id="chladniMode">(m,n) = (3,2)</span>
+      <span style="margin-left:auto">Arraste m,n para ver novos padrões</span>
+    </div>
+  </div>
+
+  <p>A equação governante é simples: as partículas se acumulam onde a função de onda tem valor zero. Mas a beleza dos padrões resultantes — cruzes, estrelas, flores — emergiu séculos antes de qualquer teoria completa. Chladni é a demonstração mais direta de que <em class="hi">a matemática do movimento produz geometria visível</em>.</p>
+
+  <div class="theorem-block">
+    <div class="th-label">Equação das figuras de Chladni</div>
+    <p>Para uma placa quadrada com condições de contorno livres, os modos normais de vibração satisfazem:</p>
+    <span class="th-math">u_{m,n}(x,y) = sin(mπx/L)·cos(nπy/L) ± cos(mπx/L)·sin(nπy/L)</span>
+    <p>As linhas nodais — onde u_{m,n} = 0 — são exatamente onde a areia se concentra. O índice (m,n) determina a frequência ressonante e a topologia do padrão. Aumentar m ou n aumenta a frequência e adiciona nós.</p>
+    <div class="attribution">Chladni, E.F.F. — <em>Entdeckungen über die Theorie des Klanges</em>, Leipzig, 1787</div>
+  </div>
+</div>
+
+<!-- CORIOLIS / EQUATOR -->
+<div class="section" id="coriolis">
+  <div class="s-label">Estação 2 — Rotação e geometria de contato</div>
+  <h2>O Ralo, o Equador e a Geometria de Contato</h2>
+
+  <div class="epigraph">
+    "A dinâmica clássica gosta da geometria simpléctica — espaços de fase de dimensão par, fluxos que preservam área. Mas sistemas vivos, clima, o relógio circadiano: todos acontecem em dimensões ímpares e todos <em>giram</em>. A geometria de contato é a prima de dimensão ímpar da geometria simpléctica."
+    <span class="source">— Sessão S1, Minicurso Vol. IV, Principia Orthogona</span>
+  </div>
+
+  <p>Existe uma pergunta que toda criança já fez: <em class="hi">por que a água gira num sentido quando escoa pelo ralo no hemisfério norte e no sentido contrário no sul?</em> A resposta envolve a força de Coriolis — um efeito da rotação da Terra que curva trajetórias em sistemas rotativos. A mesma geometria aparece nos furacões, nas correntes oceânicas, e nos ciclones de Júpiter.</p>
+
+  <div class="coriolis-block">
+    <div class="cb-head">A força de Coriolis — matematicamente</div>
+    <p>Em um referencial rotativo com velocidade angular <strong>Ω</strong>, um objeto em movimento com velocidade <strong>v</strong> experimenta uma força aparente:</p>
+    <span class="math">F_Coriolis = −2m(Ω × v)</span>
+    <p>No hemisfério norte (Ω aponta para cima), água escoando para um centro desvia para a <strong>direita</strong> → rotação anti-horária. No hemisfério sul, desvia para a <strong>esquerda</strong> → rotação horária. No equador, Ω é horizontal — o efeito se anula na vertical e o ralo não tem preferência rotacional.</p>
+    <span class="math">α = dz − r²dθ &nbsp;&nbsp; [forma de contato · Ω codificada na geometria]</span>
+    <p>A forma de contato α = dz − r²dθ do sistema dm³ codifica exatamente essa estrutura: a rotação (θ) e a dissipação (z) são acopladas geometricamente. <em>O ralo é um dm³ físico.</em> A água que espirala para o centro é um atrator helicoidal sobre a variedade de contato da rotação terrestre.</p>
+  </div>
+
+  <div class="sci-note">
+    <div class="sn-head">Nota científica — abertura de pesquisa</div>
+    <p>A matematização rigorosa da relação entre a forma de Coriolis, a geometria de contato de dimensão 3, e o atrator helicoidal do sistema dm³ constitui um <strong>problema em aberto</strong> — uma extensão natural dos resultados do Volume IV da série Principia Orthogona. O problema envolve mostrar que o fluxo de Coriolis em coordenadas cilíndricas é um caso particular da cadeia de operadores C→K→F→U com parâmetros dependentes de latitude. A bacia assimétrica (r★ ≈ 0,80 vs. ε₀ = 1/3) pode ter uma interpretação física direta em termos do <em>limiar de colapso</em> do vórtice de ralo. Proposta de iniciação científica disponível.</p>
+  </div>
+
+  <p>Esta é a ponte: Chladni mostrou que o som produz geometria. Coriolis mostrou que a rotação curva trajetórias. A geometria de contato unifica os dois — como uma linguagem matemática em que tanto as figuras sonoras quanto os vórtices rotativos são soluções de um mesmo problema de ponto fixo.</p>
+</div>
+
+<!-- THE SEVEN MACHINES -->
+<div class="section" id="machines">
+  <div class="s-label">Estação 3 — As máquinas de som</div>
+  <h2>Sete Máquinas · Newark Wellness Soundworks</h2>
+  <p>Cada máquina é um experimento de cimática auditiva — um gerador de padrões de onda sonora que opera em frequências com significado histórico, fisiológico ou matemático. Todas rodam no navegador, sem instalação. Todas são de acesso livre.</p>
+
+  <div class="machine-grid">
+
+    <a class="m-card" href="om-machine.html" target="_blank">
+      <span class="m-icon">ॐ</span>
+      <div class="m-name">Om Machine</div>
+      <div class="m-sub">Drone fractal · campo de sobretons não-repetitivos</div>
+      <div class="m-hz">136 Hz fundamental (ano solar transposto) · até 12 harmônicos · shimmer de razão prima</div>
+      <span class="m-tag m-open">acesso livre</span>
+    </a>
+
+    <a class="m-card" href="pranayama-machine.html" target="_blank">
+      <span class="m-icon">🌬</span>
+      <div class="m-name">Pranayama Machine</div>
+      <div class="m-sub">Regulação da respiração · guia tonal · 4-7-8 · caixa · Nāḍī Śodhana</div>
+      <div class="m-hz">inalação 126 Hz · exalação 84 Hz · retenção 63 Hz · drone 42 Hz</div>
+      <span class="m-tag m-open">acesso livre</span>
+    </a>
+
+    <a class="m-card" href="soham-machine.html" target="_blank">
+      <span class="m-icon">सो हं</span>
+      <div class="m-name">So-Haṃ Machine</div>
+      <div class="m-sub">O mantra da respiração · so = inalação ascendente · haṃ = exalação descendente</div>
+      <div class="m-hz">so 126 Hz crescente · haṃ 108 Hz decrescente · drone de base 84 Hz</div>
+      <span class="m-tag m-open">acesso livre</span>
+    </a>
+
+    <a class="m-card featured" href="g6-drone-machine.html" target="_blank">
+      <span class="m-icon">⬡</span>
+      <div class="m-name">G6 Drone Machine</div>
+      <div class="m-sub">Invariantes canônicos do dm³ como som · cadeia C→K→F→U · estabilidade g³³</div>
+      <div class="m-hz">(T*,μmax,τ) = (2π,−2,2) · ε₀ = 1/3 · Schumann 7,83 Hz sub-mod</div>
+      <span class="m-tag">dm³ · GTCT</span>
+    </a>
+
+    <a class="m-card featured" href="sri-yantra-sakti-machine.html" target="_blank">
+      <span class="m-icon">🔺</span>
+      <div class="m-name">Śrī Yantra Śakti Machine</div>
+      <div class="m-sub">Nove triângulos entrelaçados · entonação justa / pitagórica / igual · pulso do bindu</div>
+      <div class="m-hz">raiz 136 Hz · 9 tons triangulares · LFO de rotação · shimmer Śrīṃ</div>
+      <span class="m-tag">geometria · yantra</span>
+    </a>
+
+    <a class="m-card" href="hal-saflieni-resonance.html" target="_blank">
+      <span class="m-icon">🏛</span>
+      <div class="m-name">Ħal Saflieni Temple Resonance</div>
+      <div class="m-sub">Câmara do Oráculo · varredura 90–120 Hz · pico 110 Hz · Malta 3600 a.C.</div>
+      <div class="m-hz">varredura automática · batida binaural · reverb de pedra · trava 110 Hz</div>
+      <span class="m-tag m-open">acesso livre</span>
+    </a>
+
+    <a class="m-card" href="swarnakarshana-bhairava-machine.html" target="_blank">
+      <span class="m-icon">🌕</span>
+      <div class="m-name">Swarnakarshana Bhairava</div>
+      <div class="m-sub">Bhairava dourador · tríade bīja Hrāṃ Hrīṃ Hrūṃ · camada de abundância</div>
+      <div class="m-hz">Om 136 Hz · Hrāṃ 72 · Hrīṃ 108 · Hrūṃ 216 · LFO gravitacional Klīṃ</div>
+      <span class="m-tag m-open">acesso livre</span>
+    </a>
+
+  </div>
+
+  <a href="wellness-soundworks.html" target="_blank" style="display:inline-flex;align-items:center;gap:.7rem;background:var(--ink);color:var(--gold);text-decoration:none;padding:.9rem 1.5rem;border-radius:2px;font-family:'Space Mono',monospace;font-size:.75rem;margin-bottom:2rem;">
+    <span>🔊</span> Entrar na central de máquinas — todas embutidas numa página →
+  </a>
+
+  <div class="theorem-block">
+    <div class="th-label">Conexão com Chladni</div>
+    <p>As figuras de Chladni são padrões nodais de ondas estacionárias em 2D. As máquinas de som aqui geram ondas estacionárias em 1D (tempo) com estruturas harmônicas específicas. Em ambos os casos, a geometria visível (ou audível) emerge das <em>condições de contorno</em> — o tamanho da placa, a forma do mantra, a invariante ε₀ = 1/3 do sistema dm³. A cimática é o elo entre a física das ondas e a geometria de contato: <em>a areia vai para onde o operador K encontra o operador F.</em></p>
+    <span class="th-math">C → K → F → U → T → source &nbsp;&nbsp; [figura de Chladni como ponto fixo do operador G]</span>
+  </div>
+</div>
+
+<!-- PROGRAM -->
+<div class="section" id="program">
+  <div class="s-label">Programa da exposição · XII Bienal SBM</div>
+  <h2>Cinco estações · público geral</h2>
+  <p>A exposição é modular — cada estação funciona de forma independente e pode ser visitada em qualquer ordem. Tempo sugerido: 20–30 minutos por estação.</p>
+
+  <div class="program-grid">
+    <div class="prog-row">
+      <div class="prog-num">01</div>
+      <div class="prog-body">
+        <h4>Figuras de Chladni — simulador interativo</h4>
+        <p>Tablet ou tela grande com o simulador desta página. Visitantes ajustam m e n e observam os padrões emergirem em tempo real. Comparação com fotografias históricas das placas originais de Chladni.</p>
+      </div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-num">02</div>
+      <div class="prog-body">
+        <h4>Placa de Chladni física — demonstração ao vivo</h4>
+        <p>Placa metálica quadrada (40×40 cm), arco de violino, areia fina ou sal. Demonstração de 5 modos (2,1), (3,1), (3,2), (4,3), (5,4) com frequências medidas por microfone. A matemática das figuras é explicada para o público.</p>
+      </div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-num">03</div>
+      <div class="prog-body">
+        <h4>O ralo e o equador — Coriolis como geometria de contato</h4>
+        <p>Dois ralos (um simulando hemisfério norte, outro sul) mostram a rotação oposta. Painel explicativo conecta o efeito Coriolis à forma de contato α = dz − r²dθ e ao sistema dm³. Problema em aberto apresentado como convite à pesquisa.</p>
+      </div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-num">04</div>
+      <div class="prog-body">
+        <h4>As sete máquinas de som — audição e cimática</h4>
+        <p>Sete estações com fones de ouvido, cada uma rodando uma das máquinas. Cartões explicam a frequência central e a conexão matemática. A G6 Drone Machine exibe os invariantes canônicos do dm³ em tempo real.</p>
+      </div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-num">05</div>
+      <div class="prog-body">
+        <h4>Problema em aberto — iniciação científica</h4>
+        <p>Painel com a pergunta: "A bacia assimétrica r★ ≈ 0,80 do atrator helicoidal tem interpretação física em termos do colapso de vórtice de ralo?" Formulação matemática acessível. Contato do pesquisador para orientação de IC.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="coriolis-block" style="margin-top:1.5rem;">
+    <div class="cb-head">Acessibilidade e materiais</div>
+    <p>Todos os simuladores desta exposição rodam em qualquer navegador moderno, sem instalação, em tablets ou celulares. Os cartões explicativos estão disponíveis em português e inglês. A placa de Chladni física é de baixo custo e pode ser reproduzida por qualquer escola com acesso a um violino ou gerador de sinal.</p>
+    <span class="math">Custo estimado da exposição física: R$ 200–400 (placa + areia + suporte)</span>
+    <p>O código-fonte de todas as máquinas e do simulador de Chladni está em: <strong style="color:var(--teal);">github.com/grossi-ops/Atratores</strong> — MIT License, uso livre para fins educacionais.</p>
+  </div>
+</div>
+
+<!-- SEED -->
+<div class="section" style="padding-bottom:3rem;">
+  <div class="theorem-block">
+    <div class="th-label">A frase-semente</div>
+    <p style="font-size:1.1rem;font-family:'Playfair Display',serif;font-style:italic;color:var(--sand);">"Seu estudo é seu. Ninguém pode tirá-lo de você."</p>
+    <p style="margin-top:.8rem;">A areia nas figuras de Chladni vai para os nós — os pontos de mínima energia, máxima estabilidade. O atrator helicoidal do sistema dm³ é a generalização contínua do mesmo princípio: toda trajetória que começa fora do equilíbrio espirala para o ponto fixo. A aprendizagem é o mesmo processo. A geometria não muda — só o solo.</p>
+    <div class="attribution">
+      Pablo Nogueira Grossi · G6 LLC · Newark, NJ · 2026<br>
+      Principia Orthogona, Vol. III (The Mini-Beast) · ISBN 979-8-9954416-6-3
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Cimática com Máquinas · Figuras de Chladni e a Matemática do Som Estacionário</strong></p>
+  <p>Exposição interativa · XII Bienal da Sociedade Brasileira de Matemática · UFRN, Natal-RN · 2026</p>
+  <p>Pablo Nogueira Grossi · G6 LLC · Newark, New Jersey · ORCID: 0009-0000-6496-2186</p>
+  <p style="margin-top:.5rem;">
+    <a href="index.html">Vol. IV · Atratores Helicoidais</a> &nbsp;·&nbsp;
+    <a href="wellness-soundworks.html">Sete Máquinas de Som</a> &nbsp;·&nbsp;
+    <a href="229-ballantine.html">229 Ballantine · Clínica livre</a> &nbsp;·&nbsp;
+    <a href="https://github.com/grossi-ops/Atratores" target="_blank">GitHub</a> &nbsp;·&nbsp;
+    <a href="https://doi.org/10.5281/zenodo.19379385" target="_blank">DOI Zenodo</a>
+  </p>
+  <p style="margin-top:.4rem;font-size:.6rem;color:#303028;">© 2026 Pablo Nogueira Grossi — G6 LLC · MIT License · Nenhum dado coletado</p>
+</footer>
+
+<!-- CHLADNI SIMULATOR SCRIPT -->
+<script>
+const canvas = document.getElementById('chladni');
+const ctx2d = canvas.getContext('2d');
+let animating = true;
+let particles = [];
+const N_PARTICLES = 8000;
+
+function getM(){ return parseInt(document.getElementById('chladniM').value); }
+function getN(){ return parseInt(document.getElementById('chladniN').value); }
+
+function chladniZ(x, y, m, n) {
+  return Math.sin(m * Math.PI * x) * Math.sin(n * Math.PI * y)
+       - Math.sin(n * Math.PI * x) * Math.sin(m * Math.PI * y);
+}
+
+function initParticles(count) {
+  particles = [];
+  for (let i = 0; i < count; i++) {
+    particles.push({ x: Math.random(), y: Math.random(), vx: 0, vy: 0 });
+  }
+}
+
+function stepParticles(m, n) {
+  const dt = 0.012;
+  const damping = 0.82;
+  const noise = 0.018;
+  for (let p of particles) {
+    const eps = 0.003;
+    const z = chladniZ(p.x, p.y, m, n);
+    const dzdx = (chladniZ(p.x + eps, p.y, m, n) - chladniZ(p.x - eps, p.y, m, n)) / (2 * eps);
+    const dzdy = (chladniZ(p.x, p.y + eps, m, n) - chladniZ(p.x, p.y - eps, m, n)) / (2 * eps);
+    // force toward nodal lines (where z≈0): push perpendicular to gradient
+    const mag = Math.sqrt(dzdx*dzdx + dzdy*dzdy) + 1e-6;
+    p.vx += -z * dzdx / (mag * mag) * 0.8 * dt;
+    p.vy += -z * dzdy / (mag * mag) * 0.8 * dt;
+    p.vx += (Math.random() - 0.5) * noise;
+    p.vy += (Math.random() - 0.5) * noise;
+    p.vx *= damping;
+    p.vy *= damping;
+    p.x += p.vx * dt;
+    p.y += p.vy * dt;
+    // wrap
+    if (p.x < 0) p.x = 0, p.vx *= -0.3;
+    if (p.x > 1) p.x = 1, p.vx *= -0.3;
+    if (p.y < 0) p.y = 0, p.vy *= -0.3;
+    if (p.y > 1) p.y = 1, p.vy *= -0.3;
+  }
+}
+
+function drawParticles() {
+  const W = canvas.width, H = canvas.height;
+  ctx2d.fillStyle = 'rgba(6, 6, 8, 0.18)';
+  ctx2d.fillRect(0, 0, W, H);
+  ctx2d.fillStyle = 'rgba(200, 160, 80, 0.85)';
+  for (let p of particles) {
+    ctx2d.fillRect(p.x * W - 0.8, p.y * H - 0.8, 1.6, 1.6);
+  }
+}
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = Math.round(rect.width);
+  canvas.height = Math.round(Math.min(rect.width * 0.42, 400));
+}
+
+let rafId = null;
+function animate() {
+  if (!animating) return;
+  const m = getM(), n = getN();
+  for (let i = 0; i < 4; i++) stepParticles(m, n);
+  drawParticles();
+  document.getElementById('chladniMode').textContent = `(m,n) = (${m},${n})`;
+  rafId = requestAnimationFrame(animate);
+}
+
+function snapshot() {
+  animating = false;
+  if (rafId) cancelAnimationFrame(rafId);
+  const m = getM(), n = getN();
+  // run many steps then freeze
+  for (let i = 0; i < 300; i++) stepParticles(m, n);
+  const W = canvas.width, H = canvas.height;
+  ctx2d.fillStyle = '#060608';
+  ctx2d.fillRect(0, 0, W, H);
+  ctx2d.fillStyle = 'rgba(220, 190, 120, 0.9)';
+  for (let p of particles) {
+    ctx2d.fillRect(p.x * W - 1, p.y * H - 1, 2, 2);
+  }
+  document.getElementById('btnChladniPlay').classList.remove('on');
+}
+
+// bind controls
+['chladniM','chladniN'].forEach(id => {
+  document.getElementById(id).addEventListener('input', function() {
+    document.getElementById(id+'v').textContent = this.value;
+    initParticles(parseInt(document.getElementById('chladniP').value));
+  });
+});
+document.getElementById('chladniP').addEventListener('input', function() {
+  document.getElementById('chladniPv').textContent = this.value;
+  initParticles(parseInt(this.value));
+});
+document.getElementById('btnChladniPlay').addEventListener('click', function() {
+  if (animating) return;
+  animating = true;
+  this.classList.add('on');
+  animate();
+});
+document.getElementById('btnChladniSnap').addEventListener('click', snapshot);
+document.getElementById('btnChladniClear').addEventListener('click', function() {
+  animating = false;
+  if (rafId) cancelAnimationFrame(rafId);
+  ctx2d.fillStyle = '#060608';
+  ctx2d.fillRect(0, 0, canvas.width, canvas.height);
+  document.getElementById('btnChladniPlay').classList.remove('on');
+  initParticles(parseInt(document.getElementById('chladniP').value));
+});
+
+window.addEventListener('resize', () => { resizeCanvas(); });
+resizeCanvas();
+initParticles(N_PARTICLES);
+animate();
+</script>
+
+</body>
+</html>
