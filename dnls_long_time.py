@@ -14,7 +14,7 @@ Section 7 of the companion paper:
 
 Changes vs. dnls_nbonacci.py
 ----------------------------
-1. Integrator switched from RK45 to DOP853 (8th-order Dormand–Prince).
+1. Integrator switched from RK45 to DOP853 (8th-order Dormand-Prince).
    At T ~ 10^3 the step count is ~10x lower than RK45 for the same
    accuracy, with much less drift.
 2. Logarithmically spaced checkpoints (t_eval) so we capture the spreading
@@ -146,7 +146,7 @@ def evolve_dnls(
     hoppings: np.ndarray,
     t_end: float = 1000.0,
     n_checkpoints: int = 200,
-    norm_tol: float = 1e-3,
+    norm_tol: float = 1e-5,
     rtol: float = 1e-8,
     atol: float = 1e-10,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, bool]:
@@ -166,16 +166,16 @@ def evolve_dnls(
     n_checkpoints : int
         Number of logarithmically-spaced checkpoints in (1, t_end].
     norm_tol : float
-        Warn if |‖ψ‖₂ − 1| > norm_tol at any checkpoint.
+        Warn if |L2-norm - 1| > norm_tol at any checkpoint.
     rtol, atol : float
         DOP853 tolerances.
 
     Returns
     -------
-    t_arr   : ndarray, shape (n_checkpoints+1,)  — times sampled
-    ipr_arr : ndarray, shape (n_checkpoints+1,)  — IPR at each time
-    norm_arr: ndarray, shape (n_checkpoints+1,)  — ‖ψ‖₂ at each time
-    norm_ok : bool  — True iff max |‖ψ‖₂ − 1| ≤ norm_tol
+    t_arr   : ndarray, shape (n_checkpoints+1,)  - times sampled
+    ipr_arr : ndarray, shape (n_checkpoints+1,)  - IPR at each time
+    norm_arr: ndarray, shape (n_checkpoints+1,)  - L2-norm at each time
+    norm_ok : bool  - True iff max |L2-norm - 1| <= norm_tol
     """
     # Normalise initial condition to unit L2 norm
     psi0 = np.asarray(psi0, dtype=float)
@@ -215,14 +215,14 @@ def evolve_dnls(
 
 
 # ---------------------------------------------------------------------------
-# 3. Sweep constants
+# 3. Sweep constants  (defaults match the paper: N=500, lambda includes 0)
 # ---------------------------------------------------------------------------
 
-N_SITES = 89          # chain length (13th Fibonacci number)
-T_END = 1000.0        # final time for pilot run
+N_SITES = 500         # chain length, matching Table 1 of the paper
+T_END = 1000.0        # final time for pilot run (T = 10^3)
 N_CHECKPOINTS = 200   # number of log-spaced checkpoints in (1, T_END]
-NORM_TOL = 1e-3       # flag if |‖ψ‖₂ − 1| > NORM_TOL at any checkpoint
-LAMBDAS = [1.0, 2.0, 4.0, 8.0]   # nonlinearity strengths to sweep
+NORM_TOL = 1e-5       # tight threshold; DOP853 at rtol=1e-8 should clear it easily
+LAMBDAS = [0.0, 1.0, 2.0, 4.0, 8.0, 10.0]   # lambda=0 is the linear-limit sanity check
 RTOL = 1e-8
 ATOL = 1e-10
 OUT_CSV = "ipr_vs_time.csv"
@@ -247,15 +247,15 @@ def run_sweep(
     verbose: bool = True,
 ) -> None:
     """
-    Sweep over chains × lambdas, integrate DNLS to t_end, and write CSV.
+    Sweep over chains x lambdas, integrate DNLS to t_end, and write CSV.
 
     Output CSV columns
     ------------------
-    time    — checkpoint time
-    lambda  — nonlinearity strength
-    chain   — "fibonacci" or "tribonacci"
-    IPR     — inverse participation ratio at that time
-    norm    — ‖ψ‖₂ at that time (should remain ≈ 1.0 if tolerances are met)
+    time    - checkpoint time
+    lambda  - nonlinearity strength
+    chain   - "fibonacci" or "tribonacci"
+    IPR     - inverse participation ratio at that time
+    norm    - L2-norm at that time (should remain ~ 1.0 if tolerances are met)
     """
     if lambdas is None:
         lambdas = LAMBDAS
@@ -270,7 +270,7 @@ def run_sweep(
         psi0, E0 = mid_gap_state(H)
 
         if verbose:
-            print(f"\nchain={chain_name}  N={n}  mid-gap eigenvalue E₀={E0:.6f}")
+            print(f"\nchain={chain_name}  N={n}  mid-gap eigenvalue E0={E0:.6f}")
 
         for lam in lambdas:
             run_idx += 1
@@ -319,7 +319,7 @@ def run_sweep(
         writer.writerows(rows)
 
     if verbose:
-        print(f"\nWrote {len(rows)} rows → {out_csv}")
+        print(f"\nWrote {len(rows)} rows -> {out_csv}")
 
 
 # ---------------------------------------------------------------------------
@@ -356,7 +356,7 @@ def main() -> int:
     ap.add_argument(
         "--lambdas",
         type=float, nargs="+", default=LAMBDAS,
-        help="nonlinearity values to sweep (default: 1.0 2.0 4.0 8.0)",
+        help="nonlinearity values to sweep (default: 0.0 1.0 2.0 4.0 8.0 10.0)",
     )
     ap.add_argument(
         "--out",
