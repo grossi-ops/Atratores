@@ -219,8 +219,8 @@ def evolve_dnls(
 # ---------------------------------------------------------------------------
 
 N_SITES = 500         # chain length, matching Table 1 of the paper
-T_END = 1000.0        # final time for pilot run (T = 10^3)
-N_CHECKPOINTS = 200   # number of log-spaced checkpoints in (1, T_END]
+T_END = 100000.0      # final time (T = 10^5)
+N_CHECKPOINTS = 375   # number of log-spaced checkpoints in (1, T_END]
 NORM_TOL = 1e-5       # tight threshold; DOP853 at rtol=1e-8 should clear it easily
 LAMBDAS = [0.0, 1.0, 2.0, 4.0, 8.0, 10.0]   # lambda=0 is the linear-limit sanity check
 RTOL = 1e-8
