@@ -218,11 +218,11 @@ def evolve_dnls(
 # 3. Sweep constants
 # ---------------------------------------------------------------------------
 
-N_SITES = 89          # chain length (13th Fibonacci number)
+N_SITES = 500         # chain length, matching Table 1 of the paper
 T_END = 1000.0        # final time for pilot run
 N_CHECKPOINTS = 200   # number of log-spaced checkpoints in (1, T_END]
-NORM_TOL = 1e-3       # flag if |‖ψ‖₂ − 1| > NORM_TOL at any checkpoint
-LAMBDAS = [1.0, 2.0, 4.0, 8.0]   # nonlinearity strengths to sweep
+NORM_TOL = 1e-5       # tight threshold; DOP853 at rtol=1e-8 should clear it easily
+LAMBDAS = [0.0, 1.0, 2.0, 4.0, 8.0, 10.0]   # lambda=0 is the linear-limit sanity check
 RTOL = 1e-8
 ATOL = 1e-10
 OUT_CSV = "ipr_vs_time.csv"
@@ -356,7 +356,7 @@ def main() -> int:
     ap.add_argument(
         "--lambdas",
         type=float, nargs="+", default=LAMBDAS,
-        help="nonlinearity values to sweep (default: 1.0 2.0 4.0 8.0)",
+        help="nonlinearity values to sweep (default: 0.0 1.0 2.0 4.0 8.0 10.0)",
     )
     ap.add_argument(
         "--out",
