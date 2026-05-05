@@ -4,7 +4,7 @@ dnls_long_time.py
 =================
 Long-time DNLS evolution on Fibonacci and Tribonacci substitution chains.
 
-Pilot extension of `dnls_nbonacci.py` addressing open question 1 of
+Full-scale extension of `dnls_nbonacci.py` addressing open question 1 of
 Section 7 of the companion paper:
 
   "Differential Nonlinear Robustness of Critical States in Fibonacci and
@@ -15,7 +15,7 @@ Section 7 of the companion paper:
 Changes vs. dnls_nbonacci.py
 ----------------------------
 1. Integrator switched from RK45 to DOP853 (8th-order Dormand-Prince).
-   At T ~ 10^3 the step count is ~10x lower than RK45 for the same
+   At T ~ 10^5 the step count is ~10x lower than RK45 for the same
    accuracy, with much less drift.
 2. Logarithmically spaced checkpoints (t_eval) so we capture the spreading
    dynamics, not just the endpoint. This is what you need to fit the
@@ -26,12 +26,14 @@ Changes vs. dnls_nbonacci.py
 4. Outputs a tidy long-format CSV (`ipr_vs_time.csv`) with
    columns: time, lambda, chain, IPR, norm.
 
-Pilot scope
------------
-T = 1000 (10^3). Validates the integrator and output format before
-committing to the full T = 10^5 run flagged in the paper. Runtime
-estimate on a single core: ~1-3 min per (chain, lambda) pair, so the
-full sweep should finish in 20-60 min.
+Full-scale run
+--------------
+T = 100 000 (10^5) — the target flagged in the paper. 500 log-spaced
+checkpoints in (1, T] give ~10 points per decade, matching the resolution
+used in the pilot. Tightened tolerances (rtol=1e-9, atol=1e-11) keep
+norm drift well below NORM_TOL over the full integration horizon.
+Runtime estimate on a single core: ~2-6 h per (chain, lambda) pair;
+the full 12-pair sweep should finish overnight or in ~1-3 days.
 
 Author
 ------
@@ -144,11 +146,11 @@ def evolve_dnls(
     psi0: np.ndarray,
     lam: float,
     hoppings: np.ndarray,
-    t_end: float = 1000.0,
-    n_checkpoints: int = 200,
+    t_end: float = 100_000.0,
+    n_checkpoints: int = 500,
     norm_tol: float = 1e-5,
-    rtol: float = 1e-8,
-    atol: float = 1e-10,
+    rtol: float = 1e-9,
+    atol: float = 1e-11,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, bool]:
     """
     Evolve DNLS from psi0 to t_end with DOP853.
@@ -218,13 +220,13 @@ def evolve_dnls(
 # 3. Sweep constants  (defaults match the paper: N=500, lambda includes 0)
 # ---------------------------------------------------------------------------
 
-N_SITES = 500         # chain length, matching Table 1 of the paper
-T_END = 1000.0        # final time for pilot run (T = 10^3)
-N_CHECKPOINTS = 200   # number of log-spaced checkpoints in (1, T_END]
-NORM_TOL = 1e-5       # tight threshold; DOP853 at rtol=1e-8 should clear it easily
+N_SITES = 500           # chain length, matching Table 1 of the paper
+T_END = 100_000.0      # final time for full-scale run (T = 10^5)
+N_CHECKPOINTS = 500    # ~10 log-spaced points per decade in (1, T_END]
+NORM_TOL = 1e-5        # tight threshold; DOP853 at rtol=1e-9 should clear it easily
 LAMBDAS = [0.0, 1.0, 2.0, 4.0, 8.0, 10.0]   # lambda=0 is the linear-limit sanity check
-RTOL = 1e-8
-ATOL = 1e-10
+RTOL = 1e-9            # tightened from 1e-8 to reduce long-time drift at T=10^5
+ATOL = 1e-11           # tightened from 1e-10 for the same reason
 OUT_CSV = "ipr_vs_time.csv"
 
 CHAINS: dict[str, Callable[[int], list[int]]] = {
@@ -245,6 +247,8 @@ def run_sweep(
     lambdas: list[float] | None = None,
     out_csv: str = OUT_CSV,
     verbose: bool = True,
+    rtol: float = RTOL,
+    atol: float = ATOL,
 ) -> None:
     """
     Sweep over chains x lambdas, integrate DNLS to t_end, and write CSV.
@@ -290,8 +294,8 @@ def run_sweep(
                 t_end=t_end,
                 n_checkpoints=n_checkpoints,
                 norm_tol=norm_tol,
-                rtol=RTOL,
-                atol=ATOL,
+                rtol=rtol,
+                atol=atol,
             )
 
             elapsed = _time.perf_counter() - t_wall
@@ -364,6 +368,16 @@ def main() -> int:
         help=f"output CSV path (default: {OUT_CSV})",
     )
     ap.add_argument(
+        "--rtol",
+        type=float, default=RTOL,
+        help=f"DOP853 relative tolerance (default: {RTOL})",
+    )
+    ap.add_argument(
+        "--atol",
+        type=float, default=ATOL,
+        help=f"DOP853 absolute tolerance (default: {ATOL})",
+    )
+    ap.add_argument(
         "--quiet",
         action="store_true",
         help="suppress progress output",
@@ -378,6 +392,8 @@ def main() -> int:
         lambdas=args.lambdas,
         out_csv=args.out,
         verbose=not args.quiet,
+        rtol=args.rtol,
+        atol=args.atol,
     )
     return 0
 
