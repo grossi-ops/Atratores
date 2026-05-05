@@ -28,11 +28,12 @@ Changes vs. dnls_nbonacci.py
 
 Pilot scope
 -----------
-T = 100 000 (10^5). Full production run flagged in the paper.
+T = 1 000 000 (10^6). Extended production run.
 Previous milestones: T = 10^3 validated in under 1 s/run; T = 10^4
-completed in ~78 s (12-run sweep, single core). The T = 10^5 horizon
-is a straight 10× extrapolation — estimated wall time ~13 min for the
-full 12-run sweep on a single core.
+completed in ~78 s (12-run sweep, single core); T = 10^5 completed in
+~13 min. The T = 10^6 horizon is a straight 10× extrapolation —
+estimated wall time ~130 min (~2.2 h) for the full 12-run sweep on a
+single core.
 
 Author
 ------
@@ -220,8 +221,8 @@ def evolve_dnls(
 # ---------------------------------------------------------------------------
 
 N_SITES = 500         # chain length, matching Table 1 of the paper
-T_END = 100000.0      # final time for T = 10^5 run
-N_CHECKPOINTS = 375   # number of log-spaced checkpoints in (1, T_END]; ~75/decade over 5 decades
+T_END = 1000000.0     # final time for T = 10^6 run
+N_CHECKPOINTS = 450   # number of log-spaced checkpoints in (1, T_END]; ~75/decade over 6 decades
 NORM_TOL = 1e-5       # tight threshold; DOP853 at rtol=1e-8 should clear it easily
 LAMBDAS = [0.0, 1.0, 2.0, 4.0, 8.0, 10.0]   # lambda=0 is the linear-limit sanity check
 RTOL = 1e-8
