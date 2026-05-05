@@ -48,6 +48,7 @@ import argparse
 import csv
 import sys
 import time as _time
+from typing import Callable
 
 import numpy as np
 from scipy.integrate import solve_ivp
@@ -88,7 +89,7 @@ def build_hamiltonian(
 
 def mid_gap_state(H: np.ndarray) -> tuple[np.ndarray, float]:
     vals, vecs = eigh(H)
-    idx = int(np.argmin(np.abs(vals)))
+    idx = np.argmin(np.abs(vals))
     return vecs[:, idx], float(vals[idx])
 
 
@@ -226,7 +227,7 @@ RTOL = 1e-8
 ATOL = 1e-10
 OUT_CSV = "ipr_vs_time.csv"
 
-CHAINS: dict[str, object] = {
+CHAINS: dict[str, Callable[[int], list[int]]] = {
     "fibonacci": fibonacci_word,
     "tribonacci": tribonacci_word,
 }
