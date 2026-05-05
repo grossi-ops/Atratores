@@ -128,6 +128,54 @@ def load_all(
     return out
 
 
+def load_lambda_sweep(
+    path: str,
+    t_max: float,
+) -> dict[int, dict[tuple[str, float], dict[str, np.ndarray]]]:
+    """
+    Load a combined multi-N sweep CSV produced by ``dnls_lambda1p5_sweep.py``.
+
+    Expected columns: time, lambda, N, chain, IPR, norm.
+    The extra ``N`` column distinguishes this format from the per-N files.
+
+    Returns the same ``{N: {(chain, lambda): arrays}}`` structure used by
+    :func:`load_all`, so the two results can be merged with a simple
+    ``dict.update``.
+    """
+    rows_by_key: dict[
+        tuple[int, str, float], list[tuple[float, float, float]]
+    ] = defaultdict(list)
+
+    with open(path, "r", newline="") as fh:
+        reader = csv.DictReader(fh)
+        if "N" not in (reader.fieldnames or []):
+            raise ValueError(
+                f"{path!r} is missing the 'N' column. "
+                "Expected a multi-N sweep CSV from dnls_lambda1p5_sweep.py."
+            )
+        for r in reader:
+            t = float(r["time"])
+            if t > t_max:
+                continue
+            n = int(r["N"])
+            chain = r["chain"]
+            lam = float(r["lambda"])
+            rows_by_key[(n, chain, lam)].append(
+                (t, float(r["IPR"]), float(r["norm"]))
+            )
+
+    out: dict[int, dict[tuple[str, float], dict[str, np.ndarray]]] = defaultdict(dict)
+    for (n, chain, lam), rows in rows_by_key.items():
+        rows.sort(key=lambda x: x[0])
+        out[n][(chain, lam)] = {
+            "time": np.array([r[0] for r in rows]),
+            "IPR":  np.array([r[1] for r in rows]),
+            "norm": np.array([r[2] for r in rows]),
+        }
+
+    return dict(out)
+
+
 # ---------------------------------------------------------------------------
 # 2. Fitting helpers
 # ---------------------------------------------------------------------------
@@ -466,6 +514,16 @@ def main() -> int:
         help="maximum time to use from each CSV (default: 10000)",
     )
     ap.add_argument(
+        "--lambda-sweep",
+        default="ipr_lambda1p5_T1e4.csv",
+        metavar="PATH",
+        help=(
+            "optional multi-N lambda-sweep CSV to merge into the analysis "
+            "(produced by dnls_lambda1p5_sweep.py; default: ipr_lambda1p5_T1e4.csv). "
+            "Skipped silently if the file does not exist."
+        ),
+    )
+    ap.add_argument(
         "--no-plots", action="store_true",
         help="skip figure generation",
     )
@@ -475,6 +533,22 @@ def main() -> int:
     print("-" * 72)
     print("Loading data ...")
     all_data = load_all(args.n_values, args.t_max)
+
+    # Merge optional lambda-sweep file (e.g. ipr_lambda1p5_T1e4.csv).
+    # The file uses a multi-N format with an extra 'N' column.
+    if os.path.exists(args.lambda_sweep):
+        print(f"  merging lambda-sweep file: {args.lambda_sweep}")
+        sweep_data = load_lambda_sweep(args.lambda_sweep, args.t_max)
+        for n, nd in sweep_data.items():
+            if n not in all_data:
+                all_data[n] = {}
+            all_data[n].update(nd)
+        print(
+            f"  merged N={sorted(sweep_data.keys())} "
+            f"lambda={sorted({lam for ndd in sweep_data.values() for _, lam in ndd})}"
+        )
+    else:
+        print(f"  [skip] lambda-sweep file not found: {args.lambda_sweep}")
 
     if not all_data:
         print("ERROR: no data loaded.", file=sys.stderr)
