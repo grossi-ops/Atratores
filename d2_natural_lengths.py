@@ -213,6 +213,8 @@ def fit_d2(rows: list[dict], chain: str) -> dict:
     # OLS
     xm, ym = x.mean(), y.mean()
     ss_xx = float(np.dot(x - xm, x - xm))
+    if ss_xx < 1e-12:
+        raise ValueError(f"All log10(N) values are identical for chain '{chain}'")
     ss_xy = float(np.dot(x - xm, y - ym))
     slope = ss_xy / ss_xx
     intercept = ym - slope * xm
@@ -404,7 +406,7 @@ def main() -> int:
     EPS = 1e-4
     trib_nat = sorted([r for r in nat_rows if r["chain"] == "tribonacci"], key=lambda r: r["N"])
     iprs = [r["IPR"] for r in trib_nat]
-    monotone = all(iprs[i] - iprs[i + 1] >= -EPS for i in range(len(iprs) - 1))
+    monotone = len(iprs) > 1 and all(iprs[i] - iprs[i + 1] >= -EPS for i in range(len(iprs) - 1))
     print(f"  Tribonacci natural-length IPR monotone non-increasing (ε=1e-4): {monotone}")
     print(f"  IPR values: {[f'{v:.6f}' for v in iprs]}")
     print()
@@ -434,7 +436,7 @@ def main() -> int:
         f"state and $D_2 = 0$ for a perfectly localised one; quasiperiodic critical "
         f"states occupy the intermediate range $0 < D_2 < 1$.\n\n"
         f"Earlier estimates from truncated chains of arbitrary length "
-        f"(\\(N \\in \\{{200, 500, 1000, 2000\\}}\\)) gave "
+        f"($N \\in \\{{200, 500, 1000, 2000\\}}$) gave "
         f"$D_{{2,\\mathrm{{fib}}}} \\approx {d2_fib_arb:.3f}$ and "
         f"$D_{{2,\\mathrm{{trib}}}} \\approx {d2_trib_arb:.3f}$.  "
         f"The tribonacci estimate was anomalous: the underlying IPR$(N)$ data were "
