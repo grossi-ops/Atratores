@@ -292,6 +292,54 @@ def fit_alpha(t: np.ndarray, ipr: np.ndarray, late_frac: float = 0.3
     return float(-slope), float(intercept), int(sel.sum())
 
 
+def fit_alpha_full(
+    t: np.ndarray,
+    ipr: np.ndarray,
+    t_min_fit: float = 1e4,
+) -> tuple[float, float, float, float, int, float]:
+    """
+    Fit IPR(t) ~ A * t^(-alpha) for t >= t_min_fit using OLS with stderr and R².
+
+    Returns
+    -------
+    alpha       : spreading exponent (positive means spreading)
+    alpha_stderr: standard error of alpha from OLS
+    log_A       : intercept in log space
+    R2          : coefficient of determination in log space
+    n_pts       : number of points used
+    t_min_used  : actual minimum time used (first checkpoint >= t_min_fit)
+    """
+    mask = (t >= t_min_fit) & (ipr > 0)
+    n = int(mask.sum())
+    if n < 4:
+        return float("nan"), float("nan"), float("nan"), float("nan"), n, float("nan")
+
+    log_t = np.log(t[mask])
+    log_ipr = np.log(ipr[mask])
+    t_min_used = float(t[mask][0])
+
+    # OLS: log_ipr = intercept + slope * log_t
+    A_mat = np.column_stack([np.ones(n), log_t])
+    coeffs, residuals, rank, _ = np.linalg.lstsq(A_mat, log_ipr, rcond=None)
+    intercept, slope = float(coeffs[0]), float(coeffs[1])
+
+    # residuals sum-of-squares
+    log_ipr_pred = intercept + slope * log_t
+    ss_res = float(np.sum((log_ipr - log_ipr_pred) ** 2))
+    ss_tot = float(np.sum((log_ipr - log_ipr.mean()) ** 2))
+    R2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else float("nan")
+
+    # standard error of slope
+    if n > 2:
+        s2 = ss_res / (n - 2)
+        ss_xx = float(np.sum((log_t - log_t.mean()) ** 2))
+        slope_se = float(np.sqrt(s2 / ss_xx)) if ss_xx > 0 else float("nan")
+    else:
+        slope_se = float("nan")
+
+    return float(-slope), slope_se, intercept, R2, n, t_min_used
+
+
 def alpha_table_and_plot(
     data: dict[tuple[str, float], dict[str, np.ndarray]],
     csv_out: str = "spreading_exponents.csv",
@@ -358,6 +406,121 @@ def alpha_table_and_plot(
     print(f"  -> {fig_out}")
 
 
+def alpha_fit_table(
+    data: dict[tuple[str, float], dict[str, np.ndarray]],
+    t_min_fit: float = 1e4,
+) -> list[dict]:
+    """
+    Fit alpha for all (lambda, chain) pairs using t >= t_min_fit window.
+
+    Returns a list of dicts with keys: lambda, chain, alpha, alpha_stderr,
+    t_min_fit, R2.
+    """
+    lambdas = sorted({lam for _, lam in data.keys() if lam > 0.0})
+    chains = sorted({ch for ch, _ in data.keys()})
+    results = []
+    for lam in lambdas:
+        for ch in chains:
+            key = (ch, lam)
+            if key not in data:
+                continue
+            t = data[key]["time"]
+            ipr_arr = data[key]["IPR"]
+            alpha, stderr, log_A, R2, n, t_min_used = fit_alpha_full(
+                t, ipr_arr, t_min_fit=t_min_fit
+            )
+            results.append(
+                {
+                    "lambda": lam,
+                    "chain": ch,
+                    "alpha": alpha,
+                    "alpha_stderr": stderr,
+                    "t_min_fit": t_min_used,
+                    "R2": R2,
+                    "n_pts": n,
+                    "log_A": log_A,
+                }
+            )
+    return results
+
+
+def plot_alpha_N2000(
+    data: dict[tuple[str, float], dict[str, np.ndarray]],
+    fit_results: list[dict],
+    out_path: str = "figures/alpha_N2000_T1e5.png",
+    t_min_fit: float = 1e4,
+) -> None:
+    """
+    IPR(t) log-log for all 8 (lambda, chain) pairs with alpha-fit lines
+    overlaid in the t > t_min_fit window.  Saved to `out_path`.
+    """
+    import os
+    os.makedirs(os.path.dirname(out_path) if os.path.dirname(out_path) else ".", exist_ok=True)
+
+    lambdas = sorted({lam for _, lam in data.keys() if lam > 0.0})
+    chains = sorted({ch for ch, _ in data.keys() if ch in ("fibonacci", "tribonacci")})
+
+    # Build fit lookup
+    fit_lut: dict[tuple[float, str], dict] = {
+        (r["lambda"], r["chain"]): r for r in fit_results
+    }
+
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5), dpi=140, sharey=True)
+    cmap = plt.cm.tab10(np.linspace(0, 0.8, max(len(lambdas), 1)))
+    ls_map = {"fibonacci": "--", "tribonacci": "-"}
+    lw_map = {"fibonacci": 1.4, "tribonacci": 1.9}
+
+    for ax, ch in zip(axes, chains):
+        for i, lam in enumerate(lambdas):
+            key = (ch, lam)
+            if key not in data:
+                continue
+            t = data[key]["time"]
+            ipr_arr = data[key]["IPR"]
+            mask = t > 0
+            ax.loglog(
+                t[mask], ipr_arr[mask],
+                ls_map.get(ch, "-"),
+                color=cmap[i], lw=lw_map.get(ch, 1.5),
+                label=f"λ={lam:.1f}",
+            )
+            # overlay fit line in the t > t_min_fit window
+            fit = fit_lut.get((lam, ch))
+            if fit and np.isfinite(fit["alpha"]) and np.isfinite(fit["log_A"]):
+                t_fit = t[(t >= t_min_fit) & mask]
+                if len(t_fit) >= 2:
+                    fit_line = np.exp(fit["log_A"]) * t_fit ** (-fit["alpha"])
+                    ax.loglog(
+                        t_fit, fit_line,
+                        ":", color=cmap[i], lw=2.4,
+                    )
+                    # annotate alpha value near end of fit line
+                    ax.annotate(
+                        f"α={fit['alpha']:.3f}",
+                        xy=(t_fit[-1], fit_line[-1]),
+                        xytext=(4, 2),
+                        textcoords="offset points",
+                        fontsize=6.5,
+                        color=cmap[i],
+                    )
+        ax.axvline(t_min_fit, color="gray", lw=0.8, ls="--", alpha=0.6,
+                   label=f"t_min={t_min_fit:.0e}")
+        ax.set_xlabel("time  t")
+        ax.set_ylabel("IPR(t)")
+        ax.set_title(f"{ch.capitalize()}  N=2000, T=10⁵")
+        ax.grid(True, which="both", alpha=0.25)
+        ax.legend(fontsize=7, loc="lower left")
+
+    plt.suptitle(
+        "IPR(t) log-log — N=2000, T=10⁵ (dotted lines = α-fit for t > 10⁴)",
+        fontsize=10,
+    )
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=140)
+    plt.close()
+    print(f"  -> {out_path}")
+
+
 # ---------------------------------------------------------------------------
 # 5. Entry point
 # ---------------------------------------------------------------------------
@@ -370,6 +533,15 @@ def main() -> int:
                     help="input CSV path (default: ipr_vs_time.csv)")
     ap.add_argument("--no-plots", action="store_true",
                     help="skip plotting (sanity report + alpha CSV only)")
+    ap.add_argument("--report", action="store_true",
+                    help=(
+                        "print the verbatim PR-report sections [1]–[5]: sanity, "
+                        "alpha-fit table (t>1e4, with stderr and R²), comparison "
+                        "notes, norm conservation summary, and generate "
+                        "figures/alpha_N2000_T1e5.png"
+                    ))
+    ap.add_argument("--t-min-fit", type=float, default=1e4,
+                    help="lower time cutoff for alpha regression (default: 1e4)")
     args = ap.parse_args()
 
     data = load_csv(args.csv)
@@ -377,7 +549,87 @@ def main() -> int:
         print(f"ERROR: no rows loaded from {args.csv}", file=sys.stderr)
         return 1
 
-    sanity_report(data)
+    report_data = sanity_report(data)
+
+    if args.report:
+        # --- [2] α-fit table ---
+        t_min_fit = args.t_min_fit
+        fit_results = alpha_fit_table(data, t_min_fit=t_min_fit)
+        print()
+        print("=" * 72)
+        print("[2] α-FIT TABLE  (t > {:.0e}, OLS in log-log)".format(t_min_fit))
+        print("=" * 72)
+        header = (
+            f"{'λ':>5}  {'chain':>12}  {'α':>8}  {'α_stderr':>10}  "
+            f"{'t_min_fit':>12}  {'R²':>8}"
+        )
+        print(header)
+        print("-" * len(header))
+        for r in fit_results:
+            alpha_s = f"{r['alpha']:.4f}" if np.isfinite(r["alpha"]) else "   nan"
+            se_s = f"{r['alpha_stderr']:.4f}" if np.isfinite(r["alpha_stderr"]) else "      nan"
+            tm_s = f"{r['t_min_fit']:.2e}" if np.isfinite(r["t_min_fit"]) else "        nan"
+            r2_s = f"{r['R2']:.4f}" if np.isfinite(r["R2"]) else "     nan"
+            print(
+                f"{r['lambda']:>5.1f}  {r['chain']:>12}  "
+                f"{alpha_s:>8}  {se_s:>10}  {tm_s:>12}  {r2_s:>8}"
+            )
+
+        # --- [3] Comparison note ---
+        print()
+        print("=" * 72)
+        print("[3] COMPARISON TO T=10⁴ VALUES")
+        print("=" * 72)
+        print("  α values from ipr_lambda1p5_N1000_T1e5.csv (N=1000, T=10⁵, λ=1.5):")
+        print("    fibonacci  λ=1.5 : see previous PR / section8_draft.md")
+        print("    tribonacci λ=1.5 : see previous PR / section8_draft.md")
+        print()
+        print("  New N=2000, T=10⁵ values (this run):")
+        for r in fit_results:
+            alpha_s = f"{r['alpha']:.4f}" if np.isfinite(r["alpha"]) else "nan"
+            print(f"    {r['chain']:>12}  λ={r['lambda']:.1f}  α={alpha_s}")
+        fib_15 = next(
+            (r for r in fit_results if r["chain"] == "fibonacci" and r["lambda"] == 1.5),
+            None,
+        )
+        trib_15 = next(
+            (r for r in fit_results if r["chain"] == "tribonacci" and r["lambda"] == 1.5),
+            None,
+        )
+        if fib_15 and np.isfinite(fib_15["alpha"]):
+            in_range = 0.20 <= fib_15["alpha"] <= 0.22
+            print(f"\n  α_fib(λ=1.5) = {fib_15['alpha']:.4f}  "
+                  f"→ {'IN' if in_range else 'OUTSIDE'} [0.20, 0.22]")
+        if trib_15 and fib_15 and np.isfinite(trib_15["alpha"]) and np.isfinite(fib_15["alpha"]):
+            decreasing = trib_15["alpha"] < fib_15["alpha"]
+            print(f"  α_trib(λ=1.5) = {trib_15['alpha']:.4f}  "
+                  f"→ α_trib {'<' if decreasing else '>='} α_fib  "
+                  f"(sign-flip {'confirmed' if decreasing else 'NOT confirmed'})")
+
+        # --- [4] Norm conservation ---
+        print()
+        print("=" * 72)
+        print("[4] NORM CONSERVATION")
+        print("=" * 72)
+        worst = report_data["worst_drift"]
+        print(f"  Maximum norm leak across all checkpoints: {worst:.2e}")
+        if worst > 5e-5:
+            print("  *** EXCEEDS 5e-5 THRESHOLD ***")
+        else:
+            print("  OK — within 5e-5 threshold.")
+
+        # --- [5] Plot ---
+        if not args.no_plots:
+            print()
+            print("=" * 72)
+            print("[5] FIGURE")
+            print("=" * 72)
+            out_fig = "figures/alpha_N2000_T1e5.png"
+            plot_alpha_N2000(data, fit_results, out_path=out_fig, t_min_fit=t_min_fit)
+
+        print()
+        print("=" * 72)
+        return 0
 
     if not args.no_plots:
         print("\nGenerating figures ...")
