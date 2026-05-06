@@ -77,6 +77,46 @@ def tribonacci_word(length: int) -> list[int]:
     return word[:length]
 
 
+def tribonacci_word_natural(n_iterations: int) -> list[int]:
+    """
+    Return the n_iterations-th Rauzy iterate of A(0) → AB, B(1) → AC, C(2) → A
+    starting from [A] at n_iterations = 1.
+
+    Lengths at successive iterations follow the tribonacci recurrence
+    L_{n+3} = L_{n+2} + L_{n+1} + L_n (OEIS A000073 offset):
+      n=1 → 1,  n=2 → 2,  n=3 → 4,  n=4 → 7,  n=5 → 13,  n=6 → 24,
+      n=7 → 44, n=8 → 81, n=9 → 149, n=10 → 274, n=11 → 504,
+      n=12 → 927, n=13 → 1705, n=14 → 3136
+
+    Uses a list-comprehension substitution — no string replace() chaining.
+    """
+    RULES: dict[int, list[int]] = {0: [0, 1], 1: [0, 2], 2: [0]}
+    word: list[int] = [0]
+    for _ in range(n_iterations - 1):
+        word = [s for c in word for s in RULES[c]]
+    return word
+
+
+def fibonacci_word_natural(n_iterations: int) -> list[int]:
+    """
+    Return the n_iterations-th Fibonacci iterate of A(0) → AB, B(1) → A
+    starting from [A] at n_iterations = 1.
+
+    Lengths at successive iterations are Fibonacci numbers (OEIS A000045):
+      n=1 → 1,  n=2 → 2,  n=3 → 3,  n=4 → 5,  n=5 → 8,  n=6 → 13,
+      n=7 → 21, n=8 → 34, n=9 → 55, n=10 → 89, n=11 → 144,
+      n=12 → 233, n=13 → 377, n=14 → 610, n=15 → 987,
+      n=16 → 1597, n=17 → 2584
+
+    Uses a list-comprehension substitution — no string replace() chaining.
+    """
+    RULES: dict[int, list[int]] = {0: [0, 1], 1: [0]}
+    word: list[int] = [0]
+    for _ in range(n_iterations - 1):
+        word = [s for c in word for s in RULES[c]]
+    return word
+
+
 def build_hamiltonian(
     word: list[int], N: int, t_mod: float = 0.5
 ) -> tuple[np.ndarray, np.ndarray]:
