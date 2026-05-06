@@ -491,9 +491,9 @@ def task_d_fss() -> dict:
 # Task E — D₂ from mid-gap IPR at natural lengths, lambda=0
 # ---------------------------------------------------------------------------
 
-# Natural lengths N in {208, 401, 773, 1490, 2872} correspond to iterations 8..12
-NATURAL_ITERS_E = [8, 9, 10, 11, 12]
-NATURAL_LENGTHS_E = [208, 401, 773, 1490, 2872]
+# Natural lengths correspond to iterations 8..14 (OEIS A000078)
+NATURAL_ITERS_E = [8, 9, 10, 11, 12, 13, 14]
+NATURAL_LENGTHS_E = [208, 401, 773, 1490, 2872, 5536, 10671]
 SPREAD_FRAC = 0.03  # spatial spread filter: sigma >= SPREAD_FRAC * N
 
 
