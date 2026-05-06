@@ -149,7 +149,7 @@ def build_hamiltonian_tetra(N: int) -> tuple[np.ndarray, np.ndarray]:
 def mid_gap_state(H: np.ndarray) -> tuple[np.ndarray, float]:
     """Eigenstate of H closest to E=0."""
     vals, vecs = eigh(H)
-    idx = int(np.argmin(np.abs(vals)))
+    idx = np.argmin(np.abs(vals))
     return vecs[:, idx], float(vals[idx])
 
 
@@ -256,7 +256,9 @@ def evolve_long(
         norm_arr[k] = float(np.sqrt(np.sum(np.abs(psi_k) ** 2)))
         ipr_arr[k] = ipr(psi_k)
 
-    # patch t=0 IPR explicitly (before any dynamics)
+    # Overwrite t=0 slot with the analytically computed initial-state values.
+    # solve_ivp evaluates the RHS at t=0 during setup, which can introduce
+    # tiny numerical artefacts before any actual time stepping has occurred.
     ipr_arr[0] = ipr0
     norm_arr[0] = 1.0
 
@@ -540,6 +542,9 @@ def task_e_d2() -> dict:
             psi = vecs[:, idx]
             sigma = _spatial_spread(psi)
             if sigma < SPREAD_FRAC * N:
+                # Exclude compact zero-modes: states localised on a few
+                # sites do not represent the extended multifractal behaviour
+                # and would corrupt the D₂ fit.
                 n_filtered += 1
                 continue
             selected_ipr = ipr(psi)

@@ -97,7 +97,9 @@ def tetrabonacci_word_natural(n_iterations):
     Natural lengths follow OEIS A000078 (tetrabonacci numbers):
         n=0 -> 1, n=1 -> 2, n=2 -> 4, n=3 -> 8, n=4 -> 15, n=5 -> 29, ...
 
-    Uses a dict-based substitution (safe, non-commutative replace avoided).
+    Uses a character-by-character dict substitution rather than str.replace().
+    Chained str.replace() calls are non-commutative: replacing 'A'->'AB' first
+    would wrongly expand the new 'A' in 'AB' on a subsequent pass.
     """
     s = "A"
     rules = {"A": "AB", "B": "AC", "C": "AD", "D": "A"}
