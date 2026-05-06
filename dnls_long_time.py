@@ -217,17 +217,18 @@ def evolve_dnls(
 
 
 # ---------------------------------------------------------------------------
-# 3. Sweep constants  (defaults match the paper: N=500, lambda includes 0)
+# 3. Sweep constants  (Brief 4 parameters: N=1000, T=10^6, single λ=1.5)
 # ---------------------------------------------------------------------------
 
-N_SITES = 500         # chain length, matching Table 1 of the paper
+N_SITES = 1000        # chain length for FSS verification run
 T_END = 1000000.0     # final time for T = 10^6 run
-N_CHECKPOINTS = 450   # number of log-spaced checkpoints in (1, T_END]; ~75/decade over 6 decades
-NORM_TOL = 1e-5       # tight threshold; DOP853 at rtol=1e-8 should clear it easily
-LAMBDAS = [0.0, 1.0, 2.0, 4.0, 8.0, 10.0]   # lambda=0 is the linear-limit sanity check
-RTOL = 1e-8
-ATOL = 1e-10
-OUT_CSV = "ipr_vs_time.csv"
+N_CHECKPOINTS = 600   # log-spaced; ~100/decade over 6 decades
+NORM_TOL = 1e-4       # accept up to 1e-4 at T=10^6 (longer integration ⇒ more drift)
+LAMBDAS = [1.5]       # single λ — this is a verification run, not a sweep
+INTEGRATOR = "DOP853"
+RTOL = 1e-9
+ATOL = 1e-11
+OUT_CSV = "data/ipr_lambda1p5_N1000_T1e6.csv"
 
 CHAINS: dict[str, Callable[[int], list[int]]] = {
     "fibonacci": fibonacci_word,
