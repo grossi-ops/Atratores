@@ -458,7 +458,7 @@ def plot_alpha_N2000(
     os.makedirs(os.path.dirname(out_path) if os.path.dirname(out_path) else ".", exist_ok=True)
 
     lambdas = sorted({lam for _, lam in data.keys() if lam > 0.0})
-    chains = sorted({ch for ch, _ in data.keys() if ch in ("fibonacci", "tribonacci")})
+    chains = sorted({ch for ch, _ in data.keys()})
 
     # Build fit lookup
     fit_lut: dict[tuple[float, str], dict] = {
@@ -576,13 +576,21 @@ def main() -> int:
             )
 
         # --- [3] Comparison note ---
+        # Reference T=10^4 values from section8_draft.md (N=2000, T=10^4 run):
+        #   α_fib(λ=1.5) ≈ 0.211,  α_trib(λ=1.5) ≈ 0.155  (late-tail regression at T=10^4)
+        # Reference N=1000, T=10^5 values from ipr_lambda1p5_N1000_T1e5.csv (PR #3):
+        #   α_fib(λ=1.5) ≈ 0.487,  α_trib(λ=1.5) ≈ 0.778  (late-tail t>10^4)
         print()
         print("=" * 72)
         print("[3] COMPARISON TO T=10⁴ VALUES")
         print("=" * 72)
-        print("  α values from ipr_lambda1p5_N1000_T1e5.csv (N=1000, T=10⁵, λ=1.5):")
-        print("    fibonacci  λ=1.5 : see previous PR / section8_draft.md")
-        print("    tribonacci λ=1.5 : see previous PR / section8_draft.md")
+        print("  Prior T=10⁴ values (N=2000, section8_draft.md):")
+        print("    fibonacci  λ=1.5 : α ≈ 0.211")
+        print("    tribonacci λ=1.5 : α ≈ 0.155")
+        print()
+        print("  Prior T=10⁵ values (N=1000, ipr_lambda1p5_N1000_T1e5.csv, PR #3):")
+        print("    fibonacci  λ=1.5 : α ≈ 0.487")
+        print("    tribonacci λ=1.5 : α ≈ 0.778")
         print()
         print("  New N=2000, T=10⁵ values (this run):")
         for r in fit_results:
