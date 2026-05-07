@@ -52,4 +52,12 @@ Uniform-fissile slab (all A_0, N=50): computed λ_c = 0.503793342526, analytic p
 Paths under `figures/`.
 
 ### [7] Plain-language summary
-The spectral-gap correlation is positive and approximately linear across n=2..5, with fit metrics reported above. For n=3 at g_max=10 (N=504): λ_c = 1.156257295869, which is +7.296e-06 relative to 37/32 = 1.15625000000000. The sequence converges toward 37/32 from above; the 37/32 conjecture is consistent with but not yet confirmed by these data — more generations are needed to close the ~7×10⁻⁶ gap. For n=4 at g_max=9 (N=401): λ_c = 1.166531391935, which is -1.353e-04 relative to 7/6 = 1.16666666…. The n=4 sequence crossed below 7/6 between g=7 and g=8 and the deviation from 7/6 grew to ~1.4×10⁻⁴ at g=9, so the 7/6 conjecture for n=4 is not supported by the current data — the limit may be a nearby but distinct irrational, or convergence is non-monotone and higher generations are required. For n=5, λ_c = 7/6 to machine precision at every generation tested, suggesting the 7/6 value may be exact for n=5 but not for n=4. Generation-wise convergence time τ_n is consistent with the spectral-gap prediction 1/log(ρ_n/|ρ_n^(2)|) for n=2 and n=3; the n=4 τ estimate is unreliable given the non-monotone convergence pattern.
+The spectral-gap correlation is positive and approximately linear across n=2..5, with fit metrics (α, β, r) reported in section [3].
+
+n=3 at g_max=10 (N=504): λ_c = 1.156257295869, which is +7.296e-06 relative to 37/32 = 1.15625000000000. The sequence converges toward 37/32 from above; the 37/32 conjecture is consistent with but not yet confirmed — more generations are needed to close the residual ~7×10⁻⁶ gap.
+
+n=4 at g_max=9 (N=401): λ_c = 1.166531391935, which is -1.353e-04 relative to 7/6 = 1.16666666…. The sequence crossed below 7/6 between g=7 and g=8 and the deviation from 7/6 grew to ~1.4×10⁻⁴ at g=9. The 7/6 conjecture for n=4 is not supported by the current data; the limit may be a nearby irrational, or convergence is non-monotone and higher generations are required for a definitive conclusion.
+
+n=5: λ_c = 7/6 to machine precision at every generation tested, suggesting the 7/6 value may be exact for n=5 but not for n=4.
+
+Convergence rate: τ_n is broadly consistent with the spectral-gap prediction 1/log(ρ_n/|ρ_n^(2)|) for n=2 and n=3. The n=4 τ estimate is unreliable given the non-monotone convergence pattern at the generations tested.

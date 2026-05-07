@@ -85,7 +85,7 @@ def dominant_mode(L: np.ndarray, F: np.ndarray) -> np.ndarray:
     mask = np.isfinite(vals) & (np.abs(vals.imag) < 1e-8)
     vals_r = vals[mask].real
     vecs_r = vecs[:, mask]
-    idx = int(np.argmax(vals_r))
+    idx = np.argmax(vals_r)
     mode = np.real(vecs_r[:, idx])
     if np.max(np.abs(mode)) == 0:
         return mode
@@ -329,22 +329,34 @@ def run() -> dict:
     diff4 = lc4_gmax - 7.0 / 6.0
     add(
         "The spectral-gap correlation is positive and approximately linear across n=2..5, "
-        "with fit metrics reported above. "
-        f"For n=3 at g_max={max(GRID[3])} (N={max(lam_by_n[3], key=lambda x: x[0])[1]}): "
+        "with fit metrics (α, β, r) reported in section [3]."
+    )
+    add("")
+    add(
+        f"n=3 at g_max={max(GRID[3])} (N={max(lam_by_n[3], key=lambda x: x[0])[1]}): "
         f"λ_c = {lc3_gmax:.12f}, which is {diff3:+.3e} relative to 37/32 = 1.15625000000000. "
         "The sequence converges toward 37/32 from above; the 37/32 conjecture is consistent with but not yet "
-        "confirmed by these data — more generations are needed to close the ~7×10⁻⁶ gap. "
-        f"For n=4 at g_max={max(GRID[4])} (N={max(lam_by_n[4], key=lambda x: x[0])[1]}): "
+        "confirmed — more generations are needed to close the residual ~7×10⁻⁶ gap."
+    )
+    add("")
+    add(
+        f"n=4 at g_max={max(GRID[4])} (N={max(lam_by_n[4], key=lambda x: x[0])[1]}): "
         f"λ_c = {lc4_gmax:.12f}, which is {diff4:+.3e} relative to 7/6 = 1.16666666…. "
-        "The n=4 sequence crossed below 7/6 between g=7 and g=8 and the deviation from 7/6 grew to "
-        "~1.4×10⁻⁴ at g=9, so the 7/6 conjecture for n=4 is not supported by the current data — "
-        "the limit may be a nearby but distinct irrational, or convergence is non-monotone and higher "
-        "generations are required. "
-        "For n=5, λ_c = 7/6 to machine precision at every generation tested, "
-        "suggesting the 7/6 value may be exact for n=5 but not for n=4. "
-        "Generation-wise convergence time τ_n is consistent with the spectral-gap prediction "
-        "1/log(ρ_n/|ρ_n^(2)|) for n=2 and n=3; the n=4 τ estimate is unreliable given the "
-        "non-monotone convergence pattern."
+        "The sequence crossed below 7/6 between g=7 and g=8 and the deviation from 7/6 grew to "
+        "~1.4×10⁻⁴ at g=9. The 7/6 conjecture for n=4 is not supported by the current data; "
+        "the limit may be a nearby irrational, or convergence is non-monotone and higher generations "
+        "are required for a definitive conclusion."
+    )
+    add("")
+    add(
+        "n=5: λ_c = 7/6 to machine precision at every generation tested, "
+        "suggesting the 7/6 value may be exact for n=5 but not for n=4."
+    )
+    add("")
+    add(
+        "Convergence rate: τ_n is broadly consistent with the spectral-gap prediction "
+        "1/log(ρ_n/|ρ_n^(2)|) for n=2 and n=3. The n=4 τ estimate is unreliable "
+        "given the non-monotone convergence pattern at the generations tested."
     )
 
     OUT_REPORT.write_text("\n".join(report_lines).rstrip("\n") + "\n")
