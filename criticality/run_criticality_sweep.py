@@ -286,6 +286,11 @@ def run() -> dict:
         f"n=2: {residuals[0]:.12e}, n=3: {residuals[1]:.12e}, "
         f"n=4: {residuals[2]:.12e}, n=5: {residuals[3]:.12e}"
     )
+    reproduced = (round(alpha, 3) == 0.958) and (round(beta, 3) == 0.107) and (round(r, 3) == 0.989)
+    if reproduced:
+        add("Draft fit values (α=0.958, β=0.107, r=0.989) are reproduced within rounding.")
+    else:
+        add("Draft fit values (α=0.958, β=0.107, r=0.989) differ significantly from computed values.")
     add("```")
     add("")
 

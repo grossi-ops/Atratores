@@ -28,6 +28,7 @@ Fit  λ_c = α·Δ + β  over (n=2,3,4,5):
   r       = 0.988738104107
   r²      = 0.977603038513
   residuals (per n): n=2: -9.606544065861e-04, n=3: -6.516772247688e-03, n=4: -3.151002908081e-03, n=5: 1.062842956236e-02
+Draft fit values (α=0.958, β=0.107, r=0.989) are reproduced within rounding.
 ```
 
 ### [4] Generation convergence
