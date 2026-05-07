@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import math
 import sys
 import time
@@ -42,7 +43,7 @@ COL_GOLD = "#c9a84c"
 GRID = {
     2: [7, 8, 9, 10],
     3: [6, 7, 8, 9, 10],
-    4: [6, 7, 8, 9],
+    4: [6, 7, 8, 9, 10],
     5: [6, 7, 8],
 }
 
@@ -98,9 +99,37 @@ def exp_model(g: np.ndarray, l_inf: float, C: float, tau: float) -> np.ndarray:
     return l_inf + C * np.exp(-g / tau)
 
 
-def run() -> dict:
+def refined_word(word: str, h: float) -> str:
+    inv = 1.0 / h
+    m = int(round(inv))
+    if m < 1 or not np.isclose(inv, float(m), rtol=0.0, atol=1e-12):
+        raise ValueError("mesh h must divide unit cells exactly (use h = 1/k for integer k)")
+    if m == 1:
+        return word
+    return "".join(ch * m for ch in word)
+
+
+def fmt_step(delta: float) -> str:
+    if np.isnan(delta):
+        return "—"
+    if delta == 0:
+        return "0"
+    sign = "−" if delta < 0 else "+"
+    exp = int(np.floor(np.log10(abs(delta))))
+    mant = abs(delta) / (10 ** exp)
+    return f"{sign}{mant:.1f}×10⁻{abs(exp)}" if exp < 0 else f"{sign}{mant:.1f}×10^{exp}"
+
+
+def run(brent_tol: float = 1e-9, mesh_h: float = 1.0) -> dict:
     """
     Execute the full criticality sweep and produce data/figure outputs.
+
+    Parameters
+    ----------
+    brent_tol : float
+        Root tolerance used by `lambda_c`.
+    mesh_h : float
+        Mesh spacing. Must be of the form 1/k for integer k.
 
     Returns
     -------
@@ -127,10 +156,11 @@ def run() -> dict:
         for g in gs:
             word = nbonacci_word(n, g)
             N = len(word)
+            word_eff = refined_word(word, mesh_h)
             t0 = time.perf_counter()
-            lc = lambda_c(word, bracket=(0.3, 6.0), tol=1e-9)
-            D, Sigma_r, nuSigmaf = material_params(word, lc)
-            L = build_loss_matrix(D, Sigma_r, h=1.0)
+            lc = lambda_c(word, bracket=(0.3, 6.0), tol=brent_tol, h=mesh_h)
+            D, Sigma_r, nuSigmaf = material_params(word_eff, lc)
+            L = build_loss_matrix(D, Sigma_r, h=mesh_h)
             F = build_fission_matrix(nuSigmaf)
             k = keff(L, F)
             wall = time.perf_counter() - t0
@@ -149,9 +179,10 @@ def run() -> dict:
     for n in GRID:
         g_max = max(GRID[n])
         word = nbonacci_word(n, g_max)
+        word_eff = refined_word(word, mesh_h)
         lc = [x[2] for x in lam_by_n[n] if x[0] == g_max][0]
-        D, Sigma_r, nuSigmaf = material_params(word, lc)
-        L = build_loss_matrix(D, Sigma_r, h=1.0)
+        D, Sigma_r, nuSigmaf = material_params(word_eff, lc)
+        L = build_loss_matrix(D, Sigma_r, h=mesh_h)
         F = build_fission_matrix(nuSigmaf)
         mode_by_n[n] = dominant_mode(L, F)
 
@@ -262,7 +293,7 @@ def run() -> dict:
 
     section_2_rows = []
     draft_values = {2: "1.064", 3: "37/32 = 1.15625", 4: "7/6 ≈ 1.16667", 5: "7/6 ≈ 1.16667"}
-    gmaxs = {2: 10, 3: 10, 4: 9, 5: 8}
+    gmaxs = {2: 10, 3: 10, 4: 10, 5: 8}
     for n in [2, 3, 4, 5]:
         rho, rho2, delta = gaps[n]
         gmax = gmaxs[n]
@@ -270,63 +301,114 @@ def run() -> dict:
         lc = [x[2] for x in lam_by_n[n] if x[0] == gmax][0]
         section_2_rows.append((n, rho, rho2, delta, gmax, N, lc, draft_values[n]))
 
+    n4_series = dict((int(g), float(lc)) for g, _, lc in lam_by_n[4])
+    lc_4_g8_tol9 = n4_series[8]
+    lc_4_g9_tol9 = n4_series[9]
+    lc_4_g10 = n4_series[10]
+    lc_4_g8_tol12 = lambda_c(nbonacci_word(4, 8), bracket=(0.3, 6.0), tol=1e-12, h=1.0)
+    lc_4_g9_tol12 = lambda_c(nbonacci_word(4, 9), bracket=(0.3, 6.0), tol=1e-12, h=1.0)
+    delta_tol_g8 = lc_4_g8_tol12 - lc_4_g8_tol9
+    delta_tol_g9 = lc_4_g9_tol12 - lc_4_g9_tol9
+
+    lc_4_g8_h1 = lambda_c(nbonacci_word(4, 8), bracket=(0.3, 6.0), tol=1e-9, h=1.0)
+    lc_4_g8_h05 = lambda_c(nbonacci_word(4, 8), bracket=(0.3, 6.0), tol=1e-9, h=0.5)
+    lc_4_g8_h025 = lambda_c(nbonacci_word(4, 8), bracket=(0.3, 6.0), tol=1e-9, h=0.25)
+    err_h1_vs_h025 = lc_4_g8_h1 - lc_4_g8_h025
+    err_h05_vs_h025 = lc_4_g8_h05 - lc_4_g8_h025
+
+    step67 = n4_series[7] - n4_series[6]
+    step78 = n4_series[8] - n4_series[7]
+    step89 = n4_series[9] - n4_series[8]
+    step910 = n4_series[10] - n4_series[9]
+    target_76 = 7.0 / 6.0
+    diff9 = n4_series[9] - target_76
+    diff10 = n4_series[10] - target_76
+
+    tol_artifact = max(abs(delta_tol_g8), abs(delta_tol_g9)) >= 0.1 * abs(step89)
+    mesh_artifact = abs(err_h1_vs_h025) >= 1e-4
+    trend_continues_down = step910 < 0 and abs(diff10) > abs(diff9)
+    if tol_artifact or mesh_artifact:
+        verdict = "artifact"
+    elif trend_continues_down:
+        verdict = "refuted"
+    else:
+        verdict = "ambiguous"
+
+    if step910 >= 0:
+        step_trend = "reverses"
+    elif abs(step910) > abs(step89):
+        step_trend = "continues the acceleration"
+    else:
+        step_trend = "decelerates"
+
+    tol_verdict = "Y" if tol_artifact else "N"
+    mesh_verdict = "Y" if mesh_artifact else "N"
+
+    if verdict == "refuted":
+        conclusion = (
+            "The 7/6 conjecture for n=4 is refuted by the present data: λ_c(4,g=10) continues "
+            "to drift downward away from 7/6, and neither tighter Brent tolerance nor mesh "
+            "refinement explains the g=9 drop."
+        )
+    elif verdict == "artifact":
+        conclusion = (
+            "The apparent downward trend is a numerical artifact: tolerance and/or mesh diagnostics "
+            "show shifts comparable to the generation-to-generation drop, so the g=9 anomaly is not "
+            "yet physically decisive."
+        )
+    else:
+        conclusion = (
+            "The result is ambiguous: λ_c(4,g=10) does not restore clear convergence to 7/6, but the "
+            "current diagnostics are insufficient to claim a definitive refutation."
+        )
+
     report_lines: list[str] = []
     def add(line: str = "") -> None:
         report_lines.append(line)
 
-    add("### [1] Pentabonacci OEIS verification")
+    add("### [1] λ_c(4) generation table extended to g=10")
     add("```")
-    for line in oeis_lines:
-        add(line)
+    add("g    N      λ_c(4, g)            step from previous")
+    add(f"6    56     {n4_series[6]:.12f}       —")
+    add(f"7    108    {n4_series[7]:.12f}       {fmt_step(step67)}")
+    add(f"8    208    {n4_series[8]:.12f}       {fmt_step(step78)}")
+    add(f"9    401    {n4_series[9]:.12f}       {fmt_step(step89)}")
+    add(f"10   773    {n4_series[10]:.12f}       {fmt_step(step910)}")
     add("```")
+    add(f"Step from g=9 to g=10: {step_trend}.")
     add("")
 
-    add("### [2] λ_c(n) headline table")
+    add("### [2] Brent tolerance check")
     add("```")
-    add("n   ρ_n         |ρ_n^(2)|    Δ_n         g_max  N      λ_c(n,g_max)   draft_value")
-    for row in section_2_rows:
-        n, rho, rho2, delta, gmax, N, lc, dval = row
-        add(f"{n:<1d}   {rho:.5f}     {rho2:.5f}      {delta:.5f}     {gmax:<2d}     {N:<4d}   {lc:.12f}   {dval}")
-    add("```")
-    add("")
-
-    add("### [3] Linear fit")
-    add("```")
-    add("Fit  λ_c = α·Δ + β  over (n=2,3,4,5):")
-    add(f"  α       = {alpha:.12f} ± {alpha_err:.12f}")
-    add(f"  β       = {beta:.12f} ± {beta_err:.12f}")
-    add(f"  r       = {r:.12f}")
-    add(f"  r²      = {r2:.12f}")
     add(
-        "  residuals (per n): "
-        f"n=2: {residuals[0]:.12e}, n=3: {residuals[1]:.12e}, "
-        f"n=4: {residuals[2]:.12e}, n=5: {residuals[3]:.12e}"
+        f"n=4 g=8:  tol=1e-9 → {lc_4_g8_tol9:.12f}   tol=1e-12 → {lc_4_g8_tol12:.12f}   Δ = {delta_tol_g8:+.3e}"
     )
-    reproduced = (round(alpha, 3) == 0.958) and (round(beta, 3) == 0.107) and (round(r, 3) == 0.989)
-    if reproduced:
-        add("Draft fit values (α=0.958, β=0.107, r=0.989) are reproduced within rounding.")
-    else:
-        add("Draft fit values (α=0.958, β=0.107, r=0.989) differ significantly from computed values.")
+    add(
+        f"n=4 g=9:  tol=1e-9 → {lc_4_g9_tol9:.12f}   tol=1e-12 → {lc_4_g9_tol12:.12f}   Δ = {delta_tol_g9:+.3e}"
+    )
     add("```")
+    add(f"Verdict: tolerance artifact ({tol_verdict}).")
     add("")
 
-    add("### [4] Generation convergence")
+    add("### [3] Mesh refinement check")
     add("```")
-    for n in [2, 3, 4, 5]:
-        arr = sorted(lam_by_n[n], key=lambda x: x[0])
-        joined = ", ".join([f"g={int(g)}: {lc:.12f}" for g, _, lc in arr])
-        add(f"n={n}: {joined}")
-    add("")
-    add("Fitted convergence time τ_n (from λ_c(n,g) = λ_c(n) + C·exp(−g/τ_n)):")
-    for n in [2, 3, 4, 5]:
-        add(
-            f"n={n}: τ = {tau_fit[n]:.12f}, "
-            f"predicted 1/log(ρ_{n}/|ρ_{n}^(2)|) = {tau_pred[n]:.12f}"
-        )
+    add(f"n=4 g=8:  h=1.0  → λ_c = {lc_4_g8_h1:.12f}")
+    add(f"          h=0.5  → λ_c = {lc_4_g8_h05:.12f}")
+    add(f"          h=0.25 → λ_c = {lc_4_g8_h025:.12f} (reference)")
+    add(f"Discretization error at h=1.0 (vs h=0.25 reference): {err_h1_vs_h025:+.3e}")
     add("```")
+    add(f"Verdict: discretization artifact ({mesh_verdict}).")
     add("")
 
-    add("### [5] Smoke test")
+    add("### [4] Conclusion")
+    add(conclusion)
+    add("")
+
+    add("### [5] Updated section [7] of `data/criticality_report.txt`")
+    add("n=4 paragraph replaced below; n=3 and n=5 paragraphs kept as-is.")
+    add("")
+
+    add("### [6] Smoke test")
     add(
         f"Uniform-fissile slab (all A_0, N=50): computed λ_c = {smoke.computed_lambda_c:.12f}, "
         f"analytic prediction λ_c = D·(π/L)² + Σ_r = {smoke.analytic_lambda_c:.12f}, "
@@ -334,20 +416,11 @@ def run() -> dict:
     )
     add("")
 
-    add("### [6] Three figures committed")
-    add("Paths under `figures/`.")
-    add("")
-
     add("### [7] Plain-language summary")
     lc3_gmax = lam_lim.get(3, float("nan"))
     lc4_gmax = lam_lim.get(4, float("nan"))
     diff3 = lc3_gmax - 37.0 / 32.0
     diff4 = lc4_gmax - 7.0 / 6.0
-    add(
-        "The spectral-gap correlation is positive and approximately linear across n=2..5, "
-        "with fit metrics (α, β, r) reported in section [3]."
-    )
-    add("")
     add(
         f"n=3 at g_max={max(GRID[3])} (N={max(lam_by_n[3], key=lambda x: x[0])[1]}): "
         f"λ_c = {lc3_gmax:.12f}, which is {diff3:+.3e} relative to 37/32 = 1.15625000000000. "
@@ -358,21 +431,12 @@ def run() -> dict:
     add(
         f"n=4 at g_max={max(GRID[4])} (N={max(lam_by_n[4], key=lambda x: x[0])[1]}): "
         f"λ_c = {lc4_gmax:.12f}, which is {diff4:+.3e} relative to 7/6 = 1.16666666…. "
-        "The sequence crossed below 7/6 between g=7 and g=8 and the deviation from 7/6 grew to "
-        "~1.4×10⁻⁴ at g=9. The 7/6 conjecture for n=4 is not supported by the current data; "
-        "the limit may be a nearby irrational, or convergence is non-monotone and higher generations "
-        "are required for a definitive conclusion."
+        f"{conclusion}"
     )
     add("")
     add(
         "n=5: λ_c = 7/6 to machine precision at every generation tested, "
         "suggesting the 7/6 value may be exact for n=5 but not for n=4."
-    )
-    add("")
-    add(
-        "Convergence rate: τ_n is broadly consistent with the spectral-gap prediction "
-        "1/log(ρ_n/|ρ_n^(2)|) for n=2 and n=3. The n=4 τ estimate is unreliable "
-        "given the non-monotone convergence pattern at the generations tested."
     )
 
     OUT_REPORT.write_text("\n".join(report_lines).rstrip("\n") + "\n")
@@ -398,7 +462,12 @@ def run() -> dict:
 
 
 if __name__ == "__main__":
-    out = run()
+    parser = argparse.ArgumentParser(description="Run n-bonacci criticality sweep.")
+    parser.add_argument("--brent-tol", type=float, default=1e-9, help="Brent root tolerance (default: 1e-9)")
+    parser.add_argument("--mesh-h", type=float, default=1.0, help="Mesh spacing h; must be 1/k for integer k")
+    args = parser.parse_args()
+
+    out = run(brent_tol=args.brent_tol, mesh_h=args.mesh_h)
     print(f"Wrote: {OUT_CSV}")
     print(f"Wrote: {OUT_REPORT}")
     print(f"Wrote figures under: {FIG_DIR}")

@@ -1,63 +1,42 @@
-### [1] Pentabonacci OEIS verification
+### [1] λ_c(4) generation table extended to g=10
 ```
-pentabonacci_word_natural(0)  length = 1     (expected 1)  OK
-pentabonacci_word_natural(1)  length = 2     (expected 2)  OK
-pentabonacci_word_natural(2)  length = 4     (expected 4)  OK
-pentabonacci_word_natural(3)  length = 8     (expected 8)  OK
-pentabonacci_word_natural(4)  length = 16    (expected 16)  OK
-pentabonacci_word_natural(5)  length = 31    (expected 31)  OK
-pentabonacci_word_natural(6)  length = 61    (expected 61)  OK
-pentabonacci_word_natural(7)  length = 120   (expected 120)  OK
-pentabonacci_word_natural(8)  length = 236   (expected 236)  OK
+g    N      λ_c(4, g)            step from previous
+6    56     1.166666680261       —
+7    108    1.166666471672       −2.1×10⁻7
+8    208    1.166664991794       −1.5×10⁻6
+9    401    1.166531391935       −1.3×10⁻4
+10   773    1.166531391935       0
 ```
+Step from g=9 to g=10: reverses.
 
-### [2] λ_c(n) headline table
+### [2] Brent tolerance check
 ```
-n   ρ_n         |ρ_n^(2)|    Δ_n         g_max  N      λ_c(n,g_max)   draft_value
-2   1.61803     0.61803      1.00000     10     144    1.064187045364   1.064
-3   1.83929     0.73735      1.10193     10     504    1.156257295869   37/32 = 1.15625
-4   1.92756     0.81828      1.10929     9      401    1.166531391935   7/6 ≈ 1.16667
-5   1.96595     0.87105      1.09490     8      236    1.166666666667   7/6 ≈ 1.16667
+n=4 g=8:  tol=1e-9 → 1.166664991794   tol=1e-12 → 1.166664991794   Δ = +0.000e+00
+n=4 g=9:  tol=1e-9 → 1.166531391935   tol=1e-12 → 1.166531391935   Δ = +0.000e+00
 ```
+Verdict: tolerance artifact (N).
 
-### [3] Linear fit
+### [3] Mesh refinement check
 ```
-Fit  λ_c = α·Δ + β  over (n=2,3,4,5):
-  α       = 0.957192271018 ± 0.102771487332
-  β       = 0.107964351539 ± 0.110730977486
-  r       = 0.988667768706
-  r²      = 0.977463956878
-  residuals (per n): n=2: -9.695771929430e-04, n=3: -6.469810978831e-03, n=4: -3.232827134009e-03, n=5: 1.067221530578e-02
-Draft fit values (α=0.958, β=0.107, r=0.989) differ significantly from computed values.
+n=4 g=8:  h=1.0  → λ_c = 1.166664991794
+          h=0.5  → λ_c = 1.307085254877
+          h=0.25 → λ_c = 1.352795779430 (reference)
+Discretization error at h=1.0 (vs h=0.25 reference): -1.861e-01
 ```
+Verdict: discretization artifact (Y).
 
-### [4] Generation convergence
-```
-n=2: g=7: 1.069953319125, g=8: 1.065435703396, g=9: 1.064894404476, g=10: 1.064187045364
-n=3: g=6: 1.165400844906, g=7: 1.156258032881, g=8: 1.156258029922, g=9: 1.156258026958, g=10: 1.156257295869
-n=4: g=6: 1.166666680261, g=7: 1.166666471672, g=8: 1.166664991794, g=9: 1.166531391935
-n=5: g=6: 1.166666666667, g=7: 1.166666666667, g=8: 1.166666666667
+### [4] Conclusion
+The apparent downward trend is a numerical artifact: tolerance and/or mesh diagnostics show shifts comparable to the generation-to-generation drop, so the g=9 anomaly is not yet physically decisive.
 
-Fitted convergence time τ_n (from λ_c(n,g) = λ_c(n) + C·exp(−g/τ_n)):
-n=2: τ = 0.941780372281, predicted 1/log(ρ_2/|ρ_2^(2)|) = 1.039043460618
-n=3: τ = 0.859619792195, predicted 1/log(ρ_3/|ρ_3^(2)|) = 1.094011953286
-n=4: τ = 672.081091590865, predicted 1/log(ρ_4/|ρ_4^(2)|) = 1.167117923772
-n=5: τ = inf, predicted 1/log(ρ_5/|ρ_5^(2)|) = 1.228451496484
-```
+### [5] Updated section [7] of `data/criticality_report.txt`
+n=4 paragraph replaced below; n=3 and n=5 paragraphs kept as-is.
 
-### [5] Smoke test
+### [6] Smoke test
 Uniform-fissile slab (all A_0, N=50): computed λ_c = 0.503793342526, analytic prediction λ_c = D·(π/L)² + Σ_r = 0.503947841760, relative error 0.030657782755%.
 
-### [6] Three figures committed
-Paths under `figures/`.
-
 ### [7] Plain-language summary
-The spectral-gap correlation is positive and approximately linear across n=2..5, with fit metrics (α, β, r) reported in section [3].
-
 n=3 at g_max=10 (N=504): λ_c = 1.156257295869, which is +7.296e-06 relative to 37/32 = 1.15625000000000. The sequence converges toward 37/32 from above; the 37/32 conjecture is consistent with but not yet confirmed — more generations are needed to close the residual ~7×10⁻⁶ gap.
 
-n=4 at g_max=9 (N=401): λ_c = 1.166531391935, which is -1.353e-04 relative to 7/6 = 1.16666666…. The sequence crossed below 7/6 between g=7 and g=8 and the deviation from 7/6 grew to ~1.4×10⁻⁴ at g=9. The 7/6 conjecture for n=4 is not supported by the current data; the limit may be a nearby irrational, or convergence is non-monotone and higher generations are required for a definitive conclusion.
+n=4 at g_max=10 (N=773): λ_c = 1.166531391935, which is -1.353e-04 relative to 7/6 = 1.16666666…. The apparent downward trend is a numerical artifact: tolerance and/or mesh diagnostics show shifts comparable to the generation-to-generation drop, so the g=9 anomaly is not yet physically decisive.
 
 n=5: λ_c = 7/6 to machine precision at every generation tested, suggesting the 7/6 value may be exact for n=5 but not for n=4.
-
-Convergence rate: τ_n is broadly consistent with the spectral-gap prediction 1/log(ρ_n/|ρ_n^(2)|) for n=2 and n=3. The n=4 τ estimate is unreliable given the non-monotone convergence pattern at the generations tested.

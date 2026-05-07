@@ -15,6 +15,23 @@ from scipy.sparse import csc_matrix, diags
 from scipy.sparse.linalg import eigs
 
 
+def _mesh_subdivision_factor(h: float) -> int:
+    if h <= 0:
+        raise ValueError("h must be positive")
+    inv = 1.0 / h
+    m = int(round(inv))
+    if m < 1 or not np.isclose(inv, float(m), rtol=0.0, atol=1e-12):
+        raise ValueError("mesh h must divide unit cells exactly (use h = 1/k for integer k)")
+    return m
+
+
+def _refined_word(word: str, h: float) -> str:
+    m = _mesh_subdivision_factor(h)
+    if m == 1:
+        return word
+    return "".join(ch * m for ch in word)
+
+
 def material_params(word: str, lambd: float) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Map symbols to (D, Sigma_r, nuSigmaf).
@@ -101,12 +118,18 @@ def keff(L: np.ndarray, F: np.ndarray, sigma: float = 1.0) -> float:
     return _dominant_sparse(F, L, sigma=sigma)
 
 
-def lambda_c(word: str, bracket: tuple[float, float] = (0.3, 6.0), tol: float = 1e-9) -> float:
-    D, Sigma_r, _ = material_params(word, 0.0)
-    L = build_loss_matrix(D, Sigma_r, h=1.0)
+def lambda_c(
+    word: str,
+    bracket: tuple[float, float] = (0.3, 6.0),
+    tol: float = 1e-9,
+    h: float = 1.0,
+) -> float:
+    word_eff = _refined_word(word, h)
+    D, Sigma_r, _ = material_params(word_eff, 0.0)
+    L = build_loss_matrix(D, Sigma_r, h=h)
 
     def f(lmbd: float) -> float:
-        _, _, nuSigmaf = material_params(word, lmbd)
+        _, _, nuSigmaf = material_params(word_eff, lmbd)
         F = build_fission_matrix(nuSigmaf)
         return keff(L, F) - 1.0
 
