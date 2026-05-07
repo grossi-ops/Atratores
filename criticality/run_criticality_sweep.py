@@ -3,13 +3,12 @@ from __future__ import annotations
 
 import csv
 import math
-import os
 import sys
 import time
 import warnings
 from pathlib import Path
 
-REPO_ROOT = Path("/home/runner/work/Atratores/Atratores")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
@@ -178,7 +177,7 @@ def run() -> dict:
             try:
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", OptimizeWarning)
-                    popt, _ = curve_fit(exp_model, g, y, p0=p0, bounds=bounds, maxfev=50000)
+                    popt, _ = curve_fit(exp_model, g, y, p0=p0, bounds=bounds, maxfev=10000)
                 tau_fit[n] = float(popt[2])
             except Exception:
                 tau_fit[n] = float("nan")
@@ -218,7 +217,15 @@ def run() -> dict:
     ax2.axhline(1.064, color=COL_FIB, ls="--", lw=1.0, alpha=0.6, label="target n=2: 1.064")
     ax2.axhline(37.0 / 32.0, color=COL_TRIB, ls="--", lw=1.0, alpha=0.6, label="target n=3: 37/32")
     ax2.axhline(7.0 / 6.0, color=COL_GREEN, ls="--", lw=1.0, alpha=0.6, label="target n≥4: 7/6")
-    ax2.axhline(lam_lim[5], color=COL_GOLD, ls=":", lw=1.0, alpha=0.8, label=f"n=5 limit: {lam_lim[5]:.6f}")
+    if 5 in lam_lim:
+        ax2.axhline(
+            lam_lim[5],
+            color=COL_GOLD,
+            ls=":",
+            lw=1.0,
+            alpha=0.8,
+            label=f"n=5 limit: {lam_lim[5]:.6f}",
+        )
     ax2.set_xlabel("Generation g")
     ax2.set_ylabel("λ_c(n,g)")
     ax2.grid(alpha=0.3)

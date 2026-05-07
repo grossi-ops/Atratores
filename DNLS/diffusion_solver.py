@@ -77,21 +77,21 @@ def _dominant_dense(F: np.ndarray, L: np.ndarray) -> float:
     return float(np.max(vals))
 
 
-def _dominant_sparse(F: np.ndarray, L: np.ndarray) -> float:
+def _dominant_sparse(F: np.ndarray, L: np.ndarray, sigma: float = 1.0) -> float:
     F_sp = csc_matrix(F)
     L_sp = csc_matrix(L)
-    vals = eigs(F_sp, M=L_sp, k=1, sigma=1.0, which="LM", return_eigenvectors=False)
+    vals = eigs(F_sp, M=L_sp, k=1, sigma=sigma, which="LM", return_eigenvectors=False)
     val = vals[0]
     if abs(val.imag) > 1e-7:
         return float(val.real)
     return float(val.real)
 
 
-def keff(L: np.ndarray, F: np.ndarray) -> float:
+def keff(L: np.ndarray, F: np.ndarray, sigma: float = 1.0) -> float:
     N = L.shape[0]
     if N <= 300:
         return _dominant_dense(F, L)
-    return _dominant_sparse(F, L)
+    return _dominant_sparse(F, L, sigma=sigma)
 
 
 def lambda_c(word: str, bracket: tuple[float, float] = (0.3, 6.0), tol: float = 1e-9) -> float:
