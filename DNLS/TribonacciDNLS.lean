@@ -31,6 +31,7 @@
 # Repository:  https://github.com/TOTOGT/AXLE
 # ORCID:       0009-0000-6496-2186
 -/
+-- License: MIT (see DNLS/LICENSE-CODE)
 
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic

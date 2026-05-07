@@ -17,6 +17,7 @@
   References: NPB §4 (lock-in prediction), TribonacciMeasure.lean
   (η-weighted fractal measure), AXLE design notes (non-Platonic route).
 -/
+-- License: MIT (see DNLS/LICENSE-CODE)
 import Mathlib.Data.Nat.Basic
 import Mathlib.Logic.Function.Iterate
 import Mathlib.Dynamics.FixedPoints.Basic
