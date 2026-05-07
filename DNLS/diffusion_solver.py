@@ -15,7 +15,8 @@ from scipy.sparse import csc_matrix, diags
 from scipy.sparse.linalg import eigs
 
 
-def _mesh_subdivision_factor(h: float) -> int:
+def mesh_subdivision_factor(h: float) -> int:
+    """Return integer m such that h = 1/m, validating exact unit-cell subdivision."""
     if h <= 0:
         raise ValueError("h must be positive")
     inv = 1.0 / h
@@ -25,8 +26,9 @@ def _mesh_subdivision_factor(h: float) -> int:
     return m
 
 
-def _refined_word(word: str, h: float) -> str:
-    m = _mesh_subdivision_factor(h)
+def refined_word_for_mesh(word: str, h: float) -> str:
+    """Repeat each symbol m=1/h times so each original unit cell is subdivided uniformly."""
+    m = mesh_subdivision_factor(h)
     if m == 1:
         return word
     return "".join(ch * m for ch in word)
@@ -86,6 +88,7 @@ def build_fission_matrix(nuSigmaf: np.ndarray) -> np.ndarray:
 
 
 def _dominant_dense(F: np.ndarray, L: np.ndarray) -> float:
+    """Return dominant real eigenvalue k of F*phi = k*L*phi using dense LAPACK."""
     vals = eig(F, L, check_finite=False, overwrite_a=False, overwrite_b=False)[0]
     vals = vals[np.isfinite(vals)]
     vals = vals[np.abs(vals.imag) < 1e-9].real
@@ -95,6 +98,7 @@ def _dominant_dense(F: np.ndarray, L: np.ndarray) -> float:
 
 
 def _dominant_sparse(F: np.ndarray, L: np.ndarray, sigma: float = 1.0) -> float:
+    """Return dominant eigenvalue using sparse shift-invert ARPACK centered at shift `sigma`."""
     F_sp = csc_matrix(F)
     L_sp = csc_matrix(L)
     vals = eigs(F_sp, M=L_sp, k=1, sigma=sigma, which="LM", return_eigenvectors=False)
@@ -124,7 +128,7 @@ def lambda_c(
     tol: float = 1e-9,
     h: float = 1.0,
 ) -> float:
-    word_eff = _refined_word(word, h)
+    word_eff = refined_word_for_mesh(word, h)
     D, Sigma_r, _ = material_params(word_eff, 0.0)
     L = build_loss_matrix(D, Sigma_r, h=h)
 

@@ -27,6 +27,7 @@ from DNLS.diffusion_solver import (
     keff,
     lambda_c,
     material_params,
+    refined_word_for_mesh,
     run_smoke_test_or_fail,
 )
 
@@ -95,18 +96,8 @@ def dominant_mode(L: np.ndarray, F: np.ndarray) -> np.ndarray:
     return mode / np.max(np.abs(mode))
 
 
-def exp_model(g: np.ndarray, l_inf: float, C: float, tau: float) -> np.ndarray:
-    return l_inf + C * np.exp(-g / tau)
-
-
-def refined_word(word: str, h: float) -> str:
-    inv = 1.0 / h
-    m = int(round(inv))
-    if m < 1 or not np.isclose(inv, float(m), rtol=0.0, atol=1e-12):
-        raise ValueError("mesh h must divide unit cells exactly (use h = 1/k for integer k)")
-    if m == 1:
-        return word
-    return "".join(ch * m for ch in word)
+def exp_model(g: np.ndarray, lambda_inf: float, C: float, tau: float) -> np.ndarray:
+    return lambda_inf + C * np.exp(-g / tau)
 
 
 def fmt_step(delta: float) -> str:
@@ -156,7 +147,7 @@ def run(brent_tol: float = 1e-9, mesh_h: float = 1.0) -> dict:
         for g in gs:
             word = nbonacci_word(n, g)
             N = len(word)
-            word_eff = refined_word(word, mesh_h)
+            word_eff = refined_word_for_mesh(word, mesh_h)
             t0 = time.perf_counter()
             lc = lambda_c(word, bracket=(0.3, 6.0), tol=brent_tol, h=mesh_h)
             D, Sigma_r, nuSigmaf = material_params(word_eff, lc)
@@ -179,7 +170,7 @@ def run(brent_tol: float = 1e-9, mesh_h: float = 1.0) -> dict:
     for n in GRID:
         g_max = max(GRID[n])
         word = nbonacci_word(n, g_max)
-        word_eff = refined_word(word, mesh_h)
+        word_eff = refined_word_for_mesh(word, mesh_h)
         lc = [x[2] for x in lam_by_n[n] if x[0] == g_max][0]
         D, Sigma_r, nuSigmaf = material_params(word_eff, lc)
         L = build_loss_matrix(D, Sigma_r, h=mesh_h)
