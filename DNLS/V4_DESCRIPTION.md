@@ -5,9 +5,9 @@
 This DNLS deposit uses a split-license model:
 
 - **Code files** (`.py`, `.lean`, `.ipynb`) are licensed under **MIT**.
-  See `DNLS/LICENSE-CODE`.
+  See `LICENSE-CODE`.
 - **Prose/documentation files** (including `.md`, `.tex`, `.pdf`) are licensed
-  under **CC-BY-NC-ND-4.0**. See `DNLS/LICENSE-PROSE`.
+  under **CC-BY-NC-ND-4.0**. See `LICENSE-PROSE`.
 
 ## Deposit-facing figure outputs
 
@@ -18,6 +18,5 @@ step is required between script output and Zenodo deposit filenames.
 - `fig7_fss_T1e4.pdf` (also keeps canonical `fig_B_nstability.png`)
 - `fig8_ratio_collapse.pdf` (also keeps canonical `fig_D_homogenization.png`)
 - `fig9_T1e6_saturation.pdf` (from `analyze_long_time.py`)
-- `fig_C_inversion.pdf` is emitted alongside canonical `fig_C_inversion.png`
 
 Copyright (c) 2026 Pablo Nogueira Grossi, G6 LLC.

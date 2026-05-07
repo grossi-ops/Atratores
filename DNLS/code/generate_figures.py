@@ -33,6 +33,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import matplotlib.gridspec as gridspec
 from matplotlib.colors import LinearSegmentedColormap
+from pathlib import Path
 
 # ── Style ────────────────────────────────────────────────────────────────────
 plt.rcParams.update({
@@ -64,9 +65,11 @@ COL_GREY = '#888888'
 
 ETA = 1.8392867552141612   # tribonacci constant
 
-# ── Import simulation utilities ───────────────────────────────────────────────
-import sys
-sys.path.insert(0, '/home/claude')
+# ── Paths and simulation utilities ────────────────────────────────────────────
+BASE_DIR = Path(__file__).resolve().parent.parent
+FIGURES_DIR = BASE_DIR / 'figures'
+FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+
 from dnls_nbonacci import (
     fibonacci_word, tribonacci_word,
     build_hamiltonian, mid_gap_state,
@@ -78,6 +81,11 @@ N      = 500
 T_MOD  = 0.5
 T_EVO  = 50.0
 LAMBDA = [0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 7.0, 10.0]
+
+
+def save_figure(fig, stem):
+    fig.savefig(FIGURES_DIR / f'{stem}.pdf')
+    fig.savefig(FIGURES_DIR / f'{stem}.png')
 
 print("Building chains …")
 word_fib  = fibonacci_word(N + 1)
@@ -171,8 +179,7 @@ fig1.legend(handles=legend_els, loc='lower center', ncol=3,
             frameon=True, fontsize=8, bbox_to_anchor=(0.5, -0.18))
 
 fig1.tight_layout()
-fig1.savefig('/mnt/user-data/outputs/fig1_chain_structure.pdf')
-fig1.savefig('/mnt/user-data/outputs/fig1_chain_structure.png')
+save_figure(fig1, 'fig1_chain_structure')
 print("  saved fig1")
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -208,8 +215,7 @@ for ax in (ax2a, ax2b):
     ax.grid(True, axis='y')
 
 fig2.tight_layout()
-fig2.savefig('/mnt/user-data/outputs/fig2_eigenstates.pdf')
-fig2.savefig('/mnt/user-data/outputs/fig2_eigenstates.png')
+save_figure(fig2, 'fig2_eigenstates')
 print("  saved fig2")
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -260,8 +266,7 @@ ax3.text(0.03, 0.06,
          style='italic')
 
 fig3.tight_layout()
-fig3.savefig('/mnt/user-data/outputs/fig3_ipr_vs_lambda.pdf')
-fig3.savefig('/mnt/user-data/outputs/fig3_ipr_vs_lambda.png')
+save_figure(fig3, 'fig3_ipr_vs_lambda')
 print("  saved fig3")
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -289,8 +294,7 @@ ax4.set_xlim(-0.2, 10.5)
 ax4.grid(True)
 
 fig4.tight_layout()
-fig4.savefig('/mnt/user-data/outputs/fig4_ipr_ratio.pdf')
-fig4.savefig('/mnt/user-data/outputs/fig4_ipr_ratio.png')
+save_figure(fig4, 'fig4_ipr_ratio')
 print("  saved fig4")
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -372,15 +376,14 @@ fig5.legend(handles=legend_els2, loc='lower center', ncol=3,
             frameon=True, fontsize=9, bbox_to_anchor=(0.5, -0.04))
 
 fig5.tight_layout()
-fig5.savefig('/mnt/user-data/outputs/fig5_substitution_tree.pdf')
-fig5.savefig('/mnt/user-data/outputs/fig5_substitution_tree.png')
+save_figure(fig5, 'fig5_substitution_tree')
 print("  saved fig5")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Summary
 # ─────────────────────────────────────────────────────────────────────────────
 print("\n" + "="*60)
-print("All figures saved to /mnt/user-data/outputs/")
+print(f"All figures saved to {FIGURES_DIR}/")
 print("="*60)
 print(f"\nKey numerical results:")
 print(f"  Linear IPR ratio (trib/fib): {ratio_arr[0]:.2f}x")
