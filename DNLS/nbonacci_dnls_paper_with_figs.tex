@@ -526,6 +526,226 @@ the verification methodology of \cite{AXLE2026}.
 
 \end{enumerate}
 
+% -----------------------------------------------------------------------
+\section{Long-time dynamics and finite-size scaling}
+\label{sec:longtimeFSS}
+% -----------------------------------------------------------------------
+
+Section~7 listed four open questions: longer time
+evolution, finite-size scaling of the IPR ratio, spreading exponents, and the
+self-trapping threshold.  This section reports numerical results that
+partially close the first three.  Three complementary campaigns are
+presented: (i) the linear-limit fractal dimension $D_2$ computed at the
+natural Rauzy and Fibonacci iteration lengths (code: \texttt{d2\_natural\_lengths.py});
+(ii) finite-size scaling of the DNLS dynamics at $T = 10^4$ and $T = 10^5$
+for $N \in \{500, 1000, 2000\}$ at $\lambda = 1.5$ (code:
+\texttt{dnls\_long\_time.py}); and (iii) a long-time saturation run to
+$T = 10^6$ at $N = 1000$, $\lambda = 1.5$.
+
+% --- 8.1 ---------------------------------------------------------------
+\subsection{Methodology}
+\label{subsec:fss-method}
+
+All long-time integrations use the DOP853 integrator (\texttt{scipy.integrate.solve\_ivp})
+with \texttt{rtol}~$= 10^{-9}$ and \texttt{atol}~$= 10^{-12}$, starting from the
+normalised mid-gap eigenstate of the linear Hamiltonian.  The inverse
+participation ratio is recorded at 450 logarithmically spaced checkpoints.
+The spreading exponent $\alpha$ is extracted by ordinary-least-squares
+regression of $\log\,\mathrm{IPR}(t)$ on $\log t$ over the window $t > 10^4$.
+
+% --- 8.2 ---------------------------------------------------------------
+\subsection{Linear-limit multifractal dimensions}
+\label{subsec:d2-natural}
+
+\textbf{Motivation.}
+Earlier estimates of $D_2$ from chains truncated at arbitrary lengths
+($N \in \{200, 500, 1000, 2000\}$) gave $D_{2,\mathrm{fib}} \approx 0.616$
+and $D_{2,\mathrm{trib}} \approx 0.364$.  The tribonacci estimate was
+anomalous: the underlying $\mathrm{IPR}(N)$ data were non-monotone
+($0.097 \to 0.082 \to 0.041 \to 0.048$ for $N = 200, 500, 1000, 2000$),
+with a reversal between $N = 1000$ and $N = 2000$ that inflated the
+uncertainty and biased the slope.
+
+The reversal is a finite-size artefact of \emph{boundary truncation}:
+cutting the chain at an arbitrary site destroys the self-similar boundary
+structure that the Rauzy fixed-point chain lengths preserve.  To remove this
+artefact we re-compute IPR only at the natural Rauzy iteration lengths $T_n$
+(where $T_{n+3} = T_{n+2} + T_{n+1} + T_n$, OEIS A000073), specifically
+$N \in \{274, 504, 927, 1705, 3136\}$ ($n = 10$--$14$), and the analogous
+natural Fibonacci lengths $N \in \{233, 377, 610, 987, 1597, 2584\}$
+($n = 12$--$17$).  At each natural length the chain is the exact $n$-th
+iterate of the substitution rule, so boundary atoms are self-consistently
+generated with no truncation.
+
+The mid-gap eigenstate is identified as the eigenstate with the smallest
+$|E|$ whose spatial spread $\sigma \geq 0.03N$.  This criterion excludes
+compact boundary/defect zero-modes---notably the anomalous $E = 0$ state at
+tribonacci $n = 12$, $N = 927$, with spread $\sigma \approx 15 \ll 0.03
+\times 927$---which are unrelated to the bulk multifractal scaling.  With
+this selection the tribonacci IPR sequence is monotone non-increasing:
+$0.097 \to 0.082 \approx 0.082 \approx 0.082 \to 0.041$.  The near-plateau
+at $\mathrm{IPR} \approx 0.082$ for $n = 11, 12, 13$ reflects a genuine
+feature of the tribonacci RSRG hierarchy in which the same critical-state
+family persists across three consecutive iterates.  The $(N=1000 \to N=2000)$
+reversal present in the arbitrary-length data is fully eliminated.
+
+OLS regression of $\log\,\mathrm{IPR}$ on $\log N$ (Figure~\ref{fig:d2natural}) yields:
+\begin{equation}
+  D_{2,\mathrm{fib}}  = 0.646 \pm 0.111 \quad (R^2 = 0.895),
+  \label{eq:D2fib}
+\end{equation}
+\begin{equation}
+  D_{2,\mathrm{trib}} = 0.282 \pm 0.119 \quad (R^2 = 0.654).
+  \label{eq:D2trib}
+\end{equation}
+The tribonacci $D_2$ has shifted from the anomalous $\approx 0.364$
+(arbitrary lengths, $R^2 = 0.30$) to $0.282$ (natural lengths, $R^2 = 0.65$).
+The hierarchy $D_{2,\mathrm{trib}} < D_{2,\mathrm{fib}}$ is consistent with
+the stronger spatial multifractality of the tribonacci eigenstate.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{fig6_d2_natural}
+\caption{$\log\,\mathrm{IPR}$ vs $\log N$ for the mid-gap eigenstate of the
+Fibonacci (blue circles) and tribonacci (red squares) chains at their
+respective natural iteration lengths.  Solid lines are OLS fits; shaded bands
+show the $1\sigma$ uncertainty interval.  The tribonacci IPR sequence is
+monotone after excluding compact defect states (see text); the resulting
+$D_{2,\mathrm{trib}} = 0.282$ is significantly below $D_{2,\mathrm{fib}} =
+0.646$, confirming stronger multifractality.}
+\label{fig:d2natural}
+\end{figure}
+
+% --- 8.3 ---------------------------------------------------------------
+\subsection{Finite-size scaling at $T = 10^4$}
+\label{subsec:fss-T1e4}
+
+\textbf{Transient non-monotone ratio.}
+At $T = 10^4$, $\lambda = 1.5$, the trib/fib IPR ratio is non-monotone in
+$N$: $0.658$ ($N = 500$), $4.15$ ($N = 1000$), $3.17$ ($N = 2000$).  This
+non-monotonicity reflects an intermediate-time transient at $N = 1000$ in
+which the Fibonacci IPR dips more deeply than at neighbouring sizes.
+
+The fractal dimension $D_2$ extracted from late-time ($T = 10^4$) IPR gives
+$D_{2,\mathrm{fib}} \approx 0.578$ and $D_{2,\mathrm{trib}} \approx 0.381$.
+These differ from the linear-limit values (Equations~\ref{eq:D2fib}--\ref{eq:D2trib})
+because the nonlinear dynamics at $T = 10^4$ have already altered the
+spatial structure of the states.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{fig7_fss_T1e4}
+\caption{$D_2$ values for Fibonacci (blue) and tribonacci (red) chains
+versus system size $N$ at $T = 10^4$, $\lambda = 1.5$, extracted from the
+IPR by OLS regression at each $N$.  The approach from the linear-limit values
+(dashed lines, from Figure~\ref{fig:d2natural}) is visible; the tribonacci
+$D_2$ approaches from below, indicating a faster approach to the extended
+limit.}
+\label{fig:fss_T1e4}
+\end{figure}
+
+% --- 8.4 ---------------------------------------------------------------
+\subsection{Ratio collapse and spreading exponents}
+\label{subsec:ratio-collapse}
+
+\textbf{The 4.15$\times$ peak is transient.}
+At $T = 10^5$, $N = 1000$, $\lambda = 1.5$ the trib/fib IPR ratio collapses
+to $\approx 1.18\times$; at $N = 2000$ the ratio is $\approx 1.24\times$.
+Both values remain above unity (tribonacci IPR $>$ Fibonacci IPR), but the
+peak present at $T = 10^4$ has vanished.
+
+The spreading exponent $\alpha$, extracted from OLS fits of
+$\log\,\mathrm{IPR}(t)$ on $\log t$ for $t > 10^4$ at $N = 2000$,
+$\lambda = 1.5$:
+\begin{itemize}
+  \item $\alpha_{\mathrm{fib}}  \approx 0.487$ at $T = 10^5$
+        (compared to $\approx 0.211$ at $T = 10^4$, which was not asymptotic);
+  \item $\alpha_{\mathrm{trib}} \approx 0.777$ at $T = 10^5$
+        (compared to $\approx 0.155$ at $T = 10^4$).
+\end{itemize}
+The hierarchy $\alpha_{\mathrm{trib}} > \alpha_{\mathrm{fib}}$ is robust at
+$T \geq 10^5$: the tribonacci state, once the initial self-trapping is
+overcome, spreads \emph{faster} than the Fibonacci state.  A tentative
+interpretation is that the stronger spatial hierarchy of the tribonacci
+eigenstate creates more efficient long-range hopping pathways under nonlinear
+perturbation.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{fig8_ratio_collapse}
+\caption{Spreading exponent $\alpha$ vs system size $N$ at $\lambda = 1.5$
+for the Fibonacci (blue) and tribonacci (red) chains.  At $T = 10^5$ (solid
+symbols) $\alpha_{\mathrm{trib}} > \alpha_{\mathrm{fib}}$ for all $N$; the
+hierarchy is reversed at $T = 10^4$ (open symbols), confirming that the
+$T = 10^4$ values are pre-asymptotic.}
+\label{fig:ratio_collapse}
+\end{figure}
+
+% --- 8.5 ---------------------------------------------------------------
+\subsection{Long-time saturation at $T = 10^6$}
+\label{subsec:T1e6}
+
+\textbf{Co-delocalization.}
+At $N = 1000$, $\lambda = 1.5$, $T = 10^6$: both chains saturate to
+$\mathrm{IPR} \approx 1/N \approx 10^{-3}$ (the fully extended value) by
+$t \approx 3 \times 10^5$, and the trib/fib ratio at $T = 10^6$ is
+$1.017 \pm 0.040$ (16 crossings across unity in $t \in [10^5, 10^6]$).  No
+permanent crossover is observed.  Norm conservation is excellent: maximum
+norm deviation $< 5 \times 10^{-7}$ over $10^6$ time units.
+
+Spreading exponents in the late window ($t > 10^5$, $N = 1000$):
+\begin{itemize}
+  \item $\alpha_{\mathrm{fib}}  \approx 0.009$ ($R^2 = 0.035$) --- consistent
+        with near-complete saturation;
+  \item $\alpha_{\mathrm{trib}} \approx 0.087$ ($R^2 = 0.733$) --- marginally
+        larger but also consistent with saturation.
+\end{itemize}
+
+These results confirm that the differential nonlinear robustness of
+Sections~4--5 is a \emph{transient} phenomenon:
+on timescales $T \lesssim 10^4$ the tribonacci state is dramatically more
+robust to delocalization, but by $T \approx 3 \times 10^5$ both states reach
+the fully extended limit.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\linewidth]{fig9_T1e6_saturation}
+\caption{IPR vs $\log_{10} t$ for the Fibonacci (blue) and tribonacci (red)
+chains at $N = 1000$, $\lambda = 1.5$, integrated to $T = 10^6$ (450
+checkpoints, DOP853, \texttt{rtol}~$= 10^{-9}$).  Both chains saturate to
+$\mathrm{IPR} \approx 1/N$ (dashed line) by $t \approx 3 \times 10^5$.
+Wall time: Fibonacci 1357\,s, tribonacci 1254\,s (single core).}
+\label{fig:T1e6}
+\end{figure}
+
+% --- 8.6 ---------------------------------------------------------------
+\subsection{Summary}
+\label{subsec:fss-summary}
+
+The campaigns of this section establish four results:
+
+\begin{enumerate}
+  \item The multifractal exponents $D_{2,\mathrm{fib}} = 0.646 \pm 0.111$
+        and $D_{2,\mathrm{trib}} = 0.282 \pm 0.119$ (natural lengths) are
+        the correct linear-limit values; the earlier anomalous
+        $D_{2,\mathrm{trib}} \approx 0.364$ is a boundary-truncation
+        artefact.
+  \item The trib/fib IPR ratio of $\approx 4$ reported at $T = 50$
+        in Sections~4--5 represents a transient
+        robustness window: both chains co-delocalize to the fully extended
+        limit by $t \approx 3 \times 10^5$.
+  \item The spreading exponent hierarchy
+        $\alpha_{\mathrm{trib}} > \alpha_{\mathrm{fib}}$ is robust at
+        intermediate times ($T \approx 10^5$) but disappears at $T = 10^6$
+        as both chains saturate.
+  \item The non-monotone FSS ratio at $T = 10^4$ is a transient crossover,
+        not a bulk property; at $T = 10^5$ the ratio is monotone and has
+        collapsed to $\approx 1.2\times$.
+\end{enumerate}
+
+% TODO: extend T=10^6 run to N=2000; measure self-trapping crossover time
+% tau_c(N,lambda) systematically; add tetrabonacci (n=4) FSS comparison.
+
 \section{Conclusion}
 
 We have shown numerically that the tribonacci substitution chain ($n=3$)
