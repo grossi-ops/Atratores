@@ -88,9 +88,14 @@ def _dominant_sparse(F: np.ndarray, L: np.ndarray, sigma: float = 1.0) -> float:
 def keff(L: np.ndarray, F: np.ndarray, sigma: float = 1.0) -> float:
     N = L.shape[0]
     # Use dense LAPACK for N <= 1000: dense is reliable and fast enough (< 1 s for N=1000).
-    # The sparse shift-invert path (eigs) can return incorrect dominant eigenvalues for the
-    # moderate-sized matrices encountered here (N ~ 400–600) due to convergence issues near
-    # σ=1, so it is reserved only for truly large systems.
+    # The sparse path uses shift-invert ARPACK (scipy.sparse.linalg.eigs) with sigma as the
+    # shift point; shift-invert solves (A - sigma*M)^{-1} M v = mu v and is designed to find
+    # eigenvalues nearest to sigma.  For the generalized problem F*phi = k*L*phi the dominant
+    # eigenvalue sits near 1.0 when lambda is near criticality, which is why sigma=1.0 is the
+    # natural target.  However, for moderate N (400-600) the factorisation of (F-sigma*L) can
+    # be ill-conditioned due to the aperiodic near-zero structure of F, causing ARPACK to
+    # converge to a spurious eigenvalue.  Dense LAPACK avoids this by computing the full
+    # spectrum directly, and is reserved here for truly large systems only.
     if N <= 1000:
         return _dominant_dense(F, L)
     return _dominant_sparse(F, L, sigma=sigma)

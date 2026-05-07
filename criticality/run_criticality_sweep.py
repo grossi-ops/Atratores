@@ -99,6 +99,22 @@ def exp_model(g: np.ndarray, l_inf: float, C: float, tau: float) -> np.ndarray:
 
 
 def run() -> dict:
+    """
+    Execute the full criticality sweep and produce data/figure outputs.
+
+    Returns
+    -------
+    dict with keys:
+      smoke      : SmokeTestResult — uniform-slab analytic verification.
+      oeis_lines : list[str] — pentabonacci OEIS check log.
+      gaps       : dict[int, tuple[float,float,float]] — per n: (rho, rho2, delta).
+      lam_by_n   : dict[int, list[tuple[int,int,float]]] — per n: list of (g, N, lambdac).
+      lam_lim    : dict[int, float] — converged lambda_c at largest g per n.
+      fit        : dict with keys alpha, beta, alpha_err, beta_err, r, r2, residuals
+                   (linear fit lambda_c = alpha*delta + beta over n=2..5).
+      tau_fit    : dict[int, float] — fitted exponential convergence time per n.
+      tau_pred   : dict[int, float] — spectral-gap prediction 1/log(rho/rho2) per n.
+    """
     ensure_dirs()
     smoke = run_smoke_test_or_fail()
     oeis_lines = verify_pentabonacci_oeis()
