@@ -108,6 +108,62 @@ def tetrabonacci_word_natural(n_iterations):
     return s
 
 
+def pentabonacci_word(N):
+    """
+    Pentabonacci substitution: A->AB, B->AC, C->AD, D->AE, E->A.
+    Returns the first N symbols of the infinite pentabonacci word as a string.
+    """
+    s = "A"
+    rules = {"A": "AB", "B": "AC", "C": "AD", "D": "AE", "E": "A"}
+    while len(s) < N:
+        s = "".join(rules[ch] for ch in s)
+    return s[:N]
+
+
+def pentabonacci_word_natural(n_iterations):
+    """
+    Return the full pentabonacci word after n_iterations substitutions.
+    """
+    s = "A"
+    rules = {"A": "AB", "B": "AC", "C": "AD", "D": "AE", "E": "A"}
+    for _ in range(n_iterations):
+        s = "".join(rules[ch] for ch in s)
+    return s
+
+
+def nbonacci_word(n, generation):
+    """
+    Return the n-bonacci substitution word at the given generation (n >= 2).
+
+    Rules:
+      A_0 -> A_0 A_1
+      A_k -> A_0 A_{k+1}  for 1 <= k <= n-2
+      A_{n-1} -> A_0
+
+    For n <= 26, symbols are encoded as uppercase letters A, B, C, ...
+    """
+    if n < 2:
+        raise ValueError("n must be >= 2")
+    if generation < 0:
+        raise ValueError("generation must be >= 0")
+    if n > 26:
+        raise ValueError("n > 26 is not supported with single-letter symbols")
+
+    alphabet = [chr(ord("A") + i) for i in range(n)]
+    rules = {}
+    for k in range(n):
+        if k == n - 1:
+            rules[alphabet[k]] = alphabet[0]
+        else:
+            rules[alphabet[k]] = alphabet[0] + alphabet[k + 1]
+
+    s = alphabet[0]
+    for _ in range(generation):
+        s = "".join(rules[ch] for ch in s)
+    return s
+
+
+
 # ---------------------------------------------------------------------------
 # 2.  Tight-binding Hamiltonian
 # ---------------------------------------------------------------------------
