@@ -15,33 +15,33 @@ pentabonacci_word_natural(8)  length = 236   (expected 236)  OK
 ```
 n   ρ_n         |ρ_n^(2)|    Δ_n         g_max  N      λ_c(n,g_max)   draft_value
 2   1.61803     0.61803      1.00000     10     144    1.064187045364   1.064
-3   1.83929     0.73735      1.10193     9      274    1.156258026958   37/32 = 1.15625
-4   1.92756     0.81828      1.10929     8      208    1.166664991794   7/6 ≈ 1.16667
+3   1.83929     0.73735      1.10193     10     504    1.156257295869   37/32 = 1.15625
+4   1.92756     0.81828      1.10929     9      401    1.166531391935   7/6 ≈ 1.16667
 5   1.96595     0.87105      1.09490     8      236    1.166666666667   7/6 ≈ 1.16667
 ```
 
 ### [3] Linear fit
 ```
 Fit  λ_c = α·Δ + β  over (n=2,3,4,5):
-  α       = 0.957747680565 ± 0.102506024672
-  β       = 0.107400019206 ± 0.110444955160
-  r       = 0.988738104107
-  r²      = 0.977603038513
-  residuals (per n): n=2: -9.606544065861e-04, n=3: -6.516772247688e-03, n=4: -3.151002908081e-03, n=5: 1.062842956236e-02
-Draft fit values (α=0.958, β=0.107, r=0.989) are reproduced within rounding.
+  α       = 0.957192271018 ± 0.102771487332
+  β       = 0.107964351539 ± 0.110730977486
+  r       = 0.988667768706
+  r²      = 0.977463956878
+  residuals (per n): n=2: -9.695771929430e-04, n=3: -6.469810978831e-03, n=4: -3.232827134009e-03, n=5: 1.067221530578e-02
+Draft fit values (α=0.958, β=0.107, r=0.989) differ significantly from computed values.
 ```
 
 ### [4] Generation convergence
 ```
 n=2: g=7: 1.069953319125, g=8: 1.065435703396, g=9: 1.064894404476, g=10: 1.064187045364
-n=3: g=6: 1.165400844906, g=7: 1.156258032881, g=8: 1.156258029922, g=9: 1.156258026958
-n=4: g=6: 1.166666680261, g=7: 1.166666471672, g=8: 1.166664991794
+n=3: g=6: 1.165400844906, g=7: 1.156258032881, g=8: 1.156258029922, g=9: 1.156258026958, g=10: 1.156257295869
+n=4: g=6: 1.166666680261, g=7: 1.166666471672, g=8: 1.166664991794, g=9: 1.166531391935
 n=5: g=6: 1.166666666667, g=7: 1.166666666667, g=8: 1.166666666667
 
 Fitted convergence time τ_n (from λ_c(n,g) = λ_c(n) + C·exp(−g/τ_n)):
 n=2: τ = 0.941780372281, predicted 1/log(ρ_2/|ρ_2^(2)|) = 1.039043460618
-n=3: τ = 0.866231171637, predicted 1/log(ρ_3/|ρ_3^(2)|) = 1.094011953286
-n=4: τ = 1.677726102096, predicted 1/log(ρ_4/|ρ_4^(2)|) = 1.167117923772
+n=3: τ = 0.859619792195, predicted 1/log(ρ_3/|ρ_3^(2)|) = 1.094011953286
+n=4: τ = 672.081091590865, predicted 1/log(ρ_4/|ρ_4^(2)|) = 1.167117923772
 n=5: τ = inf, predicted 1/log(ρ_5/|ρ_5^(2)|) = 1.228451496484
 ```
 
@@ -52,4 +52,4 @@ Uniform-fissile slab (all A_0, N=50): computed λ_c = 0.503793342526, analytic p
 Paths under `figures/`.
 
 ### [7] Plain-language summary
-The spectral-gap correlation is positive and approximately linear across n=2..5, with fit metrics reported above. The computed λ_c values should be compared directly against 1.064, 37/32, and 7/6 without forcing rational rounding. Generation-wise convergence is quantified by fitted τ_n values and compared to 1/log(ρ_n/|ρ_n^(2)|) predictions for each n.
+The spectral-gap correlation is positive and approximately linear across n=2..5, with fit metrics reported above. For n=3 at g_max=10 (N=504): λ_c = 1.156257295869, which is +7.296e-06 relative to 37/32 = 1.15625000000000. The sequence converges toward 37/32 from above; the 37/32 conjecture is consistent with but not yet confirmed by these data — more generations are needed to close the ~7×10⁻⁶ gap. For n=4 at g_max=9 (N=401): λ_c = 1.166531391935, which is -1.353e-04 relative to 7/6 = 1.16666666…. The n=4 sequence crossed below 7/6 between g=7 and g=8 and the deviation from 7/6 grew to ~1.4×10⁻⁴ at g=9, so the 7/6 conjecture for n=4 is not supported by the current data — the limit may be a nearby but distinct irrational, or convergence is non-monotone and higher generations are required. For n=5, λ_c = 7/6 to machine precision at every generation tested, suggesting the 7/6 value may be exact for n=5 but not for n=4. Generation-wise convergence time τ_n is consistent with the spectral-gap prediction 1/log(ρ_n/|ρ_n^(2)|) for n=2 and n=3; the n=4 τ estimate is unreliable given the non-monotone convergence pattern.

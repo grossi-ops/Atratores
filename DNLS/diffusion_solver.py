@@ -87,7 +87,7 @@ def _dominant_sparse(F: np.ndarray, L: np.ndarray, sigma: float = 1.0) -> float:
 
 def keff(L: np.ndarray, F: np.ndarray, sigma: float = 1.0) -> float:
     N = L.shape[0]
-    if N <= 300:
+    if N <= 1000:
         return _dominant_dense(F, L)
     return _dominant_sparse(F, L, sigma=sigma)
 

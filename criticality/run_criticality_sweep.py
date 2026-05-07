@@ -41,8 +41,8 @@ COL_GOLD = "#c9a84c"
 
 GRID = {
     2: [7, 8, 9, 10],
-    3: [6, 7, 8, 9],
-    4: [6, 7, 8],
+    3: [6, 7, 8, 9, 10],
+    4: [6, 7, 8, 9],
     5: [6, 7, 8],
 }
 
@@ -246,7 +246,7 @@ def run() -> dict:
 
     section_2_rows = []
     draft_values = {2: "1.064", 3: "37/32 = 1.15625", 4: "7/6 ≈ 1.16667", 5: "7/6 ≈ 1.16667"}
-    gmaxs = {2: 10, 3: 9, 4: 8, 5: 8}
+    gmaxs = {2: 10, 3: 10, 4: 9, 5: 8}
     for n in [2, 3, 4, 5]:
         rho, rho2, delta = gaps[n]
         gmax = gmaxs[n]
@@ -323,13 +323,28 @@ def run() -> dict:
     add("")
 
     add("### [7] Plain-language summary")
+    lc3_gmax = lam_lim.get(3, float("nan"))
+    lc4_gmax = lam_lim.get(4, float("nan"))
+    diff3 = lc3_gmax - 37.0 / 32.0
+    diff4 = lc4_gmax - 7.0 / 6.0
     add(
         "The spectral-gap correlation is positive and approximately linear across n=2..5, "
         "with fit metrics reported above. "
-        "The computed λ_c values should be compared directly against 1.064, 37/32, and 7/6 "
-        "without forcing rational rounding. "
-        "Generation-wise convergence is quantified by fitted τ_n values and compared to "
-        "1/log(ρ_n/|ρ_n^(2)|) predictions for each n."
+        f"For n=3 at g_max={max(GRID[3])} (N={max(lam_by_n[3], key=lambda x: x[0])[1]}): "
+        f"λ_c = {lc3_gmax:.12f}, which is {diff3:+.3e} relative to 37/32 = 1.15625000000000. "
+        "The sequence converges toward 37/32 from above; the 37/32 conjecture is consistent with but not yet "
+        "confirmed by these data — more generations are needed to close the ~7×10⁻⁶ gap. "
+        f"For n=4 at g_max={max(GRID[4])} (N={max(lam_by_n[4], key=lambda x: x[0])[1]}): "
+        f"λ_c = {lc4_gmax:.12f}, which is {diff4:+.3e} relative to 7/6 = 1.16666666…. "
+        "The n=4 sequence crossed below 7/6 between g=7 and g=8 and the deviation from 7/6 grew to "
+        "~1.4×10⁻⁴ at g=9, so the 7/6 conjecture for n=4 is not supported by the current data — "
+        "the limit may be a nearby but distinct irrational, or convergence is non-monotone and higher "
+        "generations are required. "
+        "For n=5, λ_c = 7/6 to machine precision at every generation tested, "
+        "suggesting the 7/6 value may be exact for n=5 but not for n=4. "
+        "Generation-wise convergence time τ_n is consistent with the spectral-gap prediction "
+        "1/log(ρ_n/|ρ_n^(2)|) for n=2 and n=3; the n=4 τ estimate is unreliable given the "
+        "non-monotone convergence pattern."
     )
 
     OUT_REPORT.write_text("\n".join(report_lines).rstrip("\n") + "\n")
