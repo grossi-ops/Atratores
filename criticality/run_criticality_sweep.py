@@ -199,7 +199,7 @@ def run() -> dict:
     xfit = np.linspace(deltas.min() * 0.98, deltas.max() * 1.02, 200)
     yfit = alpha * xfit + beta
     ax1.scatter(deltas, lambdas, s=60, c=[COL_BY_N[n] for n in [2, 3, 4, 5]])
-    ax1.plot(xfit, yfit, color="black", lw=1.5, label=f"λc = {alpha:.3f}Δ + {beta:.3f}")
+    ax1.plot(xfit, yfit, color="black", lw=1.5, label=f"λ_c = {alpha:.3f}Δ + {beta:.3f}")
     for i, n in enumerate([2, 3, 4, 5]):
         ax1.annotate(f"n={n}", (deltas[i], lambdas[i]), textcoords="offset points", xytext=(5, 5))
     ax1.set_xlabel("Spectral gap Δ_n")
