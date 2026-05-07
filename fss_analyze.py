@@ -390,6 +390,8 @@ def plot_D2(
     ax.legend(loc="best")
     plt.tight_layout()
     plt.savefig(out_path, dpi=140)
+    plt.savefig(os.path.join("DNLS", "figures", "fig_C_inversion.png"), dpi=140)
+    plt.savefig(os.path.join("DNLS", "figures", "fig_C_inversion.pdf"))
     plt.close()
     print(f"  -> {out_path}")
 
@@ -428,6 +430,8 @@ def plot_alpha_vs_N(
     ax.legend(ncol=2, fontsize=8, loc="best")
     plt.tight_layout()
     plt.savefig(out_path, dpi=140)
+    plt.savefig(os.path.join("DNLS", "figures", "fig_B_nstability.png"), dpi=140)
+    plt.savefig(os.path.join("DNLS", "figures", "fig7_fss_T1e4.pdf"))
     plt.close()
     print(f"  -> {out_path}")
 
@@ -465,6 +469,8 @@ def plot_tsat_vs_N(
     ax.legend(ncol=2, fontsize=8, loc="best")
     plt.tight_layout()
     plt.savefig(out_path, dpi=140)
+    plt.savefig(os.path.join("DNLS", "figures", "fig_D_homogenization.png"), dpi=140)
+    plt.savefig(os.path.join("DNLS", "figures", "fig8_ratio_collapse.pdf"))
     plt.close()
     print(f"  -> {out_path}")
 
@@ -570,6 +576,7 @@ def main() -> int:
     write_csvs(d2_fits, alpha_rows, tsat_rows)
 
     if not args.no_plots:
+        os.makedirs(os.path.join("DNLS", "figures"), exist_ok=True)
         print("\nGenerating figures ...")
         plot_D2(all_data, chains, d2_fits)
         plot_alpha_vs_N(all_data, alpha_rows, chains, lambdas)
