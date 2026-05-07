@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import csv
 import math
 import sys
 import time
@@ -140,14 +139,12 @@ def run() -> dict:
         F = build_fission_matrix(nuSigmaf)
         mode_by_n[n] = dominant_mode(L, F)
 
-    with OUT_CSV.open("w", newline="") as f:
-        writer = csv.DictWriter(
-            f,
-            fieldnames=["n", "g", "N", "lambdac", "keff_at_lambdac", "wallclock_s"],
+    csv_lines = ["n,g,N,lambdac,keff_at_lambdac,wallclock_s"]
+    for row in sorted(sweep_rows, key=lambda r: (r["n"], r["g"])):
+        csv_lines.append(
+            f'{row["n"]},{row["g"]},{row["N"]},{row["lambdac"]},{row["keff_at_lambdac"]},{row["wallclock_s"]}'
         )
-        writer.writeheader()
-        for row in sorted(sweep_rows, key=lambda r: (r["n"], r["g"])):
-            writer.writerow(row)
+    OUT_CSV.write_text("\n".join(csv_lines) + "\n")
 
     gaps = {n: spectral_gap(n) for n in GRID}
     lam_lim = {n: sorted(vals, key=lambda x: x[0])[-1][2] for n, vals in lam_by_n.items()}
@@ -257,69 +254,80 @@ def run() -> dict:
         lc = [x[2] for x in lam_by_n[n] if x[0] == gmax][0]
         section_2_rows.append((n, rho, rho2, delta, gmax, N, lc, draft_values[n]))
 
-    with OUT_REPORT.open("w") as f:
-        f.write("### [1] Pentabonacci OEIS verification\n")
-        f.write("```\n")
-        for line in oeis_lines:
-            f.write(line + "\n")
-        f.write("```\n\n")
+    report_lines: list[str] = []
+    def add(line: str = "") -> None:
+        report_lines.append(line)
 
-        f.write("### [2] λ_c(n) headline table\n")
-        f.write("```\n")
-        f.write("n   ρ_n         |ρ_n^(2)|    Δ_n         g_max  N      λ_c(n,g_max)   draft_value\n")
-        for row in section_2_rows:
-            n, rho, rho2, delta, gmax, N, lc, dval = row
-            f.write(f"{n:<1d}   {rho:.5f}     {rho2:.5f}      {delta:.5f}     {gmax:<2d}     {N:<4d}   {lc:.12f}   {dval}\n")
-        f.write("```\n\n")
+    add("### [1] Pentabonacci OEIS verification")
+    add("```")
+    for line in oeis_lines:
+        add(line)
+    add("```")
+    add("")
 
-        f.write("### [3] Linear fit\n")
-        f.write("```\n")
-        f.write("Fit  λ_c = α·Δ + β  over (n=2,3,4,5):\n")
-        f.write(f"  α       = {alpha:.12f} ± {alpha_err:.12f}\n")
-        f.write(f"  β       = {beta:.12f} ± {beta_err:.12f}\n")
-        f.write(f"  r       = {r:.12f}\n")
-        f.write(f"  r²      = {r2:.12f}\n")
-        f.write(
-            "  residuals (per n): "
-            f"n=2: {residuals[0]:.12e}, n=3: {residuals[1]:.12e}, "
-            f"n=4: {residuals[2]:.12e}, n=5: {residuals[3]:.12e}\n"
+    add("### [2] λ_c(n) headline table")
+    add("```")
+    add("n   ρ_n         |ρ_n^(2)|    Δ_n         g_max  N      λ_c(n,g_max)   draft_value")
+    for row in section_2_rows:
+        n, rho, rho2, delta, gmax, N, lc, dval = row
+        add(f"{n:<1d}   {rho:.5f}     {rho2:.5f}      {delta:.5f}     {gmax:<2d}     {N:<4d}   {lc:.12f}   {dval}")
+    add("```")
+    add("")
+
+    add("### [3] Linear fit")
+    add("```")
+    add("Fit  λ_c = α·Δ + β  over (n=2,3,4,5):")
+    add(f"  α       = {alpha:.12f} ± {alpha_err:.12f}")
+    add(f"  β       = {beta:.12f} ± {beta_err:.12f}")
+    add(f"  r       = {r:.12f}")
+    add(f"  r²      = {r2:.12f}")
+    add(
+        "  residuals (per n): "
+        f"n=2: {residuals[0]:.12e}, n=3: {residuals[1]:.12e}, "
+        f"n=4: {residuals[2]:.12e}, n=5: {residuals[3]:.12e}"
+    )
+    add("```")
+    add("")
+
+    add("### [4] Generation convergence")
+    add("```")
+    for n in [2, 3, 4, 5]:
+        arr = sorted(lam_by_n[n], key=lambda x: x[0])
+        joined = ", ".join([f"g={int(g)}: {lc:.12f}" for g, _, lc in arr])
+        add(f"n={n}: {joined}")
+    add("")
+    add("Fitted convergence time τ_n (from λ_c(n,g) = λ_c(n) + C·exp(−g/τ_n)):")
+    for n in [2, 3, 4, 5]:
+        add(
+            f"n={n}: τ = {tau_fit[n]:.12f}, "
+            f"predicted 1/log(ρ_{n}/|ρ_{n}^(2)|) = {tau_pred[n]:.12f}"
         )
-        f.write("```\n\n")
+    add("```")
+    add("")
 
-        f.write("### [4] Generation convergence\n")
-        f.write("```\n")
-        for n in [2, 3, 4, 5]:
-            arr = sorted(lam_by_n[n], key=lambda x: x[0])
-            joined = ", ".join([f"g={int(g)}: {lc:.12f}" for g, _, lc in arr])
-            f.write(f"n={n}: {joined}\n")
-        f.write("\n")
-        f.write("Fitted convergence time τ_n (from λ_c(n,g) = λ_c(n) + C·exp(−g/τ_n)):\n")
-        for n in [2, 3, 4, 5]:
-            f.write(
-                f"n={n}: τ = {tau_fit[n]:.12f}, "
-                f"predicted 1/log(ρ_{n}/|ρ_{n}^(2)|) = {tau_pred[n]:.12f}\n"
-            )
-        f.write("```\n\n")
+    add("### [5] Smoke test")
+    add(
+        f"Uniform-fissile slab (all A_0, N=50): computed λ_c = {smoke.computed_lambda_c:.12f}, "
+        f"analytic prediction λ_c = D·(π/L)² + Σ_r = {smoke.analytic_lambda_c:.12f}, "
+        f"relative error {smoke.relative_error:.12%}."
+    )
+    add("")
 
-        f.write("### [5] Smoke test\n")
-        f.write(
-            f"Uniform-fissile slab (all A_0, N=50): computed λ_c = {smoke.computed_lambda_c:.12f}, "
-            f"analytic prediction λ_c = D·(π/L)² + Σ_r = {smoke.analytic_lambda_c:.12f}, "
-            f"relative error {smoke.relative_error:.12%}.\n\n"
-        )
+    add("### [6] Three figures committed")
+    add("Paths under `figures/`.")
+    add("")
 
-        f.write("### [6] Three figures committed\n")
-        f.write("Paths under `figures/`.\n\n")
+    add("### [7] Plain-language summary")
+    add(
+        "The spectral-gap correlation is positive and approximately linear across n=2..5, "
+        "with fit metrics reported above. "
+        "The computed λ_c values should be compared directly against 1.064, 37/32, and 7/6 "
+        "without forcing rational rounding. "
+        "Generation-wise convergence is quantified by fitted τ_n values and compared to "
+        "1/log(ρ_n/|ρ_n^(2)|) predictions for each n."
+    )
 
-        f.write("### [7] Plain-language summary\n")
-        f.write(
-            "The spectral-gap correlation is positive and approximately linear across n=2..5, "
-            "with fit metrics reported above. "
-            "The computed λ_c values should be compared directly against 1.064, 37/32, and 7/6 "
-            "without forcing rational rounding. "
-            "Generation-wise convergence is quantified by fitted τ_n values and compared to "
-            "1/log(ρ_n/|ρ_n^(2)|) predictions for each n.\n"
-        )
+    OUT_REPORT.write_text("\n".join(report_lines).rstrip("\n") + "\n")
 
     return {
         "smoke": smoke,

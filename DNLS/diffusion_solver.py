@@ -82,8 +82,6 @@ def _dominant_sparse(F: np.ndarray, L: np.ndarray, sigma: float = 1.0) -> float:
     L_sp = csc_matrix(L)
     vals = eigs(F_sp, M=L_sp, k=1, sigma=sigma, which="LM", return_eigenvectors=False)
     val = vals[0]
-    if abs(val.imag) > 1e-7:
-        return float(val.real)
     return float(val.real)
 
 
