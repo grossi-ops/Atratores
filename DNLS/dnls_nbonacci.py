@@ -72,9 +72,16 @@ def tribonacci_word(length):
 
 def tetrabonacci_word(N):
     """
-    Tetrabonacci substitution (string form):
-        A -> AB, B -> AC, C -> AD, D -> A
-    Returns the first N symbols.
+    Tetrabonacci substitution: A->AB, B->AC, C->AD, D->A.
+    Returns the first N symbols of the infinite tetrabonacci word as a string.
+
+    Convention (hopping values):
+        t_A = 1.0, t_B = 0.5, t_C = 0.25, t_D = 0.125
+    This is a geometric series with ratio 0.5; it is a convention choice,
+    not the unique parameterisation — see build_hamiltonian_tetra.
+
+    Perron–Frobenius eigenvalue (tetrabonacci constant): largest root of
+        x^4 - x^3 - x^2 - x - 1 = 0  ≈ 1.92756.
     """
     s = "A"
     rules = {"A": "AB", "B": "AC", "C": "AD", "D": "A"}
@@ -85,7 +92,14 @@ def tetrabonacci_word(N):
 
 def tetrabonacci_word_natural(n_iterations):
     """
-    Return the full tetrabonacci word after n_iterations substitutions.
+    Return the n-th iterate of the tetrabonacci substitution starting from 'A'.
+
+    Natural lengths follow OEIS A000078 (tetrabonacci numbers):
+        n=0 -> 1, n=1 -> 2, n=2 -> 4, n=3 -> 8, n=4 -> 15, n=5 -> 29, ...
+
+    Uses a character-by-character dict substitution rather than str.replace().
+    Chained str.replace() calls are non-commutative: replacing 'A'->'AB' first
+    would wrongly expand the new 'A' in 'AB' on a subsequent pass.
     """
     s = "A"
     rules = {"A": "AB", "B": "AC", "C": "AD", "D": "A"}
@@ -95,6 +109,10 @@ def tetrabonacci_word_natural(n_iterations):
 
 
 def pentabonacci_word(N):
+    """
+    Pentabonacci substitution: A->AB, B->AC, C->AD, D->AE, E->A.
+    Returns the first N symbols of the infinite pentabonacci word as a string.
+    """
     s = "A"
     rules = {"A": "AB", "B": "AC", "C": "AD", "D": "AE", "E": "A"}
     while len(s) < N:
@@ -103,6 +121,9 @@ def pentabonacci_word(N):
 
 
 def pentabonacci_word_natural(n_iterations):
+    """
+    Return the full pentabonacci word after n_iterations substitutions.
+    """
     s = "A"
     rules = {"A": "AB", "B": "AC", "C": "AD", "D": "AE", "E": "A"}
     for _ in range(n_iterations):
@@ -142,6 +163,7 @@ def nbonacci_word(n, generation):
     return s
 
 
+
 # ---------------------------------------------------------------------------
 # 2.  Tight-binding Hamiltonian
 # ---------------------------------------------------------------------------
@@ -170,6 +192,39 @@ def build_hamiltonian(word, N, t_mod=0.5):
     """
     hop_map = {0: 1.0, 1: t_mod, 2: t_mod**2}
     hoppings = np.array([hop_map.get(word[j], t_mod) for j in range(N - 1)])
+    H = np.zeros((N, N))
+    for j in range(N - 1):
+        H[j, j + 1] = hoppings[j]
+        H[j + 1, j] = hoppings[j]
+    return H, hoppings
+
+
+def build_hamiltonian_tetra(word_str, N):
+    """
+    Tridiagonal tight-binding Hamiltonian for the tetrabonacci chain.
+
+    Hopping amplitudes (convention — geometric series with ratio 0.5):
+        letter A -> t_A = 1.0
+        letter B -> t_B = 0.5
+        letter C -> t_C = 0.25
+        letter D -> t_D = 0.125
+
+    This parameterisation is a convention choice, not the unique one.
+    It matches the t_mod=0.5 pattern used in build_hamiltonian for
+    fibonacci/tribonacci so that comparisons are meaningful.
+
+    Parameters
+    ----------
+    word_str : str, tetrabonacci word (length >= N), characters in 'ABCD'
+    N        : int, number of sites
+
+    Returns
+    -------
+    H        : (N, N) ndarray, real symmetric Hamiltonian
+    hoppings : (N-1,) ndarray, bond hopping values
+    """
+    hop_map = {"A": 1.0, "B": 0.5, "C": 0.25, "D": 0.125}
+    hoppings = np.array([hop_map[word_str[j]] for j in range(N - 1)])
     H = np.zeros((N, N))
     for j in range(N - 1):
         H[j, j + 1] = hoppings[j]
