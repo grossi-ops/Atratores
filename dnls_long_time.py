@@ -41,7 +41,7 @@ Author
     G6 LLC, Newark NJ  |  pablogrossi@hotmail.com
     GitHub: https://github.com/TOTOGT/AXLE
 
-License: MIT
+License: MIT (see DNLS/LICENSE-CODE)
 """
 
 from __future__ import annotations
