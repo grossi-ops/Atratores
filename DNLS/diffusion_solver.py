@@ -1,0 +1,159 @@
+#!/usr/bin/env python3
+"""
+One-group diffusion criticality solver for n-bonacci media.
+"""
+
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass
+
+import numpy as np
+from scipy.linalg import eig
+from scipy.optimize import brentq
+from scipy.sparse import csc_matrix, diags
+from scipy.sparse.linalg import eigs
+
+
+def material_params(word: str, lambd: float) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Map symbols to (D, Sigma_r, nuSigmaf).
+
+    fissile (A / A_0): D=1.0, Sigma_r=0.5, nuSigmaf=lambda
+    absorber (others): D=1.0, Sigma_r=2.0, nuSigmaf=0
+    """
+    symbols = np.array(list(word), dtype=object)
+    is_fissile = symbols == "A"
+    N = len(symbols)
+    D = np.ones(N, dtype=float)
+    Sigma_r = np.where(is_fissile, 0.5, 2.0).astype(float)
+    nuSigmaf = np.where(is_fissile, float(lambd), 0.0).astype(float)
+    return D, Sigma_r, nuSigmaf
+
+
+def build_loss_matrix(D: np.ndarray, Sigma_r: np.ndarray, h: float = 1.0) -> np.ndarray:
+    """
+    Build symmetric tridiagonal loss operator with harmonic-mean interfaces and vacuum BC.
+    """
+    D = np.asarray(D, dtype=float)
+    Sigma_r = np.asarray(Sigma_r, dtype=float)
+    if D.ndim != 1 or Sigma_r.ndim != 1 or D.shape != Sigma_r.shape:
+        raise ValueError("D and Sigma_r must be 1D arrays of equal length")
+    if h <= 0:
+        raise ValueError("h must be positive")
+
+    N = D.size
+    if N < 1:
+        raise ValueError("empty medium")
+
+    if N == 1:
+        diag = Sigma_r[0] + 2.0 * D[0] / (h * h)
+        return np.array([[diag]], dtype=float)
+
+    D_if = 2.0 * D[:-1] * D[1:] / (D[:-1] + D[1:])
+    left = np.empty(N, dtype=float)
+    right = np.empty(N, dtype=float)
+    left[0] = D[0]
+    left[1:] = D_if
+    right[:-1] = D_if
+    right[-1] = D[-1]
+
+    diag = Sigma_r + (left + right) / (h * h)
+    off = -D_if / (h * h)
+    L = np.diag(diag) + np.diag(off, 1) + np.diag(off, -1)
+    return L
+
+
+def build_fission_matrix(nuSigmaf: np.ndarray) -> np.ndarray:
+    return np.diag(np.asarray(nuSigmaf, dtype=float))
+
+
+def _dominant_dense(F: np.ndarray, L: np.ndarray) -> float:
+    vals = eig(F, L, check_finite=False, overwrite_a=False, overwrite_b=False)[0]
+    vals = vals[np.isfinite(vals)]
+    vals = vals[np.abs(vals.imag) < 1e-9].real
+    if vals.size == 0:
+        return 0.0
+    return float(np.max(vals))
+
+
+def _dominant_sparse(F: np.ndarray, L: np.ndarray) -> float:
+    F_sp = csc_matrix(F)
+    L_sp = csc_matrix(L)
+    vals = eigs(F_sp, M=L_sp, k=1, sigma=1.0, which="LM", return_eigenvectors=False)
+    val = vals[0]
+    if abs(val.imag) > 1e-7:
+        return float(val.real)
+    return float(val.real)
+
+
+def keff(L: np.ndarray, F: np.ndarray) -> float:
+    N = L.shape[0]
+    if N <= 300:
+        return _dominant_dense(F, L)
+    return _dominant_sparse(F, L)
+
+
+def lambda_c(word: str, bracket: tuple[float, float] = (0.3, 6.0), tol: float = 1e-9) -> float:
+    D, Sigma_r, _ = material_params(word, 0.0)
+    L = build_loss_matrix(D, Sigma_r, h=1.0)
+
+    def f(lmbd: float) -> float:
+        _, _, nuSigmaf = material_params(word, lmbd)
+        F = build_fission_matrix(nuSigmaf)
+        return keff(L, F) - 1.0
+
+    a, b = bracket
+    fa = f(a)
+    fb = f(b)
+    if fa * fb > 0:
+        raise ValueError(f"Root not bracketed for lambda in [{a}, {b}] (f(a)={fa}, f(b)={fb})")
+    return float(brentq(f, a, b, xtol=tol, rtol=tol, maxiter=200))
+
+
+@dataclass
+class SmokeTestResult:
+    computed_lambda_c: float
+    analytic_lambda_c: float
+    relative_error: float
+    passed: bool
+
+
+def uniform_slab_smoke_test(N: int = 50, h: float = 1.0, tol_rel: float = 0.01) -> SmokeTestResult:
+    word = "A" * N
+    computed = lambda_c(word, bracket=(0.3, 6.0), tol=1e-10)
+
+    D = 1.0
+    Sigma_r = 0.5
+    L = N * h
+    analytic = D * (math.pi / L) ** 2 + Sigma_r
+    rel_err = abs(computed - analytic) / analytic
+    passed = rel_err <= tol_rel
+    return SmokeTestResult(
+        computed_lambda_c=float(computed),
+        analytic_lambda_c=float(analytic),
+        relative_error=float(rel_err),
+        passed=bool(passed),
+    )
+
+
+def run_smoke_test_or_fail() -> SmokeTestResult:
+    result = uniform_slab_smoke_test()
+    if not result.passed:
+        raise RuntimeError(
+            "Uniform slab smoke test failed: "
+            f"computed={result.computed_lambda_c:.12f}, "
+            f"analytic={result.analytic_lambda_c:.12f}, "
+            f"relative_error={result.relative_error:.6%}"
+        )
+    return result
+
+
+if __name__ == "__main__":
+    out = run_smoke_test_or_fail()
+    print(
+        "Uniform-fissile slab smoke test passed:",
+        f"computed λ_c={out.computed_lambda_c:.12f},",
+        f"analytic λ_c={out.analytic_lambda_c:.12f},",
+        f"relative error={out.relative_error:.6%}",
+    )

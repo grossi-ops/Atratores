@@ -1,0 +1,54 @@
+### [1] Pentabonacci OEIS verification
+```
+pentabonacci_word_natural(0)  length = 1     (expected 1)  OK
+pentabonacci_word_natural(1)  length = 2     (expected 2)  OK
+pentabonacci_word_natural(2)  length = 4     (expected 4)  OK
+pentabonacci_word_natural(3)  length = 8     (expected 8)  OK
+pentabonacci_word_natural(4)  length = 16    (expected 16)  OK
+pentabonacci_word_natural(5)  length = 31    (expected 31)  OK
+pentabonacci_word_natural(6)  length = 61    (expected 61)  OK
+pentabonacci_word_natural(7)  length = 120   (expected 120)  OK
+pentabonacci_word_natural(8)  length = 236   (expected 236)  OK
+```
+
+### [2] λ_c(n) headline table
+```
+n   ρ_n         |ρ_n^(2)|    Δ_n         g_max  N      λ_c(n,g_max)   draft_value
+2   1.61803     0.61803      1.00000     10     144    1.064187045364   1.064
+3   1.83929     0.73735      1.10193     9      274    1.156258026958   37/32 = 1.15625
+4   1.92756     0.81828      1.10929     8      208    1.166664991794   7/6 ≈ 1.16667
+5   1.96595     0.87105      1.09490     8      236    1.166666666667   7/6 ≈ 1.16667
+```
+
+### [3] Linear fit
+```
+Fit  λ_c = α·Δ + β  over (n=2,3,4,5):
+  α       = 0.957747680565 ± 0.102506024672
+  β       = 0.107400019206 ± 0.110444955160
+  r       = 0.988738104107
+  r²      = 0.977603038513
+  residuals (per n): n=2: -9.606544065861e-04, n=3: -6.516772247688e-03, n=4: -3.151002908081e-03, n=5: 1.062842956236e-02
+```
+
+### [4] Generation convergence
+```
+n=2: g=7: 1.069953319125, g=8: 1.065435703396, g=9: 1.064894404476, g=10: 1.064187045364
+n=3: g=6: 1.165400844906, g=7: 1.156258032881, g=8: 1.156258029922, g=9: 1.156258026958
+n=4: g=6: 1.166666680261, g=7: 1.166666471672, g=8: 1.166664991794
+n=5: g=6: 1.166666666667, g=7: 1.166666666667, g=8: 1.166666666667
+
+Fitted convergence time τ_n (from λ_c(n,g) = λ_c(n) + C·exp(−g/τ_n)):
+n=2: τ = 0.941780372281, predicted 1/log(ρ_2/|ρ_2^(2)|) = 1.039043460618
+n=3: τ = 0.866231171637, predicted 1/log(ρ_3/|ρ_3^(2)|) = 1.094011953286
+n=4: τ = 1.677726102096, predicted 1/log(ρ_4/|ρ_4^(2)|) = 1.167117923772
+n=5: τ = inf, predicted 1/log(ρ_5/|ρ_5^(2)|) = 1.228451496484
+```
+
+### [5] Smoke test
+Uniform-fissile slab (all A_0, N=50): computed λ_c = 0.503793342526, analytic prediction λ_c = D·(π/L)² + Σ_r = 0.503947841760, relative error 0.030657782755%.
+
+### [6] Three figures committed
+Paths under `figures/`.
+
+### [7] Plain-language summary
+The spectral-gap correlation is positive and approximately linear across n=2..5, with fit metrics reported above. The computed λ_c values should be compared directly against 1.064, 37/32, and 7/6 without forcing rational rounding. Generation-wise convergence is quantified by fitted τ_n values and compared to 1/log(ρ_n/|ρ_n^(2)|) predictions for each n.
