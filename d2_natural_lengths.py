@@ -314,6 +314,8 @@ def make_figure(
 
     fig.tight_layout()
     fig.savefig(out_path, dpi=150)
+    fig.savefig(os.path.join("DNLS", "figures", "fig_A_d2_scaling.png"), dpi=150)
+    fig.savefig(os.path.join("DNLS", "figures", "fig6_d2_natural.pdf"))
     plt.close(fig)
     print(f"\nFigure saved → {out_path}")
 
@@ -413,6 +415,7 @@ def main() -> int:
 
     # --- [6] Figure ---
     os.makedirs("figures", exist_ok=True)
+    os.makedirs(os.path.join("DNLS", "figures"), exist_ok=True)
     fig_path = os.path.join("figures", "d2_natural_lengths.png")
     make_figure(nat_rows, arb_rows, fib_fit, trib_fit, fig_path)
 
