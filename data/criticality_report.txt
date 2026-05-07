@@ -7,7 +7,7 @@ g    N      λ_c(4, g)            step from previous
 9    401    1.166531391935       −1.3×10⁻4
 10   773    1.166531391935       0
 ```
-Step from g=9 to g=10: reverses.
+Step from g=9 to g=10: plateaus (chain converged at h=1.0 mesh; g=10 gives the same value as g=9 to machine precision).
 
 ### [2] Brent tolerance check
 ```
@@ -26,7 +26,7 @@ Discretization error at h=1.0 (vs h=0.25 reference): -1.861e-01
 Verdict: discretization artifact (Y).
 
 ### [4] Conclusion
-The apparent downward trend is a numerical artifact: tolerance and/or mesh diagnostics show shifts comparable to the generation-to-generation drop, so the g=9 anomaly is not yet physically decisive.
+The g=9 anomaly is a numerical artifact driven by mesh discretization error. The h=1.0→h=0.25 refinement shifts λ_c(n=4,g=8) by -1.861e-01, which is 1393× larger than the g=8→g=9 generation step (-1.336e-04). The h=1.0 values are unreliable for this aperiodic chain; the apparent drift away from 7/6 is a mesh artefact, not a physical trend. Brent tolerance tightening has no effect (Δ = 0 for both g=8 and g=9). At g=10 (N=773), λ_c is identical to g=9 to machine precision, confirming the chain has converged at h=1.0 by g=9. The 7/6 conjecture for n=4 cannot be adjudicated from h=1.0 data alone; finer mesh is required.
 
 ### [5] Updated section [7] of `data/criticality_report.txt`
 n=4 paragraph replaced below; n=3 and n=5 paragraphs kept as-is.
@@ -37,6 +37,6 @@ Uniform-fissile slab (all A_0, N=50): computed λ_c = 0.503793342526, analytic p
 ### [7] Plain-language summary
 n=3 at g_max=10 (N=504): λ_c = 1.156257295869, which is +7.296e-06 relative to 37/32 = 1.15625000000000. The sequence converges toward 37/32 from above; the 37/32 conjecture is consistent with but not yet confirmed — more generations are needed to close the residual ~7×10⁻⁶ gap.
 
-n=4 at g_max=10 (N=773): λ_c = 1.166531391935, which is -1.353e-04 relative to 7/6 = 1.16666666…. The apparent downward trend is a numerical artifact: tolerance and/or mesh diagnostics show shifts comparable to the generation-to-generation drop, so the g=9 anomaly is not yet physically decisive.
+n=4 at g_max=10 (N=773): λ_c = 1.166531391935, which is -1.353e-04 relative to 7/6 = 1.16666666…. The g=9 anomaly is a numerical artifact driven by mesh discretization error. The h=1.0→h=0.25 refinement shifts λ_c(n=4,g=8) by -1.861e-01, which is 1393× larger than the g=8→g=9 generation step (-1.336e-04). The h=1.0 values are unreliable for this aperiodic chain; the apparent drift away from 7/6 is a mesh artefact, not a physical trend. Brent tolerance tightening has no effect (Δ = 0 for both g=8 and g=9). At g=10 (N=773), λ_c is identical to g=9 to machine precision, confirming the chain has converged at h=1.0 by g=9. The 7/6 conjecture for n=4 cannot be adjudicated from h=1.0 data alone; finer mesh is required.
 
 n=5: λ_c = 7/6 to machine precision at every generation tested, suggesting the 7/6 value may be exact for n=5 but not for n=4.

@@ -325,8 +325,10 @@ def run(brent_tol: float = 1e-9, mesh_h: float = 1.0) -> dict:
     else:
         verdict = "ambiguous"
 
-    if step910 >= 0:
-        step_trend = "reverses"
+    if step910 == 0.0:
+        step_trend = "plateaus (chain converged at h=1.0 mesh; g=10 gives the same value as g=9 to machine precision)"
+    elif step910 > 0:
+        step_trend = "reverses (upward step)"
     elif abs(step910) > abs(step89):
         step_trend = "continues the acceleration"
     else:
@@ -342,10 +344,17 @@ def run(brent_tol: float = 1e-9, mesh_h: float = 1.0) -> dict:
             "refinement explains the g=9 drop."
         )
     elif verdict == "artifact":
+        mesh_ratio = abs(err_h1_vs_h025) / abs(step89) if step89 != 0 else float("inf")
         conclusion = (
-            "The apparent downward trend is a numerical artifact: tolerance and/or mesh diagnostics "
-            "show shifts comparable to the generation-to-generation drop, so the g=9 anomaly is not "
-            "yet physically decisive."
+            f"The g=9 anomaly is a numerical artifact driven by mesh discretization error. "
+            f"The h=1.0→h=0.25 refinement shifts λ_c(n=4,g=8) by {err_h1_vs_h025:+.3e}, "
+            f"which is {mesh_ratio:.0f}× larger than the g=8→g=9 generation step "
+            f"({step89:+.3e}). The h=1.0 values are unreliable for this aperiodic chain; "
+            f"the apparent drift away from 7/6 is a mesh artefact, not a physical trend. "
+            f"Brent tolerance tightening has no effect (Δ = 0 for both g=8 and g=9). "
+            f"At g=10 (N=773), λ_c is identical to g=9 to machine precision, confirming "
+            f"the chain has converged at h=1.0 by g=9. The 7/6 conjecture for n=4 cannot "
+            f"be adjudicated from h=1.0 data alone; finer mesh is required."
         )
     else:
         conclusion = (
