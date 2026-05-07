@@ -230,7 +230,7 @@ def plot_ipr_vs_t(
     plt.tight_layout()
     plt.savefig(out_path, dpi=140)
     # fig9 is the deposit-facing name; provenance: see DNLS/V4_DESCRIPTION.md
-    plt.savefig("DNLS/figures/fig9_T1e6_saturation.pdf")
+    plt.savefig(os.path.join("DNLS", "figures", "fig9_T1e6_saturation.pdf"))
     plt.close()
     print(f"  -> {out_path}")
 
