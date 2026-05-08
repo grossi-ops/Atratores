@@ -1,0 +1,35 @@
+10 files imported cleanly. Now drag these 21 from `~/Desktop/dnls/` into the upload box:
+
+**Paper source (1):**
+- `paper_v3.tex`
+
+**Code (9):**
+- `dnls_nbonacci.py` (parent simulation)
+- `dnls_long_time.py` (DOP853 evolver)
+- `dnls_lambda1p5_sweep.py`
+- `analyze_long_time.py`
+- `fss_analyze.py`
+- `d2_natural_lengths.py`
+- `paper_figures.py`
+- `generate_figures.py` (figs 1–5 producer)
+- `generate_figures_v3.py` ← **the fig6–9 producer; this is the file that closes the V3 reproducibility gap**
+
+**Data (8):**
+- `ipr_vs_time.csv` (long-time series, ~326 KB)
+- `ipr_N200_T1e4.csv`, `ipr_N500_T1e4.csv`, `ipr_N1000_T1e4.csv`, `ipr_N2000_T1e4.csv` (FSS rows, ~260 KB each)
+- `fss_D2.csv`, `fss_alpha.csv`, `fss_tsat.csv` (derived analysis)
+
+**Lean (2):**
+- `TribonacciDNLS.lean` (was in V1, not in V3 — re-add for self-containment)
+- `FoldEvents.lean` (NEW — sorry-free)
+
+**Docs (1):**
+- `README_v3.md`
+
+That's 21 → total deposit count 31. Total upload size ~1.6 MB, will finish in seconds.
+
+**Do NOT drag:** the `__pycache__/` folder, `_perm_test`, `.DS_Store`, the variant files (`dnls_long_time copy.py`, `dnls_long_time_atratores_root.py`, `dnls_long_time_axle.py`, `dnls_long_time_parallel.py`, `dnls_nbonacci_v3.py`), the briefs (`copilot_brief_*.md`, `copilot_t1e5_run_brief.md`, `copilot_followup_brief.md`), the planning docs (`TODO_v4_overnight.md`, `V4_MANIFEST.md`, `V4_README.md`, `V4_zenodo_description.md`, `notes_for_claude.md`, `chapter_eta_outline.md`, `gumroad_listing.md`, `prb_cover_letter.md`, `CLAUDE.md`), the older paper sources (`nbonacci_dnls_paper.tex`, `nbonacci_dnls_paper_with_figs.tex`, `nbonacci_dnls_paper_with_figs.pdf`), the placeholder helper (`make_placeholder_figs.py`), the alternate fig PNGs (`fig_A`/`B`/`C`/`D`/`fss_*.png`/`long_*.png`), and the `criticality_paper/` subfolder (separate deposit).
+
+Easiest way to avoid mistakes: drag files individually rather than selecting the whole folder.
+
+Once those 21 land, you'll see 31 of 100 files in the storage bar and can move on to the metadata fields (title / description / license / related works).
