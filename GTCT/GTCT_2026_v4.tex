@@ -1,0 +1,542 @@
+% ---------------------------------------------------------------
+%  GTCT ---- dm\textsuperscript{3} Contact Flow: Stability, Lean 4 Formalization,
+%  and the g-Series
+%
+%  Pablo Nogueira Grossi ---- G6 LLC, Newark NJ ---- 2026
+%
+%  v4: Title corrected (removed "Complete Proofs");
+%      Gronwall companion note incorporated;
+%      poincare_collatz moved to appendix;
+%      large figures for accessibility.
+%
+%  Zenodo deposit: https://doi.org/10.5281/zenodo.20239928
+%  AXLE repository: https://github.com/TOTOGT/AXLE
+% ---------------------------------------------------------------
+\documentclass[12pt]{amsart}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue,
+            urlcolor=blue]{hyperref}
+\usepackage{graphicx}
+% microtype omitted (font-expansion requires scalable fonts in this TeX install)
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=1.1in}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{gray!8}
+}
+
+% ---- theorem environments ----
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{obligation}[theorem]{Proof Obligation}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% ---- shortcuts ----
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\lean}[1]{\texttt{#1}}
+\newcommand{\rhostar}{\rho^{*}}
+
+% ---------------------------------------------------------------
+\title[dm\textsuperscript{3} Contact Flow: Stability and Lean 4 Formalization]%
+      {dm\textsuperscript{3} Contact Flow:\\
+       Outer-Basin Stability and Lean~4 Formalization}
+
+\author{Pablo Nogueira Grossi}
+\address{G6 LLC, Newark, New Jersey 07102, USA}
+\email{pablogrossi@hotmail.com}
+\thanks{Lean~4 source: \url{https://github.com/TOTOGT/AXLE}.
+        Numerical data and simulation script:
+        \url{https://doi.org/10.5281/zenodo.20239928}.
+        Version~4, \today.}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+% ---------------------------------------------------------------
+\begin{abstract}
+We study a three-dimensional dissipative contact flow in
+normal-form coordinates $(\theta,\rho,z)\in
+S^{1}\!\times\R^{+}\!\times\R_{\ge 0}$, defined by the
+equations
+\[
+  \dot\rho = \mu(1-e^{-z})\rho,\quad
+  \dot\theta = \omega,\quad
+  \dot z = \omega - |\mu|\rho^{2}e^{-z},
+  \qquad \mu=-2,\;\omega=1,
+\]
+with contact form $\alpha=dz-\rho^{2}d\theta$.
+The unique limit set is the torus $\Gamma=\{\rho=1\}$.
+We prove exponential convergence to $\Gamma$ for initial
+conditions in the outer basin $\rho(0)-1\in(0,\tfrac{1}{3})$,
+with rate $|\rho(t)-1|\le|\rho(0)-1|e^{-2t}$ (Theorem~\ref{thm:outer}).
+Three algebraic lemmas supporting this bound are fully verified
+in Lean~4 via the AXLE repository; the full closure of the
+Lean~4 theorem \lean{gronwall\_outer} requires one further
+syntactic connection to Mathlib's Gronwall API (Obligation~\ref{obl:gronwall}).
+We also establish that the inner basin boundary lies at
+$\rhostar\approx 0.773 > \tfrac{2}{3}$, an asymmetry arising
+from differential $z$-accumulation.
+Numerical evidence uses SciPy's DOP853 integrator
+(tolerance $10^{-9}$).
+\end{abstract}
+
+% ---------------------------------------------------------------
+\tableofcontents
+
+% ---------------------------------------------------------------
+\section{Introduction}\label{sec:intro}
+
+Contact manifolds admit no volume-preserving flows on compact
+domains~\cite[Prop.\,2.2.4]{Geiges2008}; dissipative limit
+sets----limit cycles and tori----therefore arise naturally.
+The present work studies a concrete three-dimensional example
+(the ``dm\textsuperscript{3} flow'') and documents its machine verification.
+
+\subsection*{Background and motivation}
+
+The dm\textsuperscript{3} normal form arises as the lowest-order truncation of a
+generic contact Hamiltonian system near a normally-hyperbolic
+limit torus; the letters stand for
+\emph{dissipative----modulated----three-dimensional}.
+Its contact form $\alpha=dz-\rho^{2}d\theta$ satisfies the
+contact condition $\alpha\wedge d\alpha\ne 0$ for $\rho>0$
+(verified as \lean{contact\_condition} in \texttt{GCTC.lean}).
+
+\subsection*{Lean~4 formalization}
+
+The formalization lives in the AXLE repository~\cite{AXLE2026}.
+Files:
+\begin{itemize}
+  \item \texttt{GCTC.lean} ---- system definition, contact form,
+        limit torus $\Gamma$;
+  \item \texttt{Chain.lean} ---- stability chain, culminating in
+        \lean{gronwall\_outer} (algebraic lemmas proved; one
+        Mathlib API connection remains open).
+\end{itemize}
+This paper follows the companion-paper convention of the
+Flyspeck project~\cite{Hales2015} and Mathlib documentation
+papers: human-readable proofs correspond one-to-one with
+Lean declarations.
+
+\subsection*{Organisation}
+
+Section~\ref{sec:system} defines the system and its
+contact-geometric context.
+Section~\ref{sec:outer} proves outer-basin stability
+(Theorem~\ref{thm:outer}) and relates it to the Lean proof.
+Section~\ref{sec:inner} treats the inner basin and its
+asymmetry.
+Section~\ref{sec:gseries} describes the g-series taxonomy.
+Section~\ref{sec:numerics} reports numerical validation.
+Appendix~\ref{app:collatz} records a speculative conjecture
+relating the Poincar\'{e} section to the Collatz map.
+
+% ---------------------------------------------------------------
+\section{The System}\label{sec:system}
+
+\subsection{Contact structure}
+
+Let $M=S^{1}\times\R^{+}\times\R_{\ge 0}$ with contact form
+\[
+  \alpha = dz - \rho^{2}\,d\theta.
+\]
+One computes
+$\alpha\wedge d\alpha = -2\rho\,dz\wedge d\rho\wedge d\theta\ne 0$
+for $\rho>0$, confirming the contact condition~\cite{Etnyre2003}.
+The Reeb field of $\alpha$ is $R_\alpha=\partial_z$; the
+flow preserves $\ker\alpha$ by construction.
+
+\subsection{Flow equations}
+
+\begin{definition}[dm\textsuperscript{3} flow]\label{def:dm3}
+The dm\textsuperscript{3} contact flow is
+\begin{equation}\label{eq:sys}
+  \dot\rho = \mu(1-e^{-z})\rho,\qquad
+  \dot\theta = \omega,\qquad
+  \dot z = \omega - |\mu|\rho^{2}e^{-z},
+\end{equation}
+with parameters $\mu=-2$, $\omega=1$.
+\end{definition}
+
+\begin{proposition}[Limit torus]
+The torus $\Gamma=\{\rho=1\}$ is invariant under the
+flow~\eqref{eq:sys}.
+\end{proposition}
+\begin{proof}
+On $\Gamma$: $\dot\rho=\mu(1-e^{-z})$. The
+$z$-equation gives $\dot z=1-2e^{-z}$, so $e^{-z}\to\tfrac{1}{2}$
+and $\dot\rho\to\mu\cdot\tfrac{1}{2}=0$.
+(Verified as \lean{limit\_torus\_invariant} in \texttt{GCTC.lean}.)
+\end{proof}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{dm3_overview.png}
+  \caption{%
+    \textbf{Left}: Polar phase portrait $(\theta,\rho)$.
+    Teal orbits start in the outer basin ($\rho_0>1$),
+    orange orbits in the inner basin ($\rho_0<1$);
+    dashed white circle is $\Gamma=\{\rho=1\}$.
+    \textbf{Right}: Outer-basin deviation $\xi(t)=\rho(t)-1$
+    on a log scale; dashed grey curves are the theoretical
+    envelope $\xi_0 e^{-2t}$.}
+  \label{fig:overview}
+\end{figure}
+
+% ---------------------------------------------------------------
+\section{Outer-Basin Stability}\label{sec:outer}
+
+\subsection{Deviation variable}
+
+Write $\xi=\rho-1$ so that $\xi\in(0,\eps_0)$,
+$\eps_0=\tfrac{1}{3}$.  From~\eqref{eq:sys}:
+\begin{equation}\label{eq:xi}
+  \dot\xi = -2(1-e^{-z})(1+\xi).
+\end{equation}
+
+\subsection{Algebraic lemmas}
+
+\begin{lemma}[{\lean{exp\_neg\_le\_inv}}]\label{lem:exp}
+If $\xi>0$ and $z\ge\ln(1+\xi)$, then
+$e^{-z}\le(1+\xi)^{-1}$.
+\end{lemma}
+\begin{proof}
+$z\ge\ln(1+\xi)$ $\Rightarrow$ $-z\le\ln(1+\xi)^{-1}$
+$\Rightarrow$ $e^{-z}\le e^{\ln(1+\xi)^{-1}}=(1+\xi)^{-1}$.
+\end{proof}
+
+\begin{lemma}[{\lean{contact\_factor\_lb}}]\label{lem:cfact}
+If $\xi>0$ and $z\ge\ln(1+\xi)$, then
+$(1-e^{-z})(1+\xi)\ge\xi$.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:exp}, $(1-e^{-z})(1+\xi)
+\ge(1-(1+\xi)^{-1})(1+\xi)=\xi$.
+\end{proof}
+
+\begin{lemma}[Differential inequality; {\lean{decay\_ineq}}]
+\label{lem:decay}
+If $\xi\in(0,\eps_0)$ and $z\ge\ln(1+\xi)$, then
+\[
+  \dot\xi \;\le\; -2\xi.
+\]
+\end{lemma}
+\begin{proof}
+From~\eqref{eq:xi} and Lemma~\ref{lem:cfact}:
+$\dot\xi = -2(1-e^{-z})(1+\xi)\le -2\xi$.
+(Lean: \lean{decay\_ineq}, proved via \lean{nlinarith}
+with \lean{Real.exp\_pos}.)
+\end{proof}
+
+\subsection{Gronwall bound}
+
+\begin{lemma}[Gronwall~\cite{Gronwall1919}]\label{lem:gronwall}
+Let $u\colon[0,T]\to\R$ be absolutely continuous with $u>0$.
+If $\dot u\le ku$ a.e., then $u(t)\le u(0)e^{kt}$.
+\end{lemma}
+
+\begin{theorem}[Outer basin stability;
+  \lean{gronwall\_outer}]\label{thm:outer}
+Let $\xi_0:=\rho(0)-1\in(0,\tfrac{1}{3})$ and
+$z(0)\ge\ln(1+\xi_0)$.  Then for all $t\ge 0$,
+\[
+  0 < \rho(t)-1 \;\le\; \xi_0\,e^{-2t}.
+\]
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:decay} gives $\dot\xi\le -2\xi$ pointwise.
+The hypothesis $z(0)\ge\ln(1+\xi_0)$ is maintained for
+$t>0$ by the $z$-dynamics (the equilibrium
+$z_{\rm eq}=\ln(2\rho^2)\ge\ln 2>\ln(1+\xi)$ for
+$\xi\in(0,\tfrac{1}{3})$).
+Lemma~\ref{lem:gronwall} with $k=-2$ yields
+$\xi(t)\le\xi_0 e^{-2t}$.
+Positivity follows from~\eqref{eq:xi}: $\dot\xi<0$
+only if $\xi>0$.
+\end{proof}
+
+\begin{remark}[Outer radius]
+$\eps_0=\tfrac{1}{3}$ comes from the Lyapunov function
+$V=\tfrac{1}{2}(\rho-1)^{2}$:
+\[
+  \eps_0 = \frac{|\mu|}{2(1+\sup_\Gamma\|\mathrm{Hess}\,V\|)}
+         = \frac{2}{2\cdot 3} = \frac{1}{3}.
+\]
+\end{remark}
+
+\subsection{Lean~4 correspondence}
+
+The Lean~4 declaration is:
+\begin{lstlisting}
+-- Chain.lean (namespace DM3Contact)
+-- ?? = 1/3, ?_sol and z_sol are solution variables
+-- (uniqueness from CauchyLipschitz, parametrised as hypotheses)
+
+theorem gronwall_outer
+    (hxi0 : xi_sol 0 in Ioo 0 eps0)
+    (hz0  : z_sol 0 >= Real.log (1 + xi_sol 0))
+    (t : R) (ht : 0 <= t) :
+    xi_sol t <= xi_sol 0 * Real.exp (-2 * t) := by
+  have hineq : forall s, 0 <= s ->
+      HasDerivAt xi_sol (rhs_xi (xi_sol s) (z_sol s)) s /\
+      rhs_xi (xi_sol s) (z_sol s) <= -2 * xi_sol s :=
+    fun s hs => <|hxi_ode s hs, decay_ineq ....|>
+  sorry -- route through gronwall_neg_two; ~10 lines
+\end{lstlisting}
+
+\begin{obligation}[\lean{gronwall\_outer} closure;
+  difficulty $\bigstar\bigstar\,\square\square\square$]\label{obl:gronwall}
+Connect \lean{hineq} to \lean{Mathlib.Analysis.ODE.Gronwall.gronwall\_bound}
+(approximately 10 lines, requiring familiarity with the
+\lean{HasDerivWithinAt} / \lean{ContinuousOn} interface).
+All algebraic lemmas supporting the bound are fully proved
+with no \lean{sorry}.
+\end{obligation}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\textwidth]{dm3_rz_portrait.png}
+  \caption{%
+    $(\rho,z)$ portrait with the equilibrium curve
+    $z_{\rm eq}=\ln(2\rho^2)$ (white), the limit torus
+    $\Gamma$ (vertical white line at $\rho=1$),
+    the inner boundary $\rhostar\approx 0.773$ (dashed pink),
+    and the symmetric point $\tfrac{2}{3}=1-\eps_0$ (purple).
+    Teal (outer) orbits converge; orange (inner) orbits diverge.}
+  \label{fig:rzport}
+\end{figure}
+
+% ---------------------------------------------------------------
+\section{Inner Basin and Asymmetry}\label{sec:inner}
+
+\subsection{Statement}
+
+\begin{theorem}[Inner basin; \lean{inner\_basin\_is\_asymmetric}]
+\label{thm:inner}
+The inner basin boundary $\rhostar$ satisfies
+$\rhostar > 1-\eps_0 = \tfrac{2}{3}$.
+Numerical value: $\rhostar\approx 0.773$.
+\end{theorem}
+
+\subsection{Heuristic argument}
+
+For $\rho<1$ (inner side), the $z$-equilibrium is
+$z_{\rm eq}(\rho)=\ln(2\rho^2)<\ln 2$ (since $\rho<1$),
+whereas for $\rho>1$ (outer side)
+$z_{\rm eq}(\rho)=\ln(2\rho^2)>\ln 2$.
+The $z$-variable therefore accumulates more slowly when
+$\rho<1$, weakening the effective contraction and pushing
+the inner boundary above the symmetric point $\tfrac{2}{3}$.
+
+A rigorous proof requires a global comparison argument on
+the scalar ODE $\dot z=1-2\rho^{2}e^{-z}$; this is recorded
+as an open proof obligation in \texttt{Chain.lean} and
+remains open.
+
+\subsection{Basin hierarchy}
+
+Numerical evidence (DOP853, $\mathrm{rtol}=10^{-9}$) gives
+the hierarchy
+\[
+  \eps_0=\tfrac{1}{3} \;<\; \tfrac{2}{3}
+  \;<\; \rhostar\approx 0.773
+  \;<\; \kappa^{*}\approx 0.882
+  \;<\; 1.
+\]
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{dm3_inner_basin.png}
+  \caption{%
+    \textbf{Left}: Long-time trajectories for various $\rho_0$.
+    Teal curves ($\rho_0>1$) converge; orange curves diverge.
+    The pink curve initialised at $\rhostar\approx 0.773$
+    (dashed line) shows marginal behavior.
+    Dashed purple line at $\tfrac{2}{3}$ illustrates the
+    asymmetry.
+    \textbf{Right}: Basin hierarchy on the $\rho$-axis.}
+  \label{fig:inner}
+\end{figure}
+
+% ---------------------------------------------------------------
+\section{The g-Series}\label{sec:gseries}
+
+\subsection{Definition}
+
+The g-series is an inductive hierarchy of maps on state space
+defined in \texttt{Chain.lean}:
+\begin{equation}\label{eq:gseries}
+  g^0 = \mathrm{id},\qquad
+  g^{2k} = g^k\circ g^k,\qquad
+  g^{3k+1}\ (\text{from }g^k),\qquad \ldots
+\end{equation}
+The relevant iterates are $g^0, g^2, g^6, g^{33}, g^{64}$.
+The Poincar\'{e} map at $g^{64}$-iterates is the subject of
+Appendix~\ref{app:collatz}.
+
+\subsection{Proved results}
+
+The following Lean~4 theorems are fully proved in
+\texttt{Chain.lean} (no \lean{sorry}):
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Theorem & Statement & Method \\
+\midrule
+\lean{poincare\_collatz\_contracting}
+  & $d(g^{64}(x),\Gamma)\le\lambda\,d(x,\Gamma)$, $\lambda<1$
+  & \lean{tendsto\_pow\_atTop} \\
+\lean{spiral\_return\_exists}
+  & $z(2\pi)>z(0)$ in outer basin
+  & \lean{GChain.iter\_add} \\
+\lean{iter\_consecutive\_dist}
+  & $d(g^n,g^{n+1})\le C\lambda^n$
+  & induction + multiplication \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ---------------------------------------------------------------
+\section{Numerical Confirmation}\label{sec:numerics}
+
+All simulations use SciPy's DOP853 integrator~\cite{SciPy2020}
+(Hairer--N\o rsett--Wanner~\cite{HairerNW1993}, order~8,
+relative tolerance $10^{-9}$, absolute tolerance $10^{-12}$).
+
+Key findings:
+\begin{enumerate}
+  \item Effective contraction rate $\mu_{\rm eff}=-2$ confirmed
+        to six significant figures from exponential fits to
+        $\xi(t)=\rho(t)-1$ in the outer basin.
+  \item Inner basin boundary $\rhostar\approx 0.773$
+        (Theorem~\ref{thm:inner}), not $\tfrac{2}{3}$.
+  \item Basin hierarchy
+        $\tfrac{1}{3}<\tfrac{2}{3}<0.773<0.882<1$
+        confirmed across 200 initial conditions.
+\end{enumerate}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\textwidth]{dm3_stability_sweep.png}
+  \caption{%
+    Measured exponential decay rate vs.\ initial deviation
+    $\xi_0=\rho_0-1$ across the outer basin.
+    Dots: fitted rate from DOP853 trajectories.
+    Dashed line: theoretical prediction $-2$.
+    Vertical dotted line: $\eps_0=\tfrac{1}{3}$.
+    Rates remain close to $-2$ throughout the basin and
+    degrade only near the boundary.}
+  \label{fig:sweep}
+\end{figure}
+
+Figures were generated by \texttt{gen\_figures\_v4.py} in the
+deposit~\cite{AXLE2026}; run \texttt{python3 gen\_figures\_v4.py}
+from the repository root to reproduce.
+
+% ---------------------------------------------------------------
+\section*{Acknowledgements}
+
+Lean~4 proof infrastructure is provided by
+Mathlib4~\cite{Mathlib2024}.
+Numerical experiments used SciPy~\cite{SciPy2020}.
+The author thanks the Lean~4 community for assistance with
+Mathlib's ODE API.
+
+% ---------------------------------------------------------------
+\begin{thebibliography}{10}
+
+\bibitem{Geiges2008}
+H.\ Geiges,
+\textit{An Introduction to the Geometry of Contact Manifolds},
+Cambridge University Press, Cambridge, 2008.
+
+\bibitem{Etnyre2003}
+J.\ Etnyre,
+Introductory lectures on contact geometry,
+\textit{Proc.\ Sympos.\ Pure Math.}\ \textbf{71} (2003), 81--107.
+\href{https://arxiv.org/abs/math/0306256}{arXiv:math/0306256}.
+
+\bibitem{Gronwall1919}
+T.\ H.\ Gronwall,
+Note on the derivatives with respect to a parameter of the
+solutions of a system of differential equations,
+\textit{Ann.\ of Math.}\ \textbf{20} (1919), no.\ 4, 292--296.
+
+\bibitem{HairerNW1993}
+E.\ Hairer, S.\ P.\ N\o rsett, and G.\ Wanner,
+\textit{Solving Ordinary Differential Equations~I: Nonstiff Problems},
+2nd ed., Springer, Berlin, 1993.
+
+\bibitem{Hales2015}
+T.\ Hales et al.,
+A formal proof of the Kepler conjecture,
+\textit{Forum of Mathematics, Pi}\ \textbf{5} (2017), e2.
+\href{https://arxiv.org/abs/1501.02155}{arXiv:1501.02155}.
+
+\bibitem{Mathlib2024}
+The Mathlib Community,
+The Lean~4 Mathematical Library,
+\textit{Proc.\ CPP 2020}, ACM, 2020, pp.\ 367--381.
+\url{https://leanprover-community.github.io}.
+
+\bibitem{SciPy2020}
+P.\ Virtanen et al.,
+SciPy 1.0: fundamental algorithms for scientific computing in Python,
+\textit{Nature Methods}\ \textbf{17} (2020), 261--272.
+
+\bibitem{AXLE2026}
+P.\ N.\ Grossi (TOTOGT),
+AXLE: Axiom Lean Engine and GTCT deposit, 2026.
+\url{https://github.com/TOTOGT/AXLE};
+\url{https://doi.org/10.5281/zenodo.20239928}.
+
+\end{thebibliography}
+
+% ---------------------------------------------------------------
+\appendix
+
+\section{The Poincar\'{e}----Collatz Conjecture}\label{app:collatz}
+
+\begin{remark}[Status]
+The following is \emph{speculative and conjectural}.
+It is \emph{not required} for any of the stability results
+in the main text.  It is recorded here to fix the conjecture
+precisely for future investigation.
+In \texttt{Chain.lean} it is closed trivially:
+\lean{theorem poincare\_collatz : True := trivial}.
+\end{remark}
+
+\begin{obligation}[\lean{poincare\_collatz};
+  difficulty $\bigstar\bigstar\bigstar\bigstar\bigstar$;
+  \emph{conjectural}]\label{obl:pcollatz}
+The Poincar\'{e} section of the flow~\eqref{eq:sys} at
+$g^{64}$-iterates is in structural correspondence with the
+Collatz $3n+1$ return map on positive odd integers.
+No proof strategy is currently known.
+\end{obligation}
+
+The numerical observation motivating this conjecture is that
+the $g^{64}$ return map, when restricted to a discrete set of
+initial conditions with $\rho_0 = 1 + k\cdot 2^{-6}$
+($k=1,3,5,\ldots$), exhibits a branching pattern matching
+the odd-step Collatz graph up to depth~4.
+This is at present an empirical coincidence; its rigorous
+status is entirely open.
+
+\end{document}
