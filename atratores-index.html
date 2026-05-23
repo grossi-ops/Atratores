@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atratores — Pablo Nogueira Grossi</title>
+<style>
+  :root {
+    --bg:      #0a0a0f;
+    --surface: #111118;
+    --border:  #1e1e2e;
+    --accent:  #7c6ff7;
+    --gold:    #f7c948;
+    --cyan:    #3dd6c8;
+    --rose:    #e05c7e;
+    --green:   #4ade80;
+    --text:    #d4d4e8;
+    --muted:   #6b6b8a;
+    --tag-bg:  #1a1a2e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 0%, #1a1040 0%, var(--bg) 70%);
+  }
+  header .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: #fff;
+    letter-spacing: 0.04em;
+  }
+  header .subtitle {
+    margin-top: 0.6rem;
+    font-size: 1rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  header .meta {
+    margin-top: 1.4rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  header .meta a { color: var(--accent); text-decoration: none; }
+  header .meta a:hover { text-decoration: underline; }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  nav a {
+    font-size: 0.78rem;
+    text-decoration: none;
+    color: var(--muted);
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  nav a:hover { color: #fff; border-color: var(--accent); background: #1a1040; }
+
+  /* ═══════════════════════════════════════
+     PORTFOLIO CAROUSEL
+  ═══════════════════════════════════════ */
+  .carousel-section {
+    padding: 2.5rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .carousel-section h2 {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 2rem;
+    margin-bottom: 1.4rem;
+  }
+  .carousel-track-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  .carousel-track {
+    display: flex;
+    gap: 1.2rem;
+    padding: 0.5rem 2rem 1.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .carousel-track::-webkit-scrollbar { height: 4px; }
+  .carousel-track::-webkit-scrollbar-track { background: transparent; }
+  .carousel-track::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ── PORTFOLIO CARD ── */
+  .pcard {
+    flex: 0 0 220px;
+    scroll-snap-align: start;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg);
+    transition: border-color 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .pcard:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+  /* The "screenshot" — a styled preview tile */
+  .pcard-thumb {
+    width: 100%;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .pcard-thumb svg { width: 100%; height: 100%; }
+  .pcard-thumb .thumb-label {
+    position: absolute;
+    bottom: 6px; left: 8px;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    font-family: monospace;
+  }
+
+  .pcard-body {
+    padding: 0.8rem 0.9rem 0.9rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .pcard-title {
+    font-size: 0.88rem;
+    color: #fff;
+    line-height: 1.35;
+    margin-bottom: 0.3rem;
+  }
+  .pcard-sub {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.4;
+    flex: 1;
+  }
+  .pcard-cat {
+    margin-top: 0.6rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.55rem;
+    border-radius: 10px;
+    display: inline-block;
+    align-self: flex-start;
+  }
+  .cat-sound  { background: #001e1c; color: var(--cyan); }
+  .cat-exhib  { background: #1f1800; color: var(--gold); }
+  .cat-lean   { background: #1a1040; color: var(--accent); }
+  .cat-book   { background: #1f0010; color: var(--rose); }
+  .cat-token  { background: #1f1800; color: var(--gold); }
+  .cat-bienal { background: #001a0a; color: var(--green); }
+  .cat-paper  { background: #1a1040; color: var(--accent); }
+
+  /* Carousel nav arrows */
+  .carousel-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0 2rem 0.5rem;
+    margin-top: -0.5rem;
+  }
+  .carousel-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .carousel-btn:hover { border-color: var(--accent); color: #fff; }
+
+  /* ── MAIN GRID ── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  section { scroll-margin-top: 80px; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 1.4rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .section-header .count { font-size: 0.72rem; color: var(--muted); }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-sound   { background: var(--cyan); }
+  .dot-exhibit { background: var(--gold); }
+  .dot-lean    { background: var(--accent); }
+  .dot-book    { background: var(--rose); }
+  .dot-bienal  { background: var(--green); }
+  .dot-emmes   { background: var(--gold); }
+  .dot-session { background: var(--muted); }
+  .dot-dnls    { background: var(--accent); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.1rem 1.3rem;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .card:hover { border-color: var(--accent); background: #12121f; }
+  .card .card-title { font-size: 0.95rem; color: #fff; margin-bottom: 0.3rem; line-height: 1.4; }
+  .card .card-sub   { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-bottom: 0.5rem; line-height: 1.4; }
+  .card .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.6rem; }
+  .tag { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.15rem 0.55rem; border-radius: 12px; background: var(--tag-bg); color: var(--muted); }
+  .tag.accent { background: #1a1040; color: var(--accent); }
+  .tag.gold   { background: #1f1800; color: var(--gold); }
+  .tag.cyan   { background: #001e1c; color: var(--cyan); }
+  .tag.rose   { background: #1f0010; color: var(--rose); }
+  .tag.green  { background: #001a0a; color: var(--green); }
+
+  .file-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .file-table td { padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .file-table td:first-child { color: var(--muted); font-family: monospace; font-size: 0.78rem; width: 22%; }
+  .file-table td a { color: var(--accent); text-decoration: none; }
+  .file-table td a:hover { text-decoration: underline; }
+  .file-table tr:hover td { background: var(--surface); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width:600px) {
+    .card-grid { grid-template-columns: 1fr; }
+    header { padding: 2rem 1rem 1.5rem; }
+    .pcard { flex: 0 0 180px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="eyebrow">grossi-ops · GitHub Pages</div>
+  <h1>Atratores</h1>
+  <div class="subtitle">Atractors — mathematics, sound, and visible form</div>
+  <div class="meta">
+    Pablo Nogueira Grossi · G6 LLC, Newark NJ ·
+    <a href="https://doi.org/10.5281/zenodo.19117399">Principia Orthogona</a> ·
+    <a href="https://github.com/grossi-ops/Atratores">GitHub</a> ·
+    <a href="https://github.com/TOTOGT/AXLE">AXLE</a>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#machines">Sound Machines</a>
+  <a href="#exhibitions">Exhibitions</a>
+  <a href="#bienal">XII Bienal SBM</a>
+  <a href="#sessions">Sessions</a>
+  <a href="#books">Books &amp; Papers</a>
+  <a href="#lean">Lean / AXLE</a>
+  <a href="#dnls">DNLS</a>
+  <a href="#gctc">GCTC</a>
+  <a href="#emmes">EMMEs</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════ PORTFOLIO CAROUSEL -->
+<div class="carousel-section">
+  <h2>Portfolio — all works</h2>
+  <div class="carousel-track-wrapper">
+    <div class="carousel-track" id="carousel">
+
+      <!-- 1 -->
+      <a class="pcard" href="ex-t10-cymatics.html">
+        <div class="pcard-thumb" style="background: linear-gradient(135deg,#0d1117 0%,#1a2744 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <!-- Chladni figure -->
+            <rect width="220" height="130" fill="none"/>
+            <g transform="translate(110,65)" stroke="#f7c948" stroke-width="0.8" fill="none" opacity="0.7">
+              <ellipse rx="40" ry="28"/>
+              <ellipse rx="70" ry="50"/>
+              <ellipse rx="95" ry="58" stroke="#3dd6c8" stroke-width="0.5"/>
+              <line x1="-100" y1="0" x2="100" y2="0" stroke="#3dd6c8" stroke-width="0.4"/>
+              <line x1="0" y1="-60" x2="0" y2="60" stroke="#3dd6c8" stroke-width="0.4"/>
+              <path d="M-60,-30 Q-20,0 -60,30" stroke="#f7c948" stroke-width="0.6"/>
+              <path d="M60,-30 Q20,0 60,30" stroke="#f7c948" stroke-width="0.6"/>
+            </g>
+            <text x="110" y="120" text-anchor="middle" fill="#f7c948" font-size="7" font-family="Georgia" opacity="0.8">Cymatics with Machines</text>
+          </svg>
+          <span class="thumb-label">ex-t10 · Exhibition</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">Cymatics with Machines</div>
+          <div class="pcard-sub">XII Bienal SBM · UFRN 2026 · Track T10</div>
+          <span class="pcard-cat cat-exhib">Exhibition</span>
+        </div>
+      </a>
+
+      <!-- 2 -->
+      <a class="pcard" href="g6-drone-machine.html">
+        <div class="pcard-thumb" style="background: radial-gradient(ellipse at 50% 50%, #1a1040 0%, #0a0a0f 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <g transform="translate(110,60)">
+              <!-- hexagon -->
+              <polygon points="0,-48 41.6,-24 41.6,24 0,48 -41.6,24 -41.6,-24" fill="none" stroke="#7c6ff7" stroke-width="1.2" opacity="0.8"/>
+              <polygon points="0,-28 24.2,-14 24.2,14 0,28 -24.2,14 -24.2,-14" fill="none" stroke="#3dd6c8" stroke-width="0.7" opacity="0.6"/>
+              <circle r="8" fill="none" stroke="#f7c948" stroke-width="1"/>
+              <!-- spokes -->
+              <line x1="0" y1="-48" x2="0" y2="48" stroke="#7c6ff7" stroke-width="0.3" opacity="0.3"/>
+              <line x1="-41.6" y1="-24" x2="41.6" y2="24" stroke="#7c6ff7" stroke-width="0.3" opacity="0.3"/>
+              <line x1="-41.6" y1="24" x2="41.6" y2="-24" stroke="#7c6ff7" stroke-width="0.3" opacity="0.3"/>
+            </g>
+            <text x="110" y="122" text-anchor="middle" fill="#7c6ff7" font-size="7" font-family="monospace" opacity="0.9">g₆ = 33 · k:m = 6:1</text>
+          </svg>
+          <span class="thumb-label">G6 Drone Machine</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">G6 Drone Machine</div>
+          <div class="pcard-sub">Six-fold resonance at the monster threshold</div>
+          <span class="pcard-cat cat-sound">Sound Machine</span>
+        </div>
+      </a>
+
+      <!-- 3 -->
+      <a class="pcard" href="collatz-engineering.html">
+        <div class="pcard-thumb" style="background: linear-gradient(160deg,#0f0f1a 0%,#0d1f1e 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <!-- orbit spiral -->
+            <g transform="translate(110,65)" fill="none" stroke-width="0.8">
+              <circle r="50" stroke="#1e1e2e" stroke-width="0.5"/>
+              <circle r="35" stroke="#1e1e2e" stroke-width="0.5"/>
+              <circle r="20" stroke="#1e1e2e" stroke-width="0.5"/>
+              <path d="M0,0 C30,-40 55,-15 55,0 C55,30 20,50 0,50 C-35,50 -55,20 -55,0 C-55,-40 -20,-50 0,-50 C25,-50 55,-30 55,0" stroke="#3dd6c8" stroke-width="1" opacity="0.7"/>
+              <circle r="4" fill="#f7c948"/>
+              <!-- Collatz numbers -->
+            </g>
+            <text x="110" y="118" text-anchor="middle" fill="#3dd6c8" font-size="7" font-family="monospace">Λ₂ = log(3/4) ≈ −0.2877</text>
+            <text x="110" y="127" text-anchor="middle" fill="#6b6b8a" font-size="6" font-family="monospace">dm³ · G6 Crystal · AXLE</text>
+          </svg>
+          <span class="thumb-label">Collatz Engineering</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">Collatz Engineering</div>
+          <div class="pcard-sub">dm³ axioms · G6 Crystal · AXLE Target 5</div>
+          <span class="pcard-cat cat-paper">Paper</span>
+        </div>
+      </a>
+
+      <!-- 4 -->
+      <a class="pcard" href="helical-attractor.html">
+        <div class="pcard-thumb" style="background: linear-gradient(135deg,#0a0f1a 0%,#0f1a0a 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <g transform="translate(110,65)" fill="none">
+              <!-- helical curve -->
+              <path d="M-90,0 C-70,-40 -30,-40 0,-20 C30,0 70,40 90,0" stroke="#4ade80" stroke-width="1.2" opacity="0.8"/>
+              <path d="M-90,10 C-70,-30 -30,-30 0,-10 C30,10 70,50 90,10" stroke="#4ade80" stroke-width="0.6" opacity="0.4"/>
+              <path d="M-90,-10 C-70,-50 -30,-50 0,-30 C30,-10 70,30 90,-10" stroke="#4ade80" stroke-width="0.6" opacity="0.4"/>
+              <!-- axis -->
+              <line x1="-95" y1="0" x2="95" y2="0" stroke="#1e1e2e" stroke-width="0.5"/>
+              <circle r="5" fill="#4ade80" opacity="0.8"/>
+            </g>
+            <text x="110" y="120" text-anchor="middle" fill="#4ade80" font-size="7" font-family="monospace" opacity="0.9">Helical Attractor · Contact Manifold</text>
+          </svg>
+          <span class="thumb-label">Helical Attractor</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">Helical Attractor</div>
+          <div class="pcard-sub">Contact manifolds · 3D browser simulation</div>
+          <span class="pcard-cat cat-exhib">Simulation</span>
+        </div>
+      </a>
+
+      <!-- 5 -->
+      <a class="pcard" href="hal-saflieni-resonance.html">
+        <div class="pcard-thumb" style="background: linear-gradient(160deg,#1a0d00 0%,#0a0a10 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <!-- chamber cross-section -->
+            <g transform="translate(110,65)" stroke="#f7c948" fill="none" opacity="0.7">
+              <rect x="-55" y="-30" width="110" height="60" rx="30" stroke-width="0.8"/>
+              <rect x="-35" y="-18" width="70" height="36" rx="18" stroke-width="0.5" opacity="0.5"/>
+              <!-- standing wave -->
+              <path d="M-50,0 Q-25,-20 0,0 Q25,20 50,0" stroke="#e05c7e" stroke-width="1" opacity="0.8"/>
+              <path d="M-50,0 Q-25,20 0,0 Q25,-20 50,0" stroke="#e05c7e" stroke-width="0.5" opacity="0.5"/>
+              <!-- nodal points -->
+              <circle cx="0" cy="0" r="3" fill="#f7c948"/>
+            </g>
+            <text x="110" y="120" text-anchor="middle" fill="#f7c948" font-size="6.5" font-family="Georgia" opacity="0.9">Ħal Saflieni Resonance</text>
+          </svg>
+          <span class="thumb-label">Archaeoacoustics</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">Ħal Saflieni Resonance</div>
+          <div class="pcard-sub">Archaeoacoustic eigenfunction analysis</div>
+          <span class="pcard-cat cat-exhib">Research</span>
+        </div>
+      </a>
+
+      <!-- 6 -->
+      <a class="pcard" href="theory.html">
+        <div class="pcard-thumb" style="background: linear-gradient(135deg,#0f0a1e 0%,#0a0a0f 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <!-- 21 papers grid -->
+            <g fill="none">
+              <!-- 3 rows × 7 cols -->
+              <g opacity="0.6">
+                <rect x="16" y="20" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="44" y="20" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="72" y="20" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="100" y="20" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="128" y="20" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="156" y="20" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="184" y="20" width="24" height="15" rx="2" fill="#001e1c" stroke="#3dd6c8" stroke-width="0.5"/>
+
+                <rect x="16" y="40" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="44" y="40" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="72" y="40" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="100" y="40" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="128" y="40" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="156" y="40" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="184" y="40" width="24" height="15" rx="2" fill="#001e1c" stroke="#3dd6c8" stroke-width="0.5"/>
+
+                <rect x="16" y="60" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="44" y="60" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="72" y="60" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="100" y="60" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="128" y="60" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="156" y="60" width="24" height="15" rx="2" fill="#1a1040" stroke="#7c6ff7" stroke-width="0.5"/>
+                <rect x="184" y="60" width="24" height="15" rx="2" fill="#001e1c" stroke="#3dd6c8" stroke-width="0.5"/>
+              </g>
+            </g>
+            <text x="110" y="97" text-anchor="middle" fill="#7c6ff7" font-size="8" font-family="monospace">Principia Orthogona</text>
+            <text x="110" y="108" text-anchor="middle" fill="#6b6b8a" font-size="7" font-family="monospace">21 papers · Zenodo series</text>
+            <text x="110" y="119" text-anchor="middle" fill="#3dd6c8" font-size="6" font-family="monospace">doi.org/10.5281/zenodo.19117399</text>
+          </svg>
+          <span class="thumb-label">21 Papers</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">Principia Orthogona — 21 Papers</div>
+          <div class="pcard-sub">Full Zenodo series · doi.org/10.5281/zenodo.19117399</div>
+          <span class="pcard-cat cat-book">Book / Series</span>
+        </div>
+      </a>
+
+      <!-- 7 -->
+      <a class="pcard" href="A1Singularity.lean">
+        <div class="pcard-thumb" style="background: linear-gradient(135deg,#0a0a1e 0%,#0f0a20 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <!-- Figure-eight / lemniscate -->
+            <g transform="translate(110,65)" fill="none" stroke="#7c6ff7" stroke-width="1.5" opacity="0.85">
+              <path d="M0,0 C25,-40 70,-40 70,0 C70,40 25,40 0,0 C-25,-40 -70,-40 -70,0 C-70,40 -25,40 0,0"/>
+            </g>
+            <!-- A1 dot -->
+            <circle cx="110" cy="65" r="4" fill="#f7c948"/>
+            <text x="110" y="54" text-anchor="middle" fill="#f7c948" font-size="8" font-family="monospace">A₁</text>
+            <text x="110" y="115" text-anchor="middle" fill="#7c6ff7" font-size="7" font-family="monospace">A1Singularity.lean</text>
+            <text x="110" y="125" text-anchor="middle" fill="#6b6b8a" font-size="6" font-family="monospace">DM3-lab ↔ AXLE bridge</text>
+          </svg>
+          <span class="thumb-label">Lean 4 · AXLE</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">A1Singularity.lean</div>
+          <div class="pcard-sub">Universal A₁ node · 7 physical instances · bridge file</div>
+          <span class="pcard-cat cat-lean">Lean / AXLE</span>
+        </div>
+      </a>
+
+      <!-- 8 -->
+      <a class="pcard" href="SaturnRing.lean">
+        <div class="pcard-thumb" style="background: radial-gradient(ellipse at 50% 60%, #1a1030 0%, #0a0a0f 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <g transform="translate(110,65)">
+              <!-- Saturn body -->
+              <ellipse rx="22" ry="22" fill="#1a1040" stroke="#7c6ff7" stroke-width="1"/>
+              <!-- rings -->
+              <ellipse rx="55" ry="12" fill="none" stroke="#f7c948" stroke-width="1.5" opacity="0.7"/>
+              <ellipse rx="45" ry="9" fill="none" stroke="#f7c948" stroke-width="0.8" opacity="0.5"/>
+              <ellipse rx="65" ry="15" fill="none" stroke="#f7c948" stroke-width="0.5" opacity="0.3"/>
+              <!-- hexagon top -->
+              <polygon points="0,-28 14,-14 14,14 0,28 -14,14 -14,-14" fill="none" stroke="#3dd6c8" stroke-width="0.8" opacity="0.7" transform="scale(0.6) translate(0,-20)"/>
+            </g>
+            <text x="110" y="120" text-anchor="middle" fill="#7c6ff7" font-size="7" font-family="monospace">SaturnRing.lean · 2:1 resonance</text>
+          </svg>
+          <span class="thumb-label">Lean 4 · Saturn</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">SaturnRing.lean</div>
+          <div class="pcard-sub">Cassini Division · dm³ limit cycle · G6 Crystal</div>
+          <span class="pcard-cat cat-lean">Lean / AXLE</span>
+        </div>
+      </a>
+
+      <!-- 9 -->
+      <a class="pcard" href="game-theory.html">
+        <div class="pcard-thumb" style="background: linear-gradient(135deg,#1a1000 0%,#0a0a00 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <text x="110" y="45" text-anchor="middle" fill="#f7c948" font-size="14" font-family="Georgia" font-weight="bold">GAME THEORY</text>
+            <text x="110" y="62" text-anchor="middle" fill="#6b6b8a" font-size="8" font-family="monospace">THEORY · Solana</text>
+            <!-- candle chart bars -->
+            <g transform="translate(30,80)" opacity="0.7">
+              <rect x="0"  y="0"  width="12" height="25" fill="#4ade80" rx="1"/>
+              <rect x="16" y="10" width="12" height="15" fill="#e05c7e" rx="1"/>
+              <rect x="32" y="-5" width="12" height="30" fill="#4ade80" rx="1"/>
+              <rect x="48" y="5"  width="12" height="20" fill="#4ade80" rx="1"/>
+              <rect x="64" y="8"  width="12" height="17" fill="#e05c7e" rx="1"/>
+              <rect x="80" y="-8" width="12" height="33" fill="#4ade80" rx="1"/>
+              <rect x="96" y="2"  width="12" height="23" fill="#4ade80" rx="1"/>
+              <rect x="112" y="6" width="12" height="19" fill="#e05c7e" rx="1"/>
+              <rect x="128" y="-2" width="12" height="27" fill="#4ade80" rx="1"/>
+              <rect x="144" y="4" width="12" height="21" fill="#4ade80" rx="1"/>
+            </g>
+          </svg>
+          <span class="thumb-label">EMMEs Token</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">GAME THEORY · THEORY</div>
+          <div class="pcard-sub">F operator — irreversible commitment — Solana</div>
+          <span class="pcard-cat cat-token">EMMEs Token</span>
+        </div>
+      </a>
+
+      <!-- 10 -->
+      <a class="pcard" href="pranayama-machine.html">
+        <div class="pcard-thumb" style="background: radial-gradient(ellipse at 50% 50%, #001e1c 0%, #0a0a0f 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <!-- breathing sine wave -->
+            <g fill="none" stroke="#3dd6c8" stroke-width="1.5" opacity="0.8">
+              <path d="M10,65 C30,65 40,25 60,25 C80,25 90,105 110,105 C130,105 140,25 160,25 C180,25 190,65 210,65"/>
+            </g>
+            <g fill="none" stroke="#7c6ff7" stroke-width="0.7" opacity="0.4">
+              <path d="M10,65 C30,65 40,40 60,40 C80,40 90,90 110,90 C130,90 140,40 160,40 C180,40 190,65 210,65"/>
+            </g>
+            <!-- breath markers -->
+            <circle cx="60"  cy="25"  r="3" fill="#3dd6c8" opacity="0.8"/>
+            <circle cx="110" cy="105" r="3" fill="#f7c948" opacity="0.8"/>
+            <circle cx="160" cy="25"  r="3" fill="#3dd6c8" opacity="0.8"/>
+            <text x="110" y="120" text-anchor="middle" fill="#3dd6c8" font-size="7" font-family="monospace">Pranayama Machine · Entrainment</text>
+          </svg>
+          <span class="thumb-label">Sound Machine</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">Pranayama Machine</div>
+          <div class="pcard-sub">Guided breathing with tonal entrainment</div>
+          <span class="pcard-cat cat-sound">Sound Machine</span>
+        </div>
+      </a>
+
+      <!-- 11 -->
+      <a class="pcard" href="livro3-brasil.html">
+        <div class="pcard-thumb" style="background: linear-gradient(135deg,#1a0010 0%,#0a0a0f 100%);">
+          <img src="book-cover-sm.png" alt="Book 3 cover" style="width:100%;height:100%;object-fit:cover;opacity:0.85;" onerror="this.style.display='none'"/>
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+            <rect width="220" height="130" fill="none"/>
+            <text x="110" y="50" text-anchor="middle" fill="#e05c7e" font-size="11" font-family="Georgia">The Mini-Beast</text>
+            <text x="110" y="66" text-anchor="middle" fill="#6b6b8a" font-size="8" font-family="monospace">Livro 3 · Brasil</text>
+            <text x="110" y="82" text-anchor="middle" fill="#e05c7e" font-size="7" font-family="Georgia">Principia Orthogona</text>
+          </svg>
+          <span class="thumb-label">Book · PT-BR</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">Livro 3 — Brasil</div>
+          <div class="pcard-sub">The Mini-Beast · Principia Orthogona · Portuguese</div>
+          <span class="pcard-cat cat-book">Book</span>
+        </div>
+      </a>
+
+      <!-- 12 -->
+      <a class="pcard" href="wellness-soundworks.html">
+        <div class="pcard-thumb" style="background: radial-gradient(ellipse at 30% 50%, #001020 0%, #0a0a0f 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <!-- concentric rings / sound bowl -->
+            <g transform="translate(110,65)" fill="none">
+              <circle r="55" stroke="#3dd6c8" stroke-width="0.4" opacity="0.2"/>
+              <circle r="45" stroke="#3dd6c8" stroke-width="0.5" opacity="0.3"/>
+              <circle r="35" stroke="#3dd6c8" stroke-width="0.6" opacity="0.4"/>
+              <circle r="25" stroke="#3dd6c8" stroke-width="0.8" opacity="0.5"/>
+              <circle r="15" stroke="#3dd6c8" stroke-width="1"   opacity="0.7"/>
+              <circle r="6"  stroke="#3dd6c8" stroke-width="1.5" opacity="0.9"/>
+              <circle r="2"  fill="#3dd6c8"/>
+            </g>
+            <text x="110" y="120" text-anchor="middle" fill="#3dd6c8" font-size="7" font-family="monospace">Wellness Soundworks · dm³</text>
+          </svg>
+          <span class="thumb-label">Sound Machine</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">Wellness Soundworks</div>
+          <div class="pcard-sub">dm³ Soundworks therapeutic suite</div>
+          <span class="pcard-cat cat-sound">Sound Machine</span>
+        </div>
+      </a>
+
+      <!-- 13 -->
+      <a class="pcard" href="229-ballantine.html">
+        <div class="pcard-thumb" style="background: linear-gradient(135deg,#0d0d0d 0%,#1a0d00 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <!-- building silhouette -->
+            <g fill="#1a1a1a" stroke="#f7c948" stroke-width="0.5" opacity="0.8">
+              <rect x="55" y="30" width="110" height="80"/>
+              <rect x="65" y="40" width="20" height="20" fill="#001e1c" stroke="#3dd6c8"/>
+              <rect x="100" y="40" width="20" height="20" fill="#001e1c" stroke="#3dd6c8"/>
+              <rect x="135" y="40" width="20" height="20" fill="#f7c948" stroke="#f7c948" opacity="0.4"/>
+              <rect x="65" y="70" width="20" height="20" fill="#001e1c" stroke="#3dd6c8"/>
+              <rect x="100" y="70" width="20" height="20" fill="#001e1c" stroke="#3dd6c8"/>
+              <rect x="90" y="85" width="40" height="25" fill="#0a0a0f"/>
+            </g>
+            <text x="110" y="120" text-anchor="middle" fill="#f7c948" font-size="8" font-family="monospace">229 Ballantine · Newark NJ</text>
+          </svg>
+          <span class="thumb-label">Installation</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">229 Ballantine</div>
+          <div class="pcard-sub">Site-specific sound installation · Newark, NJ</div>
+          <span class="pcard-cat cat-exhib">Installation</span>
+        </div>
+      </a>
+
+      <!-- 14 -->
+      <a class="pcard" href="PolarVortex.lean">
+        <div class="pcard-thumb" style="background: radial-gradient(ellipse at 50% 40%, #001020 0%, #0a0a0f 100%);">
+          <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+            <rect width="220" height="130" fill="none"/>
+            <g transform="translate(110,62)">
+              <!-- three layers: vortex, moat, hexagon -->
+              <polygon points="0,-52 45,-26 45,26 0,52 -45,26 -45,-26" fill="none" stroke="#3dd6c8" stroke-width="1" opacity="0.6"/>
+              <circle r="26" fill="none" stroke="#7c6ff7" stroke-width="0.8" stroke-dasharray="4,3" opacity="0.5"/>
+              <circle r="10" fill="none" stroke="#e05c7e" stroke-width="1.2" opacity="0.8"/>
+              <circle r="3"  fill="#e05c7e"/>
+              <!-- orbit arrows -->
+              <path d="M0,-10 A10,10 0 0,1 10,0" fill="none" stroke="#e05c7e" stroke-width="0.8" marker-end="none" opacity="0.7"/>
+            </g>
+            <text x="110" y="120" text-anchor="middle" fill="#7c6ff7" font-size="7" font-family="monospace">PolarVortex.lean · 3 layers</text>
+          </svg>
+          <span class="thumb-label">Lean 4 · Saturn</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-title">PolarVortex.lean</div>
+          <div class="pcard-sub">Saturn north-polar vortex · moat · hexagon</div>
+          <span class="pcard-cat cat-lean">Lean / AXLE</span>
+        </div>
+      </a>
+
+    </div><!-- /carousel-track -->
+  </div><!-- /wrapper -->
+  <div class="carousel-nav">
+    <button class="carousel-btn" onclick="document.getElementById('carousel').scrollBy({left:-260,behavior:'smooth'})">&#8592;</button>
+    <button class="carousel-btn" onclick="document.getElementById('carousel').scrollBy({left:260,behavior:'smooth'})">&#8594;</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ MAIN -->
+<main>
+
+  <!-- ── SOUND MACHINES ── -->
+  <section id="machines">
+    <div class="section-header">
+      <span class="dot dot-sound"></span>
+      <h2>Sound Machines</h2>
+      <span class="count">7 instruments</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="om-machine.html">
+        <div class="card-title">OM Machine</div>
+        <div class="card-sub">Continuous drone on the primordial tone</div>
+        <div class="tags"><span class="tag cyan">drone</span><span class="tag">binaural</span></div>
+      </a>
+      <a class="card" href="soham-machine.html">
+        <div class="card-title">So-Ham Machine</div>
+        <div class="card-sub">Breath-cycle resonance — "I am That"</div>
+        <div class="tags"><span class="tag cyan">breath</span><span class="tag">resonance</span></div>
+      </a>
+      <a class="card" href="pranayama-machine.html">
+        <div class="card-title">Pranayama Machine</div>
+        <div class="card-sub">Guided breathing with tonal entrainment</div>
+        <div class="tags"><span class="tag cyan">pranayama</span><span class="tag">entrainment</span></div>
+      </a>
+      <a class="card" href="wellness-soundworks.html">
+        <div class="card-title">Wellness Soundworks</div>
+        <div class="card-sub">dm³ Soundworks therapeutic suite</div>
+        <div class="tags"><span class="tag cyan">wellness</span><span class="tag accent">dm³</span></div>
+      </a>
+      <a class="card" href="g6-drone-machine.html">
+        <div class="card-title">G6 Drone Machine</div>
+        <div class="card-sub">Six-fold resonance at the G6 Crystal threshold g₆ = 33</div>
+        <div class="tags"><span class="tag cyan">G6</span><span class="tag accent">dm³</span><span class="tag">k:m = 6:1</span></div>
+      </a>
+      <a class="card" href="sri-yantra-sakti-machine.html">
+        <div class="card-title">Śrī Yantra Śakti Machine</div>
+        <div class="card-sub">Nine-triangle geometric resonance</div>
+        <div class="tags"><span class="tag cyan">yantra</span><span class="tag">geometry</span></div>
+      </a>
+      <a class="card" href="swarnakarshana-bhairava-machine.html">
+        <div class="card-title">Swarnakarshana Bhairava Machine</div>
+        <div class="card-sub">Tantric attractor — harmonic convergence</div>
+        <div class="tags"><span class="tag cyan">Bhairava</span><span class="tag">attractor</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── EXHIBITIONS ── -->
+  <section id="exhibitions">
+    <div class="section-header">
+      <span class="dot dot-exhibit"></span>
+      <h2>Exhibitions &amp; Installations</h2>
+      <span class="count">4 works</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="ex-t10-cymatics.html">
+        <div class="card-title">Cymatics with Machines</div>
+        <div class="card-sub">Cimática com Máquinas — bilingual interactive exhibition, XII Bienal SBM, UFRN, Natal 2026. Track T10.</div>
+        <div class="tags"><span class="tag gold">exhibition</span><span class="tag">Chladni</span><span class="tag">bilingual</span></div>
+      </a>
+      <a class="card" href="helical-attractor.html">
+        <div class="card-title">Helical Attractor</div>
+        <div class="card-sub">Simulation of the helical attractor in contact manifolds — 3D browser animation</div>
+        <div class="tags"><span class="tag gold">simulation</span><span class="tag accent">dm³</span><span class="tag">contact</span></div>
+      </a>
+      <a class="card" href="hal-saflieni-resonance.html">
+        <div class="card-title">Ħal Saflieni Resonance</div>
+        <div class="card-sub">Archaeoacoustic study — eigenfunction analysis of the Hypogeum prehistoric space</div>
+        <div class="tags"><span class="tag gold">archaeoacoustics</span><span class="tag">resonance</span></div>
+      </a>
+      <a class="card" href="229-ballantine.html">
+        <div class="card-title">229 Ballantine</div>
+        <div class="card-sub">Site-specific sound installation — Newark, NJ</div>
+        <div class="tags"><span class="tag gold">installation</span><span class="tag">Newark</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── XII BIENAL SBM ── -->
+  <section id="bienal">
+    <div class="section-header">
+      <span class="dot dot-bienal"></span>
+      <h2>XII Bienal SBM — Submissions</h2>
+      <span class="count">UFRN · Natal · Brazil · 2026</span>
+    </div>
+    <table class="file-table">
+      <tr><td>CO · T2</td><td><a href="CO_T2_Pablo_Grossi.pdf">CO_T2_Pablo_Grossi.pdf</a> — Communication, Track T2</td></tr>
+      <tr><td>Ex · T10</td><td><a href="Ex_T10_Pablo_Grossi.pdf">Ex_T10_Pablo_Grossi.pdf</a> — Exhibition proposal, Track T10 (Geometry and Topology)</td></tr>
+      <tr><td>MC · T1</td><td><a href="MC_T1_Pablo_Grossi.pdf">MC_T1_Pablo_Grossi.pdf</a> — Minicurso, Track T1 — <em>Atratores: dm³ Dynamics</em></td></tr>
+      <tr><td>MC · T1 v3</td><td><a href="MC_T1_Pablo_Grossi_v3.pdf">MC_T1_Pablo_Grossi_v3.pdf</a> — Minicurso revised</td></tr>
+      <tr><td>OF · T2</td><td><a href="OF_T2_Pablo_Grossi.pdf">OF_T2_Pablo_Grossi.pdf</a> — Open Form, Track T2</td></tr>
+      <tr><td>PO · T10</td><td><a href="PO_T10_Pablo_Grossi.pdf">PO_T10_Pablo_Grossi.pdf</a> — Poster, Track T10</td></tr>
+      <tr><td>Minicurso</td><td><a href="Minicurso_XII_Bienal.pdf">Minicurso_XII_Bienal.pdf</a> — Full minicurso booklet</td></tr>
+      <tr><td>Preview</td><td><a href="XII_BM_MINICURSO_T1_Pablo_Grossi_preview.pdf">XII_BM_MINICURSO_T1_Pablo_Grossi_preview.pdf</a></td></tr>
+      <tr><td>Helical</td><td><a href="Helical Attractors Contact Manifolds.pdf">Helical Attractors Contact Manifolds.pdf</a></td></tr>
+      <tr><td>Abrasileirados</td><td><a href="Abrasileirados/">Abrasileirados/</a> — Supplementary folder</td></tr>
+    </table>
+  </section>
+
+  <!-- ── TEACHING SESSIONS ── -->
+  <section id="sessions">
+    <div class="section-header">
+      <span class="dot dot-session"></span>
+      <h2>Teaching Sessions</h2>
+      <span class="count">3 sessions · bilingual EN/PT</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="session1-contact-geometry.html">
+        <div class="card-title">Session 1 — Contact Geometry</div>
+        <div class="card-sub">Sessão 1 — Geometria de Contato</div>
+        <div class="tags"><span class="tag">EN</span><span class="tag">PT</span><span class="tag accent">dm³</span></div>
+      </a>
+      <a class="card" href="session2-theorem-basin.html">
+        <div class="card-title">Session 2 — Theorem Basin</div>
+        <div class="card-sub">Sessão 2 — Teorema da Bacia</div>
+        <div class="tags"><span class="tag">EN</span><span class="tag">PT</span><span class="tag accent">dm³</span></div>
+      </a>
+      <a class="card" href="session3-lean-skeleton.html">
+        <div class="card-title">Session 3 — Lean Skeleton</div>
+        <div class="card-sub">Sessão 3 — Esqueleto Lean</div>
+        <div class="tags"><span class="tag">EN</span><span class="tag">PT</span><span class="tag accent">Lean 4</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── BOOKS & PAPERS ── -->
+  <section id="books">
+    <div class="section-header">
+      <span class="dot dot-book"></span>
+      <h2>Books, Papers &amp; Long-form</h2>
+      <span class="count">7 documents</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="collatz-engineering.html">
+        <div class="card-title">Collatz Engineering</div>
+        <div class="card-sub">Engineering specification: dm³ axioms, G6 Crystal, AXLE Target 5. Python · Julia · Lean 4.</div>
+        <div class="tags"><span class="tag rose">paper</span><span class="tag accent">dm³</span><span class="tag">Collatz</span></div>
+      </a>
+      <a class="card" href="collatz-engineering.pdf">
+        <div class="card-title">Collatz Engineering (PDF)</div>
+        <div class="card-sub">Zenodo DOI 10.5281/zenodo.19378742 — 18 pages</div>
+        <div class="tags"><span class="tag rose">PDF</span><span class="tag">Zenodo</span></div>
+      </a>
+      <a class="card" href="livro3-brasil.html">
+        <div class="card-title">Livro 3 — Brasil</div>
+        <div class="card-sub">The Mini-Beast: Book 3 of Principia Orthogona — Portuguese edition</div>
+        <div class="tags"><span class="tag rose">book</span><span class="tag">PT-BR</span><span class="tag accent">dm³</span></div>
+      </a>
+      <a class="card" href="theory.html">
+        <div class="card-title">Principia Orthogona — 21 Papers</div>
+        <div class="card-sub">Full series index. doi.org/10.5281/zenodo.19117399</div>
+        <div class="tags"><span class="tag rose">series</span><span class="tag">Zenodo</span><span class="tag accent">21 papers</span></div>
+      </a>
+      <a class="card" href="capitulo-e-gtct-pt.html">
+        <div class="card-title">Capítulo E — GTCT</div>
+        <div class="card-sub">Chapter E of GTCT — Portuguese version</div>
+        <div class="tags"><span class="tag rose">chapter</span><span class="tag">PT</span></div>
+      </a>
+      <a class="card" href="chE-gtct.html">
+        <div class="card-title">Chapter E — GTCT</div>
+        <div class="card-sub">Game Theory, Curvature, and Topology — Chapter E</div>
+        <div class="tags"><span class="tag rose">chapter</span><span class="tag">EN</span></div>
+      </a>
+      <a class="card" href="chapter-eta-dnls.html">
+        <div class="card-title">Chapter η — DNLS</div>
+        <div class="card-sub">Discrete Nonlinear Schrödinger — Tribonacci/Tetrabonacci chain</div>
+        <div class="tags"><span class="tag rose">chapter</span><span class="tag">DNLS</span><span class="tag">η</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── LEAN / AXLE ── -->
+  <section id="lean">
+    <div class="section-header">
+      <span class="dot dot-lean"></span>
+      <h2>Lean 4 / AXLE Formal Verification</h2>
+      <span class="count">3 targets · 0 sorrys</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="A1Singularity.lean">
+        <div class="card-title">A1Singularity.lean</div>
+        <div class="card-sub">A₁ ordinary double point as universal dm³ node. Bridges DM3-lab ↔ AXLE across seven physical instances.</div>
+        <div class="tags"><span class="tag accent">Lean 4</span><span class="tag">Mathlib</span><span class="tag accent">dm³</span><span class="tag">AXLE</span></div>
+      </a>
+      <a class="card" href="PolarVortex.lean">
+        <div class="card-title">PolarVortex.lean</div>
+        <div class="card-sub">Saturn north-polar vortex as dm³ inner fixed point. Three-layer structure: vortex · moat · hexagon.</div>
+        <div class="tags"><span class="tag accent">Lean 4</span><span class="tag">Saturn</span><span class="tag accent">dm³</span></div>
+      </a>
+      <a class="card" href="SaturnRing.lean">
+        <div class="card-title">SaturnRing.lean</div>
+        <div class="card-sub">Saturn ring system as dm³ limit cycle. Cassini Division 2:1 resonance. Dual resonance with G6 Crystal.</div>
+        <div class="tags"><span class="tag accent">Lean 4</span><span class="tag">Saturn</span><span class="tag gold">g₆ = 33</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── DNLS ── -->
+  <section id="dnls">
+    <div class="section-header">
+      <span class="dot dot-dnls"></span>
+      <h2>DNLS — Discrete Nonlinear Schrödinger</h2>
+      <span class="count">Tribonacci &amp; Tetrabonacci chains</span>
+    </div>
+    <table class="file-table">
+      <tr><td>paper (PDF)</td><td><a href="DNLS/nbonacci_dnls_paper_with_figs.pdf">nbonacci_dnls_paper_with_figs.pdf</a></td></tr>
+      <tr><td>paper (TeX)</td><td><a href="DNLS/nbonacci_dnls_paper_with_figs.tex">nbonacci_dnls_paper_with_figs.tex</a></td></tr>
+      <tr><td>Lean</td><td><a href="DNLS/FoldEvents.lean">FoldEvents.lean</a> · <a href="DNLS/TribonacciDNLS.lean">TribonacciDNLS.lean</a></td></tr>
+      <tr><td>Python</td><td><a href="DNLS/dnls_nbonacci.py">dnls_nbonacci.py</a> · <a href="DNLS/diffusion_solver.py">diffusion_solver.py</a> · <a href="DNLS/generate_figures.py">generate_figures.py</a></td></tr>
+      <tr><td>Figures</td><td>fig1 chain structure · fig2 eigenstates · fig3 IPR vs λ · fig4 IPR ratio · fig5 substitution tree</td></tr>
+    </table>
+  </section>
+
+  <!-- ── GCTC ── -->
+  <section id="gctc">
+    <div class="section-header">
+      <span class="dot dot-lean"></span>
+      <h2>GCTC — Geometry · Criticality · Topology · Curvature</h2>
+      <span class="count">Tetrabonacci DNLS · finite-size scaling</span>
+    </div>
+    <table class="file-table">
+      <tr><td>Lean</td><td><a href="GCTC/Conformal.lean">Conformal.lean</a></td></tr>
+      <tr><td>Criticality</td><td><a href="GCTC/criticality/run_criticality_sweep.py">run_criticality_sweep.py</a> — λ_c sweep · FSS finite-size scaling</td></tr>
+      <tr><td>Figures</td><td>criticality correlation · flux modes · saturation · D₂ natural lengths · FSS α vs N · FSS t_sat vs N</td></tr>
+      <tr><td>Data</td><td>λ_c_sweep.csv · tetrabonacci_T50_N500.csv · d2_natural_lengths.csv</td></tr>
+      <tr><td>Labs</td><td><a href="GCTC/labs/dm3_numeric.py">dm3_numeric.py</a></td></tr>
+      <tr><td>Sessions</td><td>
+        <a href="GCTC/sessions/session1-contact-geometry.html">Session 1</a> ·
+        <a href="GCTC/sessions/session2-theorem-basin.html">Session 2</a> ·
+        <a href="GCTC/sessions/session3-lean-skeleton.html">Session 3</a>
+      </td></tr>
+      <tr><td>Sims</td><td><a href="GCTC/sims/helical-attractor.html">Helical Attractor simulation</a></td></tr>
+    </table>
+  </section>
+
+  <!-- ── EMMEs ── -->
+  <section id="emmes">
+    <div class="section-header">
+      <span class="dot dot-emmes"></span>
+      <h2>EMMEs — Three Operator Tokens on Solana</h2>
+      <span class="count">G = U ∘ F ∘ K ∘ C</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="game-theory.html">
+        <div class="card-title">GAME THEORY · <code style="font-size:0.75rem;color:var(--gold)">THEORY</code></div>
+        <div class="card-sub">The Fold operator — rank-1 Jacobian loss — irreversible commitment</div>
+        <div class="tags"><span class="tag gold">Solana</span><span class="tag">F operator</span></div>
+      </a>
+      <a class="card" href="probability.html">
+        <div class="card-title">PROBABILITY · <code style="font-size:0.75rem;color:var(--gold)">PROBABY</code></div>
+        <div class="card-sub">The Curvature operator — drives toward threshold κ*</div>
+        <div class="tags"><span class="tag gold">Solana</span><span class="tag">K operator</span></div>
+      </a>
+      <a class="card" href="propaganda.html">
+        <div class="card-title">PROPAGANDA! · <code style="font-size:0.75rem;color:var(--gold)">PROPAGAN</code></div>
+        <div class="card-sub">The Compression operator — reduces information to attention span</div>
+        <div class="tags"><span class="tag gold">Solana</span><span class="tag">C operator</span></div>
+      </a>
+      <a class="card" href="ticker.html">
+        <div class="card-title">Live Ticker</div>
+        <div class="card-sub">All three tokens · auto-refresh 30s · Dexscreener data</div>
+        <div class="tags"><span class="tag gold">live</span><span class="tag">DEX</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── IMPA PORTAL ── -->
+  <section>
+    <div class="section-header">
+      <span class="dot dot-lean"></span>
+      <h2>IMPA Portal</h2>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="impa-portal-patch.html">
+        <div class="card-title">IMPA Portal Patch</div>
+        <div class="card-sub">dm³ Soundworks — public portal for IMPA / AXLE research platform</div>
+        <div class="tags"><span class="tag accent">dm³</span><span class="tag">IMPA</span><span class="tag">AXLE</span></div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    Pablo Nogueira Grossi · G6 LLC · Newark, NJ · 2026<br>
+    <a href="https://doi.org/10.5281/zenodo.19117399">Principia Orthogona</a> ·
+    <a href="https://github.com/TOTOGT/AXLE">AXLE repo</a> ·
+    <a href="https://github.com/TOTOGT/DM3-lab">DM3-lab repo</a> ·
+    ORCID 0009-0000-6496-2186
+  </p>
+  <p style="margin-top:0.5rem;color:#2a2a4c;font-size:0.7rem;">
+    G = U ∘ F ∘ K ∘ C — the operator chain governs every generative transition
+  </p>
+</footer>
+
+</body>
+</html>
