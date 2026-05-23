@@ -179,8 +179,8 @@ canvas#tc{display:block;width:100%;height:340px;background:#030a09;}
 
 /* ── REFERENCES ── */
 .ref-list{list-style:none;counter-reset:ref;margin:0;padding:0;}
-.ref-list li{counter-increment:ref;display:grid;grid-template-columns:2rem 1fr;gap:.5rem;padding:.5rem 0;border-bottom:1px solid rgba(45,212,191,.06);font-size:.83rem;line-height:1.65;}
-.ref-list li::before{content:counter(ref);font-family:'Courier New',monospace;font-size:.7rem;color:var(--t);padding-top:.12rem;}
+.ref-list li{counter-increment:ref;position:relative;padding:.55rem 0 .55rem 2.6rem;border-bottom:1px solid rgba(45,212,191,.06);font-size:.83rem;line-height:1.7;}
+.ref-list li::before{content:counter(ref);position:absolute;left:0;top:.6rem;width:2rem;text-align:right;font-family:'Courier New',monospace;font-size:.7rem;color:var(--t);}
 .ref-list a{color:var(--t);text-decoration:none;}
 .ref-list a:hover{text-decoration:underline;}
 
@@ -850,7 +850,7 @@ At the end: have I reached D1 on this topic? What would D1 look like here — wh
     <li>Etnyre, J. (2003). Introductory lectures on contact geometry. <em>Proc. Sympos. Pure Math.</em>, 71, 81–107. <a href="https://arxiv.org/abs/math/0306256">arXiv:math/0306256</a></li>
     <li>Banach, S. (1922). Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales. <em>Fundamenta Mathematicae</em>, 3, 133–181.</li>
     <li>Grossi, P. N. (2026). <em>Principia Orthogona — The Mini-Beast</em>. G6 LLC. <a href="https://doi.org/10.5281/zenodo.19117399">doi:10.5281/zenodo.19117399</a></li>
-    <li>Grossi, P. N. (2026). Collatz Engineering: dm³ axioms, G6 Crystal, AXLE Target 5. <a href="collatz-engineering.html">collatz-engineering.html</a></li>
+    <li>Grossi, P. N. (2026). Collatz Engineering: dm³ axioms, G6 Crystal, AXLE Target 5. <a href="https://grossi-ops.github.io/Atratores/collatz-engineering.html">collatz-engineering.html</a></li>
     <li>TOTOGT / AXLE (2026). AXLE: Axiom Lean Engine. GitHub. <a href="https://github.com/TOTOGT/AXLE">github.com/TOTOGT/AXLE</a></li>
     <li>TOTOGT / DM3-lab (2026). DM3-lab: Formal verification of dm³ curves. GitHub. <a href="https://github.com/TOTOGT/DM3-lab">github.com/TOTOGT/DM3-lab</a></li>
     <li>Whitney, H. (1955). On singularities of mappings of Euclidean spaces. <em>Ann. of Math.</em>, 62, 374–410.</li>
