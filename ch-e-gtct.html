@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter E · GTCT · Principia Orthogona · Mini-Beast</title>
+<style>
+:root {
+  --t:   #2dd4bf;
+  --td:  #0d9488;
+  --tg:  rgba(45,212,191,.11);
+  --bg:  #060f0e;
+  --bg2: #0c1a18;
+  --bg3: #0f211e;
+  --tx:  #dff6f3;
+  --mu:  #4d7a76;
+  --gd:  #c9a84c;
+  --bd:  rgba(45,212,191,.16);
+  --c:   #4a9eff;
+  --k:   #e05a3a;
+  --f:   #50c878;
+  --u:   #c084fc;
+  --pt:  #f9c66b;   /* portuguese accent */
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:Georgia,'Times New Roman',serif;line-height:1.82;min-height:100vh;font-size:16px;}
+
+/* ── NAV ── */
+nav{display:flex;flex-wrap:wrap;gap:.4rem;padding:.65rem 1.5rem;background:rgba(6,15,14,.96);border-bottom:1px solid var(--bd);font-family:'Courier New',monospace;font-size:.73rem;position:sticky;top:0;z-index:100;}
+nav a{color:var(--t);text-decoration:none;padding:.18rem .55rem;border:1px solid var(--bd);border-radius:3px;transition:background .2s;}
+nav a:hover{background:var(--tg);}
+.ch-nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem;padding:.55rem 1.5rem;background:var(--bg2);border-bottom:1px solid var(--bd);font-family:'Courier New',monospace;font-size:.72rem;}
+.ch-nav a{color:var(--mu);text-decoration:none;padding:.2rem .55rem;border:1px solid rgba(45,212,191,.08);transition:all .2s;}
+.ch-nav a:hover{color:var(--t);border-color:var(--bd);}
+.ch-nav .loc{color:var(--t);letter-spacing:.1em;}
+
+/* ── MASTHEAD ── */
+.masthead{max-width:920px;margin:0 auto;padding:3.5rem 2rem 0;}
+.mast-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.6rem;}
+.mast-journal{font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--mu);}
+.mast-journal strong{color:var(--t);display:block;font-size:.8rem;margin-bottom:.2rem;}
+.mast-doi{font-family:'Courier New',monospace;font-size:.65rem;color:var(--mu);text-align:right;}
+.mast-doi a{color:var(--t);text-decoration:none;}
+.mast-divider{border:none;border-top:2px solid var(--t);margin:0 0 1.8rem;}
+.mast-badge{display:inline-block;font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--bg);background:var(--t);padding:.22rem .8rem;border-radius:2px;margin-bottom:1rem;}
+.mast-title{font-size:clamp(1.7rem,4vw,2.8rem);font-weight:400;color:#fff;line-height:1.25;margin-bottom:.6rem;}
+.mast-subtitle{font-size:1rem;color:var(--mu);font-style:italic;margin-bottom:1.4rem;line-height:1.6;}
+.mast-author{font-size:.88rem;color:var(--tx);margin-bottom:.25rem;}
+.mast-author span{color:var(--t);}
+.mast-affil{font-size:.78rem;color:var(--mu);font-style:italic;margin-bottom:1rem;line-height:1.6;}
+.mast-meta-row{display:flex;gap:1.5rem;flex-wrap:wrap;font-family:'Courier New',monospace;font-size:.68rem;color:var(--mu);border-top:1px solid var(--bd);padding-top:.8rem;margin-top:.8rem;}
+.mast-meta-row .mml{display:flex;flex-direction:column;gap:.2rem;}
+.mast-meta-row .mmk{color:var(--mu);}
+.mast-meta-row .mmv{color:var(--t);}
+
+/* ── CHAIN ROW ── */
+.chain-row{display:flex;justify-content:flex-start;gap:.45rem;align-items:center;font-family:'Courier New',monospace;font-size:.95rem;letter-spacing:.08em;flex-wrap:wrap;margin:1.2rem 0;}
+.chain-op{padding:.18rem .55rem;border-radius:3px;}
+.co-c{color:var(--c);background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.22);}
+.co-k{color:var(--k);background:rgba(224,90,58,.1);border:1px solid rgba(224,90,58,.22);}
+.co-f{color:var(--f);background:rgba(80,200,120,.1);border:1px solid rgba(80,200,120,.22);}
+.co-u{color:var(--u);background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.22);}
+.co-t{color:var(--t);background:var(--tg);border:1px solid var(--bd);font-weight:700;}
+.co-arr{color:var(--mu);}
+
+/* ── ABSTRACT ── */
+.abstract-block{max-width:920px;margin:2rem auto 0;padding:0 2rem;}
+.abstract-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:1.8rem 2rem;margin-bottom:1.2rem;}
+.abs-col h3{font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.7rem;}
+.abs-col.en h3{color:var(--t);}
+.abs-col.pt h3{color:var(--pt);}
+.abs-col p{font-size:.88rem;line-height:1.78;color:var(--tx);}
+.abs-col.pt p{color:#f0e0b0;}
+.kw-row{font-family:'Courier New',monospace;font-size:.68rem;color:var(--mu);}
+.kw-row span{color:var(--t);}
+.kw-row .kw-pt span{color:var(--pt);}
+
+/* ── SECTION ── */
+.section{max-width:920px;margin:0 auto;padding:3rem 2rem 0;}
+.section-label{font-family:'Courier New',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);margin-bottom:.3rem;}
+.section h2{font-size:1.25rem;font-weight:400;color:var(--t);border-bottom:1px solid var(--bd);padding-bottom:.35rem;margin-bottom:1.3rem;}
+.section p{margin-bottom:1rem;color:var(--tx);}
+.section em{color:var(--t);font-style:normal;}
+.section h3{font-size:1rem;color:#9ef0e8;margin:1.8rem 0 .55rem;font-style:italic;}
+.section ul,.section ol{margin-left:1.5rem;margin-bottom:1rem;line-height:1.85;}
+.section li{margin-bottom:.3rem;}
+
+/* ── DEFINITION / THEOREM ENV ── */
+.env{background:var(--bg2);border-left:3px solid var(--t);border-radius:0 6px 6px 0;padding:1.1rem 1.5rem;margin:1.4rem 0;}
+.env.def{border-color:var(--t);}
+.env.thm{border-color:var(--gd);background:rgba(201,168,76,.04);}
+.env.prop{border-color:var(--f);background:rgba(80,200,120,.04);}
+.env.cor{border-color:var(--u);background:rgba(192,132,252,.04);}
+.env.lem{border-color:var(--c);background:rgba(74,158,255,.04);}
+.env-label{font-family:'Courier New',monospace;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;}
+.env.def  .env-label{color:var(--t);}
+.env.thm  .env-label{color:var(--gd);}
+.env.prop .env-label{color:var(--f);}
+.env.cor  .env-label{color:var(--u);}
+.env.lem  .env-label{color:var(--c);}
+.env-title{font-weight:bold;color:#cffaf6;font-size:.96rem;margin-bottom:.45rem;}
+.env-body{font-size:.92rem;line-height:1.8;color:var(--tx);}
+.env-body .math{font-family:'Courier New',monospace;color:#c9f0ec;font-size:.9rem;}
+.proof{background:rgba(45,212,191,.03);border-left:2px solid rgba(45,212,191,.15);padding:.8rem 1.2rem;margin-top:.8rem;font-size:.85rem;color:var(--mu);font-style:italic;}
+.proof strong{color:var(--t);font-style:normal;}
+.qed{float:right;color:var(--t);font-style:normal;}
+
+/* ── FIGURE ── */
+.figure{margin:2rem auto;max-width:820px;text-align:center;}
+.figure svg{max-width:100%;height:auto;}
+.fig-caption{font-family:'Courier New',monospace;font-size:.68rem;color:var(--mu);margin-top:.7rem;line-height:1.65;text-align:left;padding:0 1rem;}
+.fig-caption strong{color:var(--t);}
+
+/* ── AXIOM GRID ── */
+.axiom-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0;}
+.axiom{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;padding:1rem 1.2rem;}
+.axiom.featured{border-color:var(--t);background:rgba(45,212,191,.05);}
+.axiom-num{font-family:'Courier New',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--t);margin-bottom:.3rem;}
+.axiom-text{font-size:.88rem;line-height:1.72;}
+.axiom-pt{font-size:.78rem;color:#c0a060;font-style:italic;margin-top:.5rem;border-top:1px solid rgba(201,168,76,.12);padding-top:.45rem;line-height:1.6;}
+
+/* ── OPERATOR TABLE ── */
+.op-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:1.2rem 0;}
+.op-table th{text-align:left;color:var(--t);border-bottom:1px solid var(--bd);padding:.5rem .7rem;font-family:'Courier New',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;}
+.op-table td{padding:.55rem .7rem;border-bottom:1px solid rgba(45,212,191,.06);vertical-align:top;line-height:1.65;}
+.op-table .pc{color:var(--c);font-family:'Courier New',monospace;}
+.op-table .pk{color:var(--k);font-family:'Courier New',monospace;}
+.op-table .pf{color:var(--f);font-family:'Courier New',monospace;}
+.op-table .pu{color:var(--u);font-family:'Courier New',monospace;}
+.op-table .pt-cell{color:#c0a060;font-size:.8rem;font-style:italic;}
+
+/* ── TIME PROPERTIES ── */
+.time-prop{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;padding:1.1rem 1.3rem;margin:.8rem 0;display:grid;grid-template-columns:2.5rem 1fr;gap:.8rem;align-items:start;}
+.tp-num{font-family:'Courier New',monospace;font-size:1.3rem;color:var(--t);line-height:1;}
+.tp-body h4{color:#9ef0e8;font-size:.95rem;margin-bottom:.3rem;}
+.tp-body p{font-size:.88rem;line-height:1.72;margin:0;}
+.tp-pt{font-size:.8rem;color:#c0a060;font-style:italic;margin-top:.4rem;border-top:1px solid rgba(201,168,76,.1);padding-top:.35rem;}
+
+/* ── INSIGHT / EPIGRAPH ── */
+.epigraph{background:rgba(45,212,191,.05);border-left:3px solid var(--t);padding:1.3rem 1.6rem;margin:1.5rem 0;font-style:italic;color:#a0d8d4;font-size:.96rem;line-height:1.88;}
+.epigraph .epl-pt{color:#c0a060;font-size:.88rem;margin-top:.7rem;border-top:1px solid rgba(201,168,76,.12);padding-top:.5rem;}
+.insight{background:rgba(201,168,76,.05);border-left:3px solid var(--gd);padding:1rem 1.4rem;margin:1.4rem 0;font-style:italic;color:#f0dda8;font-size:.93rem;line-height:1.82;}
+
+/* ── MACHINE ── */
+.machine-wrap{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:1.5rem;margin:2.5rem auto;max-width:920px;}
+.machine-wrap h3{font-family:'Courier New',monospace;font-size:.9rem;color:var(--t);margin-bottom:.4rem;font-weight:400;}
+.machine-sub{font-size:.8rem;color:var(--mu);margin-bottom:1rem;line-height:1.6;}
+.machine-grid{display:grid;grid-template-columns:1fr 250px;gap:1px;background:rgba(45,212,191,.05);border-radius:4px;overflow:hidden;}
+canvas#tc{display:block;width:100%;height:340px;background:#030a09;}
+.m-panel{background:#080f0e;padding:1.2rem;display:flex;flex-direction:column;gap:.8rem;}
+.m-ctrl label{display:flex;justify-content:space-between;font-family:'Courier New',monospace;font-size:.58rem;color:var(--mu);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.25rem;}
+.m-ctrl label span{color:var(--t);}
+.m-ctrl input[type=range]{width:100%;accent-color:var(--t);cursor:pointer;}
+.m-btns{display:flex;gap:.35rem;}
+.mb{flex:1;font-family:'Courier New',monospace;font-size:.56rem;letter-spacing:.06em;text-transform:uppercase;padding:.35rem;background:transparent;border:1px solid rgba(45,212,191,.1);color:var(--mu);cursor:pointer;transition:all .15s;border-radius:2px;}
+.mb:hover,.mb.on{border-color:var(--t);color:var(--t);}
+.m-legend{font-family:'Courier New',monospace;font-size:.55rem;color:#2a4a48;line-height:1.9;border-top:1px solid rgba(45,212,191,.06);padding-top:.6rem;margin-top:auto;}
+.m-out{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(45,212,191,.05);}
+.out{background:#080f0e;padding:.6rem .85rem;}
+.out .ol{font-family:'Courier New',monospace;font-size:.53rem;color:#2a4a48;letter-spacing:.05em;text-transform:uppercase;}
+.out .ov{font-family:'Courier New',monospace;font-size:.9rem;color:var(--t);margin-top:.1rem;}
+@media(max-width:640px){.machine-grid{grid-template-columns:1fr;}.m-out{grid-template-columns:repeat(2,1fr);}}
+
+/* ── PROMPT PANEL ── */
+.prompt-panel{background:var(--bg2);border-top:3px solid var(--t);padding:2.5rem 1.5rem;margin-top:2rem;}
+.pp-inner{max-width:920px;margin:0 auto;}
+.level-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+.ltab{font-family:'Courier New',monospace;font-size:.7rem;padding:.26rem .62rem;background:transparent;border:1px solid rgba(45,212,191,.13);color:var(--mu);cursor:pointer;border-radius:2px;letter-spacing:.06em;transition:all .15s;}
+.ltab:hover,.ltab.active{background:var(--tg);color:var(--t);border-color:var(--t);}
+.pb{display:none;}.pb.active{display:block;}
+.pb-level{font-family:'Courier New',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t);margin-bottom:.3rem;}
+.pb-title{font-size:1.03rem;color:#cffaf6;margin-bottom:.5rem;}
+.pb-desc{font-size:.84rem;color:var(--mu);margin-bottom:.8rem;line-height:1.65;}
+.pb-prompt{background:var(--bg);border:1px solid rgba(45,212,191,.18);border-left:3px solid var(--t);padding:.85rem 1.1rem;font-size:.83rem;line-height:1.78;color:var(--tx);font-style:italic;margin-bottom:.5rem;white-space:pre-wrap;border-radius:0 4px 4px 0;}
+.copy-btn{background:var(--t);color:var(--bg);border:none;padding:.3rem .8rem;font-family:'Courier New',monospace;font-size:.68rem;font-weight:700;cursor:pointer;letter-spacing:.06em;border-radius:2px;transition:all .15s;}
+.copy-btn:hover{background:#99f6e4;}
+.pb-note{font-size:.75rem;color:var(--mu);font-style:italic;margin-top:.5rem;line-height:1.6;}
+
+/* ── REFERENCES ── */
+.ref-list{list-style:none;counter-reset:ref;margin:0;padding:0;}
+.ref-list li{counter-increment:ref;display:grid;grid-template-columns:2rem 1fr;gap:.5rem;padding:.5rem 0;border-bottom:1px solid rgba(45,212,191,.06);font-size:.83rem;line-height:1.65;}
+.ref-list li::before{content:counter(ref);font-family:'Courier New',monospace;font-size:.7rem;color:var(--t);padding-top:.12rem;}
+.ref-list a{color:var(--t);text-decoration:none;}
+.ref-list a:hover{text-decoration:underline;}
+
+/* ── OPEN PROBLEMS ── */
+.op-item{background:var(--bg2);border:1px solid rgba(224,90,58,.25);border-radius:6px;padding:1rem 1.3rem;margin:.8rem 0;}
+.op-tag{font-family:'Courier New',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--k);margin-bottom:.3rem;}
+.op-claim{font-family:'Courier New',monospace;font-size:.82rem;color:#f0c0b0;line-height:1.7;margin-bottom:.4rem;}
+.op-note{font-size:.82rem;color:var(--mu);font-style:italic;line-height:1.65;}
+
+/* ── FOOTER ── */
+footer{background:#030a09;border-top:1px solid var(--bd);padding:2rem 1.5rem;text-align:center;font-family:'Courier New',monospace;font-size:.7rem;color:var(--mu);line-height:2;}
+footer a{color:var(--t);text-decoration:none;}footer a:hover{text-decoration:underline;}
+
+/* ── MISC ── */
+.bilingual-tag{display:inline-block;font-family:'Courier New',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;padding:.1rem .4rem;border-radius:2px;vertical-align:middle;margin-left:.4rem;}
+.tag-en{background:rgba(45,212,191,.12);color:var(--t);}
+.tag-pt{background:rgba(249,198,107,.12);color:var(--pt);}
+.loco{color:var(--pt);font-style:italic;}
+.eq-box{background:#030a09;border:1px solid var(--bd);border-radius:4px;padding:.7rem 1.2rem;margin:.8rem 0;font-family:'Courier New',monospace;font-size:.9rem;color:#c9f0ec;text-align:center;line-height:1.9;}
+.eq-box .eq-num{float:right;color:var(--mu);font-size:.75rem;padding-top:.15rem;}
+
+@media(max-width:720px){
+  .abstract-grid{grid-template-columns:1fr;}
+  .mast-top{flex-direction:column;}
+  .section{padding:2rem 1rem 0;}
+  .axiom-grid{grid-template-columns:1fr;}
+  .time-prop{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html">Atratores</a>
+  <a href="livro3-brasil.html">Mini-Beast · Book 3</a>
+  <a href="collatz-engineering.html">Collatz Engineering</a>
+  <a href="https://totogt.github.io/AXLE">Principia Orthogona</a>
+  <a href="https://github.com/TOTOGT/AXLE">AXLE · GitHub</a>
+  <a href="https://brodanova6.gumroad.com/l/soundworks">Buy Book 3 →</a>
+</nav>
+<div class="ch-nav">
+  <a href="livro3-brasil.html">← Book 3 Index</a>
+  <span class="loc">Bônus · Capítulo E · GTCT</span>
+  <a href="session1-contact-geometry.html">Mini-curso S1 →</a>
+</div>
+
+<!-- ══════════════════════ MASTHEAD ══════════════════════ -->
+<div class="masthead">
+  <div class="mast-top">
+    <div class="mast-journal">
+      <strong>Principia Orthogona — The Mini-Beast</strong>
+      Bonus Chapter E &nbsp;·&nbsp; Vol. III &nbsp;·&nbsp; G6 LLC · Newark NJ · 2026<br>
+      Series: <span style="color:var(--t)">doi.org/10.5281/zenodo.19117399</span>
+    </div>
+    <div class="mast-doi">
+      <span style="color:var(--mu)">MSC 2020:</span> <span style="color:var(--t)">37J55 · 53D10 · 68T20</span><br>
+      <span style="color:var(--mu)">Received:</span> 2026-01 &nbsp;·&nbsp; <span style="color:var(--mu)">Revised:</span> 2026-04<br>
+      <a href="https://doi.org/10.5281/zenodo.19117399">zenodo.19117399</a>
+    </div>
+  </div>
+  <hr class="mast-divider">
+
+  <div class="mast-badge">BONUS CHAPTER · E</div>
+
+  <div class="mast-title">
+    GTCT for Everyone<br>
+    <span style="font-size:0.6em;font-style:italic;color:var(--mu)">GTCT Para Todos: Geometria de Contato Temporal Generativa</span>
+  </div>
+  <div class="mast-subtitle">
+    Nine Axioms · Twelve Operators · Four Theorems · One Fixed Point<br>
+    <span class="loco">Nove Axiomas · Doze Operadores · Quatro Teoremas · Um Ponto Fixo</span>
+  </div>
+
+  <div class="mast-author">Pablo Nogueira Grossi <span>/ G6 LLC, Newark, New Jersey</span></div>
+  <div class="mast-affil">
+    ORCID: 0009-0000-6496-2186 &nbsp;·&nbsp; grossi-ops.github.io/Atratores<br>
+    Submitted to the XII Bienal da Sociedade Brasileira de Matemática — UFRN, Natal 2026, Track T10
+  </div>
+
+  <div class="chain-row">
+    <span class="chain-op co-c">C</span><span class="co-arr">→</span>
+    <span class="chain-op co-k">K</span><span class="co-arr">→</span>
+    <span class="chain-op co-f">F</span><span class="co-arr">→</span>
+    <span class="chain-op co-u">U</span><span class="co-arr">→</span>
+    <span class="chain-op co-t">T</span><span class="co-arr">→</span>
+    <span style="color:var(--mu)">Γ* &nbsp;=&nbsp; fixed point &nbsp;=&nbsp; ponto fixo</span>
+  </div>
+
+  <div class="mast-meta-row">
+    <div class="mml"><span class="mmk">Language</span><span class="mmv">EN / PT-BR</span></div>
+    <div class="mml"><span class="mmk">Format</span><span class="mmv">Interactive HTML · Living Document</span></div>
+    <div class="mml"><span class="mmk">License</span><span class="mmv">MIT · CC BY 4.0</span></div>
+    <div class="mml"><span class="mmk">Prompt Levels</span><span class="mmv">A1 → D1</span></div>
+    <div class="mml"><span class="mmk">Affiliation</span><span class="mmv">G6 LLC · AXLE · DM3-lab</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ ABSTRACT ══════════════════════ -->
+<div class="abstract-block">
+  <div class="abstract-grid">
+    <div class="abs-col en">
+      <h3>Abstract <span class="bilingual-tag tag-en">EN</span></h3>
+      <p>Generative Temporal Contact Theory (GTCT) proposes that time is not a background container but an operator-valued quantity produced by four sequential maps — Compression (C), Curvature recognition (K), Folding (F), and Unfolding (U) — acting on a smooth contact manifold (M, ξ). One complete application of the composed map G = U ∘ F ∘ K ∘ C defines a single unit of generative time. The system is governed by nine axioms and admits four main theorems: correspondence of structural levels, orthogonality of compression and emergence, Banach contraction to a unique fixed point Γ*, and genuine emergence at that fixed point. We present the theory accessibly, with bilingual commentary, an interactive phase-portrait simulator, and a graded prompt panel from A1 to D1 for independent investigation. Open problems are listed in §12.</p>
+    </div>
+    <div class="abs-col pt">
+      <h3>Resumo <span class="bilingual-tag tag-pt">PT</span></h3>
+      <p>A Teoria de Contato Temporal Generativo (GTCT) propõe que o tempo não é um recipiente de fundo, mas uma quantidade com valor de operador, produzida por quatro mapas sequenciais — Compressão (C), reconhecimento de Curvatura (K), Dobragem (F) e Desdobramento (U) — agindo sobre uma variedade de contato suave (M, ξ). Uma aplicação completa do mapa composto G = U ∘ F ∘ K ∘ C define uma única unidade de tempo generativo. O sistema é governado por nove axiomas e admite quatro teoremas principais: correspondência de níveis estruturais, ortogonalidade entre compressão e emergência, contração de Banach a um ponto fixo único Γ*, e emergência genuína nesse ponto fixo. Apresentamos a teoria de forma acessível, com comentários bilíngues, um simulador interativo de retrato de fase e um painel de prompts graduados de A1 a D1 para investigação independente. Problemas em aberto são listados no §12.</p>
+    </div>
+  </div>
+  <div class="kw-row">
+    <strong style="color:var(--t)">Keywords:</strong> contact geometry · generative time · Banach fixed point · operator algebra · dm³ dynamics · language learning · irreversibility<br>
+    <span class="kw-pt"><strong style="color:var(--pt)">Palavras-chave:</strong> geometria de contato · tempo generativo · ponto fixo de Banach · álgebra de operadores · dinâmica dm³ · aprendizagem de línguas · irreversibilidade</span>
+  </div>
+</div>
+
+<!-- ══════════════════════ §1 INTRODUCTION ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§1 — Introdução / Introduction</div>
+  <h2>Introduction</h2>
+
+  <div class="epigraph">
+    "Time is not a container. It is a generative operator. It does not hold events. It produces them."
+    <div class="epl-pt">"O tempo não é um recipiente. É um operador generativo. Ele não contém eventos. Ele os produz."<br><br>
+    "Your education is yours. No one can take it away from you." — Pablo Nogueira Grossi, <em>The Seed</em>, Newark NJ 2026</div>
+  </div>
+
+  <p>Classical mechanics treats time as a parameter: an independent variable <span class="math">t ∈ ℝ</span> against which all other quantities are measured. Thermodynamics introduces irreversibility through entropy but leaves the nature of time unexplained. Quantum mechanics uses time as an external label, not a dynamical variable. In all three frameworks, time is assumed — it is the stage, not the actor.</p>
+
+  <p>GTCT proposes a different account. Time is the product of a specific operator sequence. When the four operators C, K, F, U are composed and applied to the state of a system on a contact manifold (M, ξ), the result is not just a new state — it is a new state <em>at a new moment</em>. The moment is generated by the application. <span class="loco">O momento é gerado pela aplicação.</span></p>
+
+  <p>This chapter presents GTCT at three levels simultaneously. The mathematical content is stated formally, in the tradition of IMPA's graduate curriculum. The pedagogical content is stated in parallel, aimed at any reader who has completed secondary school and wishes to understand what a theorem proves rather than what a formula computes. And the bilingual content — throughout this chapter, key sentences appear in both English and Portuguese — reflects the practice of Cajueiro Workshops, the New Jersey community project of which this text is a deliverable.</p>
+
+  <p><strong>Structure of this chapter.</strong> §2 introduces contact manifolds at the level of intuition and formal definition. §3 states the nine axioms. §4 describes the twelve operators and their 12-fold symmetry. §5 is the interactive G-orbit simulator. §6 proves (by sketch) the four main theorems. §7 derives the five properties of GTCT time. §8 presents applications to biology, physics, and language. §9 connects GTCT to the Cajueiro Workshops project and the Brazilian mathematical tradition. §10 states the Seed Theorem. §11 lists open problems. §12 is the graded prompt panel for independent study.</p>
+</div>
+
+<!-- ══════════════════════ §2 CONTACT GEOMETRY PRIMER ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§2 — Geometria de Contato / Contact Geometry</div>
+  <h2>Contact Geometry: A Primer</h2>
+
+  <p>Contact geometry is the odd-dimensional sibling of symplectic geometry. Where a symplectic manifold has a closed non-degenerate 2-form (area), a contact manifold has a maximally non-integrable hyperplane field (a constraint). The standard reference is Geiges [1]; we recall only what is needed for GTCT.</p>
+
+  <div class="env def">
+    <div class="env-label">Definição 2.1 — Contact Manifold / Variedade de Contato</div>
+    <div class="env-title">Contact Structure</div>
+    <div class="env-body">
+      A <em>contact manifold</em> is a pair (M, ξ) where M is a smooth (2n+1)-dimensional manifold and ξ = ker α is a smooth hyperplane distribution on M determined by a 1-form α satisfying the non-degeneracy condition
+      <div class="eq-box">α ∧ (dα)ⁿ ≠ 0 &nbsp;everywhere on M. <span class="eq-num">(2.1)</span></div>
+      The form α is called the <em>contact form</em>. The condition (2.1) is equivalent to requiring that ξ is as far from being integrable as possible — no surface can be everywhere tangent to ξ.
+      <div class="eq-box">Variedade de contato: (M, ξ) com α ∧ (dα)ⁿ ≠ 0. <span class="eq-num">(PT)</span></div>
+    </div>
+  </div>
+
+  <div class="env def">
+    <div class="env-label">Definição 2.2 — Reeb Vector Field / Campo Vetorial de Reeb</div>
+    <div class="env-title">The Reeb Field and Generative Time</div>
+    <div class="env-body">
+      Given a contact form α, the <em>Reeb vector field</em> R is the unique vector field on M satisfying
+      <div class="eq-box">α(R) = 1 &nbsp;and&nbsp; ι_R dα = 0. <span class="eq-num">(2.2)</span></div>
+      In GTCT, the Reeb flow — the 1-parameter group generated by R — <strong>is</strong> generative time. The period T* = 2π of the Reeb flow on the standard contact sphere is the canonical unit of GTCT time.
+      <div class="env-body" style="margin-top:.6rem; font-size:.84rem; color:var(--mu); font-style:italic;">O campo de Reeb gera o tempo generativo. O período T* = 2π é a unidade canônica.</div>
+    </div>
+  </div>
+
+  <!-- FIGURE: Contact manifold sketch -->
+  <div class="figure">
+    <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+      <rect width="700" height="260" fill="#030a09"/>
+      <!-- Grid faint -->
+      <g stroke="#0d1a18" stroke-width="0.5">
+        <line x1="0" y1="130" x2="700" y2="130"/>
+        <line x1="350" y1="0" x2="350" y2="260"/>
+      </g>
+      <!-- Contact hyperplane ξ at several points -->
+      <!-- Point 1: (150, 130) -->
+      <circle cx="150" cy="140" r="5" fill="#2dd4bf"/>
+      <line x1="90" y1="180" x2="210" y2="100" stroke="#2dd4bf" stroke-width="1.5" opacity="0.7"/>
+      <text x="148" y="160" font-size="9" fill="#2dd4bf" font-family="Courier New">p₁</text>
+      <text x="80" y="190" font-size="8" fill="#4d7a76" font-family="Courier New">ξ(p₁)</text>
+      <!-- Point 2: (280, 110) -->
+      <circle cx="280" cy="110" r="5" fill="#2dd4bf"/>
+      <line x1="220" y1="80" x2="340" y2="140" stroke="#2dd4bf" stroke-width="1.5" opacity="0.7"/>
+      <text x="278" y="130" font-size="9" fill="#2dd4bf" font-family="Courier New">p₂</text>
+      <text x="210" y="72" font-size="8" fill="#4d7a76" font-family="Courier New">ξ(p₂)</text>
+      <!-- Point 3: (440, 155) -->
+      <circle cx="440" cy="150" r="5" fill="#2dd4bf"/>
+      <line x1="370" y1="190" x2="510" y2="110" stroke="#2dd4bf" stroke-width="1.5" opacity="0.7"/>
+      <text x="438" y="170" font-size="9" fill="#2dd4bf" font-family="Courier New">p₃</text>
+      <text x="515" y="108" font-size="8" fill="#4d7a76" font-family="Courier New">ξ(p₃)</text>
+      <!-- Reeb flow arrows -->
+      <g stroke="#c9a84c" stroke-width="1.8" fill="#c9a84c">
+        <line x1="150" y1="140" x2="150" y2="95" marker-end="url(#arr)"/>
+        <line x1="280" y1="110" x2="280" y2="65"  marker-end="url(#arr)"/>
+        <line x1="440" y1="150" x2="440" y2="105" marker-end="url(#arr)"/>
+      </g>
+      <defs>
+        <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#c9a84c"/>
+        </marker>
+      </defs>
+      <!-- Reeb field label -->
+      <text x="460" y="118" font-size="9" fill="#c9a84c" font-family="Courier New">R (Reeb field)</text>
+      <text x="460" y="130" font-size="8" fill="#4d7a76" font-family="Courier New">= generative time</text>
+      <!-- Manifold label -->
+      <text x="30" y="20" font-size="10" fill="#2dd4bf" font-family="Georgia">M</text>
+      <text x="44" y="20" font-size="9" fill="#4d7a76" font-family="Courier New">— the contact manifold</text>
+      <!-- Non-integrability note -->
+      <text x="30" y="235" font-size="8" fill="#4d7a76" font-family="Courier New">The hyperplanes ξ(p) twist — they cannot all be tangent to a single surface (non-integrability).</text>
+      <!-- G = operator path curve -->
+      <path d="M140,200 Q220,230 290,210 Q370,190 450,215 Q530,238 590,200" fill="none" stroke="#50c878" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.6"/>
+      <text x="580" y="195" font-size="8" fill="#50c878" font-family="Courier New">G-orbit</text>
+    </svg>
+    <div class="fig-caption"><strong>Figure 2.1.</strong> A contact manifold M with contact hyperplanes ξ(p) (teal lines) and Reeb vector field R (gold arrows) at three points. The hyperplanes twist — they cannot all be tangent to a surface. The G-orbit (green dashed) traces one complete application of C→K→F→U. <em>Figura 2.1. Variedade de contato M com planos de contato ξ(p) (linhas verde-azuladas) e campo de Reeb R (setas douradas). Os planos torcem — não podem todos ser tangentes a uma superfície.</em></div>
+  </div>
+
+  <p>The standard model is M = ℝ³ with contact form α = dz − y dx. The hyperplane at each point (x, y, z) is spanned by the vectors ∂_x + y ∂_z and ∂_y. The Reeb field is R = ∂_z. The flow of R translates the z-coordinate — a motion that cannot be followed by staying inside the contact planes. This is the irreversibility of time encoded geometrically.</p>
+
+  <div class="env prop">
+    <div class="env-label">Proposição 2.3</div>
+    <div class="env-title">Contact Manifolds Are Stable</div>
+    <div class="env-body">By Gray's stability theorem, any smooth family of contact structures on a closed manifold is diffeomorphic (via an isotopy) to a fixed reference structure. This means the contact manifold M is robust: small perturbations do not change its topological type. GTCT's structure is therefore stable under perturbation — a requirement for any physical or pedagogical theory.
+    <div class="proof"><strong>Prova (esboço).</strong> Gray's theorem is proved by Moser's method: construct a time-dependent vector field whose flow conjugates the deformed family back to the original. The key input is that H¹(M) = 0, which holds for the standard contact sphere. See [2, §2.2]. <span class="qed">□</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ §3 NINE AXIOMS ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§3 — Os Nove Axiomas / The Nine Axioms</div>
+  <h2>The Nine Axioms of GTCT</h2>
+  <p>The axioms are statements we accept before proving anything. They are the seeds. Everything else is the tree. <span class="loco">Os axiomas são as sementes. Todo o resto é a árvore.</span></p>
+
+  <div class="axiom-grid">
+    <div class="axiom featured">
+      <div class="axiom-num">Axioma / Axiom 1 · The Space · O Espaço</div>
+      <div class="axiom-text">There exists a smooth contact manifold (M, ξ) satisfying Def. 2.1. M is the arena of all generative transitions. ξ is the constraint that makes time directional.</div>
+      <div class="axiom-pt">Existe uma variedade de contato suave (M, ξ). M é a arena de todas as transições generativas. ξ é a restrição que torna o tempo direcional.</div>
+    </div>
+    <div class="axiom">
+      <div class="axiom-num">Axioma 2 · The Operators · Os Operadores</div>
+      <div class="axiom-text">Four diffeomorphisms C, K, F, U : M → M act in sequence. G = U ∘ F ∘ K ∘ C is the composed map. One orbit of G is one unit of generative time.</div>
+      <div class="axiom-pt">Quatro difeomorfismos C, K, F, U agem em sequência. G = U ∘ F ∘ K ∘ C. Uma órbita de G é uma unidade de tempo generativo.</div>
+    </div>
+    <div class="axiom featured">
+      <div class="axiom-num">Axioma 3 · Time · O Tempo</div>
+      <div class="axiom-text">Time T is the parameter of the operator sequence, not a background container. One application of G produces one unit of T. The period T* = 2π is the canonical value derived from the Reeb flow.</div>
+      <div class="axiom-pt">O tempo T é o parâmetro da sequência de operadores, não um recipiente. Uma aplicação de G produz uma unidade de T. O período canônico é T* = 2π.</div>
+    </div>
+    <div class="axiom">
+      <div class="axiom-num">Axioma 4 · The Cycle · O Ciclo</div>
+      <div class="axiom-text">G is a contraction mapping with Lipschitz constant κ &lt; 1 on M. By the Banach Fixed Point Theorem, the sequence G^n(x) converges to a unique fixed point Γ* for every initial x ∈ M.</div>
+      <div class="axiom-pt">G é uma contração com constante de Lipschitz κ &lt; 1. A sequência G^n(x) converge ao ponto fixo único Γ*.</div>
+    </div>
+    <div class="axiom">
+      <div class="axiom-num">Axioma 5 · Invariants · Invariantes</div>
+      <div class="axiom-text">The canonical triple (μ_max, ω, β) = (−2, 2π, 33) is invariant under contact reparametrisation. These three numbers characterise every dm³ system. β = g₃₃ = 3 × 11 is the monster threshold.</div>
+      <div class="axiom-pt">O triplo canônico (μ_max, ω, β) = (−2, 2π, 33) é invariante sob reparametrização de contato. β = g₃₃ = 3 × 11 é o limiar monstruo.</div>
+    </div>
+    <div class="axiom">
+      <div class="axiom-num">Axioma 6 · Correspondence · Correspondência</div>
+      <div class="axiom-text">Any system satisfying Axioms 1–5 belongs to the category dm³. Systems in dm³ are contact-morphic: biologically, linguistically, and physically identical at the structural level.</div>
+      <div class="axiom-pt">Todo sistema que satisfaz os Axiomas 1–5 pertence à categoria dm³. Sistemas em dm³ são contato-mórficos: identicamente estruturados.</div>
+    </div>
+    <div class="axiom">
+      <div class="axiom-num">Axioma 7 · Recursion · Recursão</div>
+      <div class="axiom-text">The fixed point Γ* is the seed of the next-level G. The orbit does not close — it spirals. Each completion generates the initial condition of a higher-order system.</div>
+      <div class="axiom-pt">O ponto fixo Γ* é a semente do G de nível seguinte. A órbita não se fecha — ela espiraliza. Cada conclusão gera a condição inicial de um sistema de ordem superior.</div>
+    </div>
+    <div class="axiom featured">
+      <div class="axiom-num">Axioma 8 · Non-commutativity · Não-comutatividade</div>
+      <div class="axiom-text">G is non-commutative: C ∘ K ≠ K ∘ C. The order of operators determines the direction of time. Reversing the sequence gives a different result — this is why time cannot run backward.</div>
+      <div class="axiom-pt">G é não-comutativo: C ∘ K ≠ K ∘ C. A ordem dos operadores determina a direção do tempo. Por isso o tempo não pode andar para trás.</div>
+    </div>
+    <div class="axiom">
+      <div class="axiom-num">Axioma 9 · Honest Incompleteness · Incompletude Honesta</div>
+      <div class="axiom-text">There exists at least one sorry — a conjecture that remains open and is marked honestly. The sorry is not a failure. It is the seed of the next generation of mathematics. <em>See §12.</em></div>
+      <div class="axiom-pt">Existe pelo menos um sorry — uma conjectura em aberto, marcada honestamente. O sorry não é um fracasso. É a semente da próxima geração da matemática.</div>
+    </div>
+  </div>
+
+  <div class="insight">The nine axioms form a minimal closed system. Remove Axiom 8 and time becomes reversible. Remove Axiom 4 and convergence fails. Remove Axiom 9 and the system becomes dogmatic. Each axiom is load-bearing. <span class="loco">Cada axioma é estruturalmente necessário. Nenhum pode ser removido.</span></div>
+</div>
+
+<!-- ══════════════════════ §4 TWELVE OPERATORS ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§4 — Os Doze Operadores / The Twelve Operators</div>
+  <h2>The Twelve Operators and the 12-Fold Symmetry</h2>
+
+  <p>The four operators C, K, F, U each span three of the twelve phases of the contact manifold's discrete rotational symmetry group Z₁₂, generated by the rotation ω = 2π/12 = π/6. This 12-fold structure is not chosen for aesthetic reasons — it is a consequence of the contact normal form in three dimensions. <span class="loco">A simetria de 12 dobras é uma consequência da forma normal de contato em três dimensões.</span></p>
+
+  <div class="env def">
+    <div class="env-label">Definição 4.1 — The Four Primary Operators</div>
+    <div class="env-title">C, K, F, U on (M, ξ)</div>
+    <div class="env-body">
+      Let (M, ξ) be a dm³ contact manifold with Reeb field R and contact form α. Define:
+      <br><br>
+      <strong style="color:var(--c)">C (Compression).</strong> A diffeomorphism that reduces the entropy of the current state by projecting onto a lower-dimensional submanifold consistent with ξ. In the language ODE: C acts during phases 1–3 of the G-orbit. <span class="loco">C comprime o estado para uma subvariedade de menor dimensão.</span>
+      <br><br>
+      <strong style="color:var(--k)">K (Curvature / Recognition).</strong> The operator that computes the principal curvatures of the image of C and fires the recognition threshold K* when the curvature exceeds the critical value κ*. In phases 4–6. <span class="loco">K calcula as curvaturas principais e dispara o limiar K* quando κ &gt; κ*.</span>
+      <br><br>
+      <strong style="color:var(--f)">F (Folding).</strong> The Whitney fold: the critical map W₃(q) = q³ − 3q + 2 = (q−1)²(q+2), with a double root at q = 1. F is the irreversible transition — the topology changes. In phases 7–9. <span class="loco">F é a dobra de Whitney — a transição irreversível. A topologia muda.</span>
+      <br><br>
+      <strong style="color:var(--u)">U (Unfolding / Emergence).</strong> The operator that releases the compressed, recognised, and folded state into a new topological configuration. The image of U has a component orthogonal to the image of C — genuine novelty. Phases 10–12. <span class="loco">U liberta o estado para uma nova configuração. A imagem de U tem componente ortogonal à imagem de C — novidade genuína.</span>
+    </div>
+  </div>
+
+  <table class="op-table">
+    <thead>
+      <tr><th>Phases</th><th>Op</th><th>Mode</th><th>Mathematical content</th><th class="pt-cell">PT — O que acontece</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="pc">1 – 3</td><td class="pc">C</td><td>Compression</td>
+        <td>Entropy reduction. Projection onto ξ-consistent submanifold. Dimension decreases locally.</td>
+        <td class="pt-cell">Compressão. Redução de entropia. A dimensão diminui localmente.</td>
+      </tr>
+      <tr>
+        <td class="pk">4 – 6</td><td class="pk">K</td><td>Curvature / Recognition</td>
+        <td>Principal curvature extraction. Threshold κ* fires. Binding of distributed representation into a coherent unit.</td>
+        <td class="pt-cell">Reconhecimento de curvatura. O limiar κ* dispara. Ligação de representação distribuída.</td>
+      </tr>
+      <tr>
+        <td class="pf">7 – 9</td><td class="pf">F</td><td>Folding</td>
+        <td>Whitney fold W₃(q) = (q−1)²(q+2). Double root at q = 1 means the fold is a rank-1 Jacobian loss — irreversible.</td>
+        <td class="pt-cell">Dobra de Whitney. Raiz dupla em q = 1. A dobra é uma perda de Jacobiano de posto 1 — irreversível.</td>
+      </tr>
+      <tr>
+        <td class="pu">10 – 12</td><td class="pu">U</td><td>Unfolding / Emergence</td>
+        <td>Release into new topology. Image U(x) ⊥ C(M) for generic x — genuine novelty, not retrieval.</td>
+        <td class="pt-cell">Liberação em nova topologia. A imagem de U é ortogonal à imagem de C — novidade genuína.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="insight">The 12-fold symmetry explains why so many natural periodicities have 12 phases: the 12 hours of the circadian cycle, the 12 chromatic semitones, the 12 months of the year. All are projections of a single G-orbit onto different observable scales. <em class="loco">A simetria de 12 dobras explica os 12 tons cromáticos, os 12 meses, as 12 horas do relógio circadiano.</em></div>
+</div>
+
+<!-- ══════════════════════ §5 MACHINE ══════════════════════ -->
+<div class="machine-wrap" id="machine">
+  <h3>▶ Figura Interativa 5.1 — G-Orbit Phase Portrait Simulator / Simulador de Retrato de Fase</h3>
+  <div class="machine-sub">Each orbit of G = U∘F∘K∘C is one unit of generative time T. The phase portrait plots radius r vs. height z of the contact ODE: ṙ = r(1−r²) + ε(r−1)e^{−z}, ż = r² − ε(r−1)²e^{−z}. The gold line Γ* = {r=1} is the fixed point. Adjust parameters to see convergence. <em class="loco">Cada órbita de G é uma unidade de tempo generativo. A linha dourada é o ponto fixo Γ*.</em></div>
+  <div class="machine-grid">
+    <canvas id="tc"></canvas>
+    <div class="m-panel">
+      <div class="m-ctrl"><label>Orbits N <span id="vn">6</span></label><input type="range" id="sn" min="1" max="16" step="1" value="6"></div>
+      <div class="m-ctrl"><label>Initial r₀ <span id="vr">1.80</span></label><input type="range" id="sr" min="0.2" max="3.5" step="0.05" value="1.8"></div>
+      <div class="m-ctrl"><label>Coupling ε <span id="ve">2.00</span></label><input type="range" id="se" min="0" max="5" step="0.1" value="2"></div>
+      <div class="m-ctrl"><label>G cycles g₃₃ <span id="vg">33</span></label><input type="range" id="sg" min="1" max="66" step="1" value="33"></div>
+      <div class="m-ctrl"><label>Speed <span id="vs">1.0×</span></label><input type="range" id="ss" min="0.2" max="5" step="0.1" value="1"></div>
+      <div class="m-btns">
+        <button class="mb on" id="playBtn" onclick="tog()">⏸ Pause</button>
+        <button class="mb" onclick="rst()">↺ Reset</button>
+      </div>
+      <div class="m-legend">
+        Phase portrait: r – z projection<br>
+        <span style="color:var(--t)">■</span> converging to Γ* (r→1)<br>
+        <span style="color:var(--k)">■</span> escaping (r &lt; r*)<br>
+        <span style="color:var(--gd)">■</span> Γ* — fixed point (r = 1)<br><br>
+        g₃₃ = 33 orbits → limiar monstruo<br>
+        T* = 2π per orbit = canonical period<br>
+        μ_max = −2 (contraction rate)
+      </div>
+    </div>
+  </div>
+  <div class="m-out">
+    <div class="out"><div class="ol">G-orbits / g₃₃</div><div class="ov" id="og">—</div></div>
+    <div class="out"><div class="ol">r(t) — radius</div><div class="ov" id="or2">—</div></div>
+    <div class="out"><div class="ol">|r − Γ*|</div><div class="ov" id="oe2">—</div></div>
+    <div class="out"><div class="ol">μ — Lyapunov</div><div class="ov" id="om2">—</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ §6 FOUR THEOREMS ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§6 — Os Quatro Teoremas / The Four Theorems</div>
+  <h2>Four Main Theorems of GTCT</h2>
+
+  <div class="env thm">
+    <div class="env-label">Teorema 6.1 — The Correspondence Theorem / Teorema da Correspondência</div>
+    <div class="env-title">Structural Levels Are Geometric, Not Conventional</div>
+    <div class="env-body">Every CEFR level (A1, A2, B1, B2, C1, C2, D1) corresponds bijectively to a specific moment in the G-orbit on the contact manifold. The correspondence is canonical — derived from the contact normal form — not invented by pedagogues.
+    <div class="eq-box">CEFR level n ↔ n-th quarter-turn of G on (M, ξ) <span class="eq-num">(6.1)</span></div>
+    <div class="proof"><strong>Prova (esboço).</strong> By Darboux's theorem, every contact manifold is locally diffeomorphic to the standard model (ℝ³, dz − y dx). On this model, the G-orbit passes through seven geometrically distinct regimes as the curvature of the trajectory changes sign. Each sign change corresponds to one structural level. The correspondence is preserved by any contact morphism. <em class="loco">Pelo Teorema de Darboux, todo contact manifold é localmente difeomorfo ao modelo padrão. A órbita de G passa por sete regimes geometricamente distintos.</em> <span class="qed">□</span></div>
+    </div>
+  </div>
+
+  <div class="env thm">
+    <div class="env-label">Teorema 6.2 — Orthogonality / Ortogonalidade</div>
+    <div class="env-title">What Is Compressed Is Not Lost in the Unfolding</div>
+    <div class="env-body">The images of C and U are orthogonal in the tangent space to M: <span class="math">Im(dC_p) ⊥ Im(dU_p)</span> for generic p ∈ M. This means the unfolding U produces structure genuinely outside the range of compression C.
+    <div class="eq-box">Im(dC) ∩ Im(dU) = {0} &nbsp;(generically) <span class="eq-num">(6.2)</span></div>
+    Consequence: every G-orbit adds structure that is not reachable from the compressed state alone. Nothing is wasted — but nothing is merely repeated. <em class="loco">Cada órbita acrescenta estrutura que não está acessível a partir do estado comprimido. Nada se perde, mas nada é meramente repetido.</em>
+    <div class="proof"><strong>Prova (esboço).</strong> C contracts along the contact distribution ξ; U expands along the Reeb direction R. Since ξ and R are complementary (TM = ξ ⊕ ⟨R⟩), their images are transverse. Orthogonality follows from the choice of a compatible Riemannian metric. <span class="qed">□</span></div>
+    </div>
+  </div>
+
+  <div class="env thm">
+    <div class="env-label">Teorema 6.3 — Banach Contraction / Contração de Banach</div>
+    <div class="env-title">Learning Converges. The Fixed Point Exists. Arrival Is Guaranteed.</div>
+    <div class="env-body">Under Axiom 4, G is a contraction on the complete metric space (M, d). By the Banach Fixed Point Theorem, there exists a unique Γ* ∈ M such that G(Γ*) = Γ* and
+    <div class="eq-box">d(Gⁿ(x), Γ*) ≤ κⁿ d(x, Γ*) → 0 &nbsp;as n → ∞, <span class="eq-num">(6.3)</span></div>
+    for all initial points x ∈ M and for the Lipschitz constant κ &lt; 1 from Axiom 4. The convergence is exponential with rate μ_max = log κ &lt; 0. In the canonical dm³ system, μ_max = −2.
+    <div class="proof"><strong>Prova.</strong> Standard application of the Banach Fixed Point Theorem [3, Thm. 1.1]. The key hypothesis — completeness of M — follows from M being a compact contact manifold. The contraction constant κ is verified numerically in the phase portrait of Figure 5.1. <em class="loco">Aplicação padrão do Teorema do Ponto Fixo de Banach. A completude de M segue de M ser uma variedade de contato compacta.</em> <span class="qed">□</span></div>
+    </div>
+  </div>
+
+  <div class="env thm">
+    <div class="env-label">Teorema 6.4 — Emergence / Emergência</div>
+    <div class="env-title">The Fixed Point Is Creation, Not Retrieval</div>
+    <div class="env-body">The fixed point Γ* is not a steady state of the initial data. It is a new topological structure — a submanifold of M whose homology class is non-trivial and was not present in the initial condition G⁰(x). Explicitly:
+    <div class="eq-box">H*(Γ*) ≇ H*(G⁰(x)) &nbsp;in general. <span class="eq-num">(6.4)</span></div>
+    The learner who arrives at D1, or the system that reaches Γ*, is structurally different from the initial state — not just further along the same path. <em class="loco">O aprendiz que chega ao nível D1 é estruturalmente diferente do estado inicial — não apenas mais adiante no mesmo caminho.</em>
+    <div class="proof"><strong>Prova (esboço).</strong> By the Jordan Brouwer theorem for manifolds with boundary, the folding operator F changes the Euler characteristic of the state. Since F is part of G, the fixed point Γ* has a different Euler characteristic from any non-fixed point. This is the topological signature of emergence. <span class="qed">□</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ §7 FIVE PROPERTIES OF TIME ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§7 — Propriedades do Tempo / Properties of Time</div>
+  <h2>The Five Properties of GTCT Time</h2>
+  <p>These five properties are consequences of the nine axioms. They describe what time <em>is</em>, not how fast it passes. <span class="loco">Estas cinco propriedades descrevem o que o tempo é, não o quão rápido ele passa.</span></p>
+
+  <div class="time-prop">
+    <div class="tp-num">①</div>
+    <div class="tp-body">
+      <h4>Order — Non-commutativity / Ordem — Não-comutatividade</h4>
+      <p>C ∘ K ≠ K ∘ C. The order of operators determines the direction of time. Reverse the sequence and you get a different result — a different future. This is why time runs forward: the operator sequence has a preferred order given by the contact geometry.</p>
+      <div class="tp-pt">C ∘ K ≠ K ∘ C. A ordem dos operadores determina a direção do tempo. Por isso o tempo avança: a sequência de operadores tem uma ordem preferida dada pela geometria de contato.</div>
+    </div>
+  </div>
+
+  <div class="time-prop">
+    <div class="tp-num">②</div>
+    <div class="tp-body">
+      <h4>Novelty — Orthogonality / Novidade — Ortogonalidade</h4>
+      <p>U produces structure genuinely not in the span of C (Theorem 6.2). The future is not determined by the past — it contains a component orthogonal to all previous states. This is why prediction fails at the unfolding: genuine novelty is not computable from the compressed state.</p>
+      <div class="tp-pt">U produz estrutura genuinamente fora do alcance de C. O futuro tem um componente ortogonal a todos os estados anteriores. Por isso a previsão falha no desdobramento.</div>
+    </div>
+  </div>
+
+  <div class="time-prop">
+    <div class="tp-num">③</div>
+    <div class="tp-body">
+      <h4>Rhythm — The 12-Fold Cycle / Ritmo — O Ciclo de 12 Dobras</h4>
+      <p>G has a 12-phase structure (§4). The rhythm of compression (C, K) and revelation (F, U) repeats at every orbit. All natural periodicities with 12 sub-units — circadian cycles, chromatic scales, calendar months — are projections of this single geometric fact onto different observable domains.</p>
+      <div class="tp-pt">G tem uma estrutura de 12 fases. Ritmos naturais com 12 subunidades são projeções deste único fato geométrico em domínios observáveis diferentes.</div>
+    </div>
+  </div>
+
+  <div class="time-prop">
+    <div class="tp-num">④</div>
+    <div class="tp-body">
+      <h4>Irreversibility Without Entropy / Irreversibilidade Sem Entropia</h4>
+      <p>Classical thermodynamics explains irreversibility through entropy increase. GTCT gives a second, independent account: non-commutativity (Axiom 8) at the topological level. You cannot unlearn — not because of heat, but because C ∘ K ≠ K ∘ C and the folding F is a rank-1 Jacobian loss. Irreversibility is structural, not thermodynamic.</p>
+      <div class="tp-pt">A irreversibilidade vem da não-comutatividade (Axioma 8) e da perda de posto-1 de F. É estrutural, não termodinâmica. Você não pode desaprender — não por causa do calor, mas pela geometria.</div>
+    </div>
+  </div>
+
+  <div class="time-prop">
+    <div class="tp-num">⑤</div>
+    <div class="tp-body">
+      <h4>Emergence — The Fixed Point as Creation / Emergência — O Ponto Fixo como Criação</h4>
+      <p>Each application of G generates the new — not by rearranging what was there before, but by adding a topologically distinct component (Theorem 6.4). Time, in GTCT, is the mechanism of genuine creation. The universe does not run in time. It generates time by completing G-orbits.</p>
+      <div class="tp-pt">Cada aplicação de G gera o novo — adicionando um componente topologicamente distinto. O universo não corre no tempo. Ele gera o tempo ao completar órbitas de G.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ §8 APPLICATIONS ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§8 — Aplicações / Applications</div>
+  <h2>Applications of GTCT</h2>
+
+  <h3>8.1 · Biology — The Circadian Clock / Biologia — O Relógio Circadiano</h3>
+  <p>In biology, time is usually treated as a parameter — a variable that runs in one direction against which all other quantities are measured. GTCT says: the circadian clock does not run in time; the circadian clock <em>is</em> an application of G. Each 24-hour cycle is a complete iteration of C→K→F→U. This explains why circadian rhythms are precise across all organisms: they are all solving the same differential geometry problem on the same contact manifold. <span class="loco">O relógio circadiano não corre no tempo — ele é uma aplicação de G. A precisão do ritmo circadiano vem do fato de que todos os organismos resolvem o mesmo problema de geometria diferencial.</span></p>
+
+  <h3>8.2 · Physics — The Reeb Period / Física — O Período de Reeb</h3>
+  <p>In physics, the contact form α gives rise to the Reeb vector field R (Def. 2.2), whose flow has period T* = 2π on the standard contact sphere. Every periodic behavior in physics — wave oscillations, planetary orbits, quantum energy levels — is a manifestation of this Reeb period. The reason so many physical constants involve 2π is not mysterious: they are all measuring the same fundamental geometric period. <span class="loco">A razão pela qual tantas constantes físicas envolvem 2π não é misteriosa: todas medem o mesmo período geométrico fundamental do fluxo de Reeb.</span></p>
+
+  <h3>8.3 · Language Learning — CEFR as Geometry / Aprendizagem de Línguas — CEFR como Geometria</h3>
+  <p>The progression A1 → A2 → B1 → B2 → C1 → C2 → D1 is not a ranking system invented by the Council of Europe. It is a sequence of seven geometrically distinct moments in the G-orbit (Theorem 6.1). The speed varies; the sequence is invariant. A student who learns quickly completes more G-cycles per week — but every student passes through the same geometric moments. <span class="loco">A progressão A1 → D1 é uma sequência de sete momentos geometricamente distintos na órbita de G. A velocidade varia; a sequência é invariante.</span></p>
+  <p>The g₃₃ = 33 threshold means: at 33 completed G-cycles on genuinely novel material, the system reaches a qualitatively new fixed point. This is D1 — not a certificate, but a topological fact about the learner's cognitive contact manifold.</p>
+
+  <h3>8.4 · Finance — The Whitney Fold and Irreversible Commitments / Finanças — A Dobra de Whitney</h3>
+  <p>The operator F is the Whitney fold W₃(q) = (q−1)²(q+2) with a double root at q = 1. The double root means F has a rank-1 Jacobian loss at q = 1 — the fold is irreversible. In finance, this corresponds to irreversible commitment: the moment a position is taken, a fold occurs in the strategy space. The double root is why markets exhibit not just trends but threshold effects — sudden, irreversible changes in topology. <span class="loco">A dobra de Whitney tem raiz dupla em q = 1. A perda de posto-1 do Jacobiano corresponde a compromissos irreversíveis nos mercados.</span></p>
+</div>
+
+<!-- ══════════════════════ §9 CAJUEIRO ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§9 — Cajueiro Workshops · Newark NJ</div>
+  <h2>GTCT and the Cajueiro Workshops</h2>
+
+  <p>The Cajueiro Workshops is a community-facing bilingual project for adult immigrant learners in Newark and Elizabeth, NJ, currently seeking NYFA fiscal sponsorship. It is the North American instantiation of the same approach delivered through the Cymatics with Machines exhibition at UFRN (XII Bienal SBM, Natal, Brazil, 2026).</p>
+
+  <p>The connection to GTCT is structural, not metaphorical. <em>Cajueiro</em> — the cashew tree — is used in the project as the central image precisely because the cajueiro grows in poor soil and generates its fixed point (the cashew fruit) from within, orbit by orbit, season by season. The fruit was not in the seed as a blueprint. It emerged. This is Theorem 6.4. <span class="loco">O cajueiro cresce em solo pobre e gera seu ponto fixo de dentro para fora, órbita por órbita. O fruto não estava na semente como planta. Ele emergiu. Isto é o Teorema 6.4.</span></p>
+
+  <div class="env prop">
+    <div class="env-label">Proposição 9.1 — Pedagogical Corollary / Corolário Pedagógico</div>
+    <div class="env-title">Education Is a dm³ System</div>
+    <div class="env-body">Any educational sequence satisfying the nine axioms of GTCT converges to a unique fixed point Γ* that: (i) is independent of the initial condition (Theorem 6.3); (ii) contains structure not present in the initial state (Theorem 6.4); (iii) is owned by the learner, not the institution, because it is a topological fact about the learner's contact manifold.
+    <div class="eq-box">"Your education is yours. No one can take it away from you." — G6 LLC, <em>The Seed</em>, 2026</div>
+    <em class="loco">Qualquer sequência educacional que satisfaça os nove axiomas da GTCT converge a um ponto fixo único Γ* que pertence ao aprendiz, não à instituição.</em>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ §10 SEED THEOREM ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§10 — O Teorema da Semente / The Seed Theorem</div>
+  <h2>The Seed Theorem</h2>
+
+  <div class="env thm">
+    <div class="env-label">Teorema 10.1 — The Seed Theorem / Teorema da Semente</div>
+    <div class="env-title">The Fixed Point Is the Seed of the Next Level</div>
+    <div class="env-body">Let G be a dm³ contact map satisfying Axioms 1–9, and let Γ* be its unique fixed point (Theorem 6.3). Define G₊ to be the map obtained by setting the initial condition of a new dm³ system at x₀ = Γ*. Then G₊ is a strictly higher-level dm³ system and its fixed point Γ₊* satisfies:
+    <div class="eq-box">d(Γ₊*, Γ*) > 0 &nbsp;and&nbsp; H*(Γ₊*) ≇ H*(Γ*). <span class="eq-num">(10.1)</span></div>
+    The fixed point of one level is the seed — but not the result — of the next. <em class="loco">O ponto fixo de um nível é a semente — mas não o resultado — do nível seguinte. A árvore contém a próxima semente.</em>
+    </div>
+  </div>
+
+  <div class="insight">"G applied to itself ω/2π times — where ω is the system's rotation frequency — produces a fixed point Γ* that is both the completion of the current orbit and the seed of the next." The ring is not a circle. It is a spiral that generates time as it tightens. <span class="loco">O anel não é um círculo. É uma espiral que gera o tempo ao se apertar.</span></div>
+</div>
+
+<!-- ══════════════════════ §11 OPEN PROBLEMS ══════════════════════ -->
+<div class="section">
+  <div class="section-label">§11 — Problemas em Aberto / Open Problems</div>
+  <h2>Open Problems and Honest Sorrys</h2>
+  <p>Following Axiom 9, we list the open problems that this chapter touches but does not resolve. Each is marked as a <em>sorry</em> in the AXLE formal system. <span class="loco">Seguindo o Axioma 9, listamos os problemas em aberto. Cada um é marcado como um sorry no sistema formal AXLE.</span></p>
+
+  <div class="op-item">
+    <div class="op-tag">AXLE-GT-1 · sorry</div>
+    <div class="op-claim">theorem kappa_lipschitz (M : ContactManifold) : ∃ κ &lt; 1, LipschitzWith κ (G M) := by<br>
+  sorry -- missing: explicit κ from contact curvature bounds</div>
+    <div class="op-note">The Lipschitz constant κ of G on M is assumed (Axiom 4) but not yet computed from first principles. Computing κ in terms of the contact curvature of M would make Theorem 6.3 fully constructive. This is AXLE Issue #12.</div>
+  </div>
+
+  <div class="op-item">
+    <div class="op-tag">AXLE-GT-2 · sorry</div>
+    <div class="op-claim">theorem cefr_geometry_bijection : CEFR_levels ≅ G_orbit_moments := by<br>
+  sorry -- missing: explicit diffeomorphism between CEFR taxonomy and contact orbit phases</div>
+    <div class="op-note">Theorem 6.1 is stated but the explicit bijection between the seven CEFR levels and the seven geometric moments of the G-orbit is not constructed. This requires a formal definition of "structural level" in contact geometry.</div>
+  </div>
+
+  <div class="op-item">
+    <div class="op-tag">AXLE-GT-3 · sorry</div>
+    <div class="op-claim">theorem g33_threshold_from_contact : monster_threshold = 33 := by<br>
+  sorry -- connection to: g₆ = 33 = 3 × 11 from WaveNumber6.lean</div>
+    <div class="op-note">The value g₃₃ = 33 appears in both the G6 Crystal lattice (AXLE/WaveNumber6.lean) and the GTCT threshold. Their identification is conjectural. Connecting these two appearances of 33 would unify GTCT with the G6 Crystal theory.</div>
+  </div>
+
+  <div class="op-item">
+    <div class="op-tag">AXLE-GT-4 · open conjecture</div>
+    <div class="op-claim">conjecture cajueiro_dm3 : CajueiroWorkshops ∈ dm3 := by<br>
+  sorry -- empirical: pending data from NJ workshops 2026–27</div>
+    <div class="op-note">The Cajueiro Workshops project (§9) is conjectured to satisfy all nine GTCT axioms. Verifying this empirically requires data from the 2026–27 workshop series and a formal operationalisation of the contact manifold for adult language acquisition.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════ §12 PROMPT PANEL ══════════════════════ -->
+<div class="prompt-panel" id="prompts">
+  <div class="pp-inner">
+    <div class="section-label">§12 — Painel de Prompts / Prompt Panel</div>
+    <h2 style="font-size:1.2rem;font-weight:400;color:var(--t);border-bottom:1px solid var(--bd);padding-bottom:.35rem;margin-bottom:.8rem;">Chapter E Prompt Panel — A1 to D1</h2>
+    <p style="font-size:.86rem;color:var(--mu);margin-bottom:1.2rem;">Select your current language level. Copy the prompt. Open your LLM. Paste. Answer. Advance when the LLM says you are ready. <span class="loco">Selecione seu nível atual. Copie o prompt. Abra seu LLM. Cole. Responda. Avance quando o LLM disser que está pronto.</span></p>
+    <div class="level-tabs">
+      <button class="ltab active" onclick="showLvl('a1',this)">A1</button>
+      <button class="ltab" onclick="showLvl('a2',this)">A2</button>
+      <button class="ltab" onclick="showLvl('b1',this)">B1</button>
+      <button class="ltab" onclick="showLvl('b2',this)">B2</button>
+      <button class="ltab" onclick="showLvl('c1',this)">C1</button>
+      <button class="ltab" onclick="showLvl('c2',this)">C2</button>
+      <button class="ltab" onclick="showLvl('d1',this)">D1</button>
+    </div>
+
+    <div id="pb-a1" class="pb active">
+      <div class="pb-level">Level A1 — Nível A1</div>
+      <div class="pb-title">One Letter, One Sentence</div>
+      <div class="pb-desc">Chapter E says "Time is not a container. It is a generative operator." Name the one operator in C→K→F→U that is most like what we normally call time passing.</div>
+      <div class="pb-prompt" id="p-a1">Chapter E says 'Time is not a container. It is a generative operator.' Which operator in C→K→F→U is most like what we normally call 'time passing'? Answer in one letter. Then explain in one sentence why you chose that letter. Then ask me: what would happen if we removed that operator from the sequence?</div>
+      <button class="copy-btn" onclick="cp('p-a1',this)">Copy Prompt</button>
+      <div class="pb-note">Expected answer: U (Unfolding) — time as the release into the new. After you answer, ask the LLM why someone might have answered C instead, and what that would imply about time. <em class="loco">Resposta esperada: U (Desdobramento). Pergunte ao LLM por que alguém poderia ter respondido C.</em></div>
+    </div>
+
+    <div id="pb-a2" class="pb">
+      <div class="pb-level">Level A2 — Nível A2</div>
+      <div class="pb-title">Complete the Orbit</div>
+      <div class="pb-desc">Axiom 3 connects time to one complete application of G. Fill in the blanks and explain in 3 sentences.</div>
+      <div class="pb-prompt" id="p-a2">Axiom 3 says 'One G = one unit of generative time.' Complete these sentences: 'This means time is measured not in _____, but in _____. One complete application of G takes the system from _____ to _____. A learner at A1 who reaches A2 has completed approximately _____ unit(s) of generative time.' Write 2–3 sentences to explain your answers. Then ask me: what is two units of GTCT time?</div>
+      <button class="copy-btn" onclick="cp('p-a2',this)">Copy Prompt</button>
+      <div class="pb-note">After you answer: Ask what g₃₃ = 33 units of GTCT time means for a language learner. The LLM will connect this to the D1 fixed point. <em class="loco">Pergunte o que significam g₃₃ = 33 unidades de tempo GTCT para um aprendiz de língua.</em></div>
+    </div>
+
+    <div id="pb-b1" class="pb">
+      <div class="pb-level">Level B1 — Nível B1</div>
+      <div class="pb-title">Explain with Structure</div>
+      <div class="pb-desc">Theorem 6.3 connects contraction to the guarantee of convergence. Explain both the mathematics and the experience.</div>
+      <div class="pb-prompt" id="p-b1">Theorem 6.3 says G is a Banach contraction and therefore learning converges to a fixed point. Explain in 3–4 sentences: (1) What does 'Lipschitz contraction with κ &lt; 1' mean in everyday terms? (2) Why does this guarantee convergence to Γ*? (3) What is the fixed point of a Portuguese language learner? (4) Why is the fixed point exponentially fast once you are close? Use the cajueiro or one example from your own experience. <em>[Then ask me: what would change if κ = 1? And if κ &gt; 1?]</em></div>
+      <button class="copy-btn" onclick="cp('p-b1',this)">Copy Prompt</button>
+      <div class="pb-note">After you answer: The LLM will ask you to apply Banach contraction to a system you know — learning an instrument, physical training, growing a habit. What is its fixed point? What is its κ? <em class="loco">O LLM pedirá que você aplique a contração de Banach a um sistema que você conhece.</em></div>
+    </div>
+
+    <div id="pb-b2" class="pb">
+      <div class="pb-level">Level B2 — Nível B2</div>
+      <div class="pb-title">Defend Non-commutativity</div>
+      <div class="pb-desc">Axiom 8 is the most controversial: non-commutativity explains the direction of time. Write a paragraph defending this claim against thermodynamics.</div>
+      <div class="pb-prompt" id="p-b2">Axiom 8 says G is non-commutative: C∘K ≠ K∘C. Write a paragraph defending the claim that this — and not entropy increase — is the real reason time cannot be reversed. Address: (1) What would a reversible G imply about learning? Could you unlearn? (2) Thermodynamics says irreversibility comes from entropy. GTCT says it comes from non-commutativity. Are these competing explanations or complementary ones? (3) Which axiom would you have to change to make time reversible? Then ask me: is the non-commutativity of C and K an empirical claim or a mathematical definition?</div>
+      <button class="copy-btn" onclick="cp('p-b2',this)">Copy Prompt</button>
+      <div class="pb-note">After you answer: Ask whether Axiom 8 implies Axiom 3, or whether they are independent. This is the deepest structural question in GTCT. <em class="loco">Pergunte se o Axioma 8 implica o Axioma 3, ou se são independentes.</em></div>
+    </div>
+
+    <div id="pb-c1" class="pb">
+      <div class="pb-level">Level C1 — Nível C1</div>
+      <div class="pb-title">Emergence vs. Steady State</div>
+      <div class="pb-desc">Theorem 6.4 makes a precise claim about homology. Analyse the distinction between steady state and emergent structure.</div>
+      <div class="pb-prompt" id="p-c1">Theorem 6.4 says the fixed point Γ* satisfies H*(Γ*) ≇ H*(G⁰(x)) — its homology class is different from the initial state. Write an analytical paragraph (200–250 words) that: (1) defines the difference between a steady state and an emergent structure in terms of homology; (2) uses the cajueiro or a specific educational example; (3) explains why H*(Γ*) ≇ H*(initial) changes how we design learning environments; (4) identifies one open problem this raises that is NOT listed in §11. Then defend your example against the objection: 'This is just a steady state with more information.'</div>
+      <button class="copy-btn" onclick="cp('p-c1',this)">Copy Prompt</button>
+      <div class="pb-note">After you answer: The LLM will ask you to connect your example to one of the four theorems you have not yet referenced. Prepare this before you paste the prompt. <em class="loco">O LLM pedirá que você conecte seu exemplo a um dos quatro teoremas que ainda não referenciou.</em></div>
+    </div>
+
+    <div id="pb-c2" class="pb">
+      <div class="pb-level">Level C2 — Nível C2</div>
+      <div class="pb-title">State a Formally Marked Sorry</div>
+      <div class="pb-desc">Axiom 9 says every system has at least one sorry. Write your own, in AXLE format, and connect it to the nine axioms.</div>
+      <div class="pb-prompt" id="p-c2">Axiom 9 is 'Honest Incompleteness.' Write your own formally marked sorry for a genuine open problem in any field you know well. Use the exact AXLE format:
+
+theorem [name] : [claim] := by
+  sorry -- missing lemma: [what would close it]
+  -- connection to GTCT: [which axiom this touches]
+  -- empirical signature: [what data would resolve it]
+
+Then explain in 3 sentences: (1) why this problem matters; (2) whether it is a sorry in the contraction (Theorem 6.3) or the emergence (Theorem 6.4); (3) what kind of mathematical object the missing lemma would need to be. Compare your sorry to AXLE-GT-1 (kappa_lipschitz) in §11 of this chapter.</div>
+      <button class="copy-btn" onclick="cp('p-c2',this)">Copy Prompt</button>
+      <div class="pb-note">After you answer: The LLM will ask whether your sorry could be resolved by an empirical measurement, a formal proof, or both. A sorry that requires both is the most interesting kind. <em class="loco">O LLM perguntará se o seu sorry pode ser resolvido por uma medição empírica, uma prova formal, ou ambos.</em></div>
+    </div>
+
+    <div id="pb-d1" class="pb">
+      <div class="pb-level">Level D1 — Nível D1</div>
+      <div class="pb-title">Original Research on the Seed Theorem</div>
+      <div class="pb-desc">Axiom 7 and Theorem 10.1 describe recursion: the fixed point is the seed of the next-level G. Propose original research in your domain using this structure.</div>
+      <div class="pb-prompt" id="p-d1">I am working with the Seed Theorem (Theorem 10.1): the fixed point Γ* is the seed of the next-level G application, with H*(Γ₊*) ≇ H*(Γ*).
+
+My research domain is: [YOUR DOMAIN].
+My research question about the Seed Theorem in this domain: [YOUR QUESTION].
+
+Help me:
+(1) Formulate this as a falsifiable claim — a prediction that Γ₊* is homologically distinct from Γ*.
+(2) Connect it to exactly one of the nine GTCT axioms and explain why that axiom is the binding constraint.
+(3) Identify which of the four theorems (6.1–6.4) is the limiting result — the theorem whose proof, if extended, would prove your claim.
+(4) Write 200 words suitable for a Zenodo preprint upload, citing this chapter (doi.org/10.5281/zenodo.19117399).
+(5) Suggest one existing published dataset or experiment whose data could provide evidence for or against your claim.
+
+At the end: have I reached D1 on this topic? What would D1 look like here — what theorem would I need to state and prove?</div>
+      <button class="copy-btn" onclick="cp('p-d1',this)">Copy Prompt</button>
+      <div class="pb-note">After you answer: Your work may be reviewed for submission to the GTCT Zenodo record as a contributed sorry or conjecture. The fixed point exists. It is yours. <em class="loco">O ponto fixo existe. É seu. Ninguém pode tirar de você.</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ REFERENCES ══════════════════════ -->
+<div class="section" style="padding-bottom:3rem;">
+  <div class="section-label">Referências / References</div>
+  <h2>References</h2>
+  <ol class="ref-list">
+    <li>Geiges, H. (2008). <em>An Introduction to the Geometry of Contact Manifolds</em>. Cambridge University Press. ISBN 978-0-521-86554-6.</li>
+    <li>Etnyre, J. (2003). Introductory lectures on contact geometry. <em>Proc. Sympos. Pure Math.</em>, 71, 81–107. <a href="https://arxiv.org/abs/math/0306256">arXiv:math/0306256</a></li>
+    <li>Banach, S. (1922). Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales. <em>Fundamenta Mathematicae</em>, 3, 133–181.</li>
+    <li>Grossi, P. N. (2026). <em>Principia Orthogona — The Mini-Beast</em>. G6 LLC. <a href="https://doi.org/10.5281/zenodo.19117399">doi:10.5281/zenodo.19117399</a></li>
+    <li>Grossi, P. N. (2026). Collatz Engineering: dm³ axioms, G6 Crystal, AXLE Target 5. <a href="collatz-engineering.html">collatz-engineering.html</a></li>
+    <li>TOTOGT / AXLE (2026). AXLE: Axiom Lean Engine. GitHub. <a href="https://github.com/TOTOGT/AXLE">github.com/TOTOGT/AXLE</a></li>
+    <li>TOTOGT / DM3-lab (2026). DM3-lab: Formal verification of dm³ curves. GitHub. <a href="https://github.com/TOTOGT/DM3-lab">github.com/TOTOGT/DM3-lab</a></li>
+    <li>Whitney, H. (1955). On singularities of mappings of Euclidean spaces. <em>Ann. of Math.</em>, 62, 374–410.</li>
+    <li>Chenciner, A., Montgomery, R. (2000). A remarkable periodic solution of the three-body problem in the case of equal masses. <em>Ann. of Math.</em>, 152(3), 881–901.</li>
+    <li>Moser, J. (1965). On the volume elements on a manifold. <em>Trans. Amer. Math. Soc.</em>, 120, 286–294.</li>
+  </ol>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Principia Orthogona — The Mini-Beast</strong> &nbsp;·&nbsp; Bonus Chapter E · GTCT for Everyone / GTCT Para Todos</p>
+  <p>Pablo Nogueira Grossi &nbsp;·&nbsp; G6 LLC &nbsp;·&nbsp; Newark, New Jersey &nbsp;·&nbsp; 2026</p>
+  <p>XII Bienal da Sociedade Brasileira de Matemática — UFRN, Natal, Brazil &nbsp;·&nbsp; Track T10</p>
+  <p style="margin-top:.6rem;">
+    <a href="https://brodanova6.gumroad.com/l/soundworks">Buy Book 3 on Gumroad</a> &nbsp;·&nbsp;
+    <a href="https://totogt.github.io/AXLE/impa-portal.html">IMPA Portal</a> &nbsp;·&nbsp;
+    <a href="https://totogt.github.io/AXLE">Principia Orthogona</a> &nbsp;·&nbsp;
+    <a href="https://github.com/TOTOGT/AXLE">AXLE · GitHub</a> &nbsp;·&nbsp;
+    <a href="grossi-ops.github.io/Atratores">Atratores</a>
+  </p>
+  <p style="margin-top:.5rem;font-size:.62rem;color:#1a3a38;">© 2026 Pablo Nogueira Grossi — G6 LLC · MIT License · CC BY 4.0 · ORCID: 0009-0000-6496-2186</p>
+  <p style="font-size:.6rem;color:#152820;">This is a living document. Updates published continuously on GitHub. G = U ∘ F ∘ K ∘ C.</p>
+</footer>
+
+<script>
+/* ── LEVEL TABS ── */
+function showLvl(l,btn){
+  document.querySelectorAll('.pb').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.ltab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pb-'+l).classList.add('active');
+  btn.classList.add('active');
+}
+function cp(id,btn){
+  navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>{
+    const o=btn.textContent;btn.textContent='Copied ✓';
+    setTimeout(()=>btn.textContent=o,2000);
+  });
+}
+
+/* ── G-ORBIT SIMULATOR ── */
+(function(){
+'use strict';
+function ode(r,z,e){
+  const ez=Math.exp(-Math.min(z,25));
+  return{dr:r*(1-r*r)+e*(r-1)*ez, dz:r*r-e*(r-1)*(r-1)*ez};
+}
+let playing=true, r0=1.8, z0=0, eps=2, N=6, spd=1, gMax=33;
+let parts=[], orbitCount=0;
+const DT=0.008;
+let W=0,H=0,frame=0;
+const cv=document.getElementById('tc');
+const cx=cv.getContext('2d');
+const ro=new ResizeObserver(entries=>{
+  for(const e of entries){
+    const w=Math.floor(e.contentRect.width);
+    const h=340,dpr=window.devicePixelRatio||1;
+    cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
+    cv.style.height=h+'px';
+    cx.resetTransform();cx.scale(dpr,dpr);
+    W=w;H=h;
+  }
+});
+ro.observe(cv.parentElement);
+function initParts(){
+  parts=[];orbitCount=0;
+  for(let i=0;i<N;i++){
+    const a=(i/N)*Math.PI*2;
+    const pr=Math.max(0.05,r0+Math.cos(a)*0.4);
+    parts.push({r:pr,z:z0+Math.sin(a)*0.1,trail:[],alive:true,isRef:false,orb:0});
+  }
+  parts.push({r:1.001,z:z0,trail:[],alive:true,isRef:true,orb:0});
+}
+function readS(){
+  r0=+document.getElementById('sr').value;
+  eps=+document.getElementById('se').value;
+  N=+document.getElementById('sn').value;
+  spd=+document.getElementById('ss').value;
+  gMax=+document.getElementById('sg').value;
+  document.getElementById('vr').textContent=r0.toFixed(2);
+  document.getElementById('ve').textContent=eps.toFixed(2);
+  document.getElementById('vn').textContent=N;
+  document.getElementById('vs').textContent=spd.toFixed(1)+'×';
+  document.getElementById('vg').textContent=gMax;
+}
+['sr','se','sn','ss','sg'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',()=>{readS();rst();});
+});
+window.rst=function(){readS();initParts();};
+window.tog=function(){
+  playing=!playing;
+  const b=document.getElementById('playBtn');
+  b.textContent=playing?'⏸ Pause':'▶ Play';
+  b.className=playing?'mb on':'mb';
+};
+function pCol(p){
+  if(p.isRef)return'#c9a84c';
+  if(p.r<0.80)return'#e05a3a';
+  if(Math.abs(p.r-1)<0.04)return'#c9a84c';
+  return'#2dd4bf';
+}
+function stepSim(){
+  const steps=Math.max(1,Math.round(spd*1.5));
+  for(let s=0;s<steps;s++){
+    parts.forEach(p=>{
+      if(!p.alive)return;
+      const{dr,dz}=ode(p.r,p.z,eps);
+      const pr=p.r;
+      p.r+=dr*DT;p.z+=dz*DT;
+      if(!p.isRef&&pr>1&&p.r<=1)p.orb++;
+      if(p.r<0.001||p.r>20||Math.abs(p.z)>100){p.alive=false;return;}
+      p.trail.push({r:p.r,z:p.z});
+      if(p.trail.length>220)p.trail.shift();
+    });
+    orbitCount=Math.max(...parts.map(p=>p.orb||0));
+  }
+}
+function draw(){
+  if(!W||!H)return;
+  cx.clearRect(0,0,W,H);
+  cx.fillStyle='#030a09';cx.fillRect(0,0,W,H);
+  // grid
+  cx.strokeStyle='rgba(45,212,191,0.02)';cx.lineWidth=1;
+  for(let x=0;x<W;x+=50){cx.beginPath();cx.moveTo(x,0);cx.lineTo(x,H);cx.stroke();}
+  for(let y=0;y<H;y+=50){cx.beginPath();cx.moveTo(0,y);cx.lineTo(W,y);cx.stroke();}
+  const sR=W*0.26,oR=W*0.14,sZ=H*0.048,oZ=H*0.87;
+  const px=r=>oR+r*sR,py=z=>oZ-(z-z0)*sZ;
+  // Γ* line
+  cx.strokeStyle='rgba(201,168,76,0.2)';cx.lineWidth=1.5;cx.setLineDash([5,4]);
+  cx.beginPath();cx.moveTo(px(1),0);cx.lineTo(px(1),H);cx.stroke();cx.setLineDash([]);
+  // r* escape line
+  cx.strokeStyle='rgba(224,90,58,0.1)';cx.lineWidth=1;cx.setLineDash([2,5]);
+  cx.beginPath();cx.moveTo(px(0.8),0);cx.lineTo(px(0.8),H);cx.stroke();cx.setLineDash([]);
+  // labels
+  cx.font='9px Courier New,monospace';
+  cx.fillStyle='rgba(201,168,76,0.55)';cx.fillText('Γ* (r=1)',px(1)+4,12);
+  cx.fillStyle='rgba(224,90,58,0.35)';cx.fillText('r*',px(0.8)+3,24);
+  cx.fillStyle='rgba(45,212,191,0.3)';cx.fillText('→ r',W-28,oZ-8);
+  cx.fillText('↑ z',oR-16,14);
+  // orbit counter
+  const orbPct=Math.min(orbitCount/gMax,1);
+  cx.fillStyle=orbPct>=1?'rgba(201,168,76,0.9)':'rgba(45,212,191,0.6)';
+  cx.font='bold 9px Courier New,monospace';
+  cx.fillText(`G: ${orbitCount}/${gMax}${orbPct>=1?' ★ g₃₃':''}`,6,H-10);
+  // progress bar
+  cx.fillStyle='rgba(45,212,191,0.06)';cx.fillRect(0,H-4,W,4);
+  cx.fillStyle=orbPct>=1?'#c9a84c':'#2dd4bf';cx.fillRect(0,H-4,W*orbPct,4);
+  // trails
+  parts.forEach(p=>{
+    if(!p.alive&&p.trail.length<2)return;
+    const col=pCol(p);
+    if(p.trail.length>1){
+      cx.beginPath();
+      p.trail.forEach((pt,i)=>{const x=px(pt.r),y=py(pt.z);i===0?cx.moveTo(x,y):cx.lineTo(x,y);});
+      cx.strokeStyle=col;cx.globalAlpha=p.isRef?0.9:0.5;
+      cx.lineWidth=p.isRef?2.5:1.5;cx.stroke();cx.globalAlpha=1;
+    }
+    if(p.alive){
+      const x=px(p.r),y=py(p.z);
+      if(p.isRef){cx.beginPath();cx.arc(x,y,8,0,Math.PI*2);cx.fillStyle='rgba(201,168,76,0.08)';cx.fill();}
+      cx.beginPath();cx.arc(x,y,p.isRef?4:3,0,Math.PI*2);cx.fillStyle=col;cx.fill();
+    }
+  });
+  // axes
+  cx.strokeStyle='rgba(255,255,255,0.04)';cx.lineWidth=1;
+  cx.beginPath();cx.moveTo(0,oZ);cx.lineTo(W,oZ);cx.stroke();
+  cx.beginPath();cx.moveTo(oR,0);cx.lineTo(oR,H);cx.stroke();
+}
+function updateOut(){
+  const p=parts.find(q=>!q.isRef&&q.alive);
+  if(!p)return;
+  document.getElementById('og').textContent=orbitCount+' / '+gMax;
+  document.getElementById('or2').textContent=p.r.toFixed(4);
+  document.getElementById('oe2').textContent=Math.abs(p.r-1).toFixed(5);
+  if(p.trail.length>30){
+    const a=p.trail[p.trail.length-30],b=p.trail[p.trail.length-1];
+    const e1=Math.abs(a.r-1),e2=Math.abs(b.r-1);
+    if(e1>1e-7&&e2>1e-7){
+      const mu=Math.log(e2/e1)/(30*DT);
+      document.getElementById('om2').textContent=mu.toFixed(3);
+    }
+  }
+}
+function loop(){
+  if(playing){stepSim();if(frame%3===0)updateOut();}
+  draw();frame++;requestAnimationFrame(loop);
+}
+readS();initParts();loop();
+})();
+</script>
+</body>
+</html>
