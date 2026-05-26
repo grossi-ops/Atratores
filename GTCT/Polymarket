@@ -110,7 +110,7 @@ async def init():
         creds = client.create_or_derive_api_key()
         client.set_api_creds(creds)
     asyncio.create_task(binance_momentum_stream())
-    send_alert("🚀 Bonereaper-Style Bot Started", f"Paper: {PAPER_MODE} | 5m BTC", 0x00ff00)
+    send_alert("🚀-Style Bot Started", f"Paper: {PAPER_MODE} | 5m BTC", 0x00ff00)
 
 async def main():
     global daily_pnl, trades_today, last_date
