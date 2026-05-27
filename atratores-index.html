@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atratores — Pablo Nogueira Grossi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a0e1a;--navy-mid:#111827;--navy-light:#1a2235;
+  --gold:#c9a84c;--gold2:#e8c96a;--gold-dim:#8a6f2e;
+  --teal:#2dd4bf;--teal-dim:#1a7a6e;
+  --jade:#52b788;
+  --cream:#f5f0e8;--cream-dim:#d4cfc7;
+  --muted:#6b6757;
+  --border:rgba(201,168,76,0.15);
+  --border2:rgba(201,168,76,0.3);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Cormorant Garamond',serif;
+  background:var(--navy);color:var(--cream);
+  min-height:100vh;
+}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,14,26,0.96);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.8rem 2rem;backdrop-filter:blur(10px);
+  flex-wrap:wrap;gap:0.5rem;
+}
+.nav-brand{font-family:'JetBrains Mono',monospace;font-size:0.7rem;letter-spacing:0.2em;color:var(--gold);}
+.nav-links{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:var(--gold);}
+
+/* HERO */
+.hero{
+  text-align:center;padding:4rem 2rem 3rem;
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(10,22,40,0.6) 0%,transparent 70%);
+}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:300;color:var(--gold2);position:relative;z-index:1;letter-spacing:0.05em;}
+.hero-sub{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;color:var(--teal);margin:0.4rem 0 0.8rem;position:relative;z-index:1;}
+.hero-meta{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;color:var(--muted);line-height:2;position:relative;z-index:1;}
+.hero-meta a{color:var(--gold);text-decoration:none;}
+
+/* NEW BADGE */
+.new-badge{
+  display:inline-block;font-family:'JetBrains Mono',monospace;
+  font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--teal);border:1px solid var(--teal-dim);
+  padding:0.1rem 0.4rem;margin-left:0.4rem;vertical-align:middle;
+}
+
+/* SECTION */
+.section{max-width:1100px;margin:0 auto;padding:3rem 2rem;border-top:1px solid var(--border);}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.section-count{font-size:0.9rem;color:var(--muted);}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);}
+.card{
+  background:var(--navy-mid);padding:1.5rem;
+  text-decoration:none;display:block;
+  transition:background 0.2s;position:relative;overflow:hidden;
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+.card:hover{background:rgba(201,168,76,0.04);}
+.card:hover::before{transform:scaleX(1);}
+.card.teal::before{background:var(--teal);}
+.card.teal:hover{background:rgba(45,212,191,0.04);}
+.card-tag{font-family:'JetBrains Mono',monospace;font-size:0.54rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal);margin-bottom:0.5rem;display:block;}
+.card-tag.gold{color:var(--gold);}
+.card-tag.jade{color:var(--jade);}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold2);margin-bottom:0.4rem;}
+.card-desc{font-size:0.88rem;color:var(--muted);line-height:1.55;}
+.card-badge{font-family:'JetBrains Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;margin-top:0.8rem;display:inline-block;padding:0.15rem 0.5rem;border:1px solid;}
+.b-live{color:var(--jade);border-color:rgba(82,183,136,0.3);}
+.b-new{color:var(--teal);border-color:rgba(45,212,191,0.3);}
+.b-open{color:var(--gold);border-color:var(--border2);}
+.b-sbm{color:#a78bfa;border-color:rgba(167,139,250,0.3);}
+
+/* ACCEPTED TABLE */
+.accepted-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.88rem;}
+.accepted-table th{font-family:'JetBrains Mono',monospace;font-size:0.56rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);text-align:left;background:var(--navy-light);}
+.accepted-table td{padding:0.65rem 0.8rem;border-bottom:1px solid rgba(201,168,76,0.05);color:var(--cream-dim);font-size:0.85rem;}
+.accepted-table td:first-child{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--gold);}
+.accepted-table td:nth-child(3){color:var(--muted);font-size:0.78rem;}
+
+/* LEAN TABLE */
+.lean-table{width:100%;border-collapse:collapse;margin:1rem 0;}
+.lean-table th{font-family:'JetBrains Mono',monospace;font-size:0.56rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);text-align:left;background:var(--navy-light);}
+.lean-table td{padding:0.6rem 0.8rem;border-bottom:1px solid rgba(201,168,76,0.05);font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--cream-dim);}
+.lean-table .proved{color:var(--jade);}
+.lean-table .open{color:var(--gold);}
+.lean-table .name{color:var(--teal);}
+
+/* DOI TABLE */
+.doi-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.82rem;}
+.doi-table td{padding:0.55rem 0.8rem;border-bottom:1px solid rgba(201,168,76,0.05);font-family:'JetBrains Mono',monospace;font-size:0.68rem;}
+.doi-table td:first-child{color:var(--cream-dim);}
+.doi-table td:nth-child(2){color:var(--teal);}
+.doi-table td:nth-child(2) a{color:var(--teal);text-decoration:none;}
+.doi-table td:nth-child(3){color:var(--muted);font-size:0.62rem;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center;font-family:'JetBrains Mono',monospace;font-size:0.56rem;letter-spacing:0.1em;color:var(--muted);line-height:2.2;}
+footer a{color:var(--gold);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Atratores · G6 LLC · grossi-ops</span>
+  <div class="nav-links">
+    <a href="#machines">Machines</a>
+    <a href="#exhibitions">Exhibitions</a>
+    <a href="#bienal">XII Bienal</a>
+    <a href="#chapters">Chapters</a>
+    <a href="#lean">Lean 4</a>
+    <a href="#papers">Papers</a>
+    <a href="#dnls">DNLS</a>
+    <a href="#gctc">GCTC</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <canvas id="bgCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.04;"></canvas>
+  <h1>Atratores</h1>
+  <div class="hero-sub">Attractors — mathematics, sound, and visible form · May 2026</div>
+  <div class="hero-meta">
+    Pablo Nogueira Grossi · G6 LLC · Newark NJ ·
+    <a href="https://doi.org/10.5281/zenodo.19117399">Principia Orthogona</a> ·
+    <a href="https://github.com/grossi-ops/Atratores">GitHub</a> ·
+    <a href="https://github.com/TOTOGT/AXLE">AXLE</a><br>
+    100+ Lean 4 theorems · 0 sorry · 5/5 accepted XII Bienal SBM · NYFA fiscal sponsor
+  </div>
+</div>
+
+<!-- SOUND MACHINES -->
+<section class="section" id="machines">
+  <div class="section-label">Sound Machines <span class="section-count">8 instruments</span></div>
+  <div class="grid">
+    <a class="card teal" href="om-machine.html">
+      <span class="card-tag">drone · binaural</span>
+      <div class="card-title">OM Machine</div>
+      <div class="card-desc">Continuous drone on the primordial tone. 136 Hz earth year, fractal shimmer.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card teal" href="soham-machine.html">
+      <span class="card-tag">breath · resonance</span>
+      <div class="card-title">So-Ham Machine</div>
+      <div class="card-desc">Breath-cycle resonance — "I am That". Ascending and descending tonal guides.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card teal" href="pranayama-machine.html">
+      <span class="card-tag">pranayama · entrainment</span>
+      <div class="card-title">Pranayama Machine</div>
+      <div class="card-desc">Guided breathing with tonal entrainment. 4-7-8, box, Nāḍī Śodhana.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card teal" href="wellness-soundworks.html">
+      <span class="card-tag">wellness · dm³</span>
+      <div class="card-title">Wellness Soundworks</div>
+      <div class="card-desc">dm³ Soundworks therapeutic suite. All seven machines in one page.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card teal" href="g6-drone-machine.html">
+      <span class="card-tag">G6 · dm³ · k:m=6:1</span>
+      <div class="card-title">G6 Drone Machine</div>
+      <div class="card-desc">Six-fold resonance at the G6 Crystal threshold. (T*,μmax,τ) = (2π,−2,2). ε₀=1/3.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card teal" href="sri-yantra-sakti-machine.html">
+      <span class="card-tag">yantra · geometry</span>
+      <div class="card-title">Śrī Yantra Śakti Machine</div>
+      <div class="card-desc">Nine-triangle geometric resonance. Entonação justa / pitagórica / igual.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card teal" href="swarnakarshana-bhairava-machine.html">
+      <span class="card-tag">Bhairava · attractor</span>
+      <div class="card-title">Swarnakarshana Bhairava</div>
+      <div class="card-desc">Tantric attractor — harmonic convergence. Hrāṃ Hrīṃ Hrūṃ tríade bīja.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card teal" href="turtle-shell-machine.html">
+      <span class="card-tag">tartaruga · chladni · ocean <span class="new-badge">New</span></span>
+      <div class="card-title">🐢 Tartaruga · Turtle Shell Machine</div>
+      <div class="card-desc">Sea turtle carapace as dm³ contact manifold attractor. Chladni simulator + 8-layer ocean sound + scute map. Projeto TAMAR. C→K→F→U on curved biological surface.</div>
+      <span class="card-badge b-new">✦ New · May 2026</span>
+    </a>
+  </div>
+</section>
+
+<!-- EXHIBITIONS -->
+<section class="section" id="exhibitions">
+  <div class="section-label">Exhibitions &amp; Installations <span class="section-count">4 works</span></div>
+  <div class="grid">
+    <a class="card" href="ex-t10-cymatics.html">
+      <span class="card-tag gold">XII Bienal SBM · EXP13 · every day</span>
+      <div class="card-title">Cymatics with Machines</div>
+      <div class="card-desc">Cimática com Máquinas — bilingual interactive exhibition. Chladni figures, seven sound machines, dm³ contact geometry. UFRN, Natal 2026.</div>
+      <span class="card-badge b-sbm">✓ Accepted EXP13</span>
+    </a>
+    <a class="card" href="helical-attractor.html">
+      <span class="card-tag">simulation · dm³ · contact</span>
+      <div class="card-title">Helical Attractor</div>
+      <div class="card-desc">3D browser simulation of the helical attractor on the contact manifold M = ℝ²₊ × ℝ. Drag to rotate, scroll to zoom.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="hal-saflieni-resonance.html">
+      <span class="card-tag">archaeoacoustics · resonance</span>
+      <div class="card-title">Ħal Saflieni Resonance</div>
+      <div class="card-desc">Eigenfunction analysis of the Hypogeum prehistoric space. 110 Hz Oracle Chamber. Malta, 3600 BCE.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="229-ballantine.html">
+      <span class="card-tag">installation · Newark</span>
+      <div class="card-title">229 Ballantine</div>
+      <div class="card-desc">Site-specific sound installation. Newark, NJ.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+  </div>
+</section>
+
+<!-- XII BIENAL SBM -->
+<section class="section" id="bienal">
+  <div class="section-label">XII Bienal SBM — 5/5 Accepted <span class="section-count">UFRN · Natal · August 3–7, 2026</span></div>
+  <table class="accepted-table">
+    <thead>
+      <tr><th>Code</th><th>Title</th><th>Schedule</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>EXP13</td>
+        <td><a href="ex-t10-cymatics.html" style="color:var(--gold2);text-decoration:none;">Cimática com Máquinas · Figuras de Chladni</a></td>
+        <td>Every day Aug 3–7 · CETECH Foyer · All day</td>
+      </tr>
+      <tr>
+        <td>MC48</td>
+        <td>Atratores Helicoidais em Variedades de Contato · dm³ System</td>
+        <td>Tue Aug 4 &amp; Thu Aug 6 · E1LAB · 16:30–18:30</td>
+      </tr>
+      <tr>
+        <td>OF53</td>
+        <td>A Escada de Recorrência: Do k-nacci ao limiar τ=2</td>
+        <td>Fri Aug 7 · H3 · 14:00–16:00</td>
+      </tr>
+      <tr>
+        <td>CO144</td>
+        <td>O Princípio do Cajueiro e o Livro Inglês para Pesquisadores via TOGT</td>
+        <td>Wed Aug 5 · F6 · 17:30–18:30</td>
+      </tr>
+      <tr>
+        <td>P290</td>
+        <td>Atratores Helicoidais em Variedades de Contato de Dimensão 3 · EDO de Brinquedo</td>
+        <td>Thu Aug 6 · CCET Foyer · 16:00–17:00</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--muted);margin-top:0.5rem;">
+    Travel funding: NYFA fiscal sponsorship confirmed (501(c)(3)) · Fundraiser launching · Contact pablogrossi@hotmail.com
+  </div>
+</section>
+
+<!-- CHAPTERS -->
+<section class="section" id="chapters">
+  <div class="section-label">Chapters — Living Book <span class="section-count">Principia Orthogona · Book 3</span></div>
+  <div class="grid">
+    <a class="card" href="ch-tau-tartaruga.html">
+      <span class="card-tag teal" style="color:var(--teal);">Chapter τ · new <span class="new-badge">New</span></span>
+      <div class="card-title">🐢 The Cosmic Tortoise</div>
+      <div class="card-desc">A Tartaruga Cósmica. Sea turtle shell as dm³ contact manifold. Chladni figures on curved surfaces. Mount Meru on the turtle's back. Ouroboros closing. Projeto TAMAR. C→K→F→U in bone.</div>
+      <span class="card-badge b-new">✦ New · May 2026</span>
+    </a>
+    <a class="card" href="ch8-meru.html">
+      <span class="card-tag gold">Chapter 8</span>
+      <div class="card-title">The Mountain and the Serpent</div>
+      <div class="card-desc">Mount Meru, Ouroboros, ancient infinities. Pascal's Triangle as F operator. The intuition before the notation.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="capitulo-e-gtct-pt.html">
+      <span class="card-tag gold">Capítulo E · PT</span>
+      <div class="card-title">GTCT — Circuito Temporal Generativo</div>
+      <div class="card-desc">Teorema T1. Tempo como C→K→F→U→T. O retorno em espiral. Seis exercícios graduados.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="chE-gtct.html">
+      <span class="card-tag gold">Chapter E · EN</span>
+      <div class="card-title">GTCT — Generative Time Circuit</div>
+      <div class="card-desc">Theorem T1. Time as C→K→F→U→T. The spiral return. Six graded exercises.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="chapter-eta-dnls.html">
+      <span class="card-tag gold">Chapter η</span>
+      <div class="card-title">DNLS — N-bonacci Criticality</div>
+      <div class="card-desc">Discrete Nonlinear Schrödinger. Tribonacci/Tetrabonacci chain. η≈1.839 criticality threshold.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="sessao1-geometria-contato.html">
+      <span class="card-tag">Sessão 1 · PT/EN</span>
+      <div class="card-title">Geometria de Contato</div>
+      <div class="card-desc">Contact Geometry — bilingual. dm³ operator introduced from first principles.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="sessao2-teorema-bacia.html">
+      <span class="card-tag">Sessão 2 · PT/EN</span>
+      <div class="card-title">Teorema da Bacia</div>
+      <div class="card-desc">Theorem Basin — bilingual. ε₀=1/3, r*≈0.773, asymmetric basin correction.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="sessao3-esqueleto-lean.html">
+      <span class="card-tag">Sessão 3 · Lean 4</span>
+      <div class="card-title">Esqueleto Lean · Lean Skeleton</div>
+      <div class="card-desc">Lean 4 bilingual session. From dm³ equations to formal proofs.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+  </div>
+</section>
+
+<!-- LEAN / AXLE -->
+<section class="section" id="lean">
+  <div class="section-label">Lean 4 / AXLE Formal Verification <span class="section-count">100+ theorems · 0 sorry</span></div>
+  <table class="lean-table">
+    <thead>
+      <tr><th>File</th><th>Content</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="name"><a href="A1Singularity.lean" style="color:var(--teal);text-decoration:none;">A1Singularity.lean</a></td><td>Universal A₁ node · 7 physical instances · DM3-lab ↔ AXLE bridge</td><td class="proved">✓ proved</td></tr>
+      <tr><td class="name"><a href="PolarVortex.lean" style="color:var(--teal);text-decoration:none;">PolarVortex.lean</a></td><td>Saturn north-polar vortex · moat · hexagon · three-layer dm³</td><td class="proved">✓ proved</td></tr>
+      <tr><td class="name"><a href="SaturnRing.lean" style="color:var(--teal);text-decoration:none;">SaturnRing.lean</a></td><td>Cassini Division 2:1 resonance · dm³ limit cycle · G6 Crystal</td><td class="proved">✓ proved</td></tr>
+      <tr><td class="name">Chain_updated.lean</td><td>gronwall_outer · spiral_return_exists (T1) · poincare_collatz_contracting</td><td class="proved">✓ 4 proved · 2 axioms</td></tr>
+      <tr><td class="name">AutophagyDm3.lean</td><td>Autophagy + Triple-Alpha · 26 theorems · Chapter A</td><td class="proved">✓ 26 thm · 0 sorry</td></tr>
+      <tr><td class="name">VolumeTwo.lean</td><td>8 theorems proved · eigenvalue, τ=2, ε₀=1/3, singularity bijection</td><td class="proved">✓ 8 proved · 4 open</td></tr>
+      <tr><td class="name">turtle_carapace.lean <span class="new-badge">New</span></td><td>Voronoi dm³ partition · scute fold events · curved-surface Chladni (Ch.τ)</td><td class="open">⚠ open · AXLE #τ</td></tr>
+      <tr><td class="name">inner_basin_asymmetric</td><td>r*≈0.773 ≠ r_att−ε₀=2/3 · asymmetric basin · AXLE #13</td><td class="open">⚠ axiom pending</td></tr>
+      <tr><td class="name">poincare_collatz_general</td><td>General orbit convergence · dm³ analogue of Collatz · $1M</td><td class="open">⚠ open · ★★★★★</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:1rem;">
+    <a href="https://github.com/TOTOGT/AXLE" style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--teal);text-decoration:none;">github.com/TOTOGT/AXLE ↗</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/TOTOGT/GTCT" style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--teal);text-decoration:none;">github.com/TOTOGT/GTCT ↗</a>
+  </div>
+</section>
+
+<!-- PAPERS / DOI -->
+<section class="section" id="papers">
+  <div class="section-label">Books, Papers &amp; Zenodo Series <span class="section-count">21 deposits</span></div>
+  <table class="doi-table">
+    <tbody>
+      <tr><td>Series root (all volumes)</td><td><a href="https://doi.org/10.5281/zenodo.19117399">10.5281/zenodo.19117399</a></td><td>concept DOI · always resolves to latest</td></tr>
+      <tr><td>Vol. I v3 — Operator algebra</td><td><a href="https://doi.org/10.5281/zenodo.20298665">10.5281/zenodo.20298665</a></td><td>C→K→F→U · Whitney A₁–A₃ · Lean 4</td></tr>
+      <tr><td>Vol. II v2a — Contact geometry</td><td><a href="https://doi.org/10.5281/zenodo.20159456">10.5281/zenodo.20159456</a></td><td>dm³ · τ=2 · ε₀=1/3 · 8 thm proved · dashboard.html</td></tr>
+      <tr><td>GTCT Ring 5 v3</td><td><a href="https://doi.org/10.5281/zenodo.20230641">10.5281/zenodo.20230641</a></td><td>Theorem T1 · DOP853 · 0 sorry</td></tr>
+      <tr><td>Autophagy / Triple-Alpha Ch.A</td><td><a href="https://doi.org/10.5281/zenodo.20168812">10.5281/zenodo.20168812</a></td><td>26 theorems · 0 sorry · biology</td></tr>
+      <tr><td>DNLS / N-bonacci Ch.η</td><td><a href="https://doi.org/10.5281/zenodo.20026942">10.5281/zenodo.20026942</a></td><td>η≈1.839 · criticality</td></tr>
+      <tr><td>FruitFly Connectome</td><td><a href="https://doi.org/10.5281/zenodo.19210136">10.5281/zenodo.19210136</a></td><td>neural architecture · dm³</td></tr>
+      <tr><td>Book 3 · The Mini-Beast</td><td><a href="https://ssrn.com/abstract=6805940">SSRN 6805940</a></td><td>pending approval · Principia Orthogona Vol. III</td></tr>
+      <tr><td>Vol. I + II combined</td><td><a href="https://ssrn.com/abstract=6439626">SSRN 6439626</a></td><td>11 downloads · live</td></tr>
+    </tbody>
+  </table>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:1rem;">
+    <a class="card" href="theory.html">
+      <span class="card-tag gold">21 Papers · Zenodo</span>
+      <div class="card-title">Principia Orthogona — Full Series</div>
+      <div class="card-desc">Complete series index with all 21 Zenodo records, DOIs, and descriptions.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="collatz-engineering.html">
+      <span class="card-tag gold">Engineering Spec</span>
+      <div class="card-title">Collatz Engineering</div>
+      <div class="card-desc">dm³ axioms · G6 Crystal · AXLE Target 5 · Python · Julia · Lean 4</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="livro3-brasil.html">
+      <span class="card-tag gold">Livro 3 · PT-BR</span>
+      <div class="card-title">The Mini-Beast · Brasil</div>
+      <div class="card-desc">Book 3 of Principia Orthogona. Portuguese edition. All six chapters.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="ch-tau-tartaruga.html">
+      <span class="card-tag" style="color:var(--teal);">Chapter τ · New</span>
+      <div class="card-title">🐢 The Cosmic Tortoise</div>
+      <div class="card-desc">Sea turtle shell · dm³ · Chladni curved surface · Projeto TAMAR · Meru on the back</div>
+      <span class="card-badge b-new">✦ New</span>
+    </a>
+  </div>
+</section>
+
+<!-- DNLS -->
+<section class="section" id="dnls">
+  <div class="section-label">DNLS — Discrete Nonlinear Schrödinger <span class="section-count">Tribonacci &amp; Tetrabonacci chains</span></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);">
+    <a class="card" href="chapter-eta-dnls.html">
+      <span class="card-tag">Chapter η · DNLS</span>
+      <div class="card-title">N-bonacci Criticality</div>
+      <div class="card-desc">η≈1.839. Discrete Nonlinear Schrödinger. Tribonacci/Tetrabonacci criticality threshold.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="nbonacci_dnls_paper_with_figs.pdf">
+      <span class="card-tag">Paper · PDF</span>
+      <div class="card-title">DNLS Paper with Figures</div>
+      <div class="card-desc">Full paper: nbonacci_dnls_paper_with_figs.pdf · DOI 10.5281/zenodo.20026942</div>
+      <span class="card-badge b-live">● PDF</span>
+    </a>
+  </div>
+</section>
+
+<!-- GCTC -->
+<section class="section" id="gctc">
+  <div class="section-label">GCTC / GTCT — Operator Chain <span class="section-count">Ring 5 · Lean 4</span></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);">
+    <a class="card" href="chE-gtct.html">
+      <span class="card-tag">Chapter E · EN</span>
+      <div class="card-title">GTCT for Everyone</div>
+      <div class="card-desc">Generative Time Circuit Theorem. C→K→F→U→T. Theorem T1. Six graded exercises.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="capitulo-e-gtct-pt.html">
+      <span class="card-tag">Capítulo E · PT</span>
+      <div class="card-title">GTCT para Todos</div>
+      <div class="card-desc">Circuito Temporal Generativo. C→K→F→U→T. Teorema T1. Versão portuguesa.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="game-theory.html">
+      <span class="card-tag gold">Game Theory · EMMEs</span>
+      <div class="card-title">Game Theory · THEORY Token</div>
+      <div class="card-desc">F operator — irreversible commitment — Solana EMMEs Token. Theory as a game.</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+    <a class="card" href="helical-attractor.html">
+      <span class="card-tag">3D · simulation</span>
+      <div class="card-title">Helical Attractor Simulation</div>
+      <div class="card-desc">Live 3D browser simulation. ṙ = r(1−r²)+2(r−1)e⁻ᶻ · θ̇=1 · ż=r²−2(r−1)²e⁻ᶻ</div>
+      <span class="card-badge b-live">● Live</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>
+    <a href="https://doi.org/10.5281/zenodo.19117399">Zenodo Series</a> ·
+    <a href="https://github.com/grossi-ops/Atratores">GitHub</a> ·
+    <a href="https://github.com/TOTOGT/AXLE">AXLE</a> ·
+    <a href="https://github.com/TOTOGT/GTCT">GTCT</a> ·
+    <a href="https://orcid.org/0009-0000-6496-2186">ORCID</a> ·
+    <a href="https://ssrn.com/abstract=6439626">SSRN</a> ·
+    <a href="https://www.tamar.org.br">Projeto TAMAR</a>
+  </p>
+  <p style="margin-top:0.5rem;">Pablo Nogueira Grossi · G6 LLC · Newark, New Jersey · ORCID 0009-0000-6496-2186 · 2026</p>
+  <p style="margin-top:0.5rem;opacity:0.5;">C→K→F→U→T · dm³ · AXLE · Principia Orthogona · 100+ theorems · 0 sorry</p>
+  <p style="margin-top:0.5rem;opacity:0.4;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:0.75rem;">
+    "Attractors — mathematics, sound, and visible form"
+  </p>
+</footer>
+
+<script>
+// Subtle animated background — turtle shell hex tiles
+(function(){
+  const c=document.getElementById('bgCanvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  function resize(){
+    c.width=c.offsetWidth; c.height=c.offsetHeight;
+  }
+  resize(); window.addEventListener('resize',resize);
+  let t=0;
+  function draw(){
+    const W=c.offsetWidth,H=c.offsetHeight;
+    ctx.clearRect(0,0,W,H);
+    const sw=48,sh=30;
+    for(let row=-1;row<Math.ceil(H/sh)+2;row++){
+      for(let col=-1;col<Math.ceil(W/sw)+2;col++){
+        const ox=(row%2)*sw*0.5;
+        const x=col*sw+ox,y=row*sh;
+        const dist=Math.sqrt((x-W/2)**2+(y-H/2)**2);
+        const pulse=Math.sin(dist*0.01-t*0.3)*0.5+0.5;
+        ctx.strokeStyle=`rgba(201,168,76,${0.02+pulse*0.04})`;
+        ctx.lineWidth=0.6;
+        ctx.beginPath();
+        ctx.moveTo(x+sw*0.5,y);
+        ctx.lineTo(x+sw,y+sh*0.4);
+        ctx.lineTo(x+sw,y+sh*0.9);
+        ctx.lineTo(x+sw*0.5,y+sh);
+        ctx.lineTo(x,y+sh*0.9);
+        ctx.lineTo(x,y+sh*0.4);
+        ctx.closePath();
+        ctx.stroke();
+      }
+    }
+    t+=0.008;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
