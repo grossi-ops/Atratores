@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tartaruga · Turtle Shell Chladni Machine · Newark Wellness Soundworks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:    #04040a;
+  --deep:    #07080f;
+  --card:    #0c0d16;
+  --ocean:   #0a1628;
+  --teal:    #2dd4bf;
+  --gold:    #c9a84c;
+  --green:   #22c55e;
+  --amber:   #f59e0b;
+  --text:    #e8e4d8;
+  --muted:   #6b6757;
+  --border:  rgba(45,212,191,0.15);
+  --border2: rgba(45,212,191,0.3);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Cormorant Garamond',serif;
+  background:var(--void);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:999;
+}
+
+/* NAV */
+.nav{
+  display:flex;align-items:center;gap:1.5rem;
+  padding:1rem 2rem;
+  border-bottom:1px solid var(--border);
+  background:rgba(4,4,10,0.9);
+  backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:100;
+}
+.nav a{
+  font-family:'JetBrains Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color 0.2s;
+}
+.nav a:hover{color:var(--teal);}
+.nav-title{
+  font-family:'JetBrains Mono',monospace;font-size:0.65rem;
+  letter-spacing:0.2em;color:var(--teal);margin-left:auto;
+}
+
+/* HERO */
+.hero{
+  text-align:center;padding:3rem 2rem 2rem;
+  border-bottom:1px solid var(--border);
+  background:radial-gradient(ellipse 80% 60% at 50% 50%, rgba(10,22,40,0.8) 0%, transparent 70%);
+  position:relative;overflow:hidden;
+}
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,5vw,4rem);
+  font-weight:300;color:var(--teal);
+  letter-spacing:0.05em;margin-bottom:0.3rem;
+}
+.hero-pt{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,2vw,1.6rem);
+  font-style:italic;color:var(--muted);margin-bottom:1rem;
+}
+.hero-sub{
+  font-family:'JetBrains Mono',monospace;font-size:0.62rem;
+  letter-spacing:0.15em;color:var(--muted);
+  max-width:600px;margin:0 auto;line-height:2;
+}
+
+/* MAIN LAYOUT */
+.main{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);
+  margin-top:2rem;margin-bottom:2rem;
+  margin-left:auto;margin-right:auto;
+  padding:0 1rem;
+}
+@media(max-width:700px){.main{grid-template-columns:1fr;}}
+
+/* PANELS */
+.panel{
+  background:var(--card);padding:1.8rem;
+}
+.panel-label{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:1.2rem;display:block;
+}
+.panel h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;color:var(--text);
+  margin-bottom:1.2rem;font-weight:400;
+}
+
+/* CHLADNI CANVAS */
+.canvas-wrap{
+  position:relative;
+  border:1px solid var(--border);
+  background:#020408;
+  overflow:hidden;
+}
+#chladniCanvas{
+  display:block;width:100%;
+  image-rendering:pixelated;
+}
+.canvas-label{
+  position:absolute;bottom:0;left:0;right:0;
+  font-family:'JetBrains Mono',monospace;font-size:0.55rem;
+  letter-spacing:0.1em;color:var(--muted);
+  padding:0.5rem 0.8rem;
+  background:rgba(2,4,8,0.85);
+  border-top:1px solid var(--border);
+}
+
+/* CONTROLS */
+.ctrl-group{
+  margin-bottom:1.5rem;
+}
+.ctrl-group:last-child{margin-bottom:0;}
+.ctrl-title{
+  font-family:'JetBrains Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.75rem;display:block;
+}
+.ctrl-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:0.6rem;gap:1rem;
+}
+.ctrl-row label{
+  font-family:'JetBrains Mono',monospace;font-size:0.62rem;
+  color:var(--muted);min-width:100px;
+}
+.ctrl-row input[type=range]{
+  flex:1;accent-color:var(--teal);
+  height:3px;cursor:pointer;
+}
+.ctrl-val{
+  font-family:'JetBrains Mono',monospace;font-size:0.62rem;
+  color:var(--teal);min-width:55px;text-align:right;
+}
+
+/* SCUTE MAP */
+.scute-map{
+  position:relative;width:100%;
+  border:1px solid var(--border);background:#020408;
+  overflow:hidden;
+}
+#scuteCanvas{display:block;width:100%;}
+
+/* FREQ DISPLAY */
+.freq-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);
+  margin:1rem 0;
+}
+.freq-cell{
+  background:var(--void);padding:0.8rem;text-align:center;
+}
+.freq-name{
+  font-family:'JetBrains Mono',monospace;font-size:0.55rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);display:block;margin-bottom:0.3rem;
+}
+.freq-val{
+  font-family:'JetBrains Mono',monospace;font-size:1rem;
+  color:var(--teal);display:block;
+}
+.freq-note{
+  font-family:'JetBrains Mono',monospace;font-size:0.55rem;
+  color:var(--muted);display:block;margin-top:0.2rem;
+}
+
+/* BUTTONS */
+.btn-row{
+  display:flex;gap:0.75rem;margin-top:1.2rem;flex-wrap:wrap;
+}
+.btn{
+  font-family:'JetBrains Mono',monospace;font-size:0.65rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.7rem 1.4rem;border:1px solid;cursor:pointer;
+  transition:all 0.2s;background:transparent;
+}
+.btn-play{
+  color:var(--teal);border-color:var(--teal);
+}
+.btn-play:hover,.btn-play.active{
+  background:var(--teal);color:var(--void);
+}
+.btn-stop{
+  color:var(--muted);border-color:rgba(107,103,87,0.4);
+}
+.btn-stop:hover{color:var(--text);border-color:var(--muted);}
+.btn-wave{
+  color:var(--gold);border-color:rgba(201,168,76,0.3);
+  font-size:0.58rem;
+}
+.btn-wave:hover,.btn-wave.active{
+  background:rgba(201,168,76,0.12);color:var(--gold2);
+}
+
+/* STATUS */
+.status{
+  font-family:'JetBrains Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.1em;color:var(--muted);
+  margin-top:1rem;padding:0.6rem 0.8rem;
+  border:1px solid var(--border);background:var(--void);
+}
+.status.playing{color:var(--green);}
+
+/* MATH BLOCK */
+.math{
+  background:var(--void);
+  border:1px solid var(--border);
+  border-left:3px solid var(--teal);
+  padding:1.2rem 1.5rem;margin:1rem 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.72rem;line-height:2;
+  overflow-x:auto;
+}
+.math .mc{color:var(--muted);}
+.math .mh{color:var(--teal);}
+.math .mg{color:var(--gold);}
+
+/* TAMAR SECTION */
+.tamar{
+  background:var(--ocean);
+  border:1px solid var(--border2);
+  padding:2rem;margin:2rem 1rem;
+  display:grid;grid-template-columns:1fr auto;
+  gap:2rem;align-items:center;
+}
+@media(max-width:600px){.tamar{grid-template-columns:1fr;}}
+.tamar-text p{
+  font-size:1.1rem;line-height:1.85;
+  color:rgba(232,228,216,0.75);margin-bottom:0.8rem;
+}
+.tamar-text p strong{color:var(--teal);font-weight:400;}
+.tamar-link{
+  font-family:'JetBrains Mono',monospace;font-size:0.62rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--void);background:var(--teal);
+  padding:0.8rem 1.4rem;text-decoration:none;
+  display:inline-block;white-space:nowrap;
+  transition:background 0.2s;
+}
+.tamar-link:hover{background:#5eead4;}
+
+/* MATH PAPER LINK */
+.paper-link{
+  display:flex;align-items:center;gap:1.5rem;
+  background:var(--card);border:1px solid var(--border);
+  padding:1.5rem 2rem;margin:2rem 1rem;
+  text-decoration:none;transition:border-color 0.2s;
+}
+.paper-link:hover{border-color:var(--border2);}
+.paper-badge{
+  font-family:'JetBrains Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--teal);border:1px solid var(--border2);
+  padding:0.3rem 0.6rem;white-space:nowrap;flex-shrink:0;
+}
+.paper-info h3{
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;
+  color:var(--gold);margin-bottom:0.3rem;font-weight:400;
+}
+.paper-info p{
+  font-family:'JetBrains Mono',monospace;font-size:0.58rem;
+  color:var(--muted);letter-spacing:0.08em;
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  padding:2rem;text-align:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.56rem;letter-spacing:0.1em;
+  color:var(--muted);line-height:2.2;
+}
+footer a{color:var(--teal);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="https://grossi-ops.github.io/Atratores/wellness-soundworks.html">← Soundworks</a>
+  <a href="https://grossi-ops.github.io/Atratores/">Atratores</a>
+  <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6439626">Vol I+II</a>
+  <span class="nav-title">🐢 Tartaruga · Chladni Machine</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Tartaruga</h1>
+  <div class="hero-pt">Turtle Shell Chladni Machine · Máquina de Cimática da Tartaruga</div>
+  <div class="hero-sub">
+    The scute pattern of a sea turtle shell is a Chladni figure.<br>
+    Standing waves on a curved surface — C → K → F → U — frozen into bone.<br>
+    Mode (m=3, n=2) · 13 central scutes · g⁶ symmetry · ocean tuning 55 Hz
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main" style="max-width:1100px;margin:2rem auto;">
+
+  <!-- LEFT: Chladni Simulator -->
+  <div class="panel">
+    <span class="panel-label">Station 1 — Chladni Figure · Modo (m,n)</span>
+    <div class="canvas-wrap">
+      <canvas id="chladniCanvas" width="400" height="400"></canvas>
+      <div class="canvas-label" id="chladniLabel">Mode (3,2) — 5 nodal zones · turtle vertebral pattern</div>
+    </div>
+
+    <div class="ctrl-group" style="margin-top:1.2rem;">
+      <span class="ctrl-title">Mode (m, n)</span>
+      <div class="ctrl-row">
+        <label>m (radial)</label>
+        <input type="range" id="mVal" min="1" max="7" step="1" value="3">
+        <span class="ctrl-val" id="mDisplay">3</span>
+      </div>
+      <div class="ctrl-row">
+        <label>n (angular)</label>
+        <input type="range" id="nVal" min="1" max="7" step="1" value="2">
+        <span class="ctrl-val" id="nDisplay">2</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-wave active" id="btnTurtle" onclick="setMode(3,2)">🐢 Turtle (3,2)</button>
+      <button class="btn btn-wave" id="btnHex" onclick="setMode(3,3)">⬡ Hex (3,3)</button>
+      <button class="btn btn-wave" id="btnStar" onclick="setMode(4,2)">✦ Star (4,2)</button>
+      <button class="btn btn-wave" id="btnRing" onclick="setMode(2,1)">◎ Ring (2,1)</button>
+    </div>
+
+    <div class="math" style="margin-top:1rem;">
+      <span class="mc">-- Chladni nodal lines on a square plate</span><br>
+      <span class="mh">u(x,y)</span> = sin(<span class="mg">m</span>πx)·cos(<span class="mg">n</span>πy) − cos(<span class="mg">m</span>πx)·sin(<span class="mg">n</span>πy)<br>
+      <span class="mc">-- Sand accumulates where u(x,y) = 0</span><br>
+      <span class="mc">-- These are the suture lines of the turtle shell</span>
+    </div>
+  </div>
+
+  <!-- RIGHT: Sound Machine -->
+  <div class="panel">
+    <span class="panel-label">Station 2 — Ocean Sound Machine</span>
+    <h2>Shell Resonance</h2>
+
+    <div class="freq-grid">
+      <div class="freq-cell">
+        <span class="freq-name">C · Ocean base</span>
+        <span class="freq-val" id="fC">55.0 Hz</span>
+        <span class="freq-note">A1 · 55Hz ocean infrasound</span>
+      </div>
+      <div class="freq-cell">
+        <span class="freq-name">K · 3:2 fifth</span>
+        <span class="freq-val" id="fK">82.5 Hz</span>
+        <span class="freq-note">vertebral ratio</span>
+      </div>
+      <div class="freq-cell">
+        <span class="freq-name">F · Fold · m=3</span>
+        <span class="freq-val" id="fF">165.0 Hz</span>
+        <span class="freq-note">3× base · scute fold</span>
+      </div>
+      <div class="freq-cell">
+        <span class="freq-name">U · Shell breath</span>
+        <span class="freq-val" id="fU">220.0 Hz</span>
+        <span class="freq-note">4× · shell unfold</span>
+      </div>
+      <div class="freq-cell">
+        <span class="freq-name">n=2 · costal</span>
+        <span class="freq-val" id="fN">110.0 Hz</span>
+        <span class="freq-note">2× · costal scutes</span>
+      </div>
+      <div class="freq-cell">
+        <span class="freq-name">g⁶ · 6-fold</span>
+        <span class="freq-val" id="fG">330.0 Hz</span>
+        <span class="freq-note">6× · marginal ring</span>
+      </div>
+    </div>
+
+    <div class="ctrl-group">
+      <span class="ctrl-title">Ocean Tuning</span>
+      <div class="ctrl-row">
+        <label>Base freq</label>
+        <input type="range" id="baseFreq" min="40" max="80" step="0.5" value="55">
+        <span class="ctrl-val" id="baseDisplay">55.0 Hz</span>
+      </div>
+      <div class="ctrl-row">
+        <label>Wave depth</label>
+        <input type="range" id="waveDepth" min="0" max="100" step="1" value="40">
+        <span class="ctrl-val" id="waveDisplay">40%</span>
+      </div>
+      <div class="ctrl-row">
+        <label>Shell breath</label>
+        <input type="range" id="breathRate" min="2" max="16" step="0.5" value="7">
+        <span class="ctrl-val" id="breathDisplay">7.0 s</span>
+      </div>
+    </div>
+
+    <div class="ctrl-group">
+      <span class="ctrl-title">Scute Layers</span>
+      <div class="ctrl-row">
+        <label>Vertebral (3:2)</label>
+        <input type="range" id="volVertebral" min="0" max="100" step="1" value="70">
+        <span class="ctrl-val" id="volVDisplay">70%</span>
+      </div>
+      <div class="ctrl-row">
+        <label>Costal (2:1)</label>
+        <input type="range" id="volCostal" min="0" max="100" step="1" value="50">
+        <span class="ctrl-val" id="volCDisplay">50%</span>
+      </div>
+      <div class="ctrl-row">
+        <label>Marginal ring</label>
+        <input type="range" id="volMarginal" min="0" max="100" step="1" value="30">
+        <span class="ctrl-val" id="volMDisplay">30%</span>
+      </div>
+      <div class="ctrl-row">
+        <label>Ocean swell</label>
+        <input type="range" id="volOcean" min="0" max="100" step="1" value="60">
+        <span class="ctrl-val" id="volODisplay">60%</span>
+      </div>
+      <div class="ctrl-row">
+        <label>Master volume</label>
+        <input type="range" id="masterVol" min="0" max="100" step="1" value="65">
+        <span class="ctrl-val" id="masterDisplay">65%</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-play" id="playBtn" onclick="togglePlay()">▶ Play</button>
+      <button class="btn btn-stop" onclick="stopAll()">■ Stop</button>
+    </div>
+
+    <div class="status" id="status">Ready — 55 Hz ocean base · (3,2) turtle mode · 6 harmonic layers</div>
+  </div>
+</div>
+
+<!-- SCUTE MAP -->
+<div style="max-width:1100px;margin:0 auto 2rem;padding:0 1rem;">
+  <div class="panel">
+    <span class="panel-label">Station 3 — Turtle Shell Scute Map · Mapa de Escudos</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);">
+      <div style="background:var(--card);padding:1.5rem;">
+        <div class="scute-map">
+          <canvas id="scuteCanvas" width="400" height="280"></canvas>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;color:var(--muted);margin-top:0.6rem;">
+          Fig. — Sea turtle (Chelonia mydas) scute pattern. 5 vertebrals (V) · 4+4 costals (C) · 25 marginals (M). The vertebral-costal boundary is a Chladni nodal line of mode (3,2).
+        </div>
+      </div>
+      <div style="background:var(--card);padding:1.5rem;">
+        <div class="math">
+          <span class="mc">-- Why 5 vertebral scutes?</span><br>
+          <span class="mh">Mode (m=3, n=2)</span> → 5 nodal zones<br>
+          <span class="mc">-- Same as C→K→F→U on curved surface</span><br><br>
+          <span class="mc">-- Why the hexagonal marginal ring?</span><br>
+          <span class="mg">g⁶ regime</span> · 6-fold resonance<br>
+          <span class="mc">-- 25 marginals = 24 + 1 nuchal</span><br>
+          <span class="mc">-- 24 = 4 × g⁶ = 4 × 6</span><br><br>
+          <span class="mc">-- The shell is a dm³ attractor</span><br>
+          <span class="mh">Γ = {r=1}</span> frozen into keratin<br>
+          <span class="mc">-- (μmax, ω, β) = (−2, 1, 1)</span><br>
+          <span class="mc">-- τ = 2, ε₀ = 1/3 (outer basin)</span>
+        </div>
+        <div style="margin-top:1rem;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.4rem;">SCUTE COUNTS — ALL 5 SPECIES IN BRAZIL</div>
+          <table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--muted);">
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:0.3rem 0.5rem;color:var(--text);">Chelonia mydas</td>
+              <td style="padding:0.3rem;color:var(--teal);">5V</td><td style="padding:0.3rem;">4C</td><td style="padding:0.3rem;">25M</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:0.3rem 0.5rem;color:var(--text);">Caretta caretta</td>
+              <td style="padding:0.3rem;color:var(--teal);">5V</td><td style="padding:0.3rem;">5C</td><td style="padding:0.3rem;">25M</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:0.3rem 0.5rem;color:var(--text);">Eretmochelys imbricata</td>
+              <td style="padding:0.3rem;color:var(--teal);">5V</td><td style="padding:0.3rem;">4C</td><td style="padding:0.3rem;">25M</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:0.3rem 0.5rem;color:var(--text);">Lepidochelys olivacea</td>
+              <td style="padding:0.3rem;color:var(--gold);">6–9V</td><td style="padding:0.3rem;">6–9C</td><td style="padding:0.3rem;">variable</td>
+            </tr>
+            <tr>
+              <td style="padding:0.3rem 0.5rem;color:var(--text);">Dermochelys coriacea</td>
+              <td style="padding:0.3rem;color:var(--muted);">no scutes</td><td style="padding:0.3rem;" colspan="2">leathery skin · pure dm³</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJETO TAMAR -->
+<div class="tamar" style="max-width:1100px;margin:0 auto 2rem;">
+  <div class="tamar-text">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.56rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--teal);margin-bottom:0.8rem;">Projeto TAMAR · Tartarugas Marinhas do Brasil</div>
+    <p>
+      <strong>Projeto TAMAR</strong> has protected Brazil's five sea turtle species since 1980 — 
+      across 1,100km of coastline, 23 stations, releasing over 40 million hatchlings. 
+      Their headquarters at Praia do Forte, Bahia is one of the most important nesting sites in the world.
+      Rio Grande do Norte — where the XII Bienal SBM meets in August 2026 — is active TAMAR territory.
+    </p>
+    <p>
+      The mathematics here is not abstract. Every turtle that returns to the same beach to nest 
+      is tracing a <strong>spiral return</strong> — Theorem T1 of the GTCT. 
+      The shell it carries is a <strong>frozen Chladni figure</strong> — 
+      the operator chain C→K→F→U written in bone and keratin.
+      The same geometry governs Saturn's hexagon, the circadian clock, and market volatility. 
+      The turtle knew first.
+    </p>
+  </div>
+  <a href="https://www.tamar.org.br" target="_blank" class="tamar-link">Projeto TAMAR ↗</a>
+</div>
+
+<!-- MATH PAPER LINK -->
+<a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6439626" target="_blank" class="paper-link" style="max-width:1100px;margin:0 auto 2rem;display:flex;">
+  <span class="paper-badge">SSRN · 6439626</span>
+  <div class="paper-info">
+    <h3>Principia Orthogona Vol. I + II — The mathematics behind this machine</h3>
+    <p>C → K → F → U · Whitney singularities · contact geometry · dm³ · Lean 4 · Pablo Nogueira Grossi · G6 LLC · 2026</p>
+  </div>
+</a>
+
+<footer>
+  <p>
+    <a href="https://grossi-ops.github.io/Atratores/wellness-soundworks.html">← Newark Wellness Soundworks</a> ·
+    <a href="https://grossi-ops.github.io/Atratores/">Atratores</a> ·
+    <a href="https://www.tamar.org.br">Projeto TAMAR</a> ·
+    <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6439626">Principia Orthogona</a>
+  </p>
+  <p style="margin-top:0.5rem;">
+    Pablo Nogueira Grossi · G6 LLC · Newark, New Jersey · ORCID 0009-0000-6496-2186 · 2026
+  </p>
+  <p style="margin-top:0.5rem;opacity:0.5;">
+    Turtle shell mode (3,2) · g⁶ regime · dm³ contact manifold · C→K→F→U · Principia Orthogona
+  </p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  CHLADNI FIGURE RENDERER
+// ══════════════════════════════════════════
+const canvas = document.getElementById('chladniCanvas');
+const ctx    = canvas.getContext('2d');
+let m = 3, n = 2;
+
+function drawChladni(mv, nv) {
+  const W = canvas.width, H = canvas.height;
+  const img = ctx.createImageData(W, H);
+  const data = img.data;
+
+  // Ocean color palette
+  const bg    = [2, 4, 12];       // deep ocean void
+  const node  = [45, 212, 191];   // teal — nodal lines (sand/suture)
+  const antiN = [10, 22, 40];     // deep blue — antinodes
+
+  for (let py = 0; py < H; py++) {
+    for (let px = 0; px < W; px++) {
+      const x = px / W;
+      const y = py / H;
+
+      // Chladni pattern
+      const u = Math.sin(mv * Math.PI * x) * Math.cos(nv * Math.PI * y)
+              - Math.cos(mv * Math.PI * x) * Math.sin(nv * Math.PI * y);
+
+      // Amplitude
+      const amp = Math.abs(u);
+      const threshold = 0.08;
+
+      let r, g, b;
+      if (amp < threshold) {
+        // Nodal line — teal (sand accumulates here = scute sutures)
+        const t = 1 - amp / threshold;
+        r = Math.round(bg[0] + (node[0] - bg[0]) * t);
+        g = Math.round(bg[1] + (node[1] - bg[1]) * t);
+        b = Math.round(bg[2] + (node[2] - bg[2]) * t);
+      } else {
+        // Antinode — gradient from deep to ocean blue
+        const t = Math.min(1, (amp - threshold) / 0.6);
+        const glow = Math.pow(1 - amp, 3) * 0.4;
+        r = Math.round(antiN[0] + 20 * glow);
+        g = Math.round(antiN[1] + 40 * glow);
+        b = Math.round(antiN[2] + (80 * t) + 60 * glow);
+      }
+
+      const idx = (py * W + px) * 4;
+      data[idx]     = r;
+      data[idx + 1] = g;
+      data[idx + 2] = b;
+      data[idx + 3] = 255;
+    }
+  }
+
+  ctx.putImageData(img, 0, 0);
+
+  // Overlay labels
+  ctx.font = '11px JetBrains Mono, monospace';
+  ctx.fillStyle = 'rgba(45,212,191,0.5)';
+  ctx.fillText(`(m=${mv}, n=${nv})`, 8, 18);
+  const zones = mv * nv;
+  ctx.fillStyle = 'rgba(107,103,87,0.8)';
+  ctx.fillText(`${zones} nodal zones`, 8, H - 8);
+
+  document.getElementById('chladniLabel').textContent =
+    `Mode (${mv},${nv}) — ${zones} nodal zones · ${getModeDesc(mv, nv)}`;
+}
+
+function getModeDesc(mv, nv) {
+  if (mv === 3 && nv === 2) return 'turtle vertebral pattern (5 regions)';
+  if (mv === 3 && nv === 3) return 'hexagonal close-pack · g⁶ symmetry';
+  if (mv === 4 && nv === 2) return 'star pattern · 8 zones';
+  if (mv === 2 && nv === 1) return 'ring mode · 2 zones';
+  return `${mv * nv} nodal zones`;
+}
+
+function setMode(mNew, nNew) {
+  m = mNew; n = nNew;
+  document.getElementById('mVal').value = m;
+  document.getElementById('nVal').value = n;
+  document.getElementById('mDisplay').textContent = m;
+  document.getElementById('nDisplay').textContent = n;
+  drawChladni(m, n);
+  updateFreqs();
+  // highlight active button
+  ['btnTurtle','btnHex','btnStar','btnRing'].forEach(id => {
+    document.getElementById(id).classList.remove('active');
+  });
+  if (mNew===3&&nNew===2) document.getElementById('btnTurtle').classList.add('active');
+  if (mNew===3&&nNew===3) document.getElementById('btnHex').classList.add('active');
+  if (mNew===4&&nNew===2) document.getElementById('btnStar').classList.add('active');
+  if (mNew===2&&nNew===1) document.getElementById('btnRing').classList.add('active');
+}
+
+document.getElementById('mVal').addEventListener('input', e => {
+  m = parseInt(e.target.value);
+  document.getElementById('mDisplay').textContent = m;
+  drawChladni(m, n);
+  updateFreqs();
+});
+document.getElementById('nVal').addEventListener('input', e => {
+  n = parseInt(e.target.value);
+  document.getElementById('nDisplay').textContent = n;
+  drawChladni(m, n);
+  updateFreqs();
+});
+
+// ══════════════════════════════════════════
+//  SCUTE MAP RENDERER
+// ══════════════════════════════════════════
+const scuteCanvas = document.getElementById('scuteCanvas');
+const sCtx = scuteCanvas.getContext('2d');
+
+function drawScuteMap() {
+  const W = scuteCanvas.width, H = scuteCanvas.height;
+  sCtx.clearRect(0, 0, W, H);
+  sCtx.fillStyle = '#020408';
+  sCtx.fillRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2 + 10;
+  const scuteW = 52, scuteH = 38;
+
+  // ── 5 Vertebral scutes (centre row) ──
+  sCtx.strokeStyle = 'rgba(45,212,191,0.85)';
+  sCtx.lineWidth = 1.5;
+  for (let i = 0; i < 5; i++) {
+    const x = cx + (i - 2) * scuteW - scuteW / 2;
+    const y = cy - scuteH / 2;
+    sCtx.strokeRect(x, y, scuteW, scuteH);
+    sCtx.fillStyle = 'rgba(45,212,191,0.08)';
+    sCtx.fillRect(x, y, scuteW, scuteH);
+    sCtx.fillStyle = 'rgba(45,212,191,0.7)';
+    sCtx.font = '9px JetBrains Mono';
+    sCtx.textAlign = 'center';
+    sCtx.fillText(`V${i+1}`, x + scuteW / 2, y + scuteH / 2 + 3);
+  }
+
+  // ── 4+4 Costal scutes (flanking rows) ──
+  sCtx.strokeStyle = 'rgba(201,168,76,0.7)';
+  for (let side = -1; side <= 1; side += 2) {
+    for (let i = 0; i < 4; i++) {
+      const x = cx + (i - 1.5) * scuteW - scuteW / 2;
+      const y = cy + (side === -1 ? -(scuteH * 1.7) : scuteH * 0.7);
+      sCtx.strokeRect(x, y, scuteW, scuteH * 0.9);
+      sCtx.fillStyle = 'rgba(201,168,76,0.06)';
+      sCtx.fillRect(x, y, scuteW, scuteH * 0.9);
+      sCtx.fillStyle = 'rgba(201,168,76,0.6)';
+      sCtx.font = '8px JetBrains Mono';
+      sCtx.textAlign = 'center';
+      sCtx.fillText(`C${i+1}`, x + scuteW / 2, y + scuteH * 0.45 + 3);
+    }
+  }
+
+  // ── Marginal ring (simplified) ──
+  sCtx.strokeStyle = 'rgba(107,103,87,0.5)';
+  sCtx.lineWidth = 1;
+  const mW = 22, mH = 22;
+  // Top row
+  for (let i = 0; i < 12; i++) {
+    const x = (W * 0.05) + i * ((W * 0.9) / 12);
+    const y = cy - scuteH * 2.55;
+    sCtx.strokeRect(x, y, mW, mH);
+  }
+  // Bottom row
+  for (let i = 0; i < 12; i++) {
+    const x = (W * 0.05) + i * ((W * 0.9) / 12);
+    const y = cy + scuteH * 1.6;
+    sCtx.strokeRect(x, y, mW, mH);
+  }
+
+  // ── Labels ──
+  sCtx.fillStyle = 'rgba(45,212,191,0.5)';
+  sCtx.font = '9px JetBrains Mono';
+  sCtx.textAlign = 'left';
+  sCtx.fillText('Vertebrals (V1–V5) · mode (3,2) · teal', 8, H - 28);
+  sCtx.fillStyle = 'rgba(201,168,76,0.5)';
+  sCtx.fillText('Costals (C1–C4) × 2 · n=2 layer · gold', 8, H - 16);
+  sCtx.fillStyle = 'rgba(107,103,87,0.5)';
+  sCtx.fillText('Marginals × 25 · g⁶ ring', 8, H - 4);
+}
+
+// ══════════════════════════════════════════
+//  AUDIO ENGINE
+// ══════════════════════════════════════════
+let audioCtx = null;
+let masterGain = null;
+let isPlaying = false;
+const nodes = {};
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.connect(audioCtx.destination);
+}
+
+function getBase() {
+  return parseFloat(document.getElementById('baseFreq').value);
+}
+
+function startOscillator(id, freq, type, gainVal, detune = 0) {
+  if (nodes[id]) { nodes[id].osc.stop(); nodes[id].gain.disconnect(); }
+  const osc  = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  if (detune) osc.detune.setValueAtTime(detune, audioCtx.currentTime);
+  gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start();
+  nodes[id] = { osc, gain };
+  return { osc, gain };
+}
+
+function startOceanNoise(gainVal) {
+  if (nodes['ocean']) { nodes['ocean'].src.stop(); nodes['ocean'].gain.disconnect(); }
+  const bufSize = audioCtx.sampleRate * 3;
+  const buf  = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
+  const src = audioCtx.createBufferSource();
+  src.buffer = buf;
+  src.loop = true;
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(200, audioCtx.currentTime);
+  filter.Q.setValueAtTime(0.5, audioCtx.currentTime);
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+  // Slow LFO for wave swell
+  const lfo = audioCtx.createOscillator();
+  const lfoGain = audioCtx.createGain();
+  lfo.frequency.setValueAtTime(1 / parseFloat(document.getElementById('breathRate').value), audioCtx.currentTime);
+  lfoGain.gain.setValueAtTime(gainVal * parseFloat(document.getElementById('waveDepth').value) / 100, audioCtx.currentTime);
+  lfo.connect(lfoGain);
+  lfoGain.connect(gain.gain);
+  lfo.start();
+  src.connect(filter);
+  filter.connect(gain);
+  gain.connect(masterGain);
+  src.start();
+  nodes['ocean'] = { src, gain, filter, lfo };
+}
+
+function playAll() {
+  initAudio();
+  const base = getBase();
+  const volV = parseFloat(document.getElementById('volVertebral').value) / 100 * 0.25;
+  const volC = parseFloat(document.getElementById('volCostal').value)    / 100 * 0.2;
+  const volM = parseFloat(document.getElementById('volMarginal').value)  / 100 * 0.1;
+  const volO = parseFloat(document.getElementById('volOcean').value)     / 100 * 0.15;
+  const mv = parseFloat(document.getElementById('masterVol').value) / 100;
+
+  masterGain.gain.setValueAtTime(mv, audioCtx.currentTime);
+
+  // C — ocean base (sine, deep)
+  startOscillator('C', base, 'sine', volV * 1.2);
+  // K — 3:2 vertebral fifth (sine)
+  startOscillator('K', base * 1.5, 'sine', volV);
+  // F — fold m=3 (triangle, softer)
+  startOscillator('F', base * m, 'triangle', volC * 0.8);
+  // n layer — costal
+  startOscillator('N', base * n, 'sine', volC, 3);
+  // U — shell unfold (sine, high)
+  startOscillator('U', base * 4, 'sine', volM * 0.6);
+  // g⁶ — marginal ring (very soft, high)
+  startOscillator('G6', base * 6, 'sine', volM * 0.4, -5);
+  // Ocean noise swell
+  startOceanNoise(volO);
+  // Sub-bass breath
+  startOscillator('SUB', base * 0.5, 'sine', volV * 0.5);
+
+  isPlaying = true;
+  document.getElementById('playBtn').textContent = '⏸ Playing';
+  document.getElementById('playBtn').classList.add('active');
+  document.getElementById('status').textContent =
+    `Playing — ${base} Hz base · mode (${m},${n}) · C→K→F→U · 8 layers active`;
+  document.getElementById('status').className = 'status playing';
+}
+
+function stopAll() {
+  Object.values(nodes).forEach(n => {
+    try { if (n.osc) n.osc.stop(); if (n.src) n.src.stop(); if (n.lfo) n.lfo.stop(); n.gain.disconnect(); } catch(e) {}
+  });
+  Object.keys(nodes).forEach(k => delete nodes[k]);
+  isPlaying = false;
+  document.getElementById('playBtn').textContent = '▶ Play';
+  document.getElementById('playBtn').classList.remove('active');
+  document.getElementById('status').textContent = 'Stopped';
+  document.getElementById('status').className = 'status';
+}
+
+function togglePlay() {
+  if (isPlaying) stopAll();
+  else playAll();
+}
+
+function updateFreqs() {
+  const base = getBase();
+  document.getElementById('fC').textContent = base.toFixed(1) + ' Hz';
+  document.getElementById('fK').textContent = (base * 1.5).toFixed(1) + ' Hz';
+  document.getElementById('fF').textContent = (base * m).toFixed(1) + ' Hz';
+  document.getElementById('fU').textContent = (base * 4).toFixed(1) + ' Hz';
+  document.getElementById('fN').textContent = (base * n).toFixed(1) + ' Hz';
+  document.getElementById('fG').textContent = (base * 6).toFixed(1) + ' Hz';
+}
+
+// Slider listeners
+document.getElementById('baseFreq').addEventListener('input', e => {
+  document.getElementById('baseDisplay').textContent = parseFloat(e.target.value).toFixed(1) + ' Hz';
+  updateFreqs();
+  if (isPlaying) { stopAll(); playAll(); }
+});
+document.getElementById('waveDepth').addEventListener('input', e => {
+  document.getElementById('waveDisplay').textContent = e.target.value + '%';
+  if (isPlaying) { stopAll(); playAll(); }
+});
+document.getElementById('breathRate').addEventListener('input', e => {
+  document.getElementById('breathDisplay').textContent = parseFloat(e.target.value).toFixed(1) + ' s';
+  if (isPlaying) { stopAll(); playAll(); }
+});
+['volVertebral','volCostal','volMarginal','volOcean','masterVol'].forEach((id, i) => {
+  const displays = ['volVDisplay','volCDisplay','volMDisplay','volODisplay','masterDisplay'];
+  document.getElementById(id).addEventListener('input', e => {
+    document.getElementById(displays[i]).textContent = e.target.value + '%';
+    if (isPlaying) { stopAll(); playAll(); }
+  });
+});
+
+// ── INIT ──
+drawChladni(3, 2);
+drawScuteMap();
+updateFreqs();
+</script>
+</body>
+</html>
