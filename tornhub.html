@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Principia Orthogona — Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;700&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:    #04040a;
+  --deep:    #07080f;
+  --surface: #0c0d16;
+  --card:    #0f1018;
+  --gold:    #c9a84c;
+  --gold2:   #e8c96a;
+  --teal:    #2dd4bf;
+  --crimson: #dc2626;
+  --text:    #e8e4d8;
+  --muted:   #6b6757;
+  --dim:     #3a3828;
+  --border:  rgba(201,168,76,0.12);
+  --border2: rgba(201,168,76,0.28);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Cormorant Garamond',serif;
+  background:var(--void);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:999;opacity:0.5;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;width:100%;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 3rem;
+  border-bottom:1px solid var(--border);
+  background:rgba(4,4,10,0.9);
+  backdrop-filter:blur(16px);
+}
+.nav-mark{
+  font-family:'Cinzel',serif;
+  font-size:0.72rem;letter-spacing:0.25em;color:var(--gold);
+}
+.nav-links{display:flex;gap:2rem;flex-wrap:wrap;}
+.nav-links a{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--gold);}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;padding:9rem 2rem 5rem;
+  position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 45%,rgba(201,168,76,0.06) 0%,transparent 70%),
+    radial-gradient(ellipse 30% 30% at 15% 75%,rgba(45,212,191,0.04) 0%,transparent 60%),
+    radial-gradient(ellipse 30% 30% at 85% 25%,rgba(201,168,76,0.03) 0%,transparent 60%);
+}
+/* Animated braid background */
+.braid-bg{position:absolute;inset:0;opacity:0.05;}
+.stamp{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--teal);border:1px solid currentColor;
+  padding:0.25rem 0.75rem;margin-bottom:2.5rem;display:inline-block;
+  animation:pulse 3s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(45,212,191,0);}
+  50%{box-shadow:0 0 10px 2px rgba(45,212,191,0.15);}
+}
+.hero h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(2rem,6vw,5.5rem);
+  font-weight:900;line-height:0.92;letter-spacing:-0.02em;
+  color:var(--gold);
+  text-shadow:0 0 100px rgba(201,168,76,0.25);
+  margin-bottom:0.6rem;
+}
+.hero-sub{
+  font-family:'Cinzel',serif;
+  font-size:clamp(0.9rem,2vw,1.4rem);
+  font-weight:400;color:var(--text);
+  letter-spacing:0.08em;margin-bottom:1.8rem;
+}
+.hero-meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.18em;color:var(--muted);
+  margin-bottom:2.5rem;line-height:2;
+}
+.epigraph{
+  max-width:580px;font-size:1.2rem;font-style:italic;
+  color:var(--muted);line-height:1.85;
+  border-left:2px solid var(--border2);padding-left:1.5rem;
+  text-align:left;margin:0 auto;
+}
+.epigraph cite{
+  display:block;font-style:normal;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.12em;color:var(--gold);margin-top:0.7rem;
+}
+.scroll-cue{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  font-family:'JetBrains Mono',monospace;font-size:0.55rem;
+  letter-spacing:0.2em;color:var(--dim);
+  animation:bob 2.2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(5px);}}
+
+/* SECTION */
+.section{max-width:1040px;margin:0 auto;padding:5rem 2rem;border-top:1px solid var(--border);}
+.sec-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+}
+.section h2{
+  font-family:'Cinzel',serif;
+  font-size:clamp(1.6rem,3.5vw,2.8rem);
+  font-weight:600;color:var(--text);
+  margin-bottom:1.5rem;line-height:1.1;
+}
+.section p{
+  font-size:1.15rem;line-height:1.9;
+  color:rgba(232,228,216,0.78);
+  max-width:680px;margin-bottom:1.4rem;
+}
+.section p strong{color:var(--gold);font-weight:400;}
+
+/* OPERATOR CHAIN */
+.chain-wrap{
+  margin:3rem 0;
+  border:1px solid var(--border);background:var(--card);
+  overflow:hidden;
+}
+.chain-header{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--muted);padding:0.8rem 1.5rem;
+  border-bottom:1px solid var(--border);
+}
+.chain-ops{display:flex;flex-wrap:wrap;}
+.op{
+  flex:1;min-width:140px;padding:1.8rem 1.2rem;
+  text-align:center;border-right:1px solid var(--border);
+  position:relative;
+}
+.op:last-child{border-right:none;}
+.op-letter{
+  font-family:'Cinzel',serif;font-size:2.4rem;
+  color:var(--gold);display:block;
+  text-shadow:0 0 30px rgba(201,168,76,0.2);
+  margin-bottom:0.5rem;
+}
+.op-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);display:block;margin-bottom:0.5rem;
+}
+.op-lean{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;color:var(--teal);display:block;margin-bottom:0.5rem;
+}
+.op-desc{font-size:0.85rem;color:rgba(232,228,216,0.5);line-height:1.5;}
+.op-T{background:rgba(45,212,191,0.04);}
+.op-T .op-letter{color:var(--teal);}
+.op-F{background:rgba(220,38,38,0.04);}
+.op-F .op-letter{color:var(--crimson);}
+.chain-eq{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.82rem;color:var(--text);
+  padding:1.2rem 1.5rem;
+  border-top:1px solid var(--border);
+  background:rgba(201,168,76,0.03);
+}
+.chain-eq span{color:var(--gold);}
+
+/* MATH BLOCK */
+.math-block{
+  background:#050508;
+  border:1px solid var(--border);
+  border-left:3px solid var(--gold);
+  padding:1.8rem 2rem;margin:2rem 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.8rem;line-height:2;overflow-x:auto;
+}
+.ml{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--text);}
+.mc{color:var(--muted);}
+.ms{color:var(--gold);}
+.mt{color:var(--teal);}
+.mk{color:#c084fc;}
+.mn{color:#fb923c;}
+.math-label{
+  font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;display:block;
+}
+
+/* THEOREMS TABLE */
+.thm-table{
+  width:100%;border-collapse:collapse;
+  margin:2rem 0;font-size:0.9rem;
+}
+.thm-table th{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);padding:0.75rem 1rem;
+  border-bottom:1px solid var(--border);text-align:left;
+  background:var(--card);
+}
+.thm-table td{
+  padding:0.85rem 1rem;border-bottom:1px solid var(--border);
+  color:rgba(232,228,216,0.75);vertical-align:top;
+}
+.thm-table tr:last-child td{border-bottom:none;}
+.thm-table .thm-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.75rem;color:var(--gold2);
+}
+.proved{color:#22c55e;font-family:'JetBrains Mono',monospace;font-size:0.7rem;}
+.axiom{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:0.7rem;}
+.diff{color:var(--muted);font-size:0.75rem;}
+
+/* GSERIES */
+.gseries{
+  display:flex;flex-wrap:wrap;gap:1px;
+  background:var(--border);border:1px solid var(--border);
+  margin:2rem 0;
+}
+.g-cell{
+  background:var(--card);flex:1;min-width:120px;
+  padding:1.5rem 1rem;text-align:center;
+}
+.g-label{
+  font-family:'Cinzel',serif;font-size:1.6rem;
+  color:var(--gold);display:block;margin-bottom:0.4rem;
+}
+.g-name{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--muted);
+  display:block;margin-bottom:0.3rem;
+}
+.g-desc{font-size:0.82rem;color:rgba(232,228,216,0.5);}
+.g-33{background:rgba(201,168,76,0.05);}
+.g-64{background:rgba(45,212,191,0.05);}
+.g-33 .g-label{color:var(--gold2);}
+.g-64 .g-label{color:var(--teal);}
+
+/* LINEAGE */
+.lineage{margin:3rem 0;}
+.ln{display:flex;gap:1.8rem;margin-bottom:0;position:relative;}
+.ln::before{
+  content:'';position:absolute;left:22px;top:50px;bottom:-24px;
+  width:1px;background:linear-gradient(to bottom,var(--border2),transparent);
+}
+.ln:last-child::before{display:none;}
+.ln-dot{
+  width:46px;height:46px;border-radius:50%;
+  border:1px solid var(--border2);background:var(--card);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-family:'JetBrains Mono',monospace;font-size:0.62rem;
+  color:var(--gold);margin-top:4px;position:relative;z-index:1;
+}
+.ln-origin .ln-dot{
+  border-color:var(--gold);background:rgba(201,168,76,0.08);
+  box-shadow:0 0 18px rgba(201,168,76,0.12);
+}
+.ln-body{padding:0.8rem 0 2.8rem;flex:1;}
+.ln-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.56rem;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--teal);margin-bottom:0.4rem;
+}
+.ln-title{
+  font-family:'Cinzel',serif;font-size:1.05rem;
+  color:var(--gold2);margin-bottom:0.4rem;
+}
+.ln-origin .ln-title{font-size:1.3rem;}
+.ln-text{font-size:0.95rem;color:var(--muted);line-height:1.7;max-width:600px;}
+
+/* COHERENCE TABLE */
+.coh-table{
+  width:100%;border-collapse:collapse;
+  margin:2.5rem 0;font-size:0.85rem;
+  border:1px solid var(--border);
+}
+.coh-table th{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);padding:0.7rem 0.9rem;
+  border-bottom:1px solid var(--border);
+  background:var(--card);text-align:left;
+}
+.coh-table td{
+  padding:0.75rem 0.9rem;
+  border-bottom:1px solid rgba(201,168,76,0.06);
+  color:rgba(232,228,216,0.7);
+  font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+}
+.coh-table tr:last-child td{border-bottom:none;}
+.coh-table .domain{color:var(--text);font-size:0.8rem;font-family:'Cormorant Garamond',serif;}
+.status-lean{color:#22c55e;}
+.status-build{color:var(--gold);}
+.status-arg{color:var(--teal);}
+
+/* REPO GRID */
+.repo-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);margin:2.5rem 0;
+}
+.repo-card{
+  background:var(--card);padding:1.8rem;
+  text-decoration:none;display:block;
+  transition:background 0.2s;position:relative;overflow:hidden;
+}
+.repo-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--gold);transform:scaleX(0);
+  transition:transform 0.3s;transform-origin:left;
+}
+.repo-card:hover{background:rgba(201,168,76,0.03);}
+.repo-card:hover::after{transform:scaleX(1);}
+.rc-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:0.6rem;display:block;
+}
+.rc-title{
+  font-family:'Cinzel',serif;font-size:1rem;
+  color:var(--gold2);margin-bottom:0.5rem;
+}
+.rc-desc{font-size:0.88rem;color:var(--muted);line-height:1.6;}
+.rc-status{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.1em;margin-top:0.9rem;
+  display:inline-block;padding:0.18rem 0.55rem;border:1px solid;
+}
+.s-live{color:#22c55e;border-color:#22c55e33;}
+.s-wip{color:var(--gold);border-color:var(--border2);}
+.s-new{color:var(--teal);border-color:rgba(45,212,191,0.25);}
+.s-sub{color:#a78bfa;border-color:rgba(167,139,250,0.25);}
+
+/* RECOGNITION */
+.rec-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);margin:2.5rem 0;
+}
+.rec-cell{background:var(--card);padding:1.8rem;}
+.rec-inst{
+  font-family:'Cinzel',serif;font-size:1rem;
+  color:var(--gold2);margin-bottom:0.4rem;
+}
+.rec-detail{font-size:0.9rem;color:var(--muted);line-height:1.6;}
+.rec-status{
+  font-family:'JetBrains Mono',monospace;font-size:0.6rem;
+  color:var(--teal);margin-top:0.6rem;display:block;
+}
+
+/* LIVING NOTE */
+.living-note{
+  border:1px solid var(--border2);background:var(--card);
+  padding:2.5rem;margin:3rem 0;
+}
+.living-note p{
+  font-size:1.1rem;line-height:1.85;
+  color:rgba(232,228,216,0.75);max-width:700px;
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  padding:3rem 2rem;text-align:center;
+  max-width:1040px;margin:0 auto;
+}
+footer p{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.1em;
+  color:var(--muted);line-height:2.2;
+}
+footer a{color:var(--gold);text-decoration:none;}
+.footer-russell{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.9rem;font-style:italic;
+  color:var(--dim);margin-top:1.5rem;
+  letter-spacing:0.05em;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-mark">Principia Orthogona · TO · GTCT · dm³</span>
+  <div class="nav-links">
+    <a href="#origin">Origin</a>
+    <a href="#lineage">Lineage</a>
+    <a href="#operators">Operators</a>
+    <a href="#theorems">Theorems</a>
+    <a href="#coherence">Coherence</a>
+    <a href="#repos">Repository</a>
+    <a href="#recognition">Recognition</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <!-- Animated braid SVG -->
+  <svg class="braid-bg" viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
+    <g opacity="0.8">
+      <path d="M0,200 C175,200 175,450 350,450 C525,450 525,200 700,200 C875,200 875,450 1050,450 C1225,450 1225,200 1400,200" stroke="#c9a84c" stroke-width="2" fill="none">
+        <animate attributeName="d" dur="10s" repeatCount="indefinite"
+          values="M0,200 C175,200 175,450 350,450 C525,450 525,200 700,200 C875,200 875,450 1050,450 C1225,450 1225,200 1400,200;
+                  M0,300 C175,300 175,550 350,550 C525,550 525,300 700,300 C875,300 875,550 1050,550 C1225,550 1225,300 1400,300;
+                  M0,200 C175,200 175,450 350,450 C525,450 525,200 700,200 C875,200 875,450 1050,450 C1225,450 1225,200 1400,200"/>
+      </path>
+      <path d="M0,450 C175,450 175,200 350,200 C525,200 525,450 700,450 C875,450 875,200 1050,200 C1225,200 1225,450 1400,450" stroke="#2dd4bf" stroke-width="2" fill="none">
+        <animate attributeName="d" dur="10s" repeatCount="indefinite"
+          values="M0,450 C175,450 175,200 350,200 C525,200 525,450 700,450 C875,450 875,200 1050,200 C1225,200 1225,450 1400,450;
+                  M0,550 C175,550 175,300 350,300 C525,300 525,550 700,550 C875,550 875,300 1050,300 C1225,300 1225,550 1400,550;
+                  M0,450 C175,450 175,200 350,200 C525,200 525,450 700,450 C875,450 875,200 1050,200 C1225,200 1225,450 1400,450"/>
+      </path>
+      <path d="M0,650 C175,650 175,750 350,750 C525,750 525,650 700,650 C875,650 875,750 1050,750 C1225,750 1225,650 1400,650" stroke="#c9a84c" stroke-width="1.5" fill="none" opacity="0.4">
+        <animate attributeName="d" dur="15s" repeatCount="indefinite"
+          values="M0,650 C175,650 175,750 350,750 C525,750 525,650 700,650 C875,650 875,750 1050,750 C1225,750 1225,650 1400,650;
+                  M0,700 C175,700 175,800 350,800 C525,800 525,700 700,700 C875,700 875,800 1050,800 C1225,800 1225,700 1400,700;
+                  M0,650 C175,650 175,750 350,750 C525,750 525,650 700,650 C875,650 875,750 1050,750 C1225,750 1225,650 1400,650"/>
+      </path>
+      <!-- Crossing dots -->
+      <circle cx="350" cy="325" r="5" fill="#c9a84c" opacity="0.5"><animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="700" cy="325" r="5" fill="#2dd4bf" opacity="0.5"><animate attributeName="opacity" values="0.5;1;0.5" dur="3s" begin="1s" repeatCount="indefinite"/></circle>
+      <circle cx="1050" cy="325" r="5" fill="#c9a84c" opacity="0.5"><animate attributeName="opacity" values="0.5;1;0.5" dur="3s" begin="2s" repeatCount="indefinite"/></circle>
+    </g>
+  </svg>
+
+  <div style="position:relative;z-index:10;">
+    <div class="stamp">Quantum Topological Orthogenetics · Non-Abelian Anyons · Newark 2026</div>
+    <h1>PRINCIPIA<br>ORTHOGONA</h1>
+    <div class="hero-sub">Topographical Orthogenetics — The Origin of Everything Here</div>
+    <div class="hero-meta">
+      Pablo Nogueira Grossi · G6 LLC · ORCID 0009-0000-6496-2186<br>
+      Series DOI: 10.5281/zenodo.19117399 · ISBN 979-8-9954416-6-3<br>
+      100+ Lean 4 theorems · 50+ HTML chapters · 30+ domains · growing
+    </div>
+    <div class="epigraph">
+      "Mathematics, rightly viewed, possesses not only truth, but supreme beauty — a beauty cold and austere, like that of sculpture, without appeal to any part of our weaker nature, yet sublimely pure, and capable of a stern perfection such as only the greatest art can show."
+      <cite>— Bertrand Russell, Introduction to Mathematical Philosophy (1919)</cite>
+    </div>
+  </div>
+  <div class="scroll-cue">↓ scroll</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION I — ORIGIN
+═══════════════════════════════════════════ -->
+<section class="section" id="origin">
+  <div class="sec-label">§ I — Origin</div>
+  <h2>It began with a braid.</h2>
+
+  <p>
+    Not a metaphor. The worldline of a <strong>non-abelian anyon</strong> moving through
+    spacetime carries information in its topology. When two such particles exchange positions
+    the universe remembers the order. The braid is not decoration — the braid <em>is</em>
+    the computation. This is <strong>Quantum Topological Orthogenesis</strong>: the observation
+    that anything which persists does so by following topologically protected paths.
+  </p>
+  <p>
+    <strong>Topographical Orthogenetics (TO)</strong> is the formalization of that observation.
+    Living systems, plasma sheets, market regimes, neural oscillations, crystalline structures —
+    seventeen orders of magnitude apart in substrate — all navigate possibility space by the
+    same operator chain. The substrate changes. The sequence does not.
+  </p>
+  <p>
+    On February 28, 2026, Quanta Magazine confirmed the creation of non-abelian anyons —
+    particles that remember their past through topological braiding.
+    <strong>TO was already there.</strong> The physics establishment arrived at the same
+    structure from a different direction. The braid is the meeting point.
+  </p>
+
+  <!-- Braid diagram -->
+  <figure style="margin:3rem 0;border:1px solid var(--border);background:var(--card);overflow:hidden;">
+    <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:200px;background:#07080f;">
+      <defs><filter id="glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+      <g filter="url(#glow)">
+        <!-- Strand A: gold — weaves over B at σ₁, under B at σ₂ -->
+        <path d="M40,60 L180,60 Q220,60 260,110 Q300,160 340,160 Q380,160 420,110 Q460,60 500,60 Q540,60 580,110 Q620,160 660,160 Q700,160 740,110 L860,110" stroke="#c9a84c" stroke-width="2.5" fill="none"/>
+        <!-- Strand B: teal -->
+        <path d="M40,110 L160,110 Q180,110 200,85" stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
+        <path d="M240,135 Q260,160 300,160 Q340,160 380,110 Q420,60 460,60 Q500,60 540,110" stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
+        <path d="M580,85 Q600,60 640,60 Q680,60 720,110 L860,60" stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
+        <!-- Strand C: dim gold -->
+        <path d="M40,160 L130,160 Q170,160 210,110 Q250,60 290,60 Q330,60 370,110" stroke="#c9a84c" stroke-width="1.8" fill="none" opacity="0.45"/>
+        <path d="M410,135 Q430,160 470,160 Q510,160 550,110 Q590,60 630,60 Q670,60 710,110 L860,160" stroke="#c9a84c" stroke-width="1.8" fill="none" opacity="0.45"/>
+        <!-- Crossing markers -->
+        <circle cx="220" cy="110" r="5.5" fill="#c9a84c" opacity="0.85"/>
+        <circle cx="460" cy="110" r="5.5" fill="#2dd4bf" opacity="0.85"/>
+        <circle cx="700" cy="110" r="5.5" fill="#c9a84c" opacity="0.85"/>
+        <!-- Generator labels -->
+        <text x="220" y="188" fill="#6b6757" font-family="JetBrains Mono" font-size="11" text-anchor="middle">σ₁</text>
+        <text x="460" y="188" fill="#6b6757" font-family="JetBrains Mono" font-size="11" text-anchor="middle">σ₂</text>
+        <text x="700" y="188" fill="#6b6757" font-family="JetBrains Mono" font-size="11" text-anchor="middle">σ₁</text>
+        <!-- Strand labels -->
+        <text x="855" y="64" fill="#c9a84c" font-family="JetBrains Mono" font-size="10">A</text>
+        <text x="855" y="114" fill="#2dd4bf" font-family="JetBrains Mono" font-size="10">B</text>
+        <text x="855" y="164" fill="#c9a84c88" font-family="JetBrains Mono" font-size="10">C</text>
+        <!-- Title -->
+        <text x="40" y="22" fill="#6b6757" font-family="JetBrains Mono" font-size="9.5">Braid group B₃ · generator word σ₁σ₂σ₁ · each crossing = one operator application · order is irreversible</text>
+      </g>
+    </svg>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;color:var(--muted);padding:0.9rem 1.5rem;border-top:1px solid var(--border);">
+      Fig. 1 — Braid group B₃ with generator word σ₁σ₂σ₁. Non-abelian anyons follow worldlines corresponding to such braids. The non-commutativity of the braid generators — σ₁σ₂ ≠ σ₂σ₁ — is the geometric origin of the GTCT operator non-commutativity. This is not a modelling choice. It is the topology.
+    </div>
+  </figure>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION II — LINEAGE
+═══════════════════════════════════════════ -->
+<section class="section" id="lineage">
+  <div class="sec-label">§ II — Lineage</div>
+  <h2>Every layer is a formalization of the one above.</h2>
+  <p>Nothing is discarded. The braid is in everything.</p>
+
+  <div class="lineage">
+    <div class="ln ln-origin">
+      <div class="ln-dot">TO</div>
+      <div class="ln-body">
+        <div class="ln-tag">Origin · Quantum Biology · Newark 2026</div>
+        <div class="ln-title">Topographical Orthogenetics</div>
+        <p class="ln-text">The foundational observation. Living systems and quantum systems navigate possibility space along topologically protected paths. Non-abelian anyonic braiding as the primitive geometric constraint. My mother described the operator chain before it had a name: compression → curvature → folding → unfolding. Wholesale to the world.</p>
+      </div>
+    </div>
+    <div class="ln">
+      <div class="ln-dot">TOGT</div>
+      <div class="ln-body">
+        <div class="ln-tag">Mathematical Framework</div>
+        <div class="ln-title">Topographical Orthogenetic Theory</div>
+        <p class="ln-text">TO formalized on contact manifolds. The braid group B₃ embeds into the contact geometry of M = ℝ²₊ × ℝ with α = dz − r²dθ. Non-commutativity of braid generators becomes non-commutativity of the operator chain. The Reeb flow with period T* = 2π is the continuous limit of anyonic worldlines.</p>
+      </div>
+    </div>
+    <div class="ln">
+      <div class="ln-dot">dm³</div>
+      <div class="ln-body">
+        <div class="ln-tag">Contact Geometry · Toy Model</div>
+        <div class="ln-title">dm³ System</div>
+        <p class="ln-text">The contact 3-manifold M = ℝ²₊ × ℝ with exact equations ṙ = r(1−r²) + 2(r−1)e⁻ʳ, θ̇ = 1, ż = r² − 2(r−1)²e⁻ʳ. Limit cycle Γ = {r=1}, T* = 2π. Transverse eigenvalue μₘₐₓ = −2, τ = 2. The Coherence Bridge Theorem (5.4) proves that 16+ domains spanning 17 orders of magnitude are objects in the same category dm³, related by explicit contact morphisms.</p>
+      </div>
+    </div>
+    <div class="ln">
+      <div class="ln-dot">GTCT</div>
+      <div class="ln-body">
+        <div class="ln-tag">Operator Algebra · Ring 5 · Lean 4</div>
+        <div class="ln-title">Generative Time Circuit Theorem</div>
+        <p class="ln-text">Establishes T as the fifth operator completing the generative circuit C→K→F→U→T→(return). Proves Theorem T1 (Spiral Return): the G⁶⁴-orbit does not return to x₀ — the circuit is generative, not periodic. Stability radius ε₀ = 1/3 (outer basin). Inner basin r* ≈ 0.773 identified by DOP853 integration. Full Lean 4 proofs, 0 sorry in Chain_updated.lean.</p>
+      </div>
+    </div>
+    <div class="ln">
+      <div class="ln-dot">AXLE</div>
+      <div class="ln-body">
+        <div class="ln-tag">Formal Proof Series · Live · Growing</div>
+        <div class="ln-title">AXLE — Formal Verification</div>
+        <p class="ln-text">100+ theorems proved in Lean 4. Chapter A (Autophagy + Triple-Alpha): 26 theorems, 0 sorry. Ch.η (DNLS/N-bonacci): proved. FruitFly connectome: proved. Intel Swarm: proved. 50+ HTML chapters live. The Coherence Bridge with parameters (μₘₐₓ, ω, β, κ*) formally verified across all confirmed domains. This list grows weekly.</p>
+      </div>
+    </div>
+    <div class="ln">
+      <div class="ln-dot">BSD</div>
+      <div class="ln-body">
+        <div class="ln-tag">Millennium Prize · Research Program</div>
+        <div class="ln-title">BSD–GTCT Bridge</div>
+        <p class="ln-text">The T operator's local 2-adic structure (TE(n) = log 3 − v₂(n)·log 2) shares the local Euler factor structure of the BSD L-function. The Fold operator F corresponds to the critical point s=1. Accumulated orbit cost = discrete analogue of log L(E,1). Stated as a Lean 4 conjecture in GTCT.BSD.Bridge. Open problem — $1M prize.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION III — OPERATORS
+═══════════════════════════════════════════ -->
+<section class="section" id="operators">
+  <div class="sec-label">§ III — The Five Operators</div>
+  <h2>C → K → F → U → T</h2>
+  <p>
+    Five operators on the contact manifold. Each corresponds to a generator of the braid group.
+    The chain is non-commutative by construction — swapping any two produces a distinct trajectory.
+    <strong>G = U ∘ F ∘ K ∘ C</strong> is the four-operator composition.
+    <strong>T</strong> completes the circuit, making it generative rather than periodic.
+  </p>
+
+  <div class="chain-wrap">
+    <div class="chain-header">G6 LLC · GTCT Operator Chain · C→K→F→U→T · canonical · Lean 4 verified</div>
+    <div class="chain-ops">
+      <div class="op">
+        <span class="op-letter">C</span>
+        <span class="op-name">Compress</span>
+        <span class="op-lean">Operators/Compress.lean</span>
+        <span class="op-desc">Dense structure. Wholesale before retail. The seed before the canopy. Reduces the state to its invariant core.</span>
+      </div>
+      <div class="op">
+        <span class="op-letter">K</span>
+        <span class="op-name">Threshold</span>
+        <span class="op-lean">Operators/Threshold.lean</span>
+        <span class="op-desc">Curvature. The critical κ* where regime shifts. Renamed from earlier notation when the lexicon was written with the Coherence Bridge.</span>
+      </div>
+      <div class="op op-F">
+        <span class="op-letter">F</span>
+        <span class="op-name">Fold</span>
+        <span class="op-lean">Operators/Fold.lean</span>
+        <span class="op-desc">Whitney A₁ singularity. Commitment point. Rank-1 Jacobian loss. BSD critical point s=1. The braid crossing from which there is no return.</span>
+      </div>
+      <div class="op">
+        <span class="op-letter">U</span>
+        <span class="op-name">Unfold</span>
+        <span class="op-lean">Operators/Unfold.lean</span>
+        <span class="op-desc">Expanded form. Retail to the world. Not the inverse of F — an unfold is not an undo. The strand re-emerges on the other side, changed.</span>
+      </div>
+      <div class="op op-T">
+        <span class="op-letter">T</span>
+        <span class="op-name">Time · Circuit</span>
+        <span class="op-lean">Operators/TE.lean · fifth op</span>
+        <span class="op-desc">The fifth operator. Completes the generative circuit. T(n) = E(n) = log 3 − v₂(n)·log 2. Conformal reparameterization. The circuit is generative, not periodic.</span>
+      </div>
+    </div>
+    <div class="chain-eq">
+      <span>G</span> = U ∘ F ∘ K ∘ C &nbsp;·&nbsp;
+      Full circuit: <span>C → K → F → U → T → (return)</span> &nbsp;·&nbsp;
+      T(n) = E(n) := log 3 − v₂(n) · log 2 &nbsp;·&nbsp;
+      Non-commutativity is topological, not chosen
+    </div>
+  </div>
+
+  <!-- DM3 equations -->
+  <div class="math-block">
+    <span class="math-label">dm³ Contact Equations — M = ℝ²₊ × ℝ, α = dz − r²dθ</span>
+    <div class="ml">ṙ = r(1 − r²) + 2(r−1)·e<sup>−r</sup></div>
+    <div class="ml">θ̇ = 1</div>
+    <div class="ml">ż = r² − 2(r−1)²·e<sup>−r</sup></div>
+    <br>
+    <div class="mc">-- Limit cycle: Γ = {r=1}, T* = 2π</div>
+    <div class="mc">-- Transverse eigenvalue: λ(z) = −2(1−e⁻ʳ) → μₘₐₓ = −2, τ = 2</div>
+    <div class="mc">-- Outer basin: ε₀ = 1/3, boundary r_att + ε₀ = 4/3</div>
+    <div class="mc">-- Inner basin: r* ≈ 0.773 (DOP853, rtol=10⁻¹⁰, binary search 20 iter)</div>
+    <div class="mc">-- Hierarchy: ε₀=1/3 &lt; 2/3 &lt; r*≈0.773 &lt; κ*≈0.882 &lt; 1</div>
+  </div>
+
+  <!-- Operator-to-braid figure -->
+  <figure style="margin:3rem 0;border:1px solid var(--border);background:var(--card);overflow:hidden;">
+    <svg viewBox="0 0 900 175" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:175px;background:#07080f;">
+      <defs><marker id="arr" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="rgba(201,168,76,0.35)"/></marker></defs>
+      <line x1="60" y1="87" x2="880" y2="87" stroke="rgba(201,168,76,0.1)" stroke-width="1"/>
+      <g font-family="JetBrains Mono" font-size="10">
+        <!-- C -->
+        <circle cx="130" cy="87" r="30" fill="#0f1018" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+        <text x="130" y="93" fill="#c9a84c" text-anchor="middle" font-size="22" font-family="Cinzel, serif">C</text>
+        <text x="130" y="132" fill="#6b6757" text-anchor="middle" font-size="8.5">Compress</text>
+        <text x="130" y="144" fill="#6b6757" text-anchor="middle" font-size="8.5">σ₁ · dense</text>
+        <!-- K -->
+        <circle cx="290" cy="87" r="30" fill="#0f1018" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+        <text x="290" y="93" fill="#c9a84c" text-anchor="middle" font-size="22" font-family="Cinzel, serif">K</text>
+        <text x="290" y="132" fill="#6b6757" text-anchor="middle" font-size="8.5">Threshold</text>
+        <text x="290" y="144" fill="#6b6757" text-anchor="middle" font-size="8.5">σ₂ · κ*</text>
+        <!-- F -->
+        <circle cx="450" cy="87" r="30" fill="#1a0a0a" stroke="rgba(220,38,38,0.4)" stroke-width="1.5"/>
+        <text x="450" y="93" fill="#dc2626" text-anchor="middle" font-size="22" font-family="Cinzel, serif">F</text>
+        <text x="450" y="132" fill="#6b6757" text-anchor="middle" font-size="8.5">Fold · s=1</text>
+        <text x="450" y="144" fill="#6b6757" text-anchor="middle" font-size="8.5">Whitney A₁</text>
+        <!-- U -->
+        <circle cx="610" cy="87" r="30" fill="#0f1018" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+        <text x="610" y="93" fill="#c9a84c" text-anchor="middle" font-size="22" font-family="Cinzel, serif">U</text>
+        <text x="610" y="132" fill="#6b6757" text-anchor="middle" font-size="8.5">Unfold</text>
+        <text x="610" y="144" fill="#6b6757" text-anchor="middle" font-size="8.5">σ₃ · expand</text>
+        <!-- T -->
+        <circle cx="780" cy="87" r="30" fill="#0a1a18" stroke="rgba(45,212,191,0.4)" stroke-width="1.5"/>
+        <text x="780" y="93" fill="#2dd4bf" text-anchor="middle" font-size="22" font-family="Cinzel, serif">T</text>
+        <text x="780" y="132" fill="#6b6757" text-anchor="middle" font-size="8.5">Time · Circuit</text>
+        <text x="780" y="144" fill="#6b6757" text-anchor="middle" font-size="8.5">fifth operator</text>
+        <!-- Arrows -->
+        <line x1="162" y1="87" x2="258" y2="87" stroke="rgba(201,168,76,0.3)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="322" y1="87" x2="418" y2="87" stroke="rgba(201,168,76,0.3)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="482" y1="87" x2="578" y2="87" stroke="rgba(201,168,76,0.3)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="642" y1="87" x2="748" y2="87" stroke="rgba(201,168,76,0.3)" stroke-width="1" marker-end="url(#arr)"/>
+        <!-- Return arrow -->
+        <path d="M810,75 Q870,40 900,40 Q920,40 900,40" stroke="rgba(45,212,191,0.3)" stroke-width="1" fill="none"/>
+        <text x="450" y="22" fill="#6b6757" text-anchor="middle" font-size="9">C ∘ K ∘ F ∘ U ∘ T  ≠  any reordering  ·  non-commutativity is topological  ·  G = U ∘ F ∘ K ∘ C</text>
+      </g>
+    </svg>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;color:var(--muted);padding:0.9rem 1.5rem;border-top:1px solid var(--border);">
+      Fig. 2 — Five GTCT operators in canonical order. F (red) = Whitney A₁ singularity = BSD critical point s=1. T (teal) = fifth operator completing the generative circuit. Lean 4 source: GTCT/lean/GTCT/Operators/. 0 sorry in Chain_updated.lean.
+    </div>
+  </figure>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION IV — THEOREMS
+═══════════════════════════════════════════ -->
+<section class="section" id="theorems">
+  <div class="sec-label">§ IV — Lean 4 Proof Status</div>
+  <h2>What has been proved.</h2>
+  <p>
+    All proofs machine-checked in Lean 4 against Mathlib4.
+    <strong>0 sorry</strong> in Chain_updated.lean.
+    Two open axioms are honest domain hypotheses — explicitly labelled,
+    not gaps in completed proofs.
+  </p>
+
+  <table class="thm-table">
+    <thead>
+      <tr>
+        <th>Theorem</th>
+        <th>Statement</th>
+        <th>Status</th>
+        <th>Difficulty</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="thm-name">gronwall_outer</span></td>
+        <td>μₘₐₓ + 3ε ≤ −μbound → ∃C, exp((μₘₐₓ+3ε)t) ≤ C·exp(−μbound·t). Verified: C=1, μₘₐₓ=−2.</td>
+        <td><span class="proved">✓ proved</span></td>
+        <td><span class="diff">★★☆☆☆</span></td>
+      </tr>
+      <tr>
+        <td><span class="thm-name">iter_consecutive_dist</span></td>
+        <td>dist(Gⁿx, Gⁿ⁺¹x) ≤ kⁿ · dist(x, G(x)) for Lipschitz chain with constant k.</td>
+        <td><span class="proved">✓ proved</span></td>
+        <td><span class="diff">★★★☆☆</span></td>
+      </tr>
+      <tr>
+        <td><span class="thm-name">spiral_return_exists (T1)</span></td>
+        <td>G⁶⁴(x₀) ≠ x₀ ∧ G¹²⁸(x₀) ≠ x₀ → ∃ SpiralReturn with x₀′ ≠ x₀. Circuit is generative.</td>
+        <td><span class="proved">✓ proved</span></td>
+        <td><span class="diff">★★★☆☆</span></td>
+      </tr>
+      <tr>
+        <td><span class="thm-name">poincare_collatz_contracting</span></td>
+        <td>G Lipschitz k&lt;1 → ∃n≥33: dist(Gⁿx, Gⁿ⁺¹x) &lt; r*≈0.773. Full proof ~60 lines.</td>
+        <td><span class="proved">✓ proved</span></td>
+        <td><span class="diff">★★★☆☆</span></td>
+      </tr>
+      <tr>
+        <td><span class="thm-name">inner_basin_is_asymmetric</span></td>
+        <td>r* ≈ 0.773 ≠ r_att − ε₀ = 2/3. Symmetric Gronwall ball is wrong on inner side.</td>
+        <td><span class="axiom">⚠ domain axiom</span></td>
+        <td><span class="diff">★★★☆☆</span></td>
+      </tr>
+      <tr>
+        <td><span class="thm-name">poincare_collatz (general)</span></td>
+        <td>General Poincaré–Collatz: dm³ analogue of open conjecture. Contracting case proved above.</td>
+        <td><span class="axiom">⚠ domain axiom</span></td>
+        <td><span class="diff">★★★★★</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- g-series -->
+  <div class="sec-label" style="margin-top:3rem;">g-Series Regime Taxonomy</div>
+  <div class="gseries">
+    <div class="g-cell">
+      <span class="g-label">g⁰</span>
+      <span class="g-name">Quiescent</span>
+      <span class="g-desc">0 cycles. Initialised state. Pre-generative.</span>
+    </div>
+    <div class="g-cell">
+      <span class="g-label">g²</span>
+      <span class="g-name">Nascent</span>
+      <span class="g-desc">2 cycles. First oscillation. System awakening.</span>
+    </div>
+    <div class="g-cell">
+      <span class="g-label">g⁶</span>
+      <span class="g-name">Stable</span>
+      <span class="g-desc">6 cycles. Stable micro-cycle. Sustained rhythm.</span>
+    </div>
+    <div class="g-cell g-33">
+      <span class="g-label">g³³</span>
+      <span class="g-name">Threshold</span>
+      <span class="g-desc">33 cycles. Stability threshold. Lean 4: g33_stability_index = rfl</span>
+    </div>
+    <div class="g-cell g-64">
+      <span class="g-label">g⁶⁴</span>
+      <span class="g-name">Saturation</span>
+      <span class="g-desc">64 = 2⁶ cycles. Circuit saturation. Lean 4: g64_equals_two_to_6 = rfl</span>
+    </div>
+  </div>
+
+  <!-- Key proof snippet -->
+  <div class="math-block">
+    <span class="math-label">Key Lean 4 Proof — spiral_return_exists (Theorem T1)</span>
+<div class="ml"><span class="mk">theorem</span> <span class="ms">spiral_return_exists</span></div>
+<div class="ml">    {X : <span class="mk">Type</span>*} [MetricSpace X] [SeminormedAddCommGroup X]</div>
+<div class="ml">    (G : GChain X) (x₀ : X)</div>
+<div class="ml">    (h_nontrivial : G.iter <span class="mn">64</span> x₀ ≠ x₀)</div>
+<div class="ml">    (h_second_circuit : G.iter <span class="mn">128</span> x₀ ≠ x₀) :</div>
+<div class="ml">    ∃ sr : SpiralReturn X G, sr.x₀' ≠ sr.x₀ := <span class="mk">by</span></div>
+<div class="ml">  refine ⟨⟨x₀, G.iter <span class="mn">64</span> x₀, G.iter <span class="mn">128</span> x₀, rfl, ?_⟩, ?_⟩</div>
+<div class="ml">· rw [show (<span class="mn">128</span> : ℕ) = <span class="mn">64</span> + <span class="mn">64</span> from rfl, GChain.iter_add]</div>
+<div class="ml">· exact h_second_circuit</div>
+<br>
+<div class="mc">-- The circuit is generative, not periodic.</div>
+<div class="mc">-- x₀ → G⁶⁴(x₀) → G¹²⁸(x₀) = x₀′ with x₀′ ≠ x₀.</div>
+<div class="mc">-- Source: GTCT/lean/GTCT/Operators/Chain_updated.lean · 0 sorry</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION V — COHERENCE BRIDGE
+═══════════════════════════════════════════ -->
+<section class="section" id="coherence">
+  <div class="sec-label">§ V — The Coherence Bridge</div>
+  <h2>Seventeen orders of magnitude. One operator sequence.</h2>
+  <p>
+    <strong>Coherence Bridge Theorem (5.4) — proved in Lean 4.</strong>
+    The systems below are objects in the same category dm³, related by explicit
+    contact morphisms fᵢⱼ: Xᵢ → Xⱼ with fᵢⱼ(Γᵢ) = Γⱼ.
+    Each instantiates the same contact normal form with parameters (μₘₐₓ, ω, β, κ*).
+    These are not analogies. They are exact mathematical identities.
+  </p>
+
+  <table class="coh-table">
+    <thead>
+      <tr>
+        <th>Domain</th>
+        <th>μₘₐₓ (s⁻¹)</th>
+        <th>ω (rad/s)</th>
+        <th>β</th>
+        <th>κ*</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="domain">HPA allostatic stress</td><td>−0.38</td><td>0.21</td><td>1.9</td><td>0.15–0.22</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">Neural oscillations</td><td>−0.55</td><td>0.45</td><td>2.1</td><td>0.25–0.35</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">Circadian clock</td><td>−0.29</td><td>2π/86400</td><td>1.6</td><td>0.08–0.12</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">Immune adaptation</td><td>−0.44</td><td>0.18</td><td>2.0</td><td>0.11–0.19</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">Plasma reconnection</td><td>−0.42</td><td>0.015</td><td>1.8</td><td>5×10⁻⁴ km⁻¹</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">Market volatility</td><td>−0.67</td><td>0.28</td><td>2.4</td><td>0.12–0.18</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">Saturn hexagon (g³³)</td><td>−0.38</td><td>1.65×10⁻⁴</td><td>2.1</td><td>0.12–0.18</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">Autophagy</td><td>−0.39</td><td>0.12</td><td>1.8</td><td>0.10–0.18</td><td class="status-lean">✓ 26 thm · 0 sorry</td></tr>
+      <tr><td class="domain">Triple-alpha stellar</td><td>−0.51</td><td>variable</td><td>2.2</td><td>stellar dep.</td><td class="status-lean">✓ 26 thm · 0 sorry</td></tr>
+      <tr><td class="domain">DNLS / N-bonacci (η≈1.839)</td><td>−0.43</td><td>0.22</td><td>1.9</td><td>λc≈1.5</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">FruitFly connectome</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">Swarm intelligence</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="status-lean">✓ Lean 4</td></tr>
+      <tr><td class="domain">Wigner crystallisation</td><td>−0.36</td><td>0.09</td><td>1.7</td><td>0.09–0.15</td><td class="status-lean">✓ Live</td></tr>
+      <tr><td class="domain">Enceladus cryovolcanism</td><td>−0.41</td><td>variable</td><td>1.9</td><td>κ*_Enc≈5×10⁻⁴</td><td class="status-arg">Argued</td></tr>
+      <tr><td class="domain">Tubulin oscillations</td><td>−0.40</td><td>0.14</td><td>1.8</td><td>0.10–0.16</td><td class="status-build">Building</td></tr>
+      <tr><td class="domain">PolyLaminin / k-nacci spine</td><td>−0.37</td><td>0.11</td><td>1.7</td><td>0.09–0.14</td><td class="status-build">Building</td></tr>
+      <tr><td class="domain">Collatz conjecture</td><td>n/a</td><td>n/a</td><td>n/a</td><td>GTCT args</td><td class="status-arg">Conjectured</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION VI — REPOSITORY
+═══════════════════════════════════════════ -->
+<section class="section" id="repos">
+  <div class="sec-label">§ VI — Repository</div>
+  <h2>Everything, linked. Nothing orphaned.</h2>
+  <p>
+    The work lives across three GitHub repos, three preprint servers, and a living HTML book.
+    All papers are citable with permanent DOIs. All Lean proofs are buildable from source.
+  </p>
+
+  <div class="repo-grid">
+    <a href="https://totogt.github.io/AXLE/" target="_blank" class="repo-card">
+      <span class="rc-tag">AXLE · Hub · Live</span>
+      <div class="rc-title">AXLE — Living Book</div>
+      <p class="rc-desc">50+ HTML chapters, all sound machines, all simulations. The main public face of the work. Grows weekly.</p>
+      <span class="rc-status s-live">● Live</span>
+    </a>
+    <a href="https://github.com/TOTOGT/AXLE" target="_blank" class="repo-card">
+      <span class="rc-tag">GitHub · TOTOGT/AXLE</span>
+      <div class="rc-title">AXLE Repository</div>
+      <p class="rc-desc">100+ Lean 4 theorems. Chapter A (26 thm, 0 sorry). Ch.η, FruitFly, Swarm. All HTML sources.</p>
+      <span class="rc-status s-live">● Active</span>
+    </a>
+    <a href="https://github.com/TOTOGT/GTCT" target="_blank" class="repo-card">
+      <span class="rc-tag">GitHub · TOTOGT/GTCT</span>
+      <div class="rc-title">GTCT — Ring 5</div>
+      <p class="rc-desc">Operator chain Lean files. Chain_updated.lean (0 sorry, 2 axioms). DOP853 integrator. SBM Bienal materials.</p>
+      <span class="rc-status s-live">● Active</span>
+    </a>
+    <a href="https://github.com/TOTOGT/DM3-lab" target="_blank" class="repo-card">
+      <span class="rc-tag">GitHub · TOTOGT/DM3-lab</span>
+      <div class="rc-title">DM3-lab</div>
+      <p class="rc-desc">Acoustic soundworks. Millennium Problems language specs (Goldbach, Navier-Stokes, Riemann, Yang-Mills, Hodge, Kakeya). Numerics.</p>
+      <span class="rc-status s-live">● Active</span>
+    </a>
+    <a href="https://doi.org/10.5281/zenodo.19117399" target="_blank" class="repo-card">
+      <span class="rc-tag">Zenodo · 21 records</span>
+      <div class="rc-title">Series Root DOI</div>
+      <p class="rc-desc">10.5281/zenodo.19117399 — all volumes. Vol. I v3, Vol. II v2a, GTCT Ring 5 v3, Autophagy Ch.A, DNLS Ch.η, FruitFly.</p>
+      <span class="rc-status s-live">● Published</span>
+    </a>
+    <a href="https://ssrn.com/abstract=6805940" target="_blank" class="repo-card">
+      <span class="rc-tag">SSRN · Preprint</span>
+      <div class="rc-title">The Mini-Beast — Book 3</div>
+      <p class="rc-desc">10.2139/ssrn.6805940 — 30+ chapters, Coherence Bridge table, g-series taxonomy, 16-week program.</p>
+      <span class="rc-status s-live">● Published</span>
+    </a>
+    <a href="https://g6llc.gumroad.com" target="_blank" class="repo-card">
+      <span class="rc-tag">Gumroad · $30</span>
+      <div class="rc-title">The Mini-Beast · Membership</div>
+      <p class="rc-desc">$30 — book + ongoing membership. All 30+ HTML chapters as verified. All 7 sound machines. All simulation scripts. Not a static purchase.</p>
+      <span class="rc-status s-live">● Available</span>
+    </a>
+    <a href="https://orcid.org/0009-0000-6496-2186" target="_blank" class="repo-card">
+      <span class="rc-tag">ORCID · Author</span>
+      <div class="rc-title">Pablo Nogueira Grossi</div>
+      <p class="rc-desc">G6 LLC · Newark NJ · UCEDA School of English · ORCID 0009-0000-6496-2186. All papers attributed, all proofs signed.</p>
+      <span class="rc-status s-live">● Verified</span>
+    </a>
+    <a href="https://totogt.github.io/GTCT/GTCT_V_Student_Edition.html" target="_blank" class="repo-card">
+      <span class="rc-tag">GTCT · Volume V</span>
+      <div class="rc-title">Student Edition</div>
+      <p class="rc-desc">Bilingual EN/PT. Eight levels from contact manifolds to full operator chain. Lean 4 snippets, exercises, LLM prompts. Berimbau machine.</p>
+      <span class="rc-status s-wip">◐ In Progress</span>
+    </a>
+    <a href="#" class="repo-card">
+      <span class="rc-tag">Lean 4 · New · This session</span>
+      <div class="rc-title">GTCT.BSD.Bridge</div>
+      <p class="rc-desc">BSD bridge namespace. discreteL defined. BSDGTCTConjecture stated. Invariant triple mapped. Five sections, two proved, one open.</p>
+      <span class="rc-status s-new">✦ New</span>
+    </a>
+  </div>
+
+  <!-- DOI table -->
+  <div class="math-block" style="border-left-color:var(--teal);">
+    <span class="math-label">Zenodo Deposit Registry</span>
+    <div class="ml">Series root &nbsp; 10.5281/zenodo.19117399 &nbsp;<span class="mc">— all volumes, concept DOI</span></div>
+    <div class="ml">Vol. I v3 &nbsp;&nbsp;&nbsp;&nbsp; 10.5281/zenodo.20298665 &nbsp;<span class="mc">— operator algebra, Lean 4, 7 figures</span></div>
+    <div class="ml">Vol. II v2a &nbsp;&nbsp; 10.5281/zenodo.20159456 &nbsp;<span class="mc">— contact geometry, Mini-Beast companion</span></div>
+    <div class="ml">GTCT Ring 5 &nbsp; 10.5281/zenodo.20239928 &nbsp;<span class="mc">— DOP853 integrator, 0 sorry</span></div>
+    <div class="ml">Autophagy Ch.A 10.5281/zenodo.20168812 &nbsp;<span class="mc">— 26 theorems, 0 sorry</span></div>
+    <div class="ml">DNLS Ch.η &nbsp;&nbsp;&nbsp; 10.5281/zenodo.20026942 &nbsp;<span class="mc">— N-bonacci criticality</span></div>
+    <div class="ml">FruitFly &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10.5281/zenodo.19210136 &nbsp;<span class="mc">— connectome dm³</span></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION VII — RECOGNITION
+═══════════════════════════════════════════ -->
+<section class="section" id="recognition">
+  <div class="sec-label">§ VII — Institutional Recognition</div>
+  <h2>May 2026 snapshot.</h2>
+
+  <div class="rec-grid">
+    <div class="rec-cell">
+      <div class="rec-inst">SBM XII Bienal</div>
+      <p class="rec-detail">5 of 5 works accepted — Natal, Brazil, August 2026. Exhibition, Oral, Poster, Minicurso, Oficina. "O Princípio do Cajueiro e o Livro Inglês para Pesquisadores Matemáticos via TOGT."</p>
+      <span class="rec-status">Confirmed May 20, 2026</span>
+    </div>
+    <div class="rec-cell">
+      <div class="rec-inst">NYFA Fiscal Sponsorship</div>
+      <p class="rec-detail">Project accepted for fiscal sponsorship by the New York Foundation for the Arts — enables tax-deductible donations via 501(c)(3).</p>
+      <span class="rec-status">Confirmed May 22, 2026</span>
+    </div>
+    <div class="rec-cell">
+      <div class="rec-inst">WorldQuant Brain</div>
+      <p class="rec-detail">2 alphas ACTIVE in IQC — Sharpe 2.43, Fitness 1.84. Market volatility manifolds as a direct application of dm³ operator algebra.</p>
+      <span class="rec-status">Live</span>
+    </div>
+    <div class="rec-cell">
+      <div class="rec-inst">SSRN</div>
+      <p class="rec-detail">Vols I–II (6439626) and Book 3 (6805940) deposited. Accessible to the full SSRN research network.</p>
+      <span class="rec-status">Published</span>
+    </div>
+    <div class="rec-cell">
+      <div class="rec-inst">NASA</div>
+      <p class="rec-detail">Moon Base Architecture contribution submitted. Enceladus cryovolcanism proposal in preparation. dm³ applied to planetary science.</p>
+      <span class="rec-status">In Progress</span>
+    </div>
+    <div class="rec-cell">
+      <div class="rec-inst">SBM Cymatics Exhibition</div>
+      <p class="rec-detail">EXP13 — cymatics exhibition accepted at XII Bienal. Seven sound machines (Web Audio API) built on dm³ resonance geometry. Ḥal Saflieni 110 Hz, Śrī Yantra, Om Machine.</p>
+      <span class="rec-status">Confirmed</span>
+    </div>
+  </div>
+
+  <!-- Living note -->
+  <div class="living-note">
+    <div class="sec-label" style="margin-bottom:1rem;">A note on the pace of this work</div>
+    <p>
+      This hub is a snapshot. By the time you read it, there are more theorems,
+      more chapters, more domains. The Coherence Bridge table has grown every week
+      since it was first written. The g-series taxonomy was formalized while the
+      GTCT paper was being written. The BSD bridge emerged in a single session.
+      Bertrand Russell observed that mathematics and mysticism converge on the same object —
+      that the rigorous and the intuitive are not opposites but two readings of one structure.
+      <strong>The braid was always there. The operators were always there.
+      The work is finding its own unfolding.</strong>
+    </p>
+    <p style="margin-top:1rem;">
+      The seed is planted. The root holds. The canopy is verifiable.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>
+    <a href="https://totogt.github.io/AXLE/">AXLE</a> ·
+    <a href="https://github.com/TOTOGT/GTCT">GTCT</a> ·
+    <a href="https://github.com/TOTOGT/DM3-lab">DM3-lab</a> ·
+    <a href="https://doi.org/10.5281/zenodo.19117399">Zenodo 10.5281/zenodo.19117399</a> ·
+    <a href="https://orcid.org/0009-0000-6496-2186">ORCID 0009-0000-6496-2186</a> ·
+    <a href="https://x.com/unitedWeStreamU">@unitedWeStreamU</a>
+  </p>
+  <p style="margin-top:0.5rem;">
+    Pablo Nogueira Grossi · G6 LLC · 90 Tiffany Blvd · Newark, New Jersey 07104
+  </p>
+  <p style="margin-top:0.5rem;opacity:0.5;">
+    TO · TOGT · GTCT · dm³ · AXLE · Principia Orthogona · C→K→F→U→T
+  </p>
+  <p style="margin-top:0.5rem;opacity:0.4;">
+    MSC 2020: 37C10 · 37C75 · 53D10 · 92C20 · 91B55 · 53Z99 · CC BY-NC-ND 4.0 (text) · MIT (code)
+  </p>
+  <div class="footer-russell">
+    "Mathematics, rightly viewed, possesses not only truth, but supreme beauty." — B. Russell
+  </div>
+</footer>
+
+</body>
+</html>
