@@ -166,7 +166,11 @@
     <h3>What the 1843 Atlas Knew</h3>
 
     <div class="img-block">
-      <img src="kurma-meru-duvotenay-1843.jpg" alt="The cosmic tortoise and Mount Meru — Thunot Duvotenay, 1843">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/The_cosmic_tortoise%2C_and_Mount_Meru.jpg/1200px-The_cosmic_tortoise%2C_and_Mount_Meru.jpg"
+        alt="The cosmic tortoise and Mount Meru — Thunot Duvotenay, 1843"
+        loading="lazy"
+      >
       <div class="img-caption">
         "The cosmic tortoise, and Mount Meru" · Atlas by Thunot Duvotenay (1796–1875), Paris, 1843 · Public domain · Wikimedia Commons
       </div>
@@ -267,7 +271,29 @@ axiom turtle_scute_contact_theorem :<br>
       </tbody>
     </table>
 
-    <p>The leatherback — <em>Dermochelys coriacea</em> — is the exception. It has no scutes. Its shell is a continuous leathery skin, with a pattern of hexagonal ridges but no discrete boundaries. In dm³ terms, the leatherback is the <em>g⁰ state</em>: the Chladni figure before discretization, the wave before the nodal lines crystallize into boundaries. The other four species represent progressive g-series regimes — g² through g⁶ — in which the continuous wave has committed to specific fold points and crystallized them into permanent structure. The leatherback alone carries the mountain as a living wave rather than a frozen scute pattern. It is the Ouroboros before the bite-point is found.</p>
+    <p>The leatherback — <em>Dermochelys coriacea</em> — is the exception. It has no scutes. Its shell is a continuous leathery skin with hexagonal ridges but no discrete boundaries. In the language of the dm³ g-series, the leatherback's carapace is structurally consistent with a pre-discretization state: a wave before nodal lines crystallize into permanent fold boundaries. The four species with defined scute counts show progressively more committed fold structures. This observation motivates the following conjecture — stated honestly as a conjecture, not a theorem.</p>
+
+    <div class="theorem">
+      <div class="theorem-label">Conjecture τ.1 — g-Series Instantiation (conjecture · not proved · not an axiom)</div>
+      <div class="theorem-body">
+        The five sea turtle species present in Brazilian waters are structurally consistent with distinct regimes of the dm³ g-series taxonomy. <em>Dermochelys coriacea</em> (no scutes, continuous skin) is consistent with the g⁰ pre-discretization state. <em>Chelonia mydas</em> (5 vertebrals, 4+4 costals, 25 marginals) is consistent with the g⁶ stable micro-cycle regime.
+        <br><br>
+        <strong>What is established:</strong> The structural analogy — continuous skin resembles g⁰; discrete bounded scutes resemble higher g-regimes — is real and observable. The leatherback has no fold discretization. The green turtle has committed fold boundaries. This is not in dispute.
+        <br><br>
+        <strong>What is not established:</strong> The causal claim that the dm³ g-series <em>governs</em> the scute count. The correspondence between g-series cycle count and the embryological oscillation count of the carapacial ridge induction wave has not been measured. Until it is, the mapping from species to specific g-values (g⁰, g², g⁶) is a labelling, not a proof.
+        <br><br>
+        <strong>Falsifiability condition:</strong> Measure the oscillation count of the carapacial ridge induction wave during embryogenesis of <em>Dermochelys coriacea</em> and <em>Chelonia mydas</em>. If this conjecture is correct, the dm³ g-series predicts 0 cycles for leatherback and 6 cycles for green turtle. Any measurement inconsistent with this prediction falsifies the conjecture. Any consistent measurement supports it.
+      </div>
+      <div class="theorem-lean">
+<span class="lc">-- AXLE · Chapter τ · Lean 4</span><br>
+<span class="lc">-- This is a conjecture — neither proved nor admitted as an axiom</span><br>
+<span class="lc">-- sorry here is honest: the claim is open, not a proof gap</span><br>
+conjecture g_series_turtle_instantiation :<br>
+&nbsp;&nbsp;g_series_regime Dermochelys_coriacea = g0 ∧<br>
+&nbsp;&nbsp;g_series_regime Chelonia_mydas = g6 := by<br>
+&nbsp;&nbsp;sorry <span class="lc">-- open · requires embryological oscillation count</span>
+      </div>
+    </div>
   </section>
 
   <!-- §τ.3 — Meru on the shell -->
@@ -355,9 +381,9 @@ axiom turtle_scute_contact_theorem :<br>
           <td>The leatherback is the g⁰ state: no fold discretization. The general Collatz asks whether every orbit converges without requiring k&lt;1. The leatherback shows that the system exists in a pre-fold state — g⁰ — and is still stable. This supports the conjecture.</td>
         </tr>
         <tr>
-          <td>Species progression: Dermochelys → Chelonia (g⁰ to g⁶)</td>
+          <td>Species progression: Dermochelys (no scutes) → Chelonia (5V · 4C · 25M)</td>
           <td>g-series regime taxonomy formalization</td>
-          <td>The five Brazilian species instantiate g⁰, g², g⁶ in sequence. The species are a biological proof of the g-series taxonomy.</td>
+          <td>Structurally consistent with g⁰ → g⁶ progression. Stated as Conjecture τ.1 — not proved. Falsifiable by embryological oscillation count measurement.</td>
         </tr>
         <tr>
           <td>Natal beach return: same attractor, different x₀</td>
@@ -418,7 +444,7 @@ axiom turtle_scute_contact_theorem :<br>
   <section class="section">
     <div class="section-number">Section τ.8 · Tasks</div>
     <h3>Generate · Extend · Verify</h3>
-    <p><strong>Task — Generate:</strong> The leatherback turtle has no scutes. It is the g⁰ state — the Chladni figure before discretization. Name one other system in your field of work or study that exists in the g⁰ state: continuous, not yet committed to fold points. What would the g⁶ version of that system look like?</p>
+    <p><strong>Task — Generate:</strong> The leatherback turtle has no scutes. Its carapace is structurally consistent with a pre-discretization state in the dm³ g-series — a wave before fold boundaries crystallize. This is Conjecture τ.1, not a proved theorem. Name one other system in your field where a continuous form (no committed fold boundaries) coexists with a discretized version of itself. What measurement would you need to take to establish whether the dm³ g-series governs the transition?</p>
     <p><strong>Task — Extend:</strong> The Meru Prastara (Pascal's Triangle) generates binomial coefficients C(n,k). Row n=6 gives (1, 6, 15, 20, 15, 6, 1). Sum = 64 = 2⁶ = g⁶⁴. Write three sentences connecting this to the turtle's 25 marginal scutes (= 4×6 + 1) and to the g-series taxonomy.</p>
     <p><strong>Task — Verify:</strong> The shell proportions of <em>Chelonia mydas</em> give a carapace length-to-width ratio of approximately 1.30–1.40. The dm³ inner basin gives r* ≈ 0.773 and outer bound 1 + ε₀ = 4/3 ≈ 1.333. Are these the same number? If so, write the Lean 4 theorem statement that would encode this as a falsifiable prediction.</p>
   </section>
@@ -593,12 +619,12 @@ function pascal(n){
 
 function drawMeru(mode){
   const dpr=window.devicePixelRatio||1;
-  const W=mc.offsetWidth*dpr||600, H=280*dpr;
-  mc.width=W; mc.height=H;
-  mc.style.height='280px';
+  const LW=mc.parentElement?mc.parentElement.offsetWidth||600:600;
+  mc.width=LW*dpr; mc.height=280*dpr;
+  mc.style.width='100%'; mc.style.height='280px';
   mctx.setTransform(dpr,0,0,dpr,0,0);
 
-  const LW=mc.offsetWidth||600, LH=280;
+  const LH=280;
   mctx.fillStyle='#111827';
   mctx.fillRect(0,0,LW,LH);
 
@@ -639,13 +665,15 @@ function drawMeru(mode){
         if(r===shellRow){ bg='rgba(45,212,191,0.2)'; stroke='rgba(45,212,191,0.8)'; textColor='rgba(45,212,191,1)'; }
         if(r===shellRow&&(k===0||k===r)){ bg='rgba(45,212,191,0.35)'; }
       } else if(mode==='g6'){
-        if(r===g6Row){ bg='rgba(201,168,76,0.25)'; stroke='rgba(232,201,106,0.9)'; textColor='rgba(232,201,106,1)'; }
-        if(r===6&&k===0){ bg='rgba(201,168,76,0.5)'; } // 1
-        if(r===6&&k===6){ bg='rgba(201,168,76,0.5)'; } // 1
+        if(r===g6Row){ bg='rgba(201,168,76,0.35)'; stroke='rgba(232,201,106,1)'; textColor='rgba(255,220,80,1)'; }
+        if(r===g6Row){ mctx.shadowColor='rgba(201,168,76,0.6)'; mctx.shadowBlur=8; }
+        else { mctx.shadowBlur=0; }
+        if(r===6&&(k===0||k===6)){ bg='rgba(201,168,76,0.6)'; }
       }
 
       mctx.fillStyle=bg;
       mctx.fillRect(x,y,cellSize,cellSize);
+      mctx.shadowBlur=0;
       mctx.strokeStyle=stroke;
       mctx.lineWidth=1;
       mctx.strokeRect(x,y,cellSize,cellSize);
