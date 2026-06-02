@@ -506,5 +506,539 @@ footer a{color:var(--gold);text-decoration:none;}
   draw();
 })();
 </script>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>G6 Opus Map · Principia Orthogona · All Repositories</title>
+<meta name="description" content="Master map of the entire Principia Orthogona opus — all repositories, all chapters, cross-repo connections. G6 LLC · Pablo Nogueira Grossi.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#03000a;color:#e8e0d0;font-family:'Georgia',serif;overflow:hidden;height:100vh;width:100vw}
+
+#cv{display:block;width:100%;height:100vh;cursor:crosshair}
+
+/* HUD */
+#hud{position:fixed;top:0;left:0;right:0;z-index:100;
+  background:linear-gradient(180deg,rgba(3,0,10,.95) 0%,rgba(3,0,10,0) 100%);
+  padding:10px 20px 24px;pointer-events:none;
+  display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px}
+#hud-title{font-family:'Courier New',monospace;font-size:.72rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(201,168,76,.6)}
+#hud-chain{font-family:'Courier New',monospace;font-size:.72rem;
+  color:rgba(201,168,76,.35);letter-spacing:.15em}
+
+/* Info panel */
+#info{position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:linear-gradient(0deg,rgba(3,0,10,.98) 0%,rgba(3,0,10,0) 100%);
+  padding:24px 20px 14px;pointer-events:none}
+#info-inner{max-width:860px;margin:0 auto;display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
+#info-repo{font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(201,168,76,.45);margin-bottom:3px}
+#info-title{font-size:1.1rem;color:#c9a84c;margin-bottom:3px}
+#info-desc{font-size:.82rem;color:rgba(232,224,208,.6);max-width:580px;line-height:1.5}
+#info-link{pointer-events:all;margin-top:6px}
+#info-link a{font-family:'Courier New',monospace;font-size:.72rem;color:#c9a84c;
+  text-decoration:none;border-bottom:.5px solid rgba(201,168,76,.3);padding-bottom:1px}
+
+/* Controls */
+#controls{position:fixed;top:50%;right:16px;transform:translateY(-50%);z-index:100;
+  display:flex;flex-direction:column;gap:8px}
+.ctrl-btn{width:36px;height:36px;border-radius:50%;background:rgba(7,5,15,.8);
+  border:1px solid rgba(201,168,76,.25);color:rgba(201,168,76,.6);
+  font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .18s;font-family:'Courier New',monospace}
+.ctrl-btn:hover{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.5);color:#c9a84c}
+
+/* Legend */
+#legend{position:fixed;bottom:90px;right:16px;z-index:100;
+  background:rgba(7,5,15,.85);border:1px solid rgba(201,168,76,.15);
+  border-radius:8px;padding:10px 14px;font-family:'Courier New',monospace;font-size:.68rem}
+.leg-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;color:rgba(201,168,76,.5)}
+.leg-row:last-child{margin-bottom:0}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+#hint{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Courier New',monospace;font-size:.72rem;letter-spacing:.12em;
+  color:rgba(201,168,76,.2);pointer-events:none;text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+
+<canvas id="cv"></canvas>
+
+<div id="hud">
+  <div>
+    <div id="hud-title">G6 Opus · Principia Orthogona · Map of Maps</div>
+    <div style="font-family:'Courier New',monospace;font-size:.62rem;color:rgba(201,168,76,.3);margin-top:2px">
+      Pablo Nogueira Grossi · G6 LLC · Newark NJ · ORCID 0009-0000-6496-2186
+    </div>
+  </div>
+  <div id="hud-chain">C → K → F → U → ∞</div>
+</div>
+
+<div id="controls">
+  <button class="ctrl-btn" onclick="zoom*=1.2;draw()" title="zoom in">+</button>
+  <button class="ctrl-btn" onclick="zoom*=0.83;draw()" title="zoom out">−</button>
+  <button class="ctrl-btn" onclick="resetView()" title="reset">⟳</button>
+  <button class="ctrl-btn" onclick="toggleSpin()" id="spin-btn" title="auto-rotate">⊙</button>
+</div>
+
+<div id="legend">
+  <div class="leg-row"><div class="leg-dot" style="background:#4a9eff"></div>geometry / Book 3 HTML</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#c084fc"></div>AXLE / Lean 4</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#e05a3a"></div>DM3-lab / numerics</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#50c878"></div>grossi-ops / foundations</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#c9a84c"></div>3M / Monster Law</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#67e8f9"></div>GTCT / framework</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#f59e0b"></div>Collatz / Atratores</div>
+  <div class="leg-row" style="margin-top:6px;color:rgba(201,168,76,.25)">
+    <div class="leg-dot" style="background:rgba(201,168,76,.2)"></div>cross-repo edge
+  </div>
+</div>
+
+<div id="info">
+  <div id="info-inner">
+    <div style="flex:1">
+      <div id="info-repo"></div>
+      <div id="info-title">Principia Orthogona · Complete Opus</div>
+      <div id="info-desc">Drag to rotate · scroll to zoom · hover a node to preview · click to open repository</div>
+      <div id="info-link"></div>
+    </div>
+  </div>
+</div>
+
+<div id="hint">drag · hover · click<br>the crystal is the book</div>
+
+<script>
+const REPOS = [
+  {
+    id:'geometry', label:'geometry', short:'GEO',
+    url:'https://github.com/totogt/geometry',
+    live:'https://totogt.github.io/geometry/',
+    color:'#4a9eff', stroke:'#1a6abf',
+    desc:'Book 3 HTML chapters · 40+ files · Collatz, Ocio, Overture, Resonance, Epilogue',
+    ox:-160, oy:-40, oz:60,
+    nodes:[
+      {id:'overture',  s:'OV', label:'Overture',   url:'https://totogt.github.io/geometry/overture.html',       op:'G'},
+      {id:'ocio',      s:'OC', label:'Ocio',        url:'https://totogt.github.io/geometry/ch-ocio.html',        op:'U'},
+      {id:'ch6',       s:'C6', label:'Resonance',   url:'https://totogt.github.io/geometry/ch6-resonance.html',  op:'F'},
+      {id:'ch3c',      s:'3C', label:'Trader',      url:'https://totogt.github.io/geometry/ch3c-econophysics.html', op:'K'},
+      {id:'chH',       s:'CZ', label:'Collatz',     url:'https://totogt.github.io/geometry/chH-collatz.html',   op:'G'},
+      {id:'ch17',      s:'EP', label:'Epilogue',    url:'https://totogt.github.io/geometry/ch17-epilogue.html',  op:'G'},
+      {id:'sportal',   s:'SP', label:'Portal',      url:'https://totogt.github.io/geometry/Sportal.html',       op:'C'},
+      {id:'impa',      s:'IM', label:'IMPA',        url:'https://totogt.github.io/geometry/impa-portal.html',   op:'G'},
+    ]
+  },
+  {
+    id:'AXLE', label:'TOTOGT/AXLE', short:'AXL',
+    url:'https://github.com/totogt/AXLE',
+    live:'https://totogt.github.io/AXLE/',
+    color:'#c084fc', stroke:'#7c3aed',
+    desc:'Lean 4 formal verification · dm³ axioms · SORRY audit · Issue 6 open · GenerativeWeave.lean',
+    ox:160, oy:-80, oz:-60,
+    nodes:[
+      {id:'axle-gw',   s:'GW', label:'GenerativeWeave', url:'https://github.com/TOTOGT/AXLE/blob/main/GenerativeWeave.lean', op:'G'},
+      {id:'axle-d6',   s:'D6', label:'D6.lean',          url:'https://github.com/TOTOGT/AXLE/blob/main/D6.lean',             op:'F'},
+      {id:'axle-cr',   s:'CR', label:'Criticality',      url:'https://github.com/TOTOGT/AXLE/blob/main/Criticality_Principle.lean', op:'K'},
+      {id:'axle-gr',   s:'GR', label:'Gronwall',         url:'https://github.com/TOTOGT/AXLE/blob/main/Gronwall.lean',       op:'U'},
+      {id:'axle-fe',   s:'FE', label:'FoldEvents',       url:'https://github.com/TOTOGT/AXLE/blob/main/FoldEvents.lean',     op:'F'},
+      {id:'axle-im',   s:'IP', label:'IMPA portal',      url:'https://totogt.github.io/AXLE/impa-portal.html',               op:'G'},
+    ]
+  },
+  {
+    id:'DM3-lab', label:'TOTOGT/DM3-lab', short:'DM3',
+    url:'https://github.com/totogt/DM3-lab',
+    live:'https://github.com/totogt/DM3-lab',
+    color:'#e05a3a', stroke:'#99320f',
+    desc:'Numerical experiments · DNLS long-time evolution · DOP853 · Fibonacci/Tribonacci · Python',
+    ox:0, oy:-160, oz:120,
+    nodes:[
+      {id:'dnls',    s:'NL', label:'DNLS longtime',  url:'https://github.com/TOTOGT/DM3-lab', op:'F'},
+      {id:'fibr',    s:'FB', label:'Fib/Trib paper', url:'https://doi.org/10.5281/zenodo.20026943', op:'K'},
+    ]
+  },
+  {
+    id:'GTCT', label:'TOTOGT/GTCT', short:'GTC',
+    url:'https://github.com/totogt/GTCT',
+    live:'https://github.com/totogt/GTCT',
+    color:'#67e8f9', stroke:'#0891b2',
+    desc:'GTCT / TO/TOGT framework · Contact geometry · Operator algebra · Core theory',
+    ox:140, oy:80, oz:140,
+    nodes:[
+      {id:'gtct-core', s:'TC', label:'TOGT core',   url:'https://github.com/TOTOGT/GTCT', op:'G'},
+    ]
+  },
+  {
+    id:'3M', label:'TOTOGT/3M', short:'3M',
+    url:'https://github.com/totogt/3M',
+    live:'https://github.com/totogt/3M',
+    color:'#c9a84c', stroke:'#92650a',
+    desc:'Monster Law · dm³ framework · 3M operator · Hyper-Mahlo · Law of Monsters paper',
+    ox:-80, oy:100, oz:-160,
+    nodes:[
+      {id:'3m-mon',  s:'ML', label:'Monster Law',  url:'https://github.com/TOTOGT/3M', op:'G'},
+      {id:'3m-dm3',  s:'DM', label:'dm³ core',     url:'https://github.com/TOTOGT/3M', op:'C'},
+    ]
+  },
+  {
+    id:'Collatz', label:'TOTOGT/Collatz', short:'COL',
+    url:'https://github.com/totogt/Collatz',
+    live:'https://github.com/totogt/Collatz',
+    color:'#f59e0b', stroke:'#b45309',
+    desc:'Collatz conjecture as dm³ corollary · c=3 fingerprint · Three gaps · AXLE Target 5',
+    ox:-200, oy:60, oz:-80,
+    nodes:[
+      {id:'col-main', s:'CL', label:'Collatz proof', url:'https://github.com/TOTOGT/Collatz', op:'G'},
+    ]
+  },
+  {
+    id:'book3-starter', label:'TOTOGT/book3-starter', short:'B3S',
+    url:'https://github.com/totogt/book3-starter',
+    live:'https://github.com/totogt/book3-starter',
+    color:'#4a9eff', stroke:'#1a6abf',
+    desc:'Book 3 starter kit · Mini-Beast pilot · 14-week program scaffold',
+    ox:60, oy:-120, oz:-160,
+    nodes:[
+      {id:'b3s-main', s:'B3', label:'Book 3 starter', url:'https://github.com/TOTOGT/book3-starter', op:'C'},
+    ]
+  },
+  {
+    id:'maths', label:'TOTOGT/maths', short:'MTH',
+    url:'https://github.com/totogt/maths',
+    live:'https://github.com/totogt/maths',
+    color:'#50c878', stroke:'#166534',
+    desc:'Mathematics foundations · Supporting theory for the opus',
+    ox:200, oy:40, oz:-120,
+    nodes:[
+      {id:'mth-main', s:'MT', label:'Maths core', url:'https://github.com/TOTOGT/maths', op:'C'},
+    ]
+  },
+  {
+    id:'Atratores', label:'TOTOGT/Atratores', short:'ATR',
+    url:'https://github.com/totogt/Atratores',
+    live:'https://github.com/totogt/Atratores',
+    color:'#f59e0b', stroke:'#b45309',
+    desc:'Strange attractors · Dynamical systems · Bifurcation analysis',
+    ox:100, oy:160, oz:80,
+    nodes:[
+      {id:'atr-main', s:'AT', label:'Atratores', url:'https://github.com/TOTOGT/Atratores', op:'F'},
+    ]
+  },
+  {
+    id:'grossi-Atratores', label:'grossi-ops/Atratores', short:'gAT',
+    url:'https://github.com/grossi-ops/Atratores',
+    live:'https://github.com/grossi-ops/Atratores',
+    color:'#50c878', stroke:'#166534',
+    desc:'grossi-ops attractors · Operational attractor research',
+    ox:-120, oy:160, oz:100,
+    nodes:[
+      {id:'gatr-main', s:'gA', label:'grossi Atratores', url:'https://github.com/grossi-ops/Atratores', op:'F'},
+    ]
+  },
+  {
+    id:'cajueiro', label:'grossi-ops/cajueiro', short:'CAJ',
+    url:'https://github.com/grossi-ops/cajueiro',
+    live:'https://github.com/grossi-ops/cajueiro',
+    color:'#50c878', stroke:'#166534',
+    desc:'The cajueiro principle · Generator before surface · Seed of the opus',
+    ox:-240, oy:0, oz:0,
+    nodes:[
+      {id:'caj-main', s:'CJ', label:'Cajueiro', url:'https://github.com/grossi-ops/cajueiro', op:'C'},
+    ]
+  },
+  {
+    id:'helical-contact', label:'grossi-ops/helical-contact', short:'HEL',
+    url:'https://github.com/grossi-ops/helical-contact',
+    live:'https://github.com/grossi-ops/helical-contact',
+    color:'#50c878', stroke:'#166534',
+    desc:'Helical contact geometry · φ-conformal laws · Scale-invariant structure',
+    ox:-180, oy:-120, oz:-40,
+    nodes:[
+      {id:'hel-main', s:'HC', label:'Helical contact', url:'https://github.com/grossi-ops/helical-contact', op:'K'},
+    ]
+  },
+  {
+    id:'TO', label:'grossi-ops/TO', short:'TO',
+    url:'https://github.com/grossi-ops/TO',
+    live:'https://github.com/grossi-ops/TO',
+    color:'#50c878', stroke:'#166534',
+    desc:'Topographical Orthogenesis · TO/TOGT core · The foundational operator theory',
+    ox:80, oy:-200, oz:0,
+    nodes:[
+      {id:'to-main', s:'TO', label:'TO core', url:'https://github.com/grossi-ops/TO', op:'G'},
+    ]
+  },
+  {
+    id:'PrincipioOrtogonal', label:'grossi-ops/PrincipioOrtogonal', short:'PO',
+    url:'https://github.com/grossi-ops/PrincipioOrtogonal',
+    live:'https://github.com/grossi-ops/PrincipioOrtogonal',
+    color:'#50c878', stroke:'#166534',
+    desc:'Principio Ortogonal · Portuguese language foundations · Brazil outreach',
+    ox:-80, oy:-200, oz:-80,
+    nodes:[
+      {id:'po-main', s:'PO', label:'Principio Ortogonal', url:'https://github.com/grossi-ops/PrincipioOrtogonal', op:'C'},
+    ]
+  },
+  {
+    id:'g6-B3', label:'g6-LLC/B3', short:'B3',
+    url:'https://github.com/g6-LLC/B3',
+    live:'https://github.com/g6-LLC/B3',
+    color:'#c084fc', stroke:'#7c3aed',
+    desc:'G6 LLC · Book 3 main · The Mini-Beast official repository',
+    ox:0, oy:180, oz:-120,
+    nodes:[
+      {id:'b3-main', s:'B3', label:'B3 main', url:'https://github.com/g6-LLC/B3', op:'G'},
+    ]
+  },
+  {
+    id:'mini-beast', label:'PRINCIPIA-ORTHOGONA-3/Principio', short:'PRI',
+    url:'https://github.com/PRINCIPIA-ORTHOGONA-3-The-Mini-Beast/Principio',
+    live:'https://github.com/PRINCIPIA-ORTHOGONA-3-The-Mini-Beast/Principio',
+    color:'#c9a84c', stroke:'#92650a',
+    desc:'Principia Orthogona 3 org · The Mini-Beast official · Living book',
+    ox:0, oy:80, oz:200,
+    nodes:[
+      {id:'pri-main', s:'PR', label:'Principio', url:'https://github.com/PRINCIPIA-ORTHOGONA-3-The-Mini-Beast/Principio', op:'G'},
+    ]
+  },
+];
+
+// Cross-repo edges — connections between repos
+const CROSS_EDGES = [
+  ['geometry','AXLE'],           // HTML chapters cite Lean proofs
+  ['geometry','3M'],             // Ocio/Monster Law chapters
+  ['geometry','Collatz'],        // Collatz chapter
+  ['AXLE','DM3-lab'],            // AXLE formalizes DM3 numerics
+  ['AXLE','GTCT'],               // AXLE verifies GTCT
+  ['AXLE','3M'],                 // Monster Law in Lean
+  ['DM3-lab','GTCT'],            // numerics instantiate GTCT
+  ['3M','GTCT'],                 // Monster Law is GTCT layer
+  ['cajueiro','geometry'],       // cajueiro principle in ch1
+  ['helical-contact','GTCT'],    // helical contact = GTCT
+  ['TO','GTCT'],                 // TO/TOGT = GTCT core
+  ['TO','AXLE'],                 // TO verified in AXLE
+  ['PrincipioOrtogonal','geometry'], // PT version
+  ['g6-B3','geometry'],          // B3 = geometry chapters
+  ['g6-B3','AXLE'],              // B3 formal layer
+  ['mini-beast','geometry'],     // same book different org
+  ['Collatz','AXLE'],            // Collatz AXLE Target 5
+  ['Atratores','DM3-lab'],       // attractors in numerics
+  ['grossi-Atratores','Atratores'],
+  ['maths','AXLE'],
+  ['book3-starter','geometry'],
+];
+
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+let W, H, rotX=0.25, rotY=0.4, drag=false, lx, ly, zoom=0.9, hov=null, spinning=true, raf=null, lastAct=Date.now();
+
+// Build flat node list with 3D positions around repo centers
+let allNodes = [];
+function buildNodes(){
+  allNodes = [];
+  REPOS.forEach(repo=>{
+    // Repo hub node
+    allNodes.push({
+      ...repo,
+      isHub:true,
+      ox:repo.ox, oy:repo.oy, oz:repo.oz,
+      r:22, col:repo.color, scol:repo.stroke,
+      label:repo.label, desc:repo.desc, url:repo.live||repo.url,
+      repoId:repo.id
+    });
+    // Chapter nodes around hub
+    if(repo.nodes){
+      repo.nodes.forEach((n,i)=>{
+        const a=(i/repo.nodes.length)*Math.PI*2;
+        const rd=48;
+        allNodes.push({
+          ...n,
+          isHub:false,
+          ox:repo.ox+Math.cos(a)*rd,
+          oy:repo.oy+Math.sin(a)*rd*0.6-10,
+          oz:repo.oz+Math.sin(a)*rd,
+          r:10, col:repo.color+'aa', scol:repo.stroke,
+          desc:n.label+' · '+repo.label,
+          repoId:repo.id,
+          repoColor:repo.color,
+        });
+      });
+    }
+  });
+}
+
+function proj(ox,oy,oz){
+  const cX=Math.cos(rotX),sX=Math.sin(rotX);
+  const cY=Math.cos(rotY),sY=Math.sin(rotY);
+  const x1=ox*cY+oz*sY, z1=-ox*sY+oz*cY;
+  const y1=oy*cX-z1*sX, z2=oy*sX+z1*cX;
+  const f=500*zoom/(500*zoom+z2+400);
+  return {sx:W/2+x1*f, sy:H/2+y1*f, sc:f, z:z2};
+}
+
+function resize(){
+  W=cv.width=window.innerWidth*devicePixelRatio;
+  H=cv.height=window.innerHeight*devicePixelRatio;
+  ctx.scale(devicePixelRatio,devicePixelRatio);
+  draw();
+}
+
+function draw(){
+  const rW=W/devicePixelRatio, rH=H/devicePixelRatio;
+  ctx.clearRect(0,0,W,H);
+
+  // Stars
+  ctx.fillStyle='#03000a';
+  ctx.fillRect(0,0,rW,rH);
+  ctx.fillStyle='rgba(255,255,255,0.35)';
+  [[0.08,0.12],[0.92,0.08],[0.45,0.05],[0.78,0.22],[0.15,0.65],[0.88,0.55],
+   [0.33,0.88],[0.62,0.78],[0.05,0.42],[0.72,0.42],[0.28,0.35],[0.55,0.18]].forEach(([x,y])=>{
+    ctx.beginPath();ctx.arc(x*rW,y*rH,0.8,0,Math.PI*2);ctx.fill();
+  });
+
+  const ps = allNodes.map(n=>({...n,...proj(n.ox,n.oy,n.oz)})).sort((a,b)=>a.z-b.z);
+
+  // Cross-repo edges
+  CROSS_EDGES.forEach(([a,b])=>{
+    const na=ps.find(n=>n.isHub&&n.id===a);
+    const nb=ps.find(n=>n.isHub&&n.id===b);
+    if(!na||!nb)return;
+    ctx.beginPath();ctx.moveTo(na.sx,na.sy);ctx.lineTo(nb.sx,nb.sy);
+    ctx.strokeStyle='rgba(201,168,76,0.08)';ctx.lineWidth=0.8;ctx.stroke();
+  });
+
+  // Intra-repo edges (hub to children)
+  REPOS.forEach(repo=>{
+    const hub=ps.find(n=>n.isHub&&n.id===repo.id);
+    if(!hub)return;
+    const children=ps.filter(n=>!n.isHub&&n.repoId===repo.id);
+    children.forEach(ch=>{
+      ctx.beginPath();ctx.moveTo(hub.sx,hub.sy);ctx.lineTo(ch.sx,ch.sy);
+      ctx.strokeStyle=repo.color+'30';ctx.lineWidth=0.5;ctx.stroke();
+    });
+  });
+
+  // Nodes
+  for(const n of ps){
+    const isH=hov&&hov.id===n.id&&hov.repoId===n.repoId;
+    const r=n.r*n.sc*(n.isHub?2.2:1.6);
+
+    if(isH){
+      ctx.beginPath();ctx.arc(n.sx,n.sy,r*2.2,0,Math.PI*2);
+      ctx.fillStyle='rgba(201,168,76,0.08)';ctx.fill();
+    }
+
+    // Glow for hubs
+    if(n.isHub){
+      ctx.beginPath();ctx.arc(n.sx,n.sy,r*1.5,0,Math.PI*2);
+      const grd=ctx.createRadialGradient(n.sx,n.sy,0,n.sx,n.sy,r*1.5);
+      grd.addColorStop(0,n.col+'40');grd.addColorStop(1,'transparent');
+      ctx.fillStyle=grd;ctx.fill();
+    }
+
+    ctx.beginPath();ctx.arc(n.sx,n.sy,r,0,Math.PI*2);
+    ctx.fillStyle=n.col+(n.isHub?'ee':'99');ctx.fill();
+    ctx.strokeStyle=n.scol;ctx.lineWidth=isH?1.5:0.5;ctx.stroke();
+
+    // Label
+    if(r>8){
+      ctx.fillStyle='#fff';
+      ctx.font=`${Math.max(7,Math.round(r*(n.isHub?0.55:0.65)))}px "Courier New",monospace`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(n.isHub?n.short:n.s,n.sx,n.sy);
+    }
+  }
+
+  // Hub labels below
+  ps.filter(n=>n.isHub).forEach(n=>{
+    const r=n.r*n.sc*2.2;
+    ctx.font=`${Math.max(8,Math.round(r*0.45))}px "Courier New",monospace`;
+    ctx.textAlign='center';ctx.textBaseline='top';
+    ctx.fillStyle=n.col+'88';
+    ctx.fillText(n.short,n.sx,n.sy+r+3);
+  });
+}
+
+function getHov(mx,my){
+  let best=null,bd=Infinity;
+  allNodes.forEach(n=>{
+    const p=proj(n.ox,n.oy,n.oz);
+    const r=(n.r+(n.isHub?8:4))*p.sc*(n.isHub?2.2:1.6);
+    const d=Math.hypot(mx-p.sx,my-p.sy);
+    if(d<r&&d<bd){bd=d;best=n;}
+  });
+  return best;
+}
+
+function setInfo(n){
+  const hint=document.getElementById('hint');
+  if(!n){
+    document.getElementById('info-repo').textContent='';
+    document.getElementById('info-title').textContent='Principia Orthogona · Complete Opus';
+    document.getElementById('info-desc').textContent='Drag to rotate · scroll to zoom · hover a node to preview · click to open repository';
+    document.getElementById('info-link').innerHTML='';
+    hint.style.display='block';
+  } else {
+    hint.style.display='none';
+    const repo=REPOS.find(r=>r.id===n.repoId);
+    document.getElementById('info-repo').textContent=(repo?repo.id:n.repoId)+' · GitHub';
+    document.getElementById('info-title').textContent=n.label||n.id;
+    document.getElementById('info-desc').textContent=n.desc||'';
+    document.getElementById('info-link').innerHTML=
+      `<a href="${n.url||n.live}" target="_blank">Open → ${(n.url||'').replace('https://','')}</a>`;
+  }
+}
+
+window.resetView=()=>{rotX=0.25;rotY=0.4;zoom=0.9;draw();};
+let spinOn=true;
+window.toggleSpin=()=>{
+  spinOn=!spinOn;
+  document.getElementById('spin-btn').style.color=spinOn?'#c9a84c':'rgba(201,168,76,0.3)';
+};
+
+cv.addEventListener('mousedown',e=>{drag=true;lx=e.clientX;ly=e.clientY;lastAct=Date.now();});
+cv.addEventListener('touchstart',e=>{drag=true;lx=e.touches[0].clientX;ly=e.touches[0].clientY;lastAct=Date.now();},{passive:true});
+window.addEventListener('mouseup',()=>drag=false);
+window.addEventListener('touchend',()=>drag=false);
+cv.addEventListener('mousemove',e=>{
+  if(drag){
+    rotY+=(e.clientX-lx)*0.007;rotX+=(e.clientY-ly)*0.005;
+    rotX=Math.max(-1.4,Math.min(1.4,rotX));
+    lx=e.clientX;ly=e.clientY;lastAct=Date.now();draw();
+  } else {
+    const h=getHov(e.clientX,e.clientY);
+    if(!h||h.id!==hov?.id||h.repoId!==hov?.repoId){hov=h;setInfo(h);draw();}
+    cv.style.cursor=h?'pointer':'crosshair';
+  }
+});
+cv.addEventListener('touchmove',e=>{
+  if(!drag)return;
+  rotY+=(e.touches[0].clientX-lx)*0.007;rotX+=(e.touches[0].clientY-ly)*0.005;
+  rotX=Math.max(-1.4,Math.min(1.4,rotX));lx=e.touches[0].clientX;ly=e.touches[0].clientY;lastAct=Date.now();draw();
+},{passive:true});
+cv.addEventListener('click',e=>{
+  const n=getHov(e.clientX,e.clientY);
+  if(n&&(n.url||n.live))window.open(n.url||n.live,'_blank');
+});
+cv.addEventListener('wheel',e=>{
+  e.preventDefault();zoom=Math.max(0.3,Math.min(3,zoom*(e.deltaY>0?0.92:1.09)));
+  lastAct=Date.now();draw();
+},{passive:false});
+
+function loop(){
+  if(spinOn&&!drag&&Date.now()-lastAct>2000){rotY+=0.003;draw();}
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize',resize);
+buildNodes();
+resize();
+setInfo(null);
+loop();
+</script>
+</body>
+</html>
 </body>
 </html>
