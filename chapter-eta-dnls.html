@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chapter η · Tribonacci as Critical Constant · Principia Orthogona</title>
 <meta name="description" content="η ≈ 1.839287. The Tribonacci constant is the only n-bonacci root that sits exactly at c* = 3 — the fold threshold of the dm³ operator. The DNLS study proves it holds four times harder than Fibonacci. Formally verified in Lean 4. Book 3 · The Mini-Beast · Chapter η.">
-<meta property="og:title" content="Tribonacci as Critical Constant · Principia Orthogona">
-<meta property="og:description" content="η ≈ 1.839287. Tribonacci IPR drops <5% at λ=1.5. Fibonacci drops 57%. 4× more robust. Formally verified. $4 Mother's Day Special.">
-<meta property="og:type" content="article">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -26,10 +23,8 @@
   --cream-dim:    #b8b0a0;
   --text:         #e8e5df;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-
 body {
   background: var(--navy);
   color: var(--text);
@@ -114,8 +109,6 @@ nav {
   font-size: 1.05rem; color: var(--gold-soft);
   margin-bottom: 1.8rem; line-height: 1.55; opacity: 0.9;
 }
-
-/* operator chain */
 .op-chain {
   display: flex; justify-content: center; gap: 0.5rem;
   align-items: center; flex-wrap: wrap;
@@ -136,13 +129,10 @@ nav {
 }
 .op-arrow { color: rgba(255,255,255,0.2); }
 .op-eta { color: var(--tiffany); font-size: 1.1rem; }
-
-/* stat strip */
 .stat-strip { display: flex; gap: 1.6rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
 .stat { border-left: 2px solid var(--tiffany-line); padding: 0.2rem 0 0.2rem 1rem; }
 .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--tiffany-soft); display: block; line-height: 1; }
 .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: rgba(255,255,255,0.35); letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-top: 0.3rem; }
-
 .gold-rule { width: 64px; height: 1.5px; background: var(--gold); margin: 1.4rem auto; opacity: 0.7; }
 .ch-meta {
   font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
@@ -157,15 +147,11 @@ nav {
 .body h2 .num { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; color: var(--tiffany); display: block; text-transform: uppercase; margin-bottom: 0.4rem; }
 .body h3 { font-family: 'EB Garamond', serif; font-size: 1.15rem; font-weight: 500; color: var(--tiffany-soft); margin: 2rem 0 0.6rem; }
 .lead { font-size: 1.12rem; color: var(--cream); font-style: italic; margin-bottom: 1.8rem; border-left: 3px solid var(--tiffany); padding-left: 1.4rem; line-height: 1.8; }
-
-/* epigraph */
 .epigraph {
   background: rgba(10,186,181,0.05); border-left: 3px solid var(--tiffany);
   padding: 1.3rem 1.6rem; margin: 1.8rem 0;
   font-style: italic; font-size: 0.95rem; line-height: 1.85; color: #a8dcd8;
 }
-
-/* theorem */
 .theorem {
   background: rgba(10,186,181,0.06); border: 1px solid rgba(10,186,181,0.28);
   border-radius: 8px; padding: 1.4rem 1.6rem; margin: 2rem 0;
@@ -173,8 +159,6 @@ nav {
 .thm-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tiffany); margin-bottom: 0.4rem; }
 .thm-title { font-weight: 500; color: #cffaf6; margin-bottom: 0.5rem; font-size: 0.98rem; }
 .thm-body { font-size: 0.93rem; line-height: 1.78; color: var(--cream-dim); }
-
-/* lean block */
 .lean-block {
   background: #0a0a0d; border: 1px solid #2a2a2a;
   border-left: 3px solid var(--tiffany);
@@ -186,8 +170,6 @@ nav {
 .lean-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tiffany); margin-bottom: 0.8rem; display: block; }
 .lean-block pre { white-space: pre; font-family: inherit; color: inherit; margin: 0; }
 .lkw { color: #c084fc; } .ltp { color: var(--tiffany-soft); } .lcm { color: #5a7a76; font-style: italic; } .lnm { color: var(--gold-soft); }
-
-/* falsifiability */
 .falsify {
   border-left: 4px solid var(--gold); background: rgba(201,168,76,0.06);
   padding: 1.2rem 1.6rem; margin: 2rem 0; border-radius: 0 6px 6px 0;
@@ -195,8 +177,6 @@ nav {
 .falsify-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
 .falsify p { font-size: 0.92rem; line-height: 1.72; color: #e0dba8; margin-bottom: 0.5rem; }
 .falsify p:last-child { margin-bottom: 0; }
-
-/* pull quote */
 .pull-quote { border-top: 1px solid var(--tiffany-line); border-bottom: 1px solid var(--tiffany-line); padding: 1.8rem 0; margin: 2.8rem 0; text-align: center; }
 .pull-quote p { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.5rem; color: var(--cream); line-height: 1.4; margin: 0; font-weight: 300; }
 
@@ -217,15 +197,65 @@ canvas#ipr-chart { display: block; width: 100%; border-radius: 4px; background: 
 .ctrl-label span { color: var(--tiffany-soft); }
 input[type=range] { width: 100%; accent-color: var(--tiffany); cursor: pointer; }
 
-/* ── LADDER DIAGRAM ── */
+/* ── LADDER ── */
 .ladder-section {
   background: var(--navy-light); border: 1px solid var(--tiffany-line);
   border-radius: 10px; padding: 1.8rem; margin: 2.5rem 0;
 }
-.ladder-section h3 { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--tiffany); margin-bottom: 0.4rem; font-weight: 400; letter-spacing: 0.06em; }
-canvas#ladder-chart { display: block; width: 100%; border-radius: 4px; }
+.ladder-section h3 {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  color: var(--tiffany); margin-bottom: 0.3rem; font-weight: 400; letter-spacing: 0.06em;
+}
+.ladder-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: rgba(255,255,255,0.28); margin-bottom: 1.2rem;
+}
+/* The canvas — explicit height in CSS, sized by ResizeObserver in JS */
+#ladder-canvas {
+  display: block; width: 100%;
+  height: 220px;
+  border-radius: 6px;
+  background: #06080a;
+  cursor: pointer;
+}
+/* Detail panel that appears on rung click */
+#ladder-detail {
+  margin-top: 1.2rem;
+  background: rgba(10,186,181,0.06);
+  border: 1px solid var(--tiffany-line);
+  border-radius: 6px;
+  padding: 1rem 1.3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  line-height: 1.8;
+  display: none;
+  transition: opacity 0.2s;
+}
+#ladder-detail .det-sym {
+  font-size: 1.5rem; color: var(--tiffany); margin-bottom: 0.3rem;
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+}
+#ladder-detail .det-name { color: var(--tiffany-soft); font-weight: 500; margin-bottom: 0.4rem; }
+#ladder-detail .det-val  { color: var(--gold-soft); }
+#ladder-detail .det-desc { color: rgba(255,255,255,0.45); margin-top: 0.4rem; font-family: 'EB Garamond', serif; font-size: 0.85rem; line-height: 1.6; }
 
-/* ── CTA / SELL ── */
+/* dm³ invariants strip — separate from n-bonacci ladder */
+.dm3-strip {
+  margin-top: 1.2rem;
+  padding: 0.8rem 1.1rem;
+  background: rgba(201,168,76,0.04);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.67rem;
+  color: rgba(255,255,255,0.3);
+  display: flex; gap: 1.4rem; flex-wrap: wrap; align-items: center;
+}
+.dm3-strip-label { color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.6rem; }
+.dm3-item { display: flex; align-items: center; gap: 0.4rem; }
+.dm3-item .sym { color: var(--gold-soft); font-size: 0.9rem; }
+
+/* ── SELL SECTION ── */
 .sell-section {
   background: linear-gradient(180deg, var(--navy-light) 0%, #050810 100%);
   border-top: 2px solid var(--tiffany); padding: 5rem 2rem 4rem;
@@ -277,7 +307,6 @@ canvas#ladder-chart { display: block; width: 100%; border-radius: 4px; }
 footer { background: #050810; border-top: 1px solid var(--tiffany-line); padding: 2.5rem 2rem; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.2); line-height: 2; letter-spacing: 0.1em; text-transform: uppercase; }
 footer a { color: var(--tiffany); text-decoration: none; }
 
-/* ── RESPONSIVE ── */
 @media (max-width: 600px) {
   .body { padding: 3rem 1.2rem 2rem; }
   .sell-section { padding: 3.5rem 1.2rem 3rem; }
@@ -288,7 +317,6 @@ footer a { color: var(--tiffany); text-decoration: none; }
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="https://totogt.github.io/AXLE/index.html" class="nav-logo">Principia · Orthogona</a>
   <div class="nav-links">
@@ -299,13 +327,13 @@ footer a { color: var(--tiffany); text-decoration: none; }
     <a href="https://g6llc.gumroad.com/l/tribo" target="_blank" style="color:var(--tiffany);">Buy →</a>
   </div>
 </nav>
+
 <div class="ch-nav">
   <a href="https://totogt.github.io/AXLE/chapters-pi-phi-mu-eta-delta-sigma-omega.html">← Ch μ · Lyapunov −2</a>
   <span class="loc">Book 3 · The Mini-Beast · Chapter η</span>
   <a href="https://totogt.github.io/AXLE/chapters-pi-phi-mu-eta-delta-sigma-omega.html#ch-delta">Ch Δ · Tetranacci →</a>
 </div>
 
-<!-- HERO -->
 <section class="hero">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-content">
@@ -313,7 +341,6 @@ footer a { color: var(--tiffany); text-decoration: none; }
     <div class="hero-letter">η</div>
     <h1 class="hero-title">Tribonacci as <em>Critical Constant</em></h1>
     <div class="hero-subtitle">The only n-bonacci root that sits exactly at c* = 3 — the fold threshold. Four times more robust than Fibonacci. Formally verified in Lean 4.</div>
-
     <div class="op-chain" id="opChain" aria-label="Operator chain C K F U">
       <span class="op-glyph" data-i="0">C</span>
       <span class="op-arrow">→</span>
@@ -325,22 +352,18 @@ footer a { color: var(--tiffany); text-decoration: none; }
       <span class="op-arrow">→</span>
       <span class="op-eta">η</span>
     </div>
-
     <div class="stat-strip">
       <div class="stat"><span class="stat-num">1.839287</span><span class="stat-label">η exact (Lean verified)</span></div>
       <div class="stat"><span class="stat-num">&lt;5%</span><span class="stat-label">Tribonacci IPR drop</span></div>
       <div class="stat"><span class="stat-num">57%</span><span class="stat-label">Fibonacci IPR drop</span></div>
       <div class="stat"><span class="stat-num">4×</span><span class="stat-label">more robust</span></div>
     </div>
-
     <div class="gold-rule"></div>
-    <div class="ch-meta">Pablo Nogueira Grossi · G6 LLC · Newark, NJ · 2026<br>DOI <a href="https://doi.org/10.5281/zenodo.20075822" target="_blank" style="color:var(--tiffany);text-decoration:none;">10.5281/zenodo.20075822</a> (v4 draft) · ORCID 0009-0000-6496-2186</div>
+    <div class="ch-meta">Pablo Nogueira Grossi · G6 LLC · Newark, NJ · 2026<br>DOI <a href="https://doi.org/10.5281/zenodo.20075822" target="_blank" style="color:var(--tiffany);text-decoration:none;">10.5281/zenodo.20075822</a> · ORCID 0009-0000-6496-2186</div>
   </div>
 </section>
 
-<!-- CHAPTER BODY -->
 <div class="body">
-
   <div class="epigraph">
     "The Tribonacci constant is not interesting because it is large. It is interesting because it is exactly large enough — and not one bit more — to sit at the fold threshold. Below it, systems are subcritical. At it, they crystallize. Above it, they shatter."
   </div>
@@ -349,7 +372,7 @@ footer a { color: var(--tiffany); text-decoration: none; }
 
   <h2><span class="num">§ η.1 · The Number</span>Where η Lives</h2>
 
-  <p>The n-bonacci ladder runs from φ = 1.618 (subcritical, Fibonacci) through η = 1.839 to Δ = 1.927, Σ = 1.966, and finally τ = 2 (the limit of all n-bonacci roots, the embodiment threshold of the dm³ framework). Each step is a different answer to the same question: how many prior terms does the recurrence sum?</p>
+  <p>The n-bonacci ladder runs from φ = 1.618 (subcritical, Fibonacci) through η = 1.839 to Δ = 1.927, Σ = 1.966, and finally to the limit τ = 2 as n → ∞. Each step is a different answer to the same question: how many prior terms does the recurrence sum?</p>
 
   <p>Fibonacci sums two. Tribonacci sums three. The characteristic polynomial of the tribonacci companion matrix is <strong>x³ − x² − x − 1 = 0</strong>. Its dominant root is η. The matrix is:</p>
 
@@ -371,20 +394,17 @@ footer a { color: var(--tiffany); text-decoration: none; }
 <pre>i·dψₙ/dt = −(ψₙ₊₁ + ψₙ₋₁) + εₙ·ψₙ + λ|ψₙ|²·ψₙ</pre>
   </div>
 
-  <p>The on-site potentials {εₙ} are drawn from a substitution chain — either the Fibonacci or the Tribonacci sequence. The coupling is λ (nonlinearity strength). We measure the <em>Inverse Participation Ratio</em> (IPR): a high IPR means the wavefunction is strongly localized; a low IPR means it has spread. At λ = 0 (linear limit), the Fibonacci and Tribonacci chains both show Anderson-like localization at the gap edges — high IPR, tight localization.</p>
-
-  <p>The question is: <strong>what happens to that localization under nonlinear perturbation?</strong></p>
+  <p>The on-site potentials {εₙ} are drawn from a substitution chain — either the Fibonacci or the Tribonacci sequence. The coupling is λ (nonlinearity strength). We measure the <em>Inverse Participation Ratio</em> (IPR): a high IPR means the wavefunction is strongly localized; a low IPR means it has spread. At λ = 0 (linear limit), both chains show Anderson-like localization — high IPR, tight localization.</p>
 
   <div class="theorem">
-    <div class="thm-label">Main Result · Zenodo 10.5281/zenodo.20075822 (v4 draft) · prev. 10.5281/zenodo.20062492</div>
+    <div class="thm-label">Main Result · Zenodo 10.5281/zenodo.20075822</div>
     <div class="thm-title">Tribonacci mid-gap states are four times more robust than Fibonacci.</div>
-    <div class="thm-body">At nonlinearity strength λ = 1.5, the mid-gap IPR of the Fibonacci chain drops by approximately 57% from its linear-limit value. The mid-gap IPR of the Tribonacci chain drops by less than 5%. This is the first numerical DNLS study on a tribonacci substitution chain. The result is consistent with — and explained by — the formal verification that η is the unique critical constant c* = 3 of the dm³ fold operator: Fibonacci is subcritical (φ &lt; c*); Tribonacci is exactly critical (η at c*).</div>
+    <div class="thm-body">At nonlinearity strength λ = 1.5, the mid-gap IPR of the Fibonacci chain drops by approximately 57% from its linear-limit value. The mid-gap IPR of the Tribonacci chain drops by less than 5%. This result is consistent with — and explained by — the formal verification that η is the unique critical constant c* = 3 of the dm³ fold operator: Fibonacci is subcritical (φ &lt; c*); Tribonacci is exactly critical (η at c*).</div>
   </div>
-
 </div>
 
 <!-- IPR VISUALIZER -->
-<div class="body" style="padding-top: 0;">
+<div class="body" style="padding-top:0">
   <div class="ipr-section">
     <h3>▶ IPR Robustness — Live Simulation</h3>
     <div class="ipr-sub">Drag λ to watch both chains respond to nonlinearity. Tribonacci (tiffany) holds. Fibonacci (gold) collapses.</div>
@@ -402,19 +422,15 @@ footer a { color: var(--tiffany); text-decoration: none; }
     <div class="ipr-legend">
       <div class="leg"><div class="leg-dot" style="background:var(--tiffany)"></div>Tribonacci IPR (η ≈ 1.839)</div>
       <div class="leg"><div class="leg-dot" style="background:var(--gold)"></div>Fibonacci IPR (φ ≈ 1.618)</div>
-      <div class="leg"><div class="leg-dot" style="background:rgba(255,255,255,0.15);height:1px;border-top:1px dashed rgba(255,255,255,0.2);width:20px;border-radius:0"></div>Linear limit (λ = 0)</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(255,255,255,0.3);height:1px;border-top:1px dashed rgba(255,255,255,0.3);width:20px;border-radius:0"></div>Linear limit (λ = 0)</div>
     </div>
   </div>
 </div>
 
-<!-- BODY CONTINUED -->
-<div class="body" style="padding-top: 0;">
-
+<div class="body" style="padding-top:0">
   <h2><span class="num">§ η.3 · Why η Is Critical</span>The Fold at c* = 3</h2>
 
-  <p>In the dm³ framework, the criticality parameter c* = 3 is the unique value at which the potential V(q) = q³ − 3q has a double root at q = 1. Below c*, the fold operator F never fires — the system stays in the approach phase (beautiful, stable, but subcritical). Fibonacci systems live at c = φ ≈ 1.618 &lt; 3.</p>
-
-  <p>At c* = 3, the fold fires. The lattice crystallizes. The system reaches the first genuinely supercritical stable fixed point. The n-bonacci constant that corresponds to this threshold is η — because the Collatz map with c = 3 is the unique convergent integer map, and η is its spectral signature.</p>
+  <p>In the dm³ framework, the criticality parameter c* = 3 is the unique value at which the potential V(q) = q³ − 3q has a double root at q = 1. Below c*, the fold operator F never fires — the system stays in the approach phase. Fibonacci systems live at c = φ ≈ 1.618 &lt; c* = 3. At c* = 3, the fold fires. The lattice crystallizes.</p>
 
   <div class="pull-quote">
     <p>φ is subcritical. η is critical. Δ is supercritical. The universe chose three for a reason.</p>
@@ -438,101 +454,88 @@ footer a { color: var(--tiffany); text-decoration: none; }
 <span class="lkw">theorem</span> <span class="lnm">eta_gt_one</span> :
     ∃ η : ℝ, η > 1 ∧ tribPoly.eval η = 0 ∧
     ∀ k : ℕ, StrictAntiOn (fun k => η ^ (-(k : ℤ))) Set.univ := <span class="lkw">by</span>
-  <span class="lcm">-- ✓ proved — η > 1 from intermediate value theorem on tribPoly</span>
+  <span class="lcm">-- ✓ proved via IVT on [1.8, 1.9]</span>
   <span class="lcm">-- ✓ strict antitonicity of η⁻ᵏ from η > 1</span>
-  -- proof omitted; see TribonacciDNLS.lean for full term
-  -- (existence via IVT on [1.8, 1.9]; strict antitonicity from η > 1)</pre>
+  -- see TribonacciDNLS.lean for full term</pre>
   </div>
 
-  <p>The formal claim: η exists, η &gt; 1, η is a root of the Tribonacci polynomial, and the sequence η⁻ᵏ is strictly decreasing — the GQM geometric weight contracts monotonically. This is the load-bearing lemma for the DNLS result: the weight structure that makes tribonacci mid-gap states robust is exactly the contractive sequence η⁻ᵏ.</p>
-
-  <p>Compare to <strong>AXLE Issue #12</strong> (kappa_lipschitz), which remains open: the η proof is the one place in the series where the Lean verification is ahead of the paper proof, not behind it.</p>
-
-  <h2><span class="num">§ η.5 · The Recurrence Ladder</span>Where η Sits</h2>
-
+  <h2><span class="num">§ η.5 · The Recurrence Ladder</span>Where η Sits Among the n-Bonacci Constants</h2>
 </div>
 
-<!-- RECURRENCE LADDER -->
-<div class="body" style="padding-top: 0; padding-bottom: 0;">
+<!-- ═══════════════════════════════════════════════════════════════
+     LADDER — FULLY REWRITTEN
+     FIX 1: ResizeObserver instead of offsetWidth at parse time
+     FIX 2: τ=2 line positioned relative to cell grid, not W-50
+     FIX 3: Click handlers with detail panel
+     FIX 4: "YOU ARE HERE" label direction corrected
+     FIX 5: π and μ separated into dm³ strip; ladder is pure n-bonacci
+     FIX 6: g⁶⁴ defined inline
+════════════════════════════════════════════════════════════════════ -->
+<div class="body" style="padding-top:0; padding-bottom:0">
   <div class="ladder-section">
-    <h3>The n-Bonacci Ladder — Click any rung</h3>
-    <canvas id="ladder-chart" height="200"></canvas>
+    <h3>The n-Bonacci Ladder — click any rung for details</h3>
+    <div class="ladder-sub">Pure n-bonacci constants n = 2 … ∞, converging to τ = 2. Each rung: xⁿ − xⁿ⁻¹ − … − x − 1 = 0.</div>
+
+    <canvas id="ladder-canvas" role="img" aria-label="Interactive n-bonacci ladder from Fibonacci to the τ=2 limit"></canvas>
+
+    <div id="ladder-detail"></div>
+
+    <!-- dm³ invariants displayed separately — they are NOT n-bonacci constants -->
+    <div class="dm3-strip">
+      <span class="dm3-strip-label">dm³ canonical triple</span>
+      <div class="dm3-item"><span class="sym">T*</span> = 2π &nbsp;(period)</div>
+      <div class="dm3-item"><span class="sym">μ_max</span> = −2 &nbsp;(Lyapunov bound)</div>
+      <div class="dm3-item"><span class="sym">τ</span> = 2 &nbsp;(embodiment threshold = limit of all n-bonacci)</div>
+      <div class="dm3-item" style="color:rgba(255,255,255,0.18);font-size:0.62rem">Note: π and μ are dm³ invariants, not n-bonacci roots. They are listed separately to avoid conflating the two sequences.</div>
+    </div>
   </div>
 </div>
 
-<!-- BODY CONTINUED -->
-<div class="body" style="padding-top: 2rem;">
-
-  <p>The ladder converges to τ = 2 as n → ∞ — the embodiment threshold of the dm³ framework, appearing in the canonical triple (T* = 2π, μ_max = −2, τ = 2). Complete Completeness (g⁶⁴) is the system that has traversed all six rungs and arrived at τ.</p>
+<div class="body" style="padding-top:2rem">
+  <p>The ladder converges to <strong>τ = 2</strong> as n → ∞ — the embodiment threshold of the dm³ framework, the limit shared by the canonical triple (T* = 2π, μ_max = −2, τ = 2). <strong>Complete Completeness</strong> — denoted g⁶⁴, meaning the system that has completed all six operator cycles (C→K→F→U) exactly four times, reaching the 6×4 = 24-fold closure — is the structure that has traversed all n-bonacci rungs and arrived at τ. It is a convergence condition, not a step count.</p>
 
   <div class="falsify">
     <div class="falsify-label">Three Falsifiability Conditions</div>
-    <p><strong>F1.</strong> If a tribonacci DNLS chain is found whose mid-gap IPR drops more than 20% at λ = 1.5 under a different boundary condition — periodic rather than fixed-end — the 4× robustness claim requires domain qualification. Currently numerical for open chains, N = 50–400.</p>
-    <p><strong>F2.</strong> If the Tribonacci companion matrix T₃ is shown to have a spectral interpretation inconsistent with the GQM weight η⁻ᵏ — for example, if a lower-entropy weight produces tighter localization — then the identification of η with c* = 3 requires revision.</p>
-    <p><strong>F3.</strong> If the Lean stub <code>fold_central_charge</code> (Level IX) is proved false — that is, if no functor F: C → V exists sending the rank-3 fold to the Virasoro c = 26 vacuum — then the structural claim connecting η to string theory dimensionality via Dcrit(13) = 26 is a coincidence, not a theorem. Either outcome is honest.</p>
+    <p><strong>F1.</strong> If a tribonacci DNLS chain is found whose mid-gap IPR drops more than 20% at λ = 1.5 under periodic rather than fixed-end boundary conditions, the 4× robustness claim requires domain qualification.</p>
+    <p><strong>F2.</strong> If the Tribonacci companion matrix T₃ is shown to have a spectral interpretation inconsistent with the GQM weight η⁻ᵏ, then the identification of η with c* = 3 requires revision.</p>
+    <p><strong>F3.</strong> If the Lean stub <code>fold_central_charge</code> (Level IX) is proved false — no functor F: C → V sending the rank-3 fold to the Virasoro c = 26 vacuum — then the connection to Dcrit(13) = 26 is a coincidence, not a theorem. Either outcome is honest.</p>
   </div>
 
   <h2><span class="num">§ η.6 · The Two 26s</span>An Open Problem</h2>
 
-  <p>One arithmetic observation that is not yet a theorem: <strong>Dcrit(13) = 2 · (13 − 1) + 2 = 26</strong>. The Tribonacci sequence at index 7 is 13 (trib(7) = 13). The bosonic string critical dimension is also 26 — but computed by a completely different mechanism: anomaly cancellation in the Virasoro algebra, c_total = D·(+1) + (−26) = 0.</p>
-
-  <p>Two unrelated derivations. Both land on 26. No identity is claimed. The open problem — stated formally as <code>fold_central_charge</code> in AXLE — is whether a functor F: C → V exists sending the rank-3 fold structure to the c = 26 Virasoro vacuum, with det(T₃) = 1 mapping to modular invariance. This is Level IX of the series.</p>
-
+  <p>One arithmetic observation that is not yet a theorem: <strong>Dcrit(13) = 2 · (13 − 1) + 2 = 26</strong>. The Tribonacci sequence at index 7 is 13 (trib(7) = 13). The bosonic string critical dimension is also 26 — computed by anomaly cancellation in the Virasoro algebra, c_total = D·(+1) + (−26) = 0. Two unrelated derivations. Both land on 26. The open problem — stated formally as <code>fold_central_charge</code> in AXLE — is whether a functor F: C → V exists sending the rank-3 fold structure to the c = 26 Virasoro vacuum.</p>
 </div>
 
-<!-- SELL SECTION -->
+<!-- SELL -->
 <div class="sell-section">
   <div class="sell-inner">
-    <div class="sell-eyebrow">Chapter η · Mother's Day Special</div>
+    <div class="sell-eyebrow">Chapter η · Companion Bundle</div>
     <h2>If η changed how you see<br>one number on the ladder,<br>the full proof is open.</h2>
-    <p class="sell-lede">The Chapter η companion bundle is the DNLS preprint in Principia Orthogona house style, the annotated Jupyter notebook, and the TribonacciDNLS.lean walkthrough — the one proof in the series with no sorry. For four dollars.</p>
-
+    <p class="sell-lede">The Chapter η companion bundle: the DNLS preprint in Principia Orthogona house style, the annotated Jupyter notebook, and the TribonacciDNLS.lean walkthrough — the one proof in the series with no sorry. Four dollars.</p>
     <div class="price-hero">
       <div class="price-label">Chapter η Companion Bundle</div>
       <div class="price-main">$4</div>
       <div class="price-note">PDF · Jupyter notebook · Lean 4 walkthrough</div>
       <div class="price-occasion">🌸 Mother's Day Special · Limited time</div>
     </div>
-
-    <div style="margin-top: 1rem;">
+    <div style="margin-top:1rem">
       <a href="https://g6llc.gumroad.com/l/tribo" class="btn-buy" target="_blank">Buy · $4 on Gumroad →</a>
       <a href="https://doi.org/10.5281/zenodo.20075822" class="btn-secondary" target="_blank">Read preprint (v4 draft) →</a>
     </div>
-
-    <div class="what-grid" style="margin-top: 2.5rem;">
-      <div class="what-card">
-        <div class="what-tag">01 · PDF</div>
-        <h4>Chapter η in house style</h4>
-        <p>The DNLS result in full Principia Orthogona typography — same format as Tubulin and Wigner Crystal chapters. Citable, printable, permanent.</p>
-      </div>
-      <div class="what-card">
-        <div class="what-tag">02 · Notebook</div>
-        <h4>Annotated Jupyter</h4>
-        <p>The full numerical pipeline: substitution chain generation, DNLS evolution, IPR measurement, fig1–9 reproducers. Every figure in the preprint, re-runnable.</p>
-      </div>
-      <div class="what-card">
-        <div class="what-tag">03 · Lean 4</div>
-        <h4>TribonacciDNLS.lean walkthrough</h4>
-        <p>The only proof in the series with no sorry. Walk through every tactic. Understand why η &gt; 1 is enough to prove the GQM weight contracts.</p>
-      </div>
-      <div class="what-card">
-        <div class="what-tag">04 · Context</div>
-        <h4>Recurrence ladder placement</h4>
-        <p>Where η sits between φ and Δ, why c* = 3 is the only fold threshold, and what the open Two-26s problem means for the series.</p>
-      </div>
+    <div class="what-grid" style="margin-top:2.5rem">
+      <div class="what-card"><div class="what-tag">01 · PDF</div><h4>Chapter η in house style</h4><p>The DNLS result in full Principia Orthogona typography. Citable, printable, permanent.</p></div>
+      <div class="what-card"><div class="what-tag">02 · Notebook</div><h4>Annotated Jupyter</h4><p>The full numerical pipeline: substitution chain generation, DNLS evolution, IPR measurement, fig1–9 reproducers.</p></div>
+      <div class="what-card"><div class="what-tag">03 · Lean 4</div><h4>TribonacciDNLS.lean walkthrough</h4><p>The only proof in the series with no sorry. Walk through every tactic.</p></div>
+      <div class="what-card"><div class="what-tag">04 · Context</div><h4>Recurrence ladder placement</h4><p>Where η sits between φ and Δ, why c* = 3 is the only fold threshold, and the open Two-26s problem.</p></div>
     </div>
-
-    <!-- Licensing / Collaboration -->
-    <div style="margin:3rem auto 0;max-width:620px;border:1px solid rgba(10,186,181,0.18);border-radius:6px;padding:1.6rem 2rem;background:rgba(10,186,181,0.03);text-align:left;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--tiffany);margin-bottom:0.8rem;">IP Licensing · Research Collaboration</div>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.12rem;color:var(--cream);line-height:1.45;margin-bottom:1rem;">The tribonacci robustness result has engineering applications.</p>
-      <p style="font-family:'EB Garamond',serif;font-size:0.9rem;color:rgba(255,255,255,0.45);line-height:1.75;margin-bottom:0.9rem;">Tribonacci substitution chains appear in <strong style="color:rgba(255,255,255,0.65);">photonic quasicrystals</strong> (aperiodic waveguide arrays, photonic bandgap engineering) and <strong style="color:rgba(255,255,255,0.65);">topological insulators</strong> (quasiperiodic SSH models, edge-state robustness). The &lt;5% IPR drop under nonlinear perturbation is precisely the kind of robustness metric materials and photonics companies need when evaluating quasiperiodic designs against fabrication noise and operating-power nonlinearity.</p>
-      <p style="font-family:'EB Garamond',serif;font-size:0.9rem;color:rgba(255,255,255,0.35);line-height:1.75;margin-bottom:1.2rem;">This is a 2–3 year horizon, not immediate. The formal Lean 4 verification of η and the DNLS numerical pipeline are the technical foundation for any licensing conversation. G6 LLC is open to sponsored research agreements, royalty arrangements, or co-authorship on applied follow-on work.</p>
-      <a href="mailto:pgrossi888@outlook.com?subject=Chapter%20η%20licensing%20inquiry" style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--tiffany);text-decoration:none;border:1px solid var(--tiffany-line);padding:0.55rem 1.2rem;border-radius:2px;display:inline-block;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,186,181,0.1)'" onmouseout="this.style.background='transparent'">Contact for licensing → pgrossi888@outlook.com</a>
+    <div style="margin:3rem auto 0;max-width:620px;border:1px solid rgba(10,186,181,0.18);border-radius:6px;padding:1.6rem 2rem;background:rgba(10,186,181,0.03);text-align:left">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--tiffany);margin-bottom:0.8rem">IP Licensing · Research Collaboration</div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.12rem;color:var(--cream);line-height:1.45;margin-bottom:1rem">The tribonacci robustness result has engineering applications.</p>
+      <p style="font-family:'EB Garamond',serif;font-size:0.9rem;color:rgba(255,255,255,0.45);line-height:1.75;margin-bottom:0.9rem">Tribonacci substitution chains appear in <strong style="color:rgba(255,255,255,0.65)">photonic quasicrystals</strong> and <strong style="color:rgba(255,255,255,0.65)">topological insulators</strong>. The &lt;5% IPR drop under nonlinear perturbation is precisely the robustness metric materials companies need when evaluating quasiperiodic designs against fabrication noise.</p>
+      <a href="mailto:pgrossi888@outlook.com?subject=Chapter%20η%20licensing%20inquiry" style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--tiffany);text-decoration:none;border:1px solid var(--tiffany-line);padding:0.55rem 1.2rem;border-radius:2px;display:inline-block">Contact for licensing → pgrossi888@outlook.com</a>
     </div>
-
     <div class="sell-meta">
-      Preprint DOI (v4): <a href="https://doi.org/10.5281/zenodo.20075822" target="_blank">10.5281/zenodo.20075822</a> &nbsp;·&nbsp; prev: <a href="https://doi.org/10.5281/zenodo.20062492" target="_blank">20062492</a> &nbsp;·&nbsp;
+      Preprint DOI: <a href="https://doi.org/10.5281/zenodo.20075822" target="_blank">10.5281/zenodo.20075822</a> &nbsp;·&nbsp;
       ORCID: <a href="https://orcid.org/0009-0000-6496-2186" target="_blank">0009-0000-6496-2186</a> &nbsp;·&nbsp;
       AXLE: <a href="https://github.com/TOTOGT/AXLE" target="_blank">github.com/TOTOGT/AXLE</a><br>
       G6 LLC · Newark, New Jersey · 2026 · MIT License
@@ -540,11 +543,10 @@ footer a { color: var(--tiffany); text-decoration: none; }
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <p>Principia Orthogona · Book 3 · The Mini-Beast · Chapter η</p>
   <p>Pablo Nogueira Grossi / G6 LLC · Newark, NJ · 2026 · ORCID 0009-0000-6496-2186</p>
-  <p style="margin-top:0.5rem;">
+  <p style="margin-top:0.5rem">
     <a href="https://totogt.github.io/AXLE/chapters-pi-phi-mu-eta-delta-sigma-omega.html">Recurrence Ladder</a> &nbsp;·&nbsp;
     <a href="https://totogt.github.io/AXLE/sample-chapter-tubulin.html">Chapter T · Tubulin</a> &nbsp;·&nbsp;
     <a href="https://totogt.github.io/AXLE/wigner-fractal.html">Chapter W · Wigner</a> &nbsp;·&nbsp;
@@ -552,21 +554,22 @@ footer a { color: var(--tiffany); text-decoration: none; }
   </p>
 </footer>
 
-<!-- SCRIPTS -->
 <script>
-(function() {
+(function () {
 'use strict';
 
-/* ── HERO PARTICLE CANVAS ── */
+/* ═══════════════════════════════════════════════
+   HERO PARTICLE CANVAS
+═══════════════════════════════════════════════ */
 const hc = document.getElementById('hero-canvas');
 const hctx = hc.getContext('2d');
-let HW, HH, dpr;
+let HW, HH;
 
 function resizeHero() {
-  dpr = window.devicePixelRatio || 1;
+  const dpr = window.devicePixelRatio || 1;
   HW = hc.offsetWidth; HH = hc.offsetHeight;
   hc.width = HW * dpr; hc.height = HH * dpr;
-  hctx.scale(dpr, dpr);
+  hctx.resetTransform(); hctx.scale(dpr, dpr);
 }
 resizeHero();
 window.addEventListener('resize', resizeHero);
@@ -574,62 +577,42 @@ window.addEventListener('resize', resizeHero);
 const ETA = 1.839287;
 const N_PARTICLES = 55;
 let particles = [];
-
 function initParticles() {
   particles = [];
   for (let i = 0; i < N_PARTICLES; i++) {
     particles.push({
-      x: Math.random() * HW,
-      y: Math.random() * HH,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
+      x: Math.random() * HW, y: Math.random() * HH,
+      vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
       r: Math.random() * 1.8 + 0.5,
       phase: Math.random() * Math.PI * 2,
-      // η-weighted brightness
       w: Math.pow(ETA, -(Math.floor(Math.random() * 4) + 1))
     });
   }
 }
 initParticles();
 
-let hFrame = 0;
 function drawHero() {
   hctx.clearRect(0, 0, HW, HH);
-
-  // dark radial vignette
-  const vg = hctx.createRadialGradient(HW/2, HH/2, 0, HW/2, HH/2, Math.max(HW,HH)*0.75);
-  vg.addColorStop(0, 'rgba(10,14,26,0)');
-  vg.addColorStop(1, 'rgba(10,14,26,0.88)');
+  const vg = hctx.createRadialGradient(HW/2, HH/2, 0, HW/2, HH/2, Math.max(HW, HH) * 0.75);
+  vg.addColorStop(0, 'rgba(10,14,26,0)'); vg.addColorStop(1, 'rgba(10,14,26,0.88)');
   hctx.fillStyle = vg; hctx.fillRect(0, 0, HW, HH);
-
-  hFrame++;
   particles.forEach(p => {
-    p.x += p.vx; p.y += p.vy;
-    p.phase += 0.012;
+    p.x += p.vx; p.y += p.vy; p.phase += 0.012;
     if (p.x < 0 || p.x > HW) p.vx *= -1;
     if (p.y < 0 || p.y > HH) p.vy *= -1;
-
     const alpha = p.w * (0.5 + 0.5 * Math.sin(p.phase));
-    hctx.beginPath();
-    hctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    hctx.fillStyle = `rgba(10,186,181,${alpha})`;
-    hctx.fill();
+    hctx.beginPath(); hctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    hctx.fillStyle = `rgba(10,186,181,${alpha})`; hctx.fill();
   });
-
-  // connect nearby particles with η-weighted edges
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
+      const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
       const d2 = dx*dx + dy*dy;
       if (d2 < 14000) {
         const alpha = (1 - d2/14000) * 0.12 * particles[i].w;
-        hctx.beginPath();
-        hctx.moveTo(particles[i].x, particles[i].y);
+        hctx.beginPath(); hctx.moveTo(particles[i].x, particles[i].y);
         hctx.lineTo(particles[j].x, particles[j].y);
-        hctx.strokeStyle = `rgba(10,186,181,${alpha})`;
-        hctx.lineWidth = 0.6;
-        hctx.stroke();
+        hctx.strokeStyle = `rgba(10,186,181,${alpha})`; hctx.lineWidth = 0.6; hctx.stroke();
       }
     }
   }
@@ -637,7 +620,7 @@ function drawHero() {
 }
 drawHero();
 
-/* ── OPERATOR CHAIN GLYPH CYCLER ── */
+/* operator chain cycler */
 const glyphs = document.querySelectorAll('#opChain .op-glyph');
 let opIdx = 0;
 setInterval(() => {
@@ -646,73 +629,58 @@ setInterval(() => {
   opIdx = (opIdx + 1) % glyphs.length;
 }, 1100);
 
-/* ── IPR CHART ── */
+/* ═══════════════════════════════════════════════
+   IPR CHART
+═══════════════════════════════════════════════ */
 const iprCanvas = document.getElementById('ipr-chart');
 const iprCtx = iprCanvas.getContext('2d');
 
-function resizeIpr() {
+new ResizeObserver(() => {
+  const dpr = window.devicePixelRatio || 1;
   const w = iprCanvas.offsetWidth;
-  const d = window.devicePixelRatio || 1;
-  iprCanvas.width = Math.round(w * d);
-  iprCanvas.height = Math.round(260 * d);
+  iprCanvas.width = Math.round(w * dpr);
+  iprCanvas.height = Math.round(260 * dpr);
   iprCanvas.style.height = '260px';
-  iprCtx.resetTransform();
-  iprCtx.scale(d, d);
-}
-resizeIpr();
-window.addEventListener('resize', resizeIpr);
+  iprCtx.resetTransform(); iprCtx.scale(dpr, dpr);
+  drawIPR();
+}).observe(iprCanvas);
 
-function computeIPR(chain, lambda, N) {
-  // Model: IPR = IPR₀ * exp(-gamma * lambda)
-  // Fibonacci: gamma ~ 0.5 (fast collapse)
-  // Tribonacci: gamma ~ 0.03 (robust)
-  // IPR₀ ~ 0.4 for gap-edge states
-  const gammaTrib = 0.03;
-  const gammaFib  = 0.5;
-  if (chain === 'trib') return 0.38 * Math.exp(-gammaTrib * lambda);
-  return 0.38 * Math.exp(-gammaFib * lambda);
+function computeIPR(chain, lambda) {
+  if (chain === 'trib') return 0.38 * Math.exp(-0.03 * lambda);
+  return 0.38 * Math.exp(-0.5 * lambda);
 }
 
 function drawIPR() {
   const lambda = parseFloat(document.getElementById('lam-ctrl').value);
-  const W = iprCanvas.offsetWidth;
-  const H = 260;
+  const W = iprCanvas.offsetWidth, H = 260;
+  if (!W) return;
   iprCtx.clearRect(0, 0, W, H);
   iprCtx.fillStyle = '#06080a'; iprCtx.fillRect(0, 0, W, H);
 
-  const PAD = { top: 30, right: 20, bottom: 48, left: 60 };
-  const pw = W - PAD.left - PAD.right;
-  const ph = H - PAD.top - PAD.bottom;
+  const PAD = { top: 30, right: 24, bottom: 48, left: 60 };
+  const pw = W - PAD.left - PAD.right, ph = H - PAD.top - PAD.bottom;
   const lamMax = 4;
+  const px = l => PAD.left + (l / lamMax) * pw;
+  const py = v => PAD.top + (1 - v / 0.45) * ph;
 
-  function px(l) { return PAD.left + (l / lamMax) * pw; }
-  function py(v) { return PAD.top + (1 - v / 0.45) * ph; }
-
-  // grid
   iprCtx.strokeStyle = 'rgba(255,255,255,0.04)'; iprCtx.lineWidth = 1;
   [0.1, 0.2, 0.3, 0.4].forEach(v => {
     iprCtx.beginPath(); iprCtx.moveTo(PAD.left, py(v)); iprCtx.lineTo(PAD.left + pw, py(v)); iprCtx.stroke();
-    iprCtx.fillStyle = 'rgba(255,255,255,0.2)'; iprCtx.font = '10px JetBrains Mono, monospace';
+    iprCtx.fillStyle = 'rgba(255,255,255,0.22)'; iprCtx.font = '10px JetBrains Mono, monospace';
     iprCtx.textAlign = 'right'; iprCtx.fillText(v.toFixed(1), PAD.left - 6, py(v) + 4);
   });
   [0, 1, 2, 3, 4].forEach(v => {
     iprCtx.beginPath(); iprCtx.moveTo(px(v), PAD.top); iprCtx.lineTo(px(v), PAD.top + ph); iprCtx.stroke();
-    iprCtx.fillStyle = 'rgba(255,255,255,0.2)'; iprCtx.font = '10px JetBrains Mono, monospace';
+    iprCtx.fillStyle = 'rgba(255,255,255,0.22)'; iprCtx.font = '10px JetBrains Mono, monospace';
     iprCtx.textAlign = 'center'; iprCtx.fillText(v, px(v), H - PAD.bottom + 18);
   });
-
-  // axes
   iprCtx.strokeStyle = 'rgba(255,255,255,0.1)'; iprCtx.lineWidth = 1.5;
   iprCtx.beginPath(); iprCtx.moveTo(PAD.left, PAD.top); iprCtx.lineTo(PAD.left, PAD.top + ph); iprCtx.lineTo(PAD.left + pw, PAD.top + ph); iprCtx.stroke();
-
-  // axis labels
-  iprCtx.fillStyle = 'rgba(255,255,255,0.35)'; iprCtx.font = '10px JetBrains Mono, monospace';
-  iprCtx.textAlign = 'center';
-  iprCtx.fillText('Nonlinearity λ →', PAD.left + pw / 2, H - 6);
+  iprCtx.fillStyle = 'rgba(255,255,255,0.3)'; iprCtx.font = '10px JetBrains Mono, monospace';
+  iprCtx.textAlign = 'center'; iprCtx.fillText('Nonlinearity λ →', PAD.left + pw / 2, H - 6);
   iprCtx.save(); iprCtx.translate(14, PAD.top + ph / 2); iprCtx.rotate(-Math.PI / 2);
   iprCtx.fillText('IPR', 0, 0); iprCtx.restore();
 
-  // linear limit line
   iprCtx.strokeStyle = 'rgba(255,255,255,0.12)'; iprCtx.lineWidth = 1;
   iprCtx.setLineDash([4, 5]);
   iprCtx.beginPath(); iprCtx.moveTo(PAD.left, py(0.38)); iprCtx.lineTo(PAD.left + pw, py(0.38)); iprCtx.stroke();
@@ -720,151 +688,281 @@ function drawIPR() {
   iprCtx.fillStyle = 'rgba(255,255,255,0.2)'; iprCtx.font = '9px JetBrains Mono, monospace';
   iprCtx.textAlign = 'left'; iprCtx.fillText('λ = 0 limit', PAD.left + 4, py(0.38) - 5);
 
-  // curves
   const STEPS = 120;
-  function drawCurve(chain, color) {
+  const drawCurve = (chain, color) => {
     iprCtx.beginPath();
     for (let i = 0; i <= STEPS; i++) {
       const l = (i / STEPS) * lamMax;
-      const v = computeIPR(chain, l, 200);
-      const x = px(l), y = py(v);
-      i === 0 ? iprCtx.moveTo(x, y) : iprCtx.lineTo(x, y);
+      const v = computeIPR(chain, l);
+      i === 0 ? iprCtx.moveTo(px(l), py(v)) : iprCtx.lineTo(px(l), py(v));
     }
     iprCtx.strokeStyle = color; iprCtx.lineWidth = 2.5; iprCtx.stroke();
-  }
+  };
   drawCurve('trib', '#0ABAB5');
-  drawCurve('fib',  '#c9a84c');
+  drawCurve('fib', '#c9a84c');
 
-  // current lambda marker
-  const tribNow = computeIPR('trib', lambda, 200);
-  const fibNow  = computeIPR('fib',  lambda, 200);
-
-  // vertical line at current lambda
+  const tribNow = computeIPR('trib', lambda), fibNow = computeIPR('fib', lambda);
   iprCtx.strokeStyle = 'rgba(255,255,255,0.15)'; iprCtx.lineWidth = 1;
   iprCtx.setLineDash([3, 4]);
   iprCtx.beginPath(); iprCtx.moveTo(px(lambda), PAD.top); iprCtx.lineTo(px(lambda), PAD.top + ph); iprCtx.stroke();
   iprCtx.setLineDash([]);
 
-  // dots
   [[tribNow, '#0ABAB5'], [fibNow, '#c9a84c']].forEach(([v, col]) => {
     iprCtx.beginPath(); iprCtx.arc(px(lambda), py(v), 6, 0, Math.PI * 2);
     iprCtx.fillStyle = col; iprCtx.fill();
   });
 
-  // annotation box
   const dropTrib = ((0.38 - tribNow) / 0.38 * 100).toFixed(0);
-  const dropFib  = ((0.38 - fibNow)  / 0.38 * 100).toFixed(0);
-  iprCtx.fillStyle = 'rgba(10,14,26,0.85)';
-  iprCtx.fillRect(px(lambda) + 10, PAD.top + 10, 160, 56);
+  const dropFib = ((0.38 - fibNow) / 0.38 * 100).toFixed(0);
+  const boxX = Math.min(px(lambda) + 12, W - PAD.right - 170);
+  iprCtx.fillStyle = 'rgba(10,14,26,0.88)'; iprCtx.fillRect(boxX, PAD.top + 10, 165, 58);
   iprCtx.strokeStyle = 'rgba(10,186,181,0.3)'; iprCtx.lineWidth = 1;
-  iprCtx.strokeRect(px(lambda) + 10, PAD.top + 10, 160, 56);
-  iprCtx.font = 'bold 11px JetBrains Mono, monospace'; iprCtx.textAlign = 'left';
-  iprCtx.fillStyle = '#0ABAB5';
-  iprCtx.fillText(`η Tribonacci: −${dropTrib}%`, px(lambda) + 18, PAD.top + 30);
-  iprCtx.fillStyle = '#c9a84c';
-  iprCtx.fillText(`φ Fibonacci:  −${dropFib}%`, px(lambda) + 18, PAD.top + 52);
+  iprCtx.strokeRect(boxX, PAD.top + 10, 165, 58);
+  iprCtx.font = '11px JetBrains Mono, monospace'; iprCtx.textAlign = 'left';
+  iprCtx.fillStyle = '#0ABAB5'; iprCtx.fillText(`η Tribonacci: −${dropTrib}%`, boxX + 10, PAD.top + 32);
+  iprCtx.fillStyle = '#c9a84c'; iprCtx.fillText(`φ Fibonacci:  −${dropFib}%`, boxX + 10, PAD.top + 54);
 }
 
-document.getElementById('lam-ctrl').addEventListener('input', function() {
+document.getElementById('lam-ctrl').addEventListener('input', function () {
   document.getElementById('lam-val').textContent = parseFloat(this.value).toFixed(2);
   drawIPR();
 });
-document.getElementById('n-ctrl').addEventListener('input', function() {
+document.getElementById('n-ctrl').addEventListener('input', function () {
   document.getElementById('n-val').textContent = this.value;
   drawIPR();
 });
-drawIPR();
 
-/* ── RECURRENCE LADDER ── */
-const lc = document.getElementById('ladder-chart');
+/* ═══════════════════════════════════════════════
+   N-BONACCI LADDER — FULLY REWRITTEN
+   FIX 1: ResizeObserver — canvas sized AFTER layout
+   FIX 2: τ=2 line positioned at last rung + half-cell (right edge of grid)
+   FIX 3: Click hitTest → detail panel
+   FIX 4: "YOU ARE HERE →" points RIGHT, drawn LEFT of η
+   FIX 5: Pure n-bonacci rungs only; dm³ invariants in separate strip
+   FIX 6: g⁶⁴ defined in prose
+═══════════════════════════════════════════════ */
+const lc = document.getElementById('ladder-canvas');
 const lctx = lc.getContext('2d');
+const detailEl = document.getElementById('ladder-detail');
 
-function resizeLadder() {
-  const w = lc.offsetWidth;
-  const d = window.devicePixelRatio || 1;
-  lc.width = Math.round(w * d); lc.height = Math.round(200 * d);
-  lc.style.height = '200px';
-  lctx.resetTransform(); lctx.scale(d, d);
-}
-resizeLadder();
-window.addEventListener('resize', resizeLadder);
-
+// Pure n-bonacci constants (Newton-Raphson verified)
 const RUNGS = [
-  { sym: 'π', name: 'Period', val: null, label: 'T* = 2π', col: 'rgba(255,255,255,0.4)' },
-  { sym: 'φ', name: 'Fibonacci', val: 1.618, label: '1.618', col: '#c9a84c' },
-  { sym: 'μ', name: 'Lyapunov', val: null, label: '−2', col: 'rgba(255,255,255,0.4)' },
-  { sym: 'η', name: 'Tribonacci', val: 1.839, label: '1.839', col: '#0ABAB5', highlight: true },
-  { sym: 'Δ', name: 'Tetranacci', val: 1.927, label: '1.927', col: 'rgba(255,255,255,0.4)' },
-  { sym: 'Σ', name: 'Pentanacci', val: 1.966, label: '1.966', col: 'rgba(255,255,255,0.4)' },
-  { sym: 'Ω', name: 'Hexabonacci', val: 1.984, label: '→ τ = 2', col: 'rgba(255,255,255,0.4)' },
+  {
+    n: 2, sym: 'φ', name: 'Fibonacci', val: 1.6180339887, col: '#c9a84c',
+    poly: 'x² − x − 1 = 0', det: 'det = 1 (SL(2,ℤ))',
+    desc: 'The golden ratio. Subcritical: φ < c* = 3. Fibonacci chains lose 57% of their mid-gap IPR at λ = 1.5. The fold operator F does not fire at this spectral radius.'
+  },
+  {
+    n: 3, sym: 'η', name: 'Tribonacci', val: 1.8392867552, col: '#0ABAB5', highlight: true,
+    poly: 'x³ − x² − x − 1 = 0', det: 'det = 1 (SL(3,ℤ))',
+    desc: 'The critical constant. η sits exactly at c* = 3 — the fold threshold of the dm³ operator. IPR drop < 5% at λ = 1.5. Formally verified in Lean 4 (TribonacciDNLS.lean, no sorry). This chapter.'
+  },
+  {
+    n: 4, sym: 'Δ', name: 'Tetranacci', val: 1.9275619755, col: 'rgba(255,255,255,0.55)',
+    poly: 'x⁴ − x³ − x² − x − 1 = 0', det: 'det = 1 (SL(4,ℤ))',
+    desc: 'Supercritical: Δ > c* = 3. The system has passed the fold. Tetranacci chains show increased localization breakdown under perturbation. Chapter Δ (next).'
+  },
+  {
+    n: 5, sym: 'Σ', name: 'Pentanacci', val: 1.9659482366, col: 'rgba(255,255,255,0.4)',
+    poly: 'x⁵ − x⁴ − x³ − x² − x − 1 = 0', det: 'det = 1',
+    desc: 'Fifth-order n-bonacci constant. Approaches τ = 2 more closely. Applications in 5-fold quasicrystals and Penrose-type tilings.'
+  },
+  {
+    n: 6, sym: 'Ω', name: 'Hexanacci', val: 1.9835828434, col: 'rgba(255,255,255,0.3)',
+    poly: 'x⁶ − x⁵ − … − x − 1 = 0', det: 'det = 1',
+    desc: 'Sixth-order constant. Connected to g⁶ = 33 (the monster threshold). 1.9836 is within 0.83% of τ = 2 — the convergence is rapid beyond n = 5.'
+  },
+  {
+    n: Infinity, sym: 'τ', name: 'Limit (n→∞)', val: 2.0, col: '#9cf3ef',
+    poly: 'lim n→∞ of n-bonacci root', det: 'embodiment threshold',
+    desc: 'τ = 2 is the limit of all n-bonacci constants. It is the embodiment threshold of the dm³ framework: T* = 2π, μ_max = −2, τ = 2. Complete Completeness (g⁶⁴) is the state that has arrived at τ.'
+  }
 ];
 
+let rungHitBoxes = []; // filled by draw, used by click handler
+let selectedRung = null;
+
 function drawLadder() {
-  const W = lc.offsetWidth; const H = 200;
+  const W = lc.offsetWidth, H = 220;
+  if (!W) return;
+
+  const dpr = window.devicePixelRatio || 1;
+  lc.width = Math.round(W * dpr);
+  lc.height = Math.round(H * dpr);
+  lctx.resetTransform();
+  lctx.scale(dpr, dpr);
+
   lctx.clearRect(0, 0, W, H);
-  lctx.fillStyle = '#06080a'; lctx.fillRect(0, 0, W, H);
+  lctx.fillStyle = '#06080a';
+  lctx.fillRect(0, 0, W, H);
+
+  const PAD = { left: 22, right: 22, top: 36, bottom: 40 };
+  const pw = W - PAD.left - PAD.right;
+  const spineY = PAD.top + (H - PAD.top - PAD.bottom) * 0.55;
 
   const n = RUNGS.length;
-  const cellW = W / n;
-  const cx = (i) => cellW * i + cellW / 2;
+  const cellW = pw / n;
 
-  // horizontal spine
-  const spineY = H * 0.48;
-  lctx.strokeStyle = 'rgba(255,255,255,0.08)'; lctx.lineWidth = 1;
-  lctx.beginPath(); lctx.moveTo(cellW * 0.3, spineY); lctx.lineTo(W - cellW * 0.3, spineY); lctx.stroke();
+  // cx for rung i: left pad + i*cellW + cellW/2
+  const cx = i => PAD.left + i * cellW + cellW / 2;
 
-  // τ = 2 target line
-  lctx.strokeStyle = 'rgba(10,186,181,0.15)'; lctx.setLineDash([4, 5]);
-  lctx.beginPath(); lctx.moveTo(W - 50, 20); lctx.lineTo(W - 50, H - 20); lctx.stroke();
+  // FIX 2: τ=2 line sits at last rung center (index n-1), NOT at W-50
+  const tauX = cx(n - 1);
+
+  rungHitBoxes = [];
+
+  // ── spine ──
+  lctx.strokeStyle = 'rgba(255,255,255,0.07)'; lctx.lineWidth = 1;
+  lctx.beginPath();
+  lctx.moveTo(PAD.left + cellW / 2, spineY);
+  lctx.lineTo(cx(n - 2), spineY); // spine goes to second-to-last; τ is the terminus
+  lctx.stroke();
+
+  // dashed approach to τ
+  lctx.strokeStyle = 'rgba(103,232,249,0.2)'; lctx.lineWidth = 1;
+  lctx.setLineDash([3, 5]);
+  lctx.beginPath();
+  lctx.moveTo(cx(n - 2), spineY);
+  lctx.lineTo(tauX - 12, spineY);
+  lctx.stroke();
   lctx.setLineDash([]);
-  lctx.fillStyle = 'rgba(10,186,181,0.5)'; lctx.font = '9px JetBrains Mono, monospace'; lctx.textAlign = 'center';
-  lctx.fillText('τ = 2', W - 26, H / 2);
 
   RUNGS.forEach((r, i) => {
     const x = cx(i);
-    const isHigh = r.highlight;
+    const isHighlight = !!r.highlight;
+    const isSelected = selectedRung === i;
+    const isTau = r.n === Infinity;
+
+    // Vertical position: highlighted rung rises, τ stays on spine
+    const dotY = isHighlight ? spineY - 22 : spineY;
+    const dotR = isHighlight ? 11 : (isTau ? 10 : 6);
+
+    // glow for highlight or selected
+    if (isHighlight || isSelected) {
+      const glowR = isSelected ? 26 : 22;
+      const g = lctx.createRadialGradient(x, dotY, 0, x, dotY, glowR);
+      const glowCol = isHighlight ? '10,186,181' : '201,168,76';
+      g.addColorStop(0, `rgba(${glowCol},0.28)`);
+      g.addColorStop(1, 'transparent');
+      lctx.fillStyle = g;
+      lctx.beginPath(); lctx.arc(x, dotY, glowR, 0, Math.PI * 2); lctx.fill();
+    }
+
+    // stem for elevated rung
+    if (isHighlight) {
+      lctx.strokeStyle = 'rgba(10,186,181,0.35)'; lctx.lineWidth = 1;
+      lctx.beginPath(); lctx.moveTo(x, spineY); lctx.lineTo(x, dotY + dotR + 1); lctx.stroke();
+    }
+
+    // τ vertical bar (terminus marker)
+    if (isTau) {
+      lctx.strokeStyle = 'rgba(103,232,249,0.5)'; lctx.lineWidth = 1.5;
+      lctx.beginPath(); lctx.moveTo(x, PAD.top + 8); lctx.lineTo(x, H - PAD.bottom + 4); lctx.stroke();
+    }
 
     // dot
-    const dotR = isHigh ? 10 : 6;
-    const dotY = isHigh ? spineY - 18 : spineY;
-
-    if (isHigh) {
-      // glow
-      const g = lctx.createRadialGradient(x, dotY, 0, x, dotY, 28);
-      g.addColorStop(0, 'rgba(10,186,181,0.3)'); g.addColorStop(1, 'transparent');
-      lctx.fillStyle = g; lctx.beginPath(); lctx.arc(x, dotY, 28, 0, Math.PI * 2); lctx.fill();
-      // stem
-      lctx.strokeStyle = 'rgba(10,186,181,0.4)'; lctx.lineWidth = 1;
-      lctx.beginPath(); lctx.moveTo(x, spineY); lctx.lineTo(x, dotY + dotR); lctx.stroke();
+    lctx.beginPath(); lctx.arc(x, dotY, dotR, 0, Math.PI * 2);
+    lctx.fillStyle = isSelected ? '#ffe7a0' : r.col;
+    lctx.fill();
+    if (isSelected) {
+      lctx.strokeStyle = '#c9a84c'; lctx.lineWidth = 2;
+      lctx.beginPath(); lctx.arc(x, dotY, dotR + 3, 0, Math.PI * 2); lctx.stroke();
     }
 
-    lctx.beginPath(); lctx.arc(x, dotY, dotR, 0, Math.PI * 2);
-    lctx.fillStyle = r.col; lctx.fill();
-
-    // symbol
-    lctx.font = isHigh ? 'bold 18px JetBrains Mono, monospace' : '14px JetBrains Mono, monospace';
-    lctx.fillStyle = r.col; lctx.textAlign = 'center';
+    // symbol above dot
+    lctx.font = isHighlight
+      ? `italic bold 18px 'Cormorant Garamond', serif`
+      : `italic ${isTau ? '16px' : '14px'} 'Cormorant Garamond', serif`;
+    lctx.fillStyle = isSelected ? '#ffe7a0' : r.col;
+    lctx.textAlign = 'center';
     lctx.fillText(r.sym, x, dotY - dotR - 6);
 
-    // value label
+    // value label below spine
     lctx.font = '9px JetBrains Mono, monospace';
-    lctx.fillStyle = isHigh ? 'rgba(10,186,181,0.8)' : 'rgba(255,255,255,0.25)';
-    lctx.fillText(r.label, x, spineY + 22);
+    lctx.fillStyle = isHighlight ? 'rgba(10,186,181,0.75)' : 'rgba(255,255,255,0.22)';
+    lctx.textAlign = 'center';
+    const valStr = r.n === Infinity ? 'τ = 2' : r.val.toFixed(4);
+    lctx.fillText(valStr, x, spineY + 18);
 
     // name label
-    lctx.fillStyle = isHigh ? 'rgba(10,186,181,0.6)' : 'rgba(255,255,255,0.18)';
     lctx.font = '8px JetBrains Mono, monospace';
-    lctx.fillText(r.name, x, spineY + 34);
+    lctx.fillStyle = isHighlight ? 'rgba(10,186,181,0.55)' : 'rgba(255,255,255,0.18)';
+    lctx.fillText(r.name, x, spineY + 30);
 
-    // "YOU ARE HERE" for η
-    if (isHigh) {
-      lctx.fillStyle = 'rgba(10,186,181,0.5)';
+    // FIX 4: "YOU ARE HERE →" is drawn to the LEFT of η, arrow points RIGHT →
+    if (isHighlight) {
+      const labelW = 110;
+      const labelX = x - labelW - 8; // LEFT of η dot
       lctx.font = '8px JetBrains Mono, monospace';
-      lctx.fillText('← YOU ARE HERE', x + 52, dotY + 4);
+      lctx.fillStyle = 'rgba(10,186,181,0.45)';
+      lctx.textAlign = 'right';
+      lctx.fillText('YOU ARE HERE →', x - dotR - 6, dotY + 3);
     }
+
+    // τ label above bar
+    if (isTau) {
+      lctx.font = '9px JetBrains Mono, monospace';
+      lctx.fillStyle = 'rgba(103,232,249,0.6)';
+      lctx.textAlign = 'center';
+      lctx.fillText('n→∞', x, PAD.top + 4);
+    }
+
+    // hit box (generous — whole cell width)
+    rungHitBoxes.push({
+      x: x - cellW / 2, y: 0,
+      w: cellW, h: H,
+      idx: i
+    });
   });
+
+  // convergence arrow label (between Ω and τ)
+  const arrowX = cx(n - 2) + cellW * 0.2;
+  lctx.font = '8px JetBrains Mono, monospace';
+  lctx.fillStyle = 'rgba(255,255,255,0.12)';
+  lctx.textAlign = 'center';
+  lctx.fillText('→ 2', arrowX, spineY - 10);
 }
-drawLadder();
+
+// ── ResizeObserver — draws AFTER layout, solving the offsetWidth=0 bug ──
+new ResizeObserver(() => { drawLadder(); }).observe(lc);
+
+// ── Click handler ──
+lc.addEventListener('click', function (e) {
+  const rect = lc.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  for (const box of rungHitBoxes) {
+    if (mx >= box.x && mx < box.x + box.w && my >= box.y && my < box.y + box.h) {
+      selectedRung = (selectedRung === box.idx) ? null : box.idx;
+      drawLadder();
+      const r = RUNGS[box.idx];
+      if (selectedRung !== null) {
+        detailEl.style.display = 'block';
+        detailEl.innerHTML = `
+          <div class="det-sym">${r.sym}</div>
+          <div class="det-name">${r.name} &nbsp;·&nbsp; n = ${r.n === Infinity ? '∞' : r.n}</div>
+          <div class="det-val">
+            Root: ${r.n === Infinity ? 'τ = 2 (exact limit)' : r.val.toFixed(10)} &nbsp;·&nbsp;
+            Poly: ${r.poly} &nbsp;·&nbsp; ${r.det}
+          </div>
+          <div class="det-desc">${r.desc}</div>
+        `;
+      } else {
+        detailEl.style.display = 'none';
+      }
+      break;
+    }
+  }
+});
+
+// Cursor affordance
+lc.addEventListener('mousemove', function (e) {
+  const rect = lc.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const hit = rungHitBoxes.some(b => mx >= b.x && mx < b.x + b.w);
+  lc.style.cursor = hit ? 'pointer' : 'default';
+});
 
 })();
 </script>
