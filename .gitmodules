@@ -1,0 +1,3 @@
+[submodule "submodules/geometry"]
+	path = submodules/geometry
+	url = https://github.com/TOTOGT/geometry.git
