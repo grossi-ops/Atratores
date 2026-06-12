@@ -1,0 +1,200 @@
+{
+  "meta": {
+    "title": "Principia Orthogona",
+    "subtitle": "Complete Completeness Series — G1 through G6",
+    "author": "Pablo Nogueira Grossi",
+    "orcid": "0009-0000-6496-2186",
+    "affiliation": "G6 LLC · Newark, New Jersey · 2026",
+    "series_doi": "10.5281/zenodo.19117399",
+    "isbn_print": "979-8-9954416-4-9",
+    "isbn_ebook": "979-8-9954416-5-6",
+    "last_updated": "2026-05-27",
+    "tagline": "A semente. The seed."
+  },
+  "rings": [
+    {
+      "id": "G1",
+      "title": "Ring 1 — The Operators",
+      "subtitle": "Singularity-Theoretic Foundations",
+      "description": "Establishes the operator chain C→K→F→U. Singularity theory, Whitney A₁ fold, the geometric origin of non-commutativity. The wholesale before the retail.",
+      "doi": "10.5281/zenodo.20298665",
+      "url": "https://doi.org/10.5281/zenodo.20298665",
+      "status": "published",
+      "version": "v3",
+      "theorems": 0,
+      "sorry": 0,
+      "chapters": []
+    },
+    {
+      "id": "G2",
+      "title": "Ring 2 — Contact Geometry",
+      "subtitle": "The dm³ Realization",
+      "description": "Contact-geometric realization via the dm³ toy model on M = ℝ²₊ × ℝ with α = dz − r²dθ. Limit cycle Γ = {r=1}, T* = 2π, μₘₐₓ = −2. The shape that was always there.",
+      "doi": "10.5281/zenodo.20159456",
+      "url": "https://doi.org/10.5281/zenodo.20159456",
+      "status": "published",
+      "version": "v2a",
+      "theorems": 0,
+      "sorry": 0,
+      "chapters": []
+    },
+    {
+      "id": "G3",
+      "title": "Ring 3 — The Time Circuit",
+      "subtitle": "GTCT: Spiral Return · Lean 4 Verified",
+      "description": "Establishes T as the fifth operator. Theorem T1 (Spiral Return): the G⁶⁴-orbit is generative, not periodic. Gronwall bound ε₀=1/3. Inner basin r*≈0.773. 4 theorems proved, 2 honest axioms. 0 sorry.",
+      "doi": "10.5281/zenodo.20230641",
+      "url": "https://doi.org/10.5281/zenodo.20230641",
+      "status": "published",
+      "version": "v3",
+      "theorems": 4,
+      "sorry": 0,
+      "chapters": []
+    },
+    {
+      "id": "G4",
+      "title": "Ring 4 — The Coherence Bridge",
+      "subtitle": "17 Domains · 17 Orders of Magnitude",
+      "description": "Coherence Bridge Theorem (5.4): 17 domains from HPA stress to Saturn's hexagon are objects in the same category dm³. Explicit contact morphisms fᵢⱼ: Xᵢ → Xⱼ. One operator sequence. All substrates.",
+      "doi": "10.5281/zenodo.19117399",
+      "url": "https://doi.org/10.5281/zenodo.19117399",
+      "status": "published",
+      "version": "v1",
+      "theorems": 0,
+      "sorry": 0,
+      "chapters": []
+    },
+    {
+      "id": "G5",
+      "title": "Ring 5 — Complete Completeness",
+      "subtitle": "The Seed · A Semente · Bilingual IMPA Edition",
+      "description": "Volume V. The bilingual dream. AXLE as mathematics as language. The student edition. The Princípio do Cajueiro. For Brazil, for every mind that knows something before it can prove it.",
+      "doi": "10.5281/zenodo.19117399",
+      "url": "https://totogt.github.io/GTCT/GTCT_V_Student_Edition.html",
+      "status": "live",
+      "version": "v1",
+      "theorems": 0,
+      "sorry": 0,
+      "chapters": [
+        {
+          "id": "G5-preface",
+          "title": "The Seed · A Semente",
+          "subtitle": "Preface — Bilingual EN/PT",
+          "url": "https://totogt.github.io/GTCT/GTCT_V_Student_Edition.html",
+          "status": "live",
+          "date": "2026-05-01",
+          "theorems": 0,
+          "sorry": 0,
+          "tags": ["preface", "bilingual", "origin"]
+        }
+      ]
+    },
+    {
+      "id": "G6",
+      "title": "Ring 6 — AXLE",
+      "subtitle": "The Living Proof Series · 100+ Theorems · Growing",
+      "description": "Formal verification in Lean 4. Each chapter isolates one domain and proves the dm³ contact morphism. 0 sorry policy. This ring never closes — it grows with every new proof.",
+      "doi": "10.5281/zenodo.20168812",
+      "url": "https://totogt.github.io/AXLE/",
+      "status": "live",
+      "version": "growing",
+      "theorems": 100,
+      "sorry": 0,
+      "chapters": [
+        {
+          "id": "AXLE-A",
+          "title": "Chapter A — Autophagy",
+          "subtitle": "Triple-Alpha · 26 Theorems · 0 Sorry",
+          "url": "https://totogt.github.io/AXLE/sample-chapter-autophagy.html",
+          "status": "live",
+          "date": "2026-04-01",
+          "theorems": 26,
+          "sorry": 0,
+          "doi": "10.5281/zenodo.20168812",
+          "tags": ["biology", "autophagy", "lean4", "proved"]
+        },
+        {
+          "id": "AXLE-eta",
+          "title": "Chapter η — DNLS / N-bonacci",
+          "subtitle": "η≈1.839 · Criticality · Lean 4",
+          "url": "https://totogt.github.io/AXLE/",
+          "status": "live",
+          "date": "2026-04-15",
+          "theorems": 0,
+          "sorry": 0,
+          "doi": "10.5281/zenodo.20026942",
+          "tags": ["dnls", "nbonacci", "criticality", "lean4"]
+        },
+        {
+          "id": "AXLE-fruitfly",
+          "title": "Chapter F — FruitFly Connectome",
+          "subtitle": "Neural Architecture · dm³ · Lean 4",
+          "url": "https://totogt.github.io/AXLE/",
+          "status": "live",
+          "date": "2026-04-20",
+          "theorems": 0,
+          "sorry": 0,
+          "doi": "10.5281/zenodo.19210136",
+          "tags": ["connectome", "neuroscience", "lean4"]
+        },
+        {
+          "id": "AXLE-swarm",
+          "title": "Chapter S — Swarm Intelligence",
+          "subtitle": "Intel Swarm · Collective dm³ · Lean 4",
+          "url": "https://totogt.github.io/AXLE/",
+          "status": "live",
+          "date": "2026-04-25",
+          "theorems": 0,
+          "sorry": 0,
+          "tags": ["swarm", "intelligence", "lean4"]
+        }
+      ]
+    }
+  ],
+  "recognition": [
+    {
+      "institution": "SBM XII Bienal",
+      "detail": "5/5 works accepted — Natal, Brazil, August 2026",
+      "date": "2026-05-20",
+      "status": "confirmed"
+    },
+    {
+      "institution": "NYFA",
+      "detail": "Fiscal sponsorship accepted — 501(c)(3) tax-deductible donations",
+      "date": "2026-05-22",
+      "status": "confirmed"
+    },
+    {
+      "institution": "WorldQuant Brain",
+      "detail": "2 alphas ACTIVE — Sharpe 2.43, Fitness 1.84",
+      "date": "2026-05-01",
+      "status": "live"
+    }
+  ],
+  "open_problems": [
+    {
+      "id": "OP1",
+      "title": "Poincaré–Collatz (general)",
+      "description": "General case: does every GChain orbit satisfy dist(Gⁿx, Gⁿ⁺¹x) < r* for some n? The contracting case (k<1) is proved. The general case is the dm³ analogue of Collatz.",
+      "status": "open",
+      "lean_axiom": "poincare_collatz_general",
+      "difficulty": 5
+    },
+    {
+      "id": "OP2",
+      "title": "Inner basin analytic boundary",
+      "description": "r* ≈ 0.773 is identified numerically. An analytic expression is unknown. Lean axiom: inner_basin_is_asymmetric.",
+      "status": "open",
+      "lean_axiom": "inner_basin_is_asymmetric",
+      "difficulty": 3
+    },
+    {
+      "id": "OP3",
+      "title": "BSD–GTCT Bridge",
+      "description": "Is the accumulated TE orbit cost the discrete analogue of log L(E,1)? Stated as GTCT.BSD.BSDGTCTConjecture in Lean 4. $1M Millennium Prize.",
+      "status": "conjecture",
+      "lean_axiom": "BSDGTCTConjecture",
+      "difficulty": 5
+    }
+  ]
+}

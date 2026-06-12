@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Principia Orthogona — Complete Completeness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;700&family=Cinzel:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:    #04040a;
+  --deep:    #07080f;
+  --surface: #0c0d16;
+  --card:    #0f1018;
+  --gold:    #c9a84c;
+  --gold2:   #e8c96a;
+  --teal:    #2dd4bf;
+  --green:   #22c55e;
+  --crimson: #dc2626;
+  --purple:  #a78bfa;
+  --text:    #e8e4d8;
+  --muted:   #6b6757;
+  --dim:     #2a2820;
+  --border:  rgba(201,168,76,0.12);
+  --border2: rgba(201,168,76,0.28);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Cormorant Garamond',serif;
+  background:var(--void);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:999;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;width:100%;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0.9rem 3rem;
+  border-bottom:1px solid var(--border);
+  background:rgba(4,4,10,0.92);backdrop-filter:blur(16px);
+}
+.nav-logo{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.25em;color:var(--gold);}
+.nav-links{display:flex;gap:2rem;flex-wrap:wrap;}
+.nav-links a{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--gold);}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;padding:9rem 2rem 5rem;
+  position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 45%,rgba(201,168,76,0.06) 0%,transparent 70%),
+    radial-gradient(ellipse 30% 30% at 15% 75%,rgba(45,212,191,0.04) 0%,transparent 60%);
+}
+.braid-bg{position:absolute;inset:0;opacity:0.055;}
+.stamp{
+  font-family:'JetBrains Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--teal);border:1px solid currentColor;
+  padding:0.25rem 0.75rem;margin-bottom:2.5rem;display:inline-block;
+  animation:pulse 3s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(45,212,191,0);}50%{box-shadow:0 0 10px 2px rgba(45,212,191,0.15);}}
+.hero h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(2rem,6vw,5.5rem);
+  font-weight:900;line-height:0.92;letter-spacing:-0.02em;
+  color:var(--gold);text-shadow:0 0 100px rgba(201,168,76,0.25);
+  margin-bottom:0.5rem;
+}
+.hero-sub{
+  font-family:'Cinzel',serif;font-size:clamp(0.85rem,1.8vw,1.3rem);
+  font-weight:400;color:var(--text);letter-spacing:0.08em;margin-bottom:0.5rem;
+}
+.hero-pt{
+  font-family:'Cinzel',serif;font-size:clamp(0.75rem,1.4vw,1.05rem);
+  font-weight:300;color:var(--muted);letter-spacing:0.06em;
+  font-style:italic;margin-bottom:2rem;
+}
+.hero-meta{
+  font-family:'JetBrains Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.15em;color:var(--muted);margin-bottom:2.5rem;line-height:2.2;
+}
+.hero-stats{
+  display:flex;gap:3rem;justify-content:center;flex-wrap:wrap;
+  margin-bottom:2.5rem;
+}
+.stat{text-align:center;}
+.stat-n{
+  font-family:'Cinzel',serif;font-size:2rem;
+  color:var(--gold);display:block;line-height:1;
+}
+.stat-n.live{color:var(--teal);}
+.stat-l{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
+  display:block;margin-top:0.3rem;
+}
+.epigraph{
+  max-width:560px;font-size:1.1rem;font-style:italic;
+  color:var(--muted);line-height:1.85;
+  border-left:2px solid var(--border2);padding-left:1.4rem;
+  text-align:left;margin:0 auto;
+}
+.epigraph cite{
+  display:block;font-style:normal;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.12em;color:var(--gold);margin-top:0.6rem;
+}
+.scroll-cue{
+  position:absolute;bottom:1.8rem;left:50%;transform:translateX(-50%);
+  font-family:'JetBrains Mono',monospace;font-size:0.5rem;
+  letter-spacing:0.2em;color:var(--dim);
+  animation:bob 2.2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(5px);}}
+
+/* ── SECTION ── */
+.section{max-width:1080px;margin:0 auto;padding:5rem 2rem;border-top:1px solid var(--border);}
+.sec-label{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;
+}
+.section h2{
+  font-family:'Cinzel',serif;font-size:clamp(1.5rem,3.5vw,2.8rem);
+  font-weight:600;color:var(--text);margin-bottom:1.2rem;line-height:1.1;
+}
+.section p{
+  font-size:1.1rem;line-height:1.9;
+  color:rgba(232,228,216,0.75);max-width:680px;margin-bottom:1.3rem;
+}
+.section p strong{color:var(--gold);font-weight:400;}
+
+/* ── RINGS ── */
+#rings-container{margin-top:3rem;}
+.ring-card{
+  border:1px solid var(--border);background:var(--card);
+  margin-bottom:1px;overflow:hidden;
+  transition:border-color 0.2s;
+}
+.ring-card:hover{border-color:var(--border2);}
+.ring-header{
+  display:flex;align-items:center;gap:2rem;padding:2rem;
+  cursor:pointer;
+}
+.ring-g{
+  font-family:'Cinzel',serif;font-size:2rem;color:var(--gold);
+  min-width:60px;text-align:center;flex-shrink:0;
+  border:1px solid var(--border2);padding:0.5rem;
+  background:rgba(201,168,76,0.04);
+}
+.ring-g.g6{color:var(--teal);border-color:rgba(45,212,191,0.3);background:rgba(45,212,191,0.04);}
+.ring-info{flex:1;}
+.ring-title{
+  font-family:'Cinzel',serif;font-size:1.2rem;
+  color:var(--gold2);margin-bottom:0.3rem;
+}
+.ring-subtitle{
+  font-family:'JetBrains Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:0.5rem;
+}
+.ring-desc{font-size:0.95rem;color:var(--muted);line-height:1.6;max-width:600px;}
+.ring-meta{
+  display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center;flex-shrink:0;
+}
+.ring-badge{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.2rem 0.6rem;border:1px solid;
+}
+.b-live{color:var(--green);border-color:rgba(34,197,94,0.3);}
+.b-pub{color:var(--gold);border-color:var(--border2);}
+.b-grow{color:var(--teal);border-color:rgba(45,212,191,0.3);}
+.b-thm{color:var(--text);border-color:var(--border);}
+.b-sorry{color:var(--green);border-color:rgba(34,197,94,0.2);}
+.ring-toggle{
+  color:var(--muted);font-size:0.8rem;flex-shrink:0;
+  transition:transform 0.3s;font-family:'JetBrains Mono',monospace;
+}
+.ring-toggle.open{transform:rotate(180deg);}
+.ring-chapters{
+  display:none;border-top:1px solid var(--border);
+}
+.ring-chapters.open{display:block;}
+.chapter-item{
+  display:flex;align-items:center;gap:1.5rem;
+  padding:1.2rem 2rem 1.2rem 5rem;
+  border-bottom:1px solid rgba(201,168,76,0.05);
+  text-decoration:none;transition:background 0.15s;
+}
+.chapter-item:hover{background:rgba(201,168,76,0.03);}
+.chapter-item:last-child{border-bottom:none;}
+.ch-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--green);flex-shrink:0;
+}
+.ch-dot.wip{background:var(--gold);}
+.ch-title{
+  font-family:'Cinzel',serif;font-size:0.95rem;
+  color:var(--gold2);flex:1;
+}
+.ch-sub{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;
+  display:block;margin-top:0.2rem;
+}
+.ch-meta{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  color:var(--muted);display:flex;gap:1rem;flex-wrap:wrap;
+}
+.ch-thm{color:var(--teal);}
+.ch-doi{color:var(--muted);font-size:0.52rem;}
+
+/* ── OPERATOR CHAIN ── */
+.op-chain{
+  display:flex;flex-wrap:wrap;gap:0;
+  border:1px solid var(--border);background:var(--card);
+  overflow:hidden;margin:3rem 0;
+}
+.op{
+  flex:1;min-width:110px;padding:1.5rem 1rem;
+  text-align:center;border-right:1px solid var(--border);
+}
+.op:last-child{border-right:none;}
+.op-sym{
+  font-family:'Cinzel',serif;font-size:2rem;color:var(--gold);
+  display:block;margin-bottom:0.3rem;
+}
+.op-name{
+  font-family:'JetBrains Mono',monospace;font-size:0.55rem;
+  letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);
+  display:block;margin-bottom:0.3rem;
+}
+.op-desc{font-size:0.8rem;color:rgba(232,228,216,0.45);line-height:1.5;}
+.op.fold{background:rgba(220,38,38,0.04);}
+.op.fold .op-sym{color:var(--crimson);}
+.op.time{background:rgba(45,212,191,0.04);}
+.op.time .op-sym{color:var(--teal);}
+.chain-eq{
+  font-family:'JetBrains Mono',monospace;font-size:0.75rem;
+  padding:1rem 1.5rem;border-top:1px solid var(--border);
+  background:rgba(201,168,76,0.02);color:var(--text);
+}
+.chain-eq span{color:var(--gold);}
+
+/* ── COHERENCE TABLE ── */
+.coh-wrap{overflow-x:auto;margin:2rem 0;}
+.coh-table{
+  width:100%;border-collapse:collapse;font-size:0.82rem;
+  border:1px solid var(--border);min-width:600px;
+}
+.coh-table th{
+  font-family:'JetBrains Mono',monospace;font-size:0.55rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);padding:0.6rem 0.8rem;
+  border-bottom:1px solid var(--border);
+  background:var(--card);text-align:left;
+}
+.coh-table td{
+  padding:0.65rem 0.8rem;
+  border-bottom:1px solid rgba(201,168,76,0.05);
+  font-family:'JetBrains Mono',monospace;font-size:0.68rem;
+  color:rgba(232,228,216,0.65);
+}
+.coh-table .domain{
+  color:var(--text);font-family:'Cormorant Garamond',serif;
+  font-size:0.92rem;
+}
+.s-lean{color:var(--green);}
+.s-build{color:var(--gold);}
+.s-arg{color:var(--teal);}
+
+/* ── OPEN PROBLEMS ── */
+.op-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1px;background:var(--border);border:1px solid var(--border);
+  margin:2rem 0;
+}
+.op-cell{background:var(--card);padding:1.8rem;}
+.op-id{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.2em;color:var(--gold);margin-bottom:0.5rem;
+}
+.op-title{
+  font-family:'Cinzel',serif;font-size:1rem;
+  color:var(--gold2);margin-bottom:0.5rem;
+}
+.op-desc{font-size:0.88rem;color:var(--muted);line-height:1.6;}
+.op-axiom{
+  font-family:'JetBrains Mono',monospace;font-size:0.6rem;
+  color:var(--teal);margin-top:0.6rem;display:block;
+}
+.diff{color:var(--crimson);font-size:0.7rem;}
+
+/* ── RECOGNITION ── */
+.rec-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1px;background:var(--border);border:1px solid var(--border);
+  margin:2rem 0;
+}
+.rec-cell{background:var(--card);padding:1.8rem;}
+.rec-inst{
+  font-family:'Cinzel',serif;font-size:1rem;
+  color:var(--gold2);margin-bottom:0.4rem;
+}
+.rec-detail{font-size:0.88rem;color:var(--muted);line-height:1.6;}
+.rec-status{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  color:var(--teal);margin-top:0.5rem;display:block;
+}
+
+/* ── MANIFEST TIMESTAMP ── */
+.manifest-note{
+  font-family:'JetBrains Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.1em;color:var(--muted);
+  text-align:center;padding:1.5rem;
+  border-top:1px solid var(--border);
+}
+
+/* ── LOADING ── */
+.loading{
+  font-family:'JetBrains Mono',monospace;font-size:0.7rem;
+  color:var(--muted);text-align:center;padding:3rem;
+  animation:pulse 1.5s ease-in-out infinite;
+}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);padding:3rem 2rem;
+  text-align:center;max-width:1080px;margin:0 auto;
+}
+footer p{
+  font-family:'JetBrains Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.1em;color:var(--muted);line-height:2.2;
+}
+footer a{color:var(--gold);text-decoration:none;}
+.footer-seed{
+  font-family:'Cormorant Garamond',serif;font-size:1rem;
+  font-style:italic;color:var(--dim);margin-top:1.5rem;
+  letter-spacing:0.05em;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Principia Orthogona · G1–G6</span>
+  <div class="nav-links">
+    <a href="#rings">Rings</a>
+    <a href="#operators">Operators</a>
+    <a href="#coherence">Coherence</a>
+    <a href="#open">Open Problems</a>
+    <a href="#recognition">Recognition</a>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <svg class="braid-bg" viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <path d="M0,200 C175,200 175,450 350,450 C525,450 525,200 700,200 C875,200 875,450 1050,450 C1225,450 1225,200 1400,200" stroke="#c9a84c" stroke-width="2" fill="none">
+        <animate attributeName="d" dur="10s" repeatCount="indefinite"
+          values="M0,200 C175,200 175,450 350,450 C525,450 525,200 700,200 C875,200 875,450 1050,450 C1225,450 1225,200 1400,200;
+                  M0,300 C175,300 175,550 350,550 C525,550 525,300 700,300 C875,300 875,550 1050,550 C1225,550 1225,300 1400,300;
+                  M0,200 C175,200 175,450 350,450 C525,450 525,200 700,200 C875,200 875,450 1050,450 C1225,450 1225,200 1400,200"/>
+      </path>
+      <path d="M0,450 C175,450 175,200 350,200 C525,200 525,450 700,450 C875,450 875,200 1050,200 C1225,200 1225,450 1400,450" stroke="#2dd4bf" stroke-width="2" fill="none">
+        <animate attributeName="d" dur="10s" repeatCount="indefinite"
+          values="M0,450 C175,450 175,200 350,200 C525,200 525,450 700,450 C875,450 875,200 1050,200 C1225,200 1225,450 1400,450;
+                  M0,550 C175,550 175,300 350,300 C525,300 525,550 700,550 C875,550 875,300 1050,300 C1225,300 1225,550 1400,550;
+                  M0,450 C175,450 175,200 350,200 C525,200 525,450 700,450 C875,450 875,200 1050,200 C1225,200 1225,450 1400,450"/>
+      </path>
+    </g>
+  </svg>
+
+  <div style="position:relative;z-index:10;">
+    <div class="stamp" id="hero-stamp">G1 · G2 · G3 · G4 · G5 · G6 · C→K→F→U→T</div>
+    <h1>PRINCIPIA<br>ORTHOGONA</h1>
+    <div class="hero-sub">Complete Completeness Series</div>
+    <div class="hero-pt">Série Completude Completa · Princípio do Cajueiro</div>
+    <div class="hero-meta" id="hero-meta">
+      Pablo Nogueira Grossi · G6 LLC · ORCID 0009-0000-6496-2186<br>
+      Series DOI: 10.5281/zenodo.19117399 · Newark, New Jersey · 2026
+    </div>
+    <div class="hero-stats" id="hero-stats">
+      <div class="stat">
+        <span class="stat-n" id="stat-theorems">100+</span>
+        <span class="stat-l">Lean 4 Theorems</span>
+      </div>
+      <div class="stat">
+        <span class="stat-n" id="stat-sorry" style="color:var(--green)">0</span>
+        <span class="stat-l">Sorry</span>
+      </div>
+      <div class="stat">
+        <span class="stat-n live" id="stat-chapters">50+</span>
+        <span class="stat-l">HTML Chapters</span>
+      </div>
+      <div class="stat">
+        <span class="stat-n" id="stat-domains">17</span>
+        <span class="stat-l">Domains · 17 Orders of Magnitude</span>
+      </div>
+      <div class="stat">
+        <span class="stat-n" id="stat-rings">6</span>
+        <span class="stat-l">Rings · Growing</span>
+      </div>
+    </div>
+    <div class="epigraph">
+      "A semente não é o produto final. A semente é a forma comprimida de tudo que vai crescer."
+      <cite>— Pablo Nogueira Grossi, The Seed · A Semente (2026)</cite>
+    </div>
+  </div>
+  <div class="scroll-cue">↓ scroll</div>
+</section>
+
+<!-- ══════════ RINGS ══════════ -->
+<section class="section" id="rings">
+  <div class="sec-label">The Six Rings · Os Seis Anéis</div>
+  <h2>From the seed to the canopy.</h2>
+  <p>
+    Six rings. Each a formalization of the one before.
+    Nothing discarded. The braid is in everything.
+    <strong>Ring 6 (AXLE) never closes</strong> — it grows with every new proof.
+  </p>
+  <div id="rings-container">
+    <div class="loading">Loading rings from manifest…</div>
+  </div>
+</section>
+
+<!-- ══════════ OPERATORS ══════════ -->
+<section class="section" id="operators">
+  <div class="sec-label">The Operator Chain · A Cadeia de Operadores</div>
+  <h2>C → K → F → U → T</h2>
+  <p>
+    Five operators on the contact manifold M = ℝ²₊ × ℝ.
+    <strong>G = U ∘ F ∘ K ∘ C.</strong>
+    T completes the circuit — generative, not periodic.
+    Non-commutativity is topological, not chosen.
+    My mother described this chain before it had a name.
+  </p>
+
+  <div class="op-chain">
+    <div class="op">
+      <span class="op-sym">C</span>
+      <span class="op-name">Compress</span>
+      <span class="op-desc">Dense structure. Wholesale before retail. The seed before the canopy.</span>
+    </div>
+    <div class="op">
+      <span class="op-sym">K</span>
+      <span class="op-name">Threshold</span>
+      <span class="op-desc">Curvature. Critical κ*≈0.882. Where regime shifts. Named when the lexicon was written.</span>
+    </div>
+    <div class="op fold">
+      <span class="op-sym">F</span>
+      <span class="op-name">Fold</span>
+      <span class="op-desc">Whitney A₁. Commitment point. BSD s=1. The crossing from which there is no return.</span>
+    </div>
+    <div class="op">
+      <span class="op-sym">U</span>
+      <span class="op-name">Unfold</span>
+      <span class="op-desc">Expanded form. Retail to the world. Not the inverse of F. The strand re-emerges changed.</span>
+    </div>
+    <div class="op time">
+      <span class="op-sym">T</span>
+      <span class="op-name">Time · Circuit</span>
+      <span class="op-desc">Fifth operator. T(n) = log 3 − v₂(n)·log 2. Completes the generative circuit.</span>
+    </div>
+    <div class="chain-eq" style="flex-basis:100%;border-top:1px solid var(--border);">
+      <span>G</span> = U ∘ F ∘ K ∘ C &nbsp;·&nbsp;
+      Circuit: <span>C → K → F → U → T → (return)</span> &nbsp;·&nbsp;
+      dm³: ṙ = r(1−r²) + 2(r−1)e⁻ʳ &nbsp;·&nbsp; θ̇ = 1 &nbsp;·&nbsp; ż = r² − 2(r−1)²e⁻ʳ &nbsp;·&nbsp;
+      Γ = {r=1} &nbsp;·&nbsp; T*=2π &nbsp;·&nbsp; μₘₐₓ=−2
+    </div>
+  </div>
+
+  <!-- Braid figure -->
+  <figure style="border:1px solid var(--border);background:var(--card);overflow:hidden;margin:2rem 0;">
+    <svg viewBox="0 0 900 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:180px;background:#07080f;">
+      <defs><filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+      <g filter="url(#glow)">
+        <path d="M40,55 L175,55 Q215,55 255,100 Q295,145 335,145 Q375,145 415,100 Q455,55 495,55 Q535,55 575,100 Q615,145 655,145 Q695,145 735,100 L860,100" stroke="#c9a84c" stroke-width="2.5" fill="none"/>
+        <path d="M40,100 L150,100 Q175,100 200,77" stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
+        <path d="M235,122 Q255,145 295,145 Q335,145 375,100 Q415,55 455,55 Q495,55 535,100" stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
+        <path d="M572,77 Q592,55 635,55 Q670,55 710,100 L860,55" stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
+        <path d="M40,145 L125,145 Q165,145 205,100 Q245,55 285,55 Q325,55 365,100" stroke="#c9a84c" stroke-width="1.8" fill="none" opacity="0.4"/>
+        <path d="M405,122 Q425,145 465,145 Q505,145 545,100 Q585,55 625,55 Q665,55 705,100 L860,145" stroke="#c9a84c" stroke-width="1.8" fill="none" opacity="0.4"/>
+        <circle cx="218" cy="100" r="5" fill="#c9a84c" opacity="0.9"/>
+        <circle cx="455" cy="100" r="5" fill="#2dd4bf" opacity="0.9"/>
+        <circle cx="692" cy="100" r="5" fill="#c9a84c" opacity="0.9"/>
+        <text x="218" y="172" fill="#6b6757" font-family="JetBrains Mono" font-size="10" text-anchor="middle">σ₁ · K</text>
+        <text x="455" y="172" fill="#6b6757" font-family="JetBrains Mono" font-size="10" text-anchor="middle">σ₂ · F</text>
+        <text x="692" y="172" fill="#6b6757" font-family="JetBrains Mono" font-size="10" text-anchor="middle">σ₁ · U</text>
+        <text x="450" y="20" fill="#6b6757" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Braid group B₃ · σ₁σ₂σ₁ · each crossing = one operator · non-commutativity is topological</text>
+      </g>
+    </svg>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;color:var(--muted);padding:0.8rem 1.4rem;border-top:1px solid var(--border);">
+      Fig. 1 — Braid group B₃ with word σ₁σ₂σ₁. Operators C,K,F,U,T correspond to braid generators. σ₁σ₂ ≠ σ₂σ₁ — the non-commutativity is geometric, not chosen. Non-abelian anyons follow worldlines of exactly this type.
+    </div>
+  </figure>
+</section>
+
+<!-- ══════════ COHERENCE ══════════ -->
+<section class="section" id="coherence">
+  <div class="sec-label">The Coherence Bridge · A Ponte de Coerência</div>
+  <h2>Seventeen orders of magnitude. One sequence.</h2>
+  <p>
+    <strong>Theorem 5.4 (Coherence Bridge) — proved in Lean 4.</strong>
+    The systems below are objects in the same category dm³,
+    related by explicit contact morphisms fᵢⱼ: Xᵢ → Xⱼ with fᵢⱼ(Γᵢ) = Γⱼ.
+    Same operator chain. Every substrate.
+    These are not analogies. They are identities.
+  </p>
+  <div class="coh-wrap">
+    <table class="coh-table" id="coh-table">
+      <thead>
+        <tr>
+          <th>Domain · Domínio</th>
+          <th>μₘₐₓ (s⁻¹)</th>
+          <th>ω (rad/s)</th>
+          <th>β</th>
+          <th>κ*</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="coh-tbody">
+        <tr><td class="domain">HPA allostatic stress</td><td>−0.38</td><td>0.21</td><td>1.9</td><td>0.15–0.22</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">Neural oscillations</td><td>−0.55</td><td>0.45</td><td>2.1</td><td>0.25–0.35</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">Circadian clock</td><td>−0.29</td><td>2π/86400</td><td>1.6</td><td>0.08–0.12</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">Immune adaptation</td><td>−0.44</td><td>0.18</td><td>2.0</td><td>0.11–0.19</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">Plasma reconnection</td><td>−0.42</td><td>0.015</td><td>1.8</td><td>5×10⁻⁴ km⁻¹</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">Market volatility · dm³</td><td>−0.67</td><td>0.28</td><td>2.4</td><td>0.12–0.18</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">Saturn hexagon (g³³)</td><td>−0.38</td><td>1.65×10⁻⁴</td><td>2.1</td><td>0.12–0.18</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">Autophagy · AXLE Ch.A</td><td>−0.39</td><td>0.12</td><td>1.8</td><td>0.10–0.18</td><td class="s-lean">✓ 26 thm · 0 sorry</td></tr>
+        <tr><td class="domain">Triple-alpha stellar</td><td>−0.51</td><td>variable</td><td>2.2</td><td>stellar dep.</td><td class="s-lean">✓ 26 thm · 0 sorry</td></tr>
+        <tr><td class="domain">DNLS / N-bonacci (η≈1.839)</td><td>−0.43</td><td>0.22</td><td>1.9</td><td>λc≈1.5</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">FruitFly connectome</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">Swarm intelligence</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="s-lean">✓ Lean 4</td></tr>
+        <tr><td class="domain">Wigner crystallisation</td><td>−0.36</td><td>0.09</td><td>1.7</td><td>0.09–0.15</td><td class="s-lean">✓ Live</td></tr>
+        <tr><td class="domain">Enceladus cryovolcanism</td><td>−0.41</td><td>variable</td><td>1.9</td><td>κ*_Enc≈5×10⁻⁴</td><td class="s-arg">Argued</td></tr>
+        <tr><td class="domain">Tubulin oscillations</td><td>−0.40</td><td>0.14</td><td>1.8</td><td>0.10–0.16</td><td class="s-build">Building</td></tr>
+        <tr><td class="domain">PolyLaminin / k-nacci spine</td><td>−0.37</td><td>0.11</td><td>1.7</td><td>0.09–0.14</td><td class="s-build">Building</td></tr>
+        <tr><td class="domain">Collatz conjecture</td><td>n/a</td><td>n/a</td><td>n/a</td><td>GTCT args</td><td class="s-arg">Conjectured</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════ OPEN PROBLEMS ══════════ -->
+<section class="section" id="open">
+  <div class="sec-label">Open Problems · Problemas Abertos</div>
+  <h2>What remains.</h2>
+  <p>
+    Three open problems. Two are honest domain axioms — admitted, labelled, not hidden.
+    One is a Millennium Prize conjecture stated in Lean 4.
+    <strong>The work is honest about what it does not know.</strong>
+  </p>
+  <div class="op-grid" id="open-problems-grid">
+    <div class="loading">Loading from manifest…</div>
+  </div>
+</section>
+
+<!-- ══════════ RECOGNITION ══════════ -->
+<section class="section" id="recognition">
+  <div class="sec-label">Recognition · Reconhecimento</div>
+  <h2>May 2026 snapshot.</h2>
+  <div class="rec-grid" id="recognition-grid">
+    <div class="loading">Loading from manifest…</div>
+  </div>
+
+  <!-- Preface quote -->
+  <div style="border:1px solid var(--border2);background:var(--card);padding:2.5rem;margin-top:3rem;">
+    <div class="sec-label" style="margin-bottom:1rem;">The seed · A semente</div>
+    <p style="max-width:700px;font-size:1.15rem;line-height:1.9;color:rgba(232,228,216,0.75);">
+      "My mother owned a business. She taught me early — not as a lesson, not as a lecture, but as a fact of life — that if you want something, you buy wholesale and sell retail. She did not mean this as a metaphor. She meant: understand where value lives before it is priced. Go to the source. Know the structure. Then bring it to the world at a form the world can receive."
+    </p>
+    <p style="max-width:700px;font-size:1.15rem;line-height:1.9;color:rgba(232,228,216,0.75);margin-top:1rem;">
+      "I did not know, then, that my parents were mathematicians."
+    </p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;color:var(--gold);margin-top:1rem;">
+      — The Seed · A Semente, Principia Orthogona Vol. V (2026)
+    </p>
+  </div>
+</section>
+
+<div class="manifest-note" id="manifest-note">
+  Index auto-generated from manifest.json · Add a chapter: edit manifest.json and commit · Last updated: <span id="last-updated">—</span>
+</div>
+
+<footer>
+  <p>
+    <a href="https://totogt.github.io/AXLE/">AXLE</a> ·
+    <a href="https://github.com/TOTOGT/GTCT">GTCT</a> ·
+    <a href="https://github.com/TOTOGT/DM3-lab">DM3-lab</a> ·
+    <a href="https://doi.org/10.5281/zenodo.19117399">Zenodo 10.5281/zenodo.19117399</a> ·
+    <a href="https://orcid.org/0009-0000-6496-2186">ORCID 0009-0000-6496-2186</a> ·
+    <a href="https://x.com/unitedWeStreamU">@unitedWeStreamU</a> ·
+    <a href="https://ssrn.com/abstract=6805940">SSRN</a>
+  </p>
+  <p style="margin-top:0.5rem;">
+    Pablo Nogueira Grossi · G6 LLC · 90 Tiffany Blvd · Newark, New Jersey 07104
+  </p>
+  <p style="margin-top:0.5rem;opacity:0.5;">
+    TO · TOGT · GTCT · dm³ · AXLE · Principia Orthogona · C→K→F→U→T · G1–G6
+  </p>
+  <p style="margin-top:0.5rem;opacity:0.35;">
+    MSC 2020: 37C10 · 37C75 · 53D10 · 92C20 · 91B55 · 53Z99 · CC BY-NC-ND 4.0 (text) · MIT (code)
+  </p>
+  <div class="footer-seed">
+    "A educação é a semente. Não o diploma." — Princípio do Cajueiro
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  MANIFEST LOADER — fetches manifest.json
+//  from same directory as index.html
+//  Update manifest.json → hub auto-updates
+// ══════════════════════════════════════════
+
+async function loadManifest() {
+  try {
+    // Try fetching manifest.json from same origin
+    const res = await fetch('./manifest.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('manifest not found');
+    return await res.json();
+  } catch {
+    // Fallback: return null, use baked-in data
+    return null;
+  }
+}
+
+function statusBadge(status) {
+  const map = {
+    'published': '<span class="ring-badge b-pub">Published</span>',
+    'live':      '<span class="ring-badge b-live">● Live</span>',
+    'growing':   '<span class="ring-badge b-grow">∞ Growing</span>',
+    'wip':       '<span class="ring-badge b-build">◐ In Progress</span>',
+  };
+  return map[status] || `<span class="ring-badge b-pub">${status}</span>`;
+}
+
+function renderRings(rings) {
+  const container = document.getElementById('rings-container');
+  container.innerHTML = '';
+
+  rings.forEach((ring, idx) => {
+    const isG6 = ring.id === 'G6';
+    const card = document.createElement('div');
+    card.className = 'ring-card';
+
+    const thmBadge = ring.theorems > 0
+      ? `<span class="ring-badge b-thm">${ring.theorems}${isG6 ? '+' : ''} thm</span>`
+      : '';
+    const sorryBadge = ring.sorry === 0
+      ? `<span class="ring-badge b-sorry">0 sorry</span>`
+      : '';
+
+    let chaptersHTML = '';
+    if (ring.chapters && ring.chapters.length > 0) {
+      chaptersHTML = `<div class="ring-chapters" id="chapters-${idx}">`;
+      ring.chapters.forEach(ch => {
+        chaptersHTML += `
+          <a class="chapter-item" href="${ch.url}" target="_blank">
+            <div class="ch-dot ${ch.status !== 'live' ? 'wip' : ''}"></div>
+            <div style="flex:1;">
+              <div class="ch-title">${ch.title}</div>
+              <span class="ch-sub">${ch.subtitle || ''}</span>
+            </div>
+            <div class="ch-meta">
+              ${ch.theorems > 0 ? `<span class="ch-thm">${ch.theorems} thm</span>` : ''}
+              ${ch.sorry === 0 ? `<span style="color:var(--green)">0 sorry</span>` : ''}
+              ${ch.doi ? `<span class="ch-doi">${ch.doi}</span>` : ''}
+              <span>${ch.date || ''}</span>
+            </div>
+          </a>`;
+      });
+      chaptersHTML += '</div>';
+    }
+
+    card.innerHTML = `
+      <div class="ring-header" onclick="toggleRing(${idx})">
+        <div class="ring-g ${isG6 ? 'g6' : ''}">${ring.id}</div>
+        <div class="ring-info">
+          <div class="ring-title">${ring.title}</div>
+          <div class="ring-subtitle">${ring.subtitle}</div>
+          <div class="ring-desc">${ring.description}</div>
+        </div>
+        <div class="ring-meta">
+          ${statusBadge(ring.status)}
+          ${thmBadge}
+          ${sorryBadge}
+          ${ring.doi ? `<a href="https://doi.org/${ring.doi}" target="_blank" style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;color:var(--muted);text-decoration:none;">${ring.doi.slice(0,20)}…</a>` : ''}
+        </div>
+        ${ring.chapters && ring.chapters.length > 0
+          ? `<div class="ring-toggle" id="toggle-${idx}">▼</div>`
+          : ''}
+      </div>
+      ${chaptersHTML}`;
+
+    container.appendChild(card);
+  });
+}
+
+function toggleRing(idx) {
+  const chapters = document.getElementById(`chapters-${idx}`);
+  const toggle   = document.getElementById(`toggle-${idx}`);
+  if (!chapters) return;
+  const isOpen = chapters.classList.contains('open');
+  chapters.classList.toggle('open', !isOpen);
+  if (toggle) toggle.classList.toggle('open', !isOpen);
+}
+
+function renderOpenProblems(problems) {
+  const grid = document.getElementById('open-problems-grid');
+  grid.innerHTML = problems.map(p => `
+    <div class="op-cell">
+      <div class="op-id">${p.id} · ${'★'.repeat(p.difficulty)}${'☆'.repeat(5-p.difficulty)}</div>
+      <div class="op-title">${p.title}</div>
+      <p class="op-desc">${p.description}</p>
+      <span class="op-axiom">Lean 4: ${p.lean_axiom}</span>
+      <span class="op-axiom" style="color:var(--gold)">Status: ${p.status}</span>
+    </div>`).join('');
+}
+
+function renderRecognition(items) {
+  const grid = document.getElementById('recognition-grid');
+  grid.innerHTML = items.map(r => `
+    <div class="rec-cell">
+      <div class="rec-inst">${r.institution}</div>
+      <p class="rec-detail">${r.detail}</p>
+      <span class="rec-status">${r.status} · ${r.date}</span>
+    </div>`).join('');
+}
+
+// ── INIT ──────────────────────────────────
+window.onload = async () => {
+  const manifest = await loadManifest();
+
+  if (manifest) {
+    // Update stats from manifest
+    const totalThm = manifest.rings.reduce((s, r) => s + (r.theorems || 0), 0);
+    document.getElementById('stat-theorems').textContent = totalThm + '+';
+    document.getElementById('last-updated').textContent = manifest.meta.last_updated;
+
+    renderRings(manifest.rings);
+    renderOpenProblems(manifest.open_problems);
+    renderRecognition(manifest.recognition);
+  } else {
+    // Manifest not found — show helpful message
+    document.getElementById('rings-container').innerHTML = `
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--muted);
+                  border:1px solid var(--border);padding:2rem;text-align:center;">
+        manifest.json not found in same directory.<br>
+        Place manifest.json alongside index.html and reload.
+      </div>`;
+    document.getElementById('open-problems-grid').innerHTML = '';
+    document.getElementById('recognition-grid').innerHTML = '';
+  }
+};
+</script>
+</body>
+</html>
