@@ -345,7 +345,7 @@ footer a { color: var(--tiffany); text-decoration: none; }
     "The Tribonacci constant is not interesting because it is large. It is interesting because it is exactly large enough — and not one bit more — to sit at the fold threshold. Below it, systems are subcritical. At it, they crystallize. Above it, they shatter."
   </div>
 
-  <p class="lead">η ≈ 1.839287 is the dominant root of x³ − x² − x − 1 = 0. It is the spectral radius of the Tribonacci companion matrix, the GQM geometric weight, and — as this chapter proves numerically and formally — the unique n-bonacci constant whose chain achieves maximal quasiperiodic robustness under nonlinear perturbation.</p>
+  <p class="lead">η ≈ 1.839287 is the dominant root of x³ − x² − x − 1 = 0. It is the spectral radius of the Tribonacci companion matrix, the η weighting, and — as this chapter proves numerically and formally — the unique n-bonacci constant whose chain achieves maximal quasiperiodic robustness under nonlinear perturbation.</p>
 
   <h2><span class="num">§ η.1 · The Number</span>Where η Lives</h2>
 
@@ -444,7 +444,7 @@ footer a { color: var(--tiffany); text-decoration: none; }
   -- (existence via IVT on [1.8, 1.9]; strict antitonicity from η > 1)</pre>
   </div>
 
-  <p>The formal claim: η exists, η &gt; 1, η is a root of the Tribonacci polynomial, and the sequence η⁻ᵏ is strictly decreasing — the GQM geometric weight contracts monotonically. This is the load-bearing lemma for the DNLS result: the weight structure that makes tribonacci mid-gap states robust is exactly the contractive sequence η⁻ᵏ.</p>
+  <p>The formal claim: η exists, η &gt; 1, η is a root of the Tribonacci polynomial, and the sequence η⁻ᵏ is strictly decreasing — the η weighting contracts monotonically. This is the load-bearing lemma for the DNLS result: the weight structure that makes tribonacci mid-gap states robust is exactly the contractive sequence η⁻ᵏ.</p>
 
   <p>Compare to <strong>AXLE Issue #12</strong> (kappa_lipschitz), which remains open: the η proof is the one place in the series where the Lean verification is ahead of the paper proof, not behind it.</p>
 
@@ -468,7 +468,7 @@ footer a { color: var(--tiffany); text-decoration: none; }
   <div class="falsify">
     <div class="falsify-label">Three Falsifiability Conditions</div>
     <p><strong>F1.</strong> If a tribonacci DNLS chain is found whose mid-gap IPR drops more than 20% at λ = 1.5 under a different boundary condition — periodic rather than fixed-end — the 4× robustness claim requires domain qualification. Currently numerical for open chains, N = 50–400.</p>
-    <p><strong>F2.</strong> If the Tribonacci companion matrix T₃ is shown to have a spectral interpretation inconsistent with the GQM weight η⁻ᵏ — for example, if a lower-entropy weight produces tighter localization — then the identification of η with c* = 3 requires revision.</p>
+    <p><strong>F2.</strong> If the Tribonacci companion matrix T₃ is shown to have a spectral interpretation inconsistent with the η weighting η⁻ᵏ — for example, if a lower-entropy weight produces tighter localization — then the identification of η with c* = 3 requires revision.</p>
     <p><strong>F3.</strong> If the Lean stub <code>fold_central_charge</code> (Level IX) is proved false — that is, if no functor F: C → V exists sending the rank-3 fold to the Virasoro c = 26 vacuum — then the structural claim connecting η to string theory dimensionality via Dcrit(13) = 26 is a coincidence, not a theorem. Either outcome is honest.</p>
   </div>
 
@@ -513,7 +513,7 @@ footer a { color: var(--tiffany); text-decoration: none; }
       <div class="what-card">
         <div class="what-tag">03 · Lean 4</div>
         <h4>TribonacciDNLS.lean walkthrough</h4>
-        <p>The only proof in the series with no sorry. Walk through every tactic. Understand why η &gt; 1 is enough to prove the GQM weight contracts.</p>
+        <p>The only proof in the series with no sorry. Walk through every tactic. Understand why η &gt; 1 is enough to prove the η weighting contracts.</p>
       </div>
       <div class="what-card">
         <div class="what-tag">04 · Context</div>

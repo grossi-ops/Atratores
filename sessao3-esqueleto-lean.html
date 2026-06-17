@@ -276,7 +276,7 @@ footer a { color: var(--accent); text-decoration: none; }
 
 <div class="defn">
   <div class="defn-title">Nota Pedagógica</div>
-  <p style="margin-bottom:0">A formalização não é sobre certeza. É sobre <em>localizar</em> incerteza. A lacuna entre \(\varepsilon_0 = 1/3\) (Gronwall) e \(r_\star = 0{,}80\) (numérico) é uma lacuna matemática. O Issue #12 é uma lacuna <em>formal</em> — um lugar onde a prova Lean atualmente diz <code>sorry</code>. Ambas merecem atenção.</p>
+  <p style="margin-bottom:0">A formalização não é sobre certeza. É sobre <em>localizar</em> incerteza. A lacuna entre \(\varepsilon_0 = 1/3\) (Gronwall) e \(r_\star = 0{,}776\) (numérico) é uma lacuna matemática. O Issue #12 é uma lacuna <em>formal</em> — um lugar onde a prova Lean atualmente diz <code>sorry</code>. Ambas merecem atenção.</p>
 </div>
 
 <!-- §2 -->
@@ -431,7 +431,7 @@ footer a { color: var(--accent); text-decoration: none; }
   <p style="font-size:.95rem;margin-bottom:0">Formalizar o exercício de quadro de S1: \(\{r(t) > 1\}\) é positivamente invariante. Feito via <code>Mathlib.Analysis.ODE.Invariant</code>.</p>
 </div>
 
-<p style="margin-top:1.2rem"><strong>Além do #12.</strong> A bacia precisa \(r_\star \approx 0{,}80\) é um projeto de pesquisa separado, não uma lacuna de formalização. Nenhuma quantidade de Lean vai afiar \(1/3\) para \(0{,}80\) — isso requer um argumento matemático novo, provavelmente uma função de Lyapunov com estrutura sensível ao sinal. Se quiser trabalhar nisso, o laboratório numérico (<code>labs/dm3_numeric.py</code>) é o lugar para começar.</p>
+<p style="margin-top:1.2rem"><strong>Além do #12.</strong> A bacia precisa \(r_\star \approx 0{,}776\) é um projeto de pesquisa separado, não uma lacuna de formalização. Nenhuma quantidade de Lean vai afiar \(1/3\) para \(0{,}80\) — isso requer um argumento matemático novo, provavelmente uma função de Lyapunov com estrutura sensível ao sinal. Se quiser trabalhar nisso, o laboratório numérico (<code>labs/dm3_numeric.py</code>) é o lugar para começar.</p>
 
 <!-- §5 -->
 <div class="section-label">
@@ -470,7 +470,7 @@ footer a { color: var(--accent); text-decoration: none; }
   <ul>
     <li>A <strong>geometria</strong> (S1) força uma hélice. A forma de contato não é decoração; é o suporte de \(\Gamma\).</li>
     <li>A <strong>análise</strong> (S2) prova contração exponencial à taxa \(-2\), numa bola de Gronwall \(|r - 1| < 1/3\).</li>
-    <li>A <strong>numeração</strong> (S2) corrige a fronteira interior para \(r_\star \approx 0{,}80\) — mais restritiva que Gronwall, não mais fraca.</li>
+    <li>A <strong>numeração</strong> (S2) corrige a fronteira interior para \(r_\star \approx 0{,}776\) — mais restritiva que Gronwall, não mais fraca.</li>
     <li>A <strong>formalização</strong> (S3) reduz o teorema simétrico inteiro a um lema estilo Mathlib: <code>kappa_lipschitz</code>.</li>
   </ul>
   <p style="margin-top:1rem;color:rgba(255,255,255,0.7);font-style:italic">Quatro camadas, quatro contribuições, uma hélice. Obrigado, Natal.</p>

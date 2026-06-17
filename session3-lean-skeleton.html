@@ -138,7 +138,7 @@ MathJax = {
     <li><strong style="color:var(--t);">Reuse.</strong> The operator chain $G = U\circ F\circ K\circ C$ is a structural claim about every chapter in GTCT. A Lean 4 formalisation of $G$ in <em>one</em> setting (here: the dm³ ODE) becomes a <em>template</em> for the other chapters.</li>
     <li><strong style="color:var(--t);">Discovery.</strong> Writing the proof down in Lean 4 is what <em>exposed</em> AXLE Issue #12: the Lipschitz estimate that our paper hand-waves. Lean would not accept the hand-wave. That is how the gap became a named issue.</li>
   </ul>
-  <div class="insight">Formalisation is not about certainty. It is about <em>locating</em> uncertainty. The gap between $\varepsilon_0 = 1/3$ (Gronwall) and $r_\star = 0.80$ (numerics) is a mathematical gap. Issue #12 is a <em>formal</em> gap — a place where the Lean proof currently says <code style="color:var(--k);font-family:inherit;">sorry</code>. Both deserve attention.</div>
+  <div class="insight">Formalisation is not about certainty. It is about <em>locating</em> uncertainty. The gap between $\varepsilon_0 = 1/3$ (Gronwall) and $r_\star = 0.776$ (numerics) is a mathematical gap. Issue #12 is a <em>formal</em> gap — a place where the Lean proof currently says <code style="color:var(--k);font-family:inherit;">sorry</code>. Both deserve attention.</div>
 </div>
 <!-- ═══ §2 CHAIN.LEAN ═══ -->
 <div class="section">
@@ -259,7 +259,7 @@ MathJax = {
     </div>
     <div class="issue-body">Formalise S1's board exercise: $\{r(t) &gt; 1\}$ is positively invariant. Done via <code>Mathlib.Analysis.ODE.Invariant</code>.</div>
   </div>
-  <div class="warn"><strong style="color:#f87171;">Beyond #12.</strong> The sharp basin $r_\star \approx 0.80$ is a separate research project, not a formalisation gap. No amount of Lean will sharpen $1/3$ to $0.80$ — that requires a new mathematical argument, probably a Lyapunov function with sign-aware structure. If you want to work on that, the numeric lab (<code>labs/dm3_numeric.py</code>) is the place to start: it reproduces Table 1 in one file.</div>
+  <div class="warn"><strong style="color:#f87171;">Beyond #12.</strong> The sharp basin $r_\star \approx 0.776$ is a separate research project, not a formalisation gap. No amount of Lean will sharpen $1/3$ to $0.80$ — that requires a new mathematical argument, probably a Lyapunov function with sign-aware structure. If you want to work on that, the numeric lab (<code>labs/dm3_numeric.py</code>) is the place to start: it reproduces Table 1 in one file.</div>
 </div>
 <!-- ═══ §5 CONTRIBUTION ═══ -->
 <div class="section">
@@ -297,7 +297,7 @@ MathJax = {
       <ul style="margin:.4rem 0 0 1.4rem;">
         <li>The <em>geometry</em> (S1) forces a helix. The contact form is not decoration; it is what $\Gamma$ lives on.</li>
         <li>The <em>analysis</em> (S2) proves exponential contraction at rate $-2$, on a Gronwall ball $|r - 1| &lt; 1/3$.</li>
-        <li>The <em>numerics</em> (S2) correct the inner boundary to $r_\star \approx 0.80$ — stricter than Gronwall, not weaker.</li>
+        <li>The <em>numerics</em> (S2) correct the inner boundary to $r_\star \approx 0.776$ — stricter than Gronwall, not weaker.</li>
         <li>The <em>formalisation</em> (S3) reduces the whole symmetric theorem to one Mathlib-style lemma: <code>kappa_lipschitz</code>.</li>
       </ul>
       <p style="margin-top:.7rem;">Four layers, four contributions, one helix. Obrigado, Natal.</p>

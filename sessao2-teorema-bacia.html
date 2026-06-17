@@ -136,7 +136,7 @@ footer a { color: var(--accent); text-decoration: none; }
   <div class="session-number">S2</div>
   <div class="hero-badge">Mini-Curso · Sessão S2 · 60 min</div>
   <h1>Teorema 2.1 &amp; a <em>Bacia Assimétrica</em></h1>
-  <p class="hero-sub">A linearização dá autovalor \(-2\). Gronwall dá uma bola simétrica \(|r-1|&lt;1/3\). O DOP853 diz que a borda interna real é \(r_\star \approx 0{,}80\). A lacuna é o curso.</p>
+  <p class="hero-sub">A linearização dá autovalor \(-2\). Gronwall dá uma bola simétrica \(|r-1|&lt;1/3\). O DOP853 diz que a borda interna real é \(r_\star \approx 0{,}776\). A lacuna é o curso.</p>
   <div class="hero-meta">
     <span>🎯 Objetivo: provar contração exponencial e expor a assimetria</span>
     <span>📚 Pré-req: S1</span>
@@ -156,7 +156,7 @@ footer a { color: var(--accent); text-decoration: none; }
     <li><span class="time">0 – 10 min</span><span>Recapitulação S1. Enunciado do Teorema 2.1.</span></li>
     <li><span class="time">10 – 25 min</span><span>Linearização em \(r=1\). O autovalor \(\mu = -2\).</span></li>
     <li><span class="time">25 – 40 min</span><span>O esboço de Gronwall. Por que \(\varepsilon_0 = 1/3\) é o que a estimativa permite.</span></li>
-    <li><span class="time">40 – 52 min</span><span>Tabela 1. Numérica DOP853. A borda interna real em \(r_\star \approx 0{,}80\).</span></li>
+    <li><span class="time">40 – 52 min</span><span>Tabela 1. Numérica DOP853. A borda interna real em \(r_\star \approx 0{,}776\).</span></li>
     <li><span class="time">52 – 60 min</span><span>Por que a lacuna. Transição para S3: o que o Lean 4 pode e não pode fechar.</span></li>
   </ol>
 </div>
@@ -298,7 +298,7 @@ footer a { color: var(--accent); text-decoration: none; }
 
 <div class="warning">
   <div class="w-title">⚠ A Assimetria Não é Pequena</div>
-  <p>Gronwall disse \(r(0) \in (2/3,\, 4/3) = (0{,}667,\, 1{,}333)\). A realidade diz \(r(0) \in (0{,}80,\, +\infty)\). A fronteira <em>exterior</em> de Gronwall é vácua — não há fronteira exterior nessa janela. A fronteira <em>interior</em> está em \(r_\star \approx 0{,}80\), mais <em>restritiva</em> que o palpite de Gronwall de \(2/3 \approx 0{,}667\). Gronwall teria declarado \(r(0) = 0{,}70\) seguro; DOP853 diz que colapsa.</p>
+  <p>Gronwall disse \(r(0) \in (2/3,\, 4/3) = (0{,}667,\, 1{,}333)\). A realidade diz \(r(0) \in (0{,}80,\, +\infty)\). A fronteira <em>exterior</em> de Gronwall é vácua — não há fronteira exterior nessa janela. A fronteira <em>interior</em> está em \(r_\star \approx 0{,}776\), mais <em>restritiva</em> que o palpite de Gronwall de \(2/3 \approx 0{,}667\). Gronwall teria declarado \(r(0) = 0{,}70\) seguro; DOP853 diz que colapsa.</p>
 </div>
 
 <h3>O que dá errado geometricamente</h3>
@@ -343,7 +343,7 @@ footer a { color: var(--accent); text-decoration: none; }
 <p>Temos agora dois números em tensão:</p>
 <ul style="padding-left:1.4rem;margin-bottom:1rem">
   <li><strong>\(\varepsilon_0 = 1/3\)</strong> — o que a desigualdade de Gronwall do livro-texto permite;</li>
-  <li><strong>\(r_\star \approx 0{,}80\)</strong> — o que o fluxo real faz.</li>
+  <li><strong>\(r_\star \approx 0{,}776\)</strong> — o que o fluxo real faz.</li>
 </ul>
 
 <p>Em <strong>S3</strong> traduzimos a prova do Teorema 2.1 — a versão simétrica — para Lean 4 / Mathlib 4. O esqueleto formal está no AXLE (<code>Chain.lean</code>, <code>SpiralReturn</code>). A obrigação aberta é a estimativa de Lipschitz do acoplamento, rastreada como AXLE Issue #12.</p>
