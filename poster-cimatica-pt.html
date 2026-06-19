@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Pôster: Cimática, o Hexágono de Saturno e o Atrator dm³</title>
+<style>
+@page{size:A0 landscape;margin:18mm;}
+:root{
+  --bg:#06110f; --bg2:#0b1e1a; --bg3:#0e2820;
+  --t:#2dd4bf; --gd:#c9a84c; --pu:#a78bfa; --or:#f97316; --re:#f87171;
+  --text:#e8e4d8; --dim:#7a8f8d; --rule:rgba(45,212,191,0.13);
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:"Helvetica Neue",Arial,sans-serif;
+  --mono:"Courier New",Courier,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:var(--serif);
+  background:var(--bg);
+  color:var(--text);
+  width:1420px;
+  font-size:13px;
+  line-height:1.75;
+}
+
+/* ── LANG SWITCHER ── */
+.lang-bar{
+  background:rgba(45,212,191,.07);
+  border-bottom:1px solid var(--rule);
+  padding:.3rem 2.2rem;
+  display:flex;align-items:center;gap:1rem;
+  font-family:var(--mono);font-size:.65rem;color:var(--dim);
+}
+.lang-bar a{color:var(--t);text-decoration:none;border:1px solid rgba(45,212,191,.3);
+  padding:.1rem .5rem;border-radius:3px;transition:background .15s;}
+.lang-bar a:hover{background:rgba(45,212,191,.1);}
+.lang-bar a.active{background:rgba(45,212,191,.15);color:#fff;border-color:var(--t);}
+.lang-note{font-size:.6rem;color:var(--dim);font-style:italic;}
+
+/* ── HEADER ── */
+.poster-header{
+  background:linear-gradient(135deg,#081a17 0%,#0d2820 100%);
+  border-bottom:3px solid rgba(45,212,191,.22);
+  padding:1.4rem 2.2rem 1.2rem;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:1.5rem;
+  align-items:start;
+}
+.poster-title{font-family:var(--sans);font-size:1.75rem;font-weight:700;line-height:1.2;
+  color:var(--text);letter-spacing:.01em;margin-bottom:.45rem;}
+.poster-title em{color:var(--t);font-style:normal;}
+.poster-title span.gd{color:var(--gd);}
+.poster-authors{font-size:.88rem;color:var(--dim);line-height:1.6;}
+.poster-authors strong{color:var(--t);}
+.poster-meta{text-align:right;font-family:var(--mono);font-size:.65rem;color:var(--dim);
+  line-height:1.9;background:rgba(45,212,191,.05);border:1px solid var(--rule);
+  border-radius:4px;padding:.7rem 1rem;white-space:nowrap;}
+.poster-meta strong{color:var(--t);}
+.doi{font-size:.7rem;color:var(--t);letter-spacing:.04em;}
+
+/* ── TAGLINE STRIP ── */
+.tagline{
+  background:linear-gradient(90deg,rgba(45,212,191,.07),rgba(201,168,76,.07));
+  border-bottom:1px solid var(--rule);
+  padding:.45rem 2.2rem;
+  font-family:var(--sans);font-size:.8rem;font-style:italic;color:var(--dim);
+  letter-spacing:.02em;
+}
+.tagline span{color:var(--gd);}
+
+/* ── BODY GRID ── */
+.poster-body{
+  display:grid;
+  grid-template-columns:310px 1fr 310px;
+  gap:0;
+  min-height:960px;
+}
+.col{padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:1rem;}
+.col-l{border-right:1px solid var(--rule);}
+.col-r{border-left:1px solid var(--rule);background:rgba(8,26,23,.5);}
+.col-c{}
+
+/* ── SECTION ── */
+.sec{display:flex;flex-direction:column;gap:.5rem;}
+.sec-head{
+  font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gd);padding-bottom:.25rem;
+  border-bottom:1px solid rgba(201,168,76,.2);
+}
+.sec-head.t{color:var(--t);border-color:var(--rule);}
+.sec-head.pu{color:var(--pu);border-color:rgba(167,139,250,.2);}
+.sec-head.or{color:var(--or);border-color:rgba(249,115,22,.2);}
+.sec-head.re{color:var(--re);border-color:rgba(248,113,113,.2);}
+
+p{font-size:.86rem;line-height:1.78;color:rgba(232,228,216,.87);margin-bottom:.4rem;}
+p:last-child{margin-bottom:0;}
+p strong{color:var(--text);}
+
+/* ── CALLOUT FOR KIDS ── */
+.kid-note{
+  background:rgba(201,168,76,.06);
+  border-left:3px solid var(--gd);
+  border-radius:0 4px 4px 0;
+  padding:.5rem .75rem;
+  font-size:.82rem;
+  color:rgba(232,228,216,.9);
+  line-height:1.7;
+}
+.kid-note::before{
+  content:"💡 ";
+  font-style:normal;
+}
+
+/* ── MATH ── */
+.eq{font-family:var(--mono);font-size:.78rem;color:var(--t);
+  background:rgba(45,212,191,.06);border-left:2.5px solid var(--t);
+  padding:.4rem .75rem;margin:.3rem 0;border-radius:0 3px 3px 0;line-height:1.55;}
+.eq.pu{color:var(--pu);background:rgba(167,139,250,.06);border-color:var(--pu);}
+.eq.or{color:var(--or);background:rgba(249,115,22,.06);border-color:var(--or);}
+.eq.gd{color:var(--gd);background:rgba(201,168,76,.06);border-color:var(--gd);}
+.eq.re{color:var(--re);background:rgba(248,113,113,.06);border-color:var(--re);}
+
+/* ── RESULT BADGE ── */
+.badge{
+  background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.25);
+  border-radius:4px;padding:.55rem .8rem;text-align:center;margin:.2rem 0;
+}
+.badge .v{font-family:var(--mono);font-size:1.2rem;color:var(--t);letter-spacing:.03em;}
+.badge .vl{font-family:var(--mono);font-size:.6rem;color:var(--dim);margin-top:.1rem;letter-spacing:.1em;}
+.badge.or{background:rgba(249,115,22,.07);border-color:rgba(249,115,22,.2);}
+.badge.or .v{color:var(--or);}
+.badge.gd{background:rgba(201,168,76,.07);border-color:rgba(201,168,76,.2);}
+.badge.gd .v{color:var(--gd);}
+.badge.pu{background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.2);}
+.badge.pu .v{color:var(--pu);}
+
+/* ── BOX ── */
+.box{background:var(--bg2);border:1px solid var(--rule);border-radius:4px;padding:.7rem .85rem;}
+.box.pu{border-color:rgba(167,139,250,.18);background:rgba(167,139,250,.04);}
+.box.or{border-color:rgba(249,115,22,.18);background:rgba(249,115,22,.03);}
+.box.gd{border-color:rgba(201,168,76,.18);background:rgba(201,168,76,.03);}
+.box.re{border-color:rgba(248,113,113,.18);background:rgba(248,113,113,.03);}
+
+/* ── CHIPS ── */
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.3rem;}
+.chip{font-family:var(--mono);font-size:.6rem;padding:.16rem .5rem;border-radius:10px;
+  border:1px solid;letter-spacing:.03em;}
+.chip.t{border-color:rgba(45,212,191,.3);color:var(--t);}
+.chip.pu{border-color:rgba(167,139,250,.3);color:var(--pu);}
+.chip.or{border-color:rgba(249,115,22,.3);color:var(--or);}
+.chip.gd{border-color:rgba(201,168,76,.3);color:var(--gd);}
+.chip.re{border-color:rgba(248,113,113,.3);color:var(--re);}
+
+/* ── THEOREM BOX ── */
+.thm{background:var(--bg3);border-left:3px solid var(--pu);border-radius:0 4px 4px 0;
+  padding:.55rem .75rem;margin:.3rem 0;}
+.thm-label{font-family:var(--mono);font-size:.65rem;color:var(--pu);margin-bottom:.2rem;}
+.thm p{font-size:.82rem;}
+.thm.gd{border-color:var(--gd);}
+.thm.gd .thm-label{color:var(--gd);}
+.thm.t{border-color:var(--t);}
+.thm.t .thm-label{color:var(--t);}
+
+/* ── SCALE LADDER ── */
+.ladder{display:flex;flex-direction:column;gap:.22rem;margin:.3rem 0;}
+.rung{display:grid;grid-template-columns:44px 148px 1fr;gap:.5rem;align-items:center;}
+.rung-g{font-family:var(--mono);font-size:.64rem;color:var(--gd);}
+.rung-label{font-family:var(--mono);font-size:.62rem;color:var(--dim);white-space:nowrap;text-align:right;}
+.rung-bar-bg{height:4px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
+.rung-bar{height:100%;border-radius:3px;}
+
+/* ── CAJUEIRO TABLE ── */
+.caj-table{width:100%;border-collapse:collapse;font-size:.72rem;margin:.3rem 0;}
+.caj-table th{font-family:var(--sans);font-size:.62rem;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--dim);padding:.3rem .4rem;text-align:left;
+  border-bottom:1px solid var(--rule);}
+.caj-table td{padding:.3rem .4rem;border-bottom:1px solid rgba(255,255,255,.04);
+  vertical-align:top;color:rgba(232,228,216,.82);}
+.caj-table tr:last-child td{border-bottom:none;}
+.caj-table td:first-child{font-family:var(--mono);color:var(--t);white-space:nowrap;}
+.caj-table td.gd{color:var(--gd);}
+.caj-table td.pu{color:var(--pu);}
+.caj-table td.or{color:var(--or);}
+
+/* ── SVG PANELS ── */
+.svg-panel{
+  background:rgba(45,212,191,.03);border:1px solid var(--rule);border-radius:4px;
+  display:flex;align-items:center;justify-content:center;padding:.5rem;
+}
+.svg-label{font-family:var(--mono);font-size:.6rem;color:var(--dim);
+  text-align:center;margin-top:.3rem;letter-spacing:.08em;}
+
+/* ── FOOTER ── */
+.poster-footer{
+  background:var(--bg2);border-top:1px solid var(--rule);
+  padding:.6rem 2rem;display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--mono);font-size:.6rem;color:var(--dim);
+}
+a{color:var(--t);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<!-- ════ LANGUAGE BAR ════ -->
+<div class="lang-bar">
+  <span class="lang-note">Idioma / Language:</span>
+  <a class="active" href="poster-cimatica-pt.html">🇧🇷 Português</a>
+  <a href="poster-cymatics.html">🇺🇸 English</a>
+  <span class="lang-note" style="margin-left:auto;">Para os primos do Dave no Brasil · Para as crianças curiosas do Dia 21 em diante</span>
+</div>
+
+<!-- ════════════════ CABEÇALHO ════════════════ -->
+<div class="poster-header">
+  <div>
+    <div class="poster-title">
+      Geometria Ressonante em Todas as Escalas: <em>Figuras de Chladni</em>, <span class="gd">o Hexágono de Saturno</span><br>
+      e o <em>Atrator Helicoidal dm³</em>
+    </div>
+    <div class="poster-authors">
+      <strong>Pablo Nogueira Grossi</strong> &nbsp;·&nbsp; G6 LLC, Newark, New Jersey, EUA &nbsp;·&nbsp;
+      grossiatwork@gmail.com &nbsp;·&nbsp; ORCID: 0009-0000-6496-2186<br>
+      Série Principia Orthogona &nbsp;·&nbsp; ISBN 979-8-9954416-6-3 &nbsp;·&nbsp;
+      Provas mecanizadas: AXLE / Lean 4 &nbsp;·&nbsp; <a href="https://github.com/TOTOGT/AXLE">github.com/TOTOGT/AXLE</a>
+    </div>
+  </div>
+  <div class="poster-meta">
+    <strong>XII Bienal de Matemática · IMPA/SBM</strong><br>
+    UFRN, Natal, Brasil · 3–7 agosto 2026<br>
+    &amp; LAW3M · 19–23 outubro 2026<br>
+    <span class="doi">doi:10.5281/zenodo.19117399</span>
+  </div>
+</div>
+<div class="tagline">
+  Três fenômenos — um acústico, um atmosférico, um de geometria de contato — obedecem ao mesmo princípio de seleção:
+  <span>um operador diferencial escolhe um conjunto de zeros ressonante, estabilizado por um argumento de aprisionamento de Lyapunov.</span>
+</div>
+
+<!-- ════════════════ CORPO ════════════════ -->
+<div class="poster-body">
+
+<!-- ──────── COLUNA ESQUERDA ──────── -->
+<div class="col col-l">
+
+  <!-- §1 Chladni -->
+  <div class="sec">
+    <div class="sec-head">§1 · Figuras de Chladni (escala g⁶)</div>
+    <p>
+      Ernst Chladni (1787): passe um arco de violino pela borda de uma placa de metal
+      enquanto segura um ponto fixo com o dedo. A areia salta para as
+      <strong>linhas nodais</strong> — os zeros do modo de vibração da placa.
+      O padrão é governado pela equação biarmônica de Kirchhoff–Love:
+    </p>
+    <div class="eq">
+      Δ²u = λ⁴ u em Ω ⊂ ℝ², u|∂Ω = ∂ₙu|∂Ω = 0
+    </div>
+    <div class="kid-note">
+      Imagine sacudir uma bandeja de areia enquanto canta. A areia <em>foge</em>
+      dos lugares que vibram e <em>fica parada</em> nos lugares que não vibram.
+      Esses lugares quietos formam um desenho — a figura de Chladni.
+    </div>
+    <p>
+      Cada valor próprio λ<sub>nm</sub> corresponde a uma geometria nodal distinta.
+      A placa <em>seleciona</em> o modo cuja frequência coincide com a excitação —
+      todos os outros modos se cancelam por interferência destrutiva.
+      O conjunto zero {u<sub>nm</sub> = 0} é a figura de Chladni visível.
+    </p>
+
+    <!-- SVG: 4 modos de Chladni -->
+    <div class="svg-panel">
+      <svg viewBox="0 0 268 268" width="268" height="268" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <style>
+            .nl{stroke:#2dd4bf;stroke-width:1.4;fill:none;opacity:.85;}
+            .nl2{stroke:#c9a84c;stroke-width:1.4;fill:none;opacity:.85;}
+            .nl3{stroke:#a78bfa;stroke-width:1.4;fill:none;opacity:.85;}
+            .nl4{stroke:#f97316;stroke-width:1.4;fill:none;opacity:.85;}
+            .pl{fill:rgba(45,212,191,.07);stroke:rgba(45,212,191,.18);stroke-width:.8;}
+            .lbl{fill:#7a8f8d;font-size:8px;font-family:monospace;}
+          </style>
+        </defs>
+        <!-- modo (1,1): cruz -->
+        <rect class="pl" x="4" y="4" width="122" height="122" rx="3"/>
+        <line class="nl" x1="65" y1="4" x2="65" y2="126"/>
+        <line class="nl" x1="4" y1="65" x2="126" y2="65"/>
+        <text class="lbl" x="8" y="14">(1,1) cruz</text>
+        <!-- modo (2,1): barras -->
+        <rect class="pl" x="142" y="4" width="122" height="122" rx="3"/>
+        <line class="nl2" x1="142" y1="46" x2="264" y2="46"/>
+        <line class="nl2" x1="142" y1="84" x2="264" y2="84"/>
+        <text class="lbl" x="146" y="14">(2,1) barras</text>
+        <!-- modo (2,2): anel + cruz -->
+        <rect class="pl" x="4" y="142" width="122" height="122" rx="3"/>
+        <ellipse class="nl3" cx="65" cy="203" rx="30" ry="30"/>
+        <line class="nl3" x1="65" y1="142" x2="65" y2="264"/>
+        <line class="nl3" x1="4" y1="203" x2="126" y2="203"/>
+        <text class="lbl" x="8" y="154">(2,2) anel+cruz</text>
+        <!-- modo (3,2): trisquélio -->
+        <rect class="pl" x="142" y="142" width="122" height="122" rx="3"/>
+        <line class="nl4" x1="162" y1="165" x2="244" y2="241"/>
+        <line class="nl4" x1="244" y1="165" x2="162" y2="241"/>
+        <line class="nl4" x1="203" y1="142" x2="203" y2="264"/>
+        <text class="lbl" x="146" y="154">(3,2) estrela · trisquélio</text>
+      </svg>
+    </div>
+    <div class="svg-label">MODOS NODAIS DE CHLADNI (esquemático) · placa quadrada</div>
+
+    <p>
+      O <strong>modo trisquélio</strong> (canto inferior direito) aparece em placas de geometria
+      intermediária e é o análogo bidimensional da órbita de três braços do dm³.
+      Veja <code>chEta-tribonacci.html</code> no AXLE/LAW3M/.
+    </p>
+
+    <div class="chips">
+      <span class="chip t">∂Ω fixo</span>
+      <span class="chip gd">conjunto nodal = atrator</span>
+      <span class="chip pu">g⁶ · acústico · ~kHz</span>
+    </div>
+  </div>
+
+  <!-- §2 Ressonância como seleção -->
+  <div class="sec">
+    <div class="sec-head">§2 · Ressonância = Seleção</div>
+    <p>
+      O conteúdo físico de todo experimento de Chladni é um
+      <strong>princípio de seleção</strong>: de todos os estados oscilatórios possíveis,
+      só os que satisfazem Δ²u = λ⁴u são mantidos.
+      Os outros modos se dissipam. O sistema se <em>trava</em> no conjunto
+      zero de sua autofunção ressonante.
+    </p>
+    <div class="kid-note">
+      É como uma playlist — a natureza só toca as músicas que "encaixam"
+      no instrumento. Todas as outras frequências somem. O dm³ é a
+      teoria matemática que explica <em>por que</em> certas músicas encaixam.
+    </div>
+    <div class="thm gd">
+      <div class="thm-label">Observação · Seleção de Chladni</div>
+      <p>A figura de Chladni é o <em>atrator</em> da placa excitada sob dissipação.
+      É um atrator unidimensional (uma curva) da equação de onda. O atrator dm³
+      Γ = {r = 1} é seu equivalente dinâmico.</p>
+    </div>
+    <div class="eq gd">
+      Chladni:  {u = 0}  ←→  dm³:  {r = 1} = Γ
+    </div>
+  </div>
+
+</div><!-- fim col-l -->
+
+<!-- ──────── COLUNA CENTRAL ──────── -->
+<div class="col col-c">
+
+  <!-- §3 Escala g -->
+  <div class="sec">
+    <div class="sec-head t">§3 · A Escada de Ressonância g</div>
+    <p>
+      A g-série dm³ exponencia a cadeia de operadores: g<sup>n</sup> indexa a
+      <em>n</em>-ésima aplicação de G = U∘F∘K∘C. Cada degrau é uma
+      escala física. <strong>O travamento ressonante ocorre em todo degrau</strong> —
+      o mecanismo é idêntico, só o meio muda.
+    </p>
+    <div class="kid-note">
+      Do átomo à galáxia, passando pelo tambor, pelo furacão de Saturno e pelo cérebro —
+      o mesmo princípio matemático governa o travamento do padrão em cada escala.
+    </div>
+
+    <div class="ladder">
+      <div class="rung">
+        <div class="rung-g">g⁰</div>
+        <div class="rung-label" style="color:#2dd4bf;">quântico / atômico</div>
+        <div class="rung-bar-bg"><div class="rung-bar" style="width:6%;background:#2dd4bf;"></div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-g">g⁶</div>
+        <div class="rung-label" style="color:#5af0d0;">Chladni · acústico</div>
+        <div class="rung-bar-bg"><div class="rung-bar" style="width:13%;background:#5af0d0;"></div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-g">g¹⁶</div>
+        <div class="rung-label" style="color:#a78bfa;">neural / EEG</div>
+        <div class="rung-bar-bg"><div class="rung-bar" style="width:21%;background:#a78bfa;"></div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-g">g³²</div>
+        <div class="rung-label" style="color:#c9a84c;">morfogênese</div>
+        <div class="rung-bar-bg"><div class="rung-bar" style="width:30%;background:#c9a84c;"></div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-g">g⁴⁸</div>
+        <div class="rung-label" style="color:#f97316;">clima / oceano</div>
+        <div class="rung-bar-bg"><div class="rung-bar" style="width:41%;background:#f97316;"></div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-g" style="color:#c9a84c;font-weight:700;">g⁶⁴</div>
+        <div class="rung-label" style="color:#c9a84c;font-weight:700;">Hexágono de Saturno ★</div>
+        <div class="rung-bar-bg"><div class="rung-bar" style="width:53%;background:#c9a84c;"></div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-g">g⁸⁰</div>
+        <div class="rung-label" style="color:#f87171;">estelar / vento solar</div>
+        <div class="rung-bar-bg"><div class="rung-bar" style="width:63%;background:#f87171;"></div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-g">g⁹⁶</div>
+        <div class="rung-label" style="color:#f87171;">Milkomeda · galáctico</div>
+        <div class="rung-bar-bg"><div class="rung-bar" style="width:75%;background:#f87171;"></div></div>
+      </div>
+    </div>
+
+    <p style="font-size:.76rem;color:var(--dim);">
+      ★ O hexágono polar norte de Saturno está no degrau g⁶⁴ (escala planetária ≈ 10⁷ m,
+      período de rotação ≈ 10,7 h). Veja §4.
+    </p>
+  </div>
+
+  <!-- §4 Hexágono de Saturno -->
+  <div class="sec">
+    <div class="sec-head gd">§4 · O Hexágono de Saturno (g⁶⁴)</div>
+    <p>
+      O hexágono polar norte de Saturno é uma <strong>onda de Rossby estacionária</strong>
+      de número de onda azimutal m = 6, travada na frequência de rotação interna do planeta.
+      Ele persiste há pelo menos 40 anos de observação contínua
+      (Voyager 1980, Cassini 2004–2017, JWST 2023). Sua geometria:
+    </p>
+    <div class="eq gd">
+      lado do hexágono ≈ 14.500 km  ·  diâmetro ≈ 30.000 km
+      período de rotação ≈ 10 h 39 min (referencial interno)
+    </div>
+    <div class="kid-note">
+      Saturno tem uma tempestade em forma de hexágono no polo norte.
+      Ela é maior que a Terra inteira e não se desfaz há décadas.
+      A matemática do dm³ explica <em>por que</em> a natureza escolheu
+      exatamente seis lados — e não cinco, nem sete.
+    </div>
+
+    <!-- SVG: hexágono de Saturno -->
+    <div class="svg-panel">
+      <svg viewBox="0 0 280 220" width="280" height="220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="satbg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a3820"/>
+            <stop offset="100%" stop-color="#06110f"/>
+          </radialGradient>
+        </defs>
+        <rect width="280" height="220" fill="url(#satbg)" rx="4"/>
+        <ellipse cx="140" cy="110" rx="128" ry="95" fill="none" stroke="rgba(201,168,76,.08)" stroke-width="1"/>
+        <ellipse cx="140" cy="110" rx="108" ry="80" fill="none" stroke="rgba(201,168,76,.08)" stroke-width="1"/>
+        <ellipse cx="140" cy="110" rx="88" ry="65" fill="none" stroke="rgba(201,168,76,.08)" stroke-width="1"/>
+        <polygon points="140,42 206,76 206,144 140,178 74,144 74,76"
+          fill="rgba(201,168,76,.06)" stroke="#c9a84c" stroke-width="1.8" stroke-linejoin="round"/>
+        <circle cx="140" cy="110" r="40" fill="rgba(45,212,191,.05)" stroke="#2dd4bf" stroke-width="1" stroke-dasharray="3,2"/>
+        <path d="M 140 68 A 42 42 0 0 1 182 110" fill="none" stroke="rgba(45,212,191,.5)" stroke-width="1.2" marker-end="url(#arr)"/>
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="rgba(45,212,191,.7)"/>
+          </marker>
+        </defs>
+        <text x="140" y="114" text-anchor="middle" fill="#2dd4bf" font-size="11" font-family="monospace">m = 6</text>
+        <text x="140" y="127" text-anchor="middle" fill="rgba(45,212,191,.5)" font-size="8" font-family="monospace">vórtice polar</text>
+        <text x="220" y="76" fill="#c9a84c" font-size="9" font-family="monospace">modo 6</text>
+        <text x="220" y="88" fill="rgba(201,168,76,.6)" font-size="8" font-family="monospace">travado · estável</text>
+        <text x="8" y="214" fill="#7a8f8d" font-size="7" font-family="monospace">Hexágono polar N de Saturno · escala g⁶⁴ · onda de Rossby m=6</text>
+      </svg>
+    </div>
+    <div class="svg-label">HEXÁGONO POLAR NORTE DE SATURNO · esquemático (fora de escala)</div>
+
+    <p>
+      O hexágono é uma <strong>onda de Rossby travada no modo m = 6</strong>.
+      As equações linearizadas de águas rasas sobre uma esfera em rotação admitem
+      soluções da forma ψ ∝ e<sup>i(mθ − ωt)</sup>; o modo m = 6
+      trava sua fase em zero no referencial co-rotante de Saturno, produzindo
+      um padrão geométrico estacionário — uma figura de Chladni planetária.
+    </p>
+    <div class="eq gd">
+      ∂_t q + {ψ, q} = 0,  q = Δψ + βy
+      →  modo estacionário  ∂_t q = 0  em  m = 6
+    </div>
+  </div>
+
+  <!-- §5 Contrapartida dm³ -->
+  <div class="sec">
+    <div class="sec-head pu">§5 · A Contrapartida dm³</div>
+    <p>
+      A EDO dm³ na variedade de contato (ℝ³, α = dz − r²dθ):
+    </p>
+    <div class="eq pu">
+      ṙ = r(1 − r²) + 2(r−1)e^{−z}
+      θ̇ = 1
+      ż = r² − 2(r−1)²e^{−z}
+    </div>
+    <p>
+      admite um único atrator helicoidal Γ = {r = 1}.
+      <strong>Teorema 2.1</strong> (provado; ver preprint de escalas gravitacionais §3):
+      toda órbita com r₀ > r★ ≈ 0,776 converge exponencialmente
+      para Γ à taxa μ = −2.
+    </p>
+    <div class="thm">
+      <div class="thm-label">Paralelo Estrutural · Três Atratores</div>
+      <p><strong>Chladni:</strong> {u<sub>nm</sub> = 0} — curva nodal na placa.</p>
+      <p><strong>Saturno:</strong> {ψ₆ = const} — isólinha hexagonal no jato.</p>
+      <p><strong>dm³:</strong> Γ = {r = 1} — órbita de Reeb da estrutura de contato.</p>
+      <p style="margin-top:.4rem;color:rgba(167,139,250,.9);font-size:.8rem;">
+        Os três são <em>zeros de um operador diferencial agindo sobre uma autofunção ressonante</em>,
+        estabilizados por um mecanismo dissipativo / de aprisionamento de Lyapunov.
+      </p>
+    </div>
+  </div>
+
+</div><!-- fim col-c -->
+
+<!-- ──────── COLUNA DIREITA ──────── -->
+<div class="col col-r">
+
+  <!-- §6 Ciclo do Cajueiro -->
+  <div class="sec">
+    <div class="sec-head">§6 · O Ciclo do Cajueiro em Cada Escala</div>
+    <p>
+      O framework dm³ nomeia seis fases de formação do atrator como o
+      <strong>Ciclo do Cajueiro</strong> (semente → ultrapassagem → resistência →
+      travamento → ramificação → nova semente). As mesmas seis fases aparecem em
+      cada sistema ressonante:
+    </p>
+    <div class="kid-note">
+      O cajueiro de Pirangi, RN, é o maior do mundo: uma única árvore de 8.500 m².
+      Toda grande forma começa pequena, ultrapassa, resiste, trava e ramifica.
+      Assim cresce a matemática. Assim cresce você.
+    </div>
+    <table class="caj-table">
+      <thead>
+        <tr>
+          <th>Fase</th>
+          <th>Chladni (g⁶)</th>
+          <th>Saturno (g⁶⁴)</th>
+          <th>dm³</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Semente</td>
+          <td>percussão / arco inicial</td>
+          <td>perturbação convectiva</td>
+          <td>r(0) ≠ 1</td>
+        </tr>
+        <tr>
+          <td class="gd">Ultrapassagem</td>
+          <td>anel transiente multimodo</td>
+          <td>jato meandrando</td>
+          <td>trajetória espirala</td>
+        </tr>
+        <tr>
+          <td>Resistência</td>
+          <td>dissipação elimina fora do modo</td>
+          <td>plano β seleciona m=6</td>
+          <td>cota de Lyapunov ε₀ = 1/3</td>
+        </tr>
+        <tr>
+          <td class="pu">Travamento</td>
+          <td>areia pousa na linha nodal</td>
+          <td>hexágono estacionário</td>
+          <td>r(t) → 1, taxa e^{−2t}</td>
+        </tr>
+        <tr>
+          <td>Ramificação</td>
+          <td>harmônicos superiores</td>
+          <td>vórtices aninhados</td>
+          <td>g-série próximo degrau</td>
+        </tr>
+        <tr>
+          <td class="or">Nova semente</td>
+          <td>novo arco, nova frequência</td>
+          <td>forçamento sazonal</td>
+          <td>g^n → g^{n+1}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="box gd">
+      <p style="font-size:.78rem;">
+        <strong style="color:var(--gd);">Conjectura (Universalidade Cimática).</strong>
+        Qualquer sistema dissipativo governado por um operador elíptico autoadjunto
+        em um domínio com grupo de simetria preferencial exibirá dinâmica de ciclo
+        cajueiro convergindo para um atrator ressonante no conjunto zero de sua
+        autofunção principal.
+      </p>
+    </div>
+  </div>
+
+  <!-- §7 Trisquélio -->
+  <div class="sec">
+    <div class="sec-head or">§7 · Trisquélio · Ressonância de Três Braços</div>
+    <p>
+      O <strong>trisquélio</strong> — três espirais entrelaçadas que se encontram
+      num centro comum — aparece como modo de Chladni em placas triangulares e como
+      órbita intermediária nas simulações dm³ próximo ao ponto de sela
+      (r<sub>s</sub>, z<sub>s</sub>). Sua simetria tripla corresponde a:
+    </p>
+    <div class="chips">
+      <span class="chip or">modo Chladni (3,2)</span>
+      <span class="chip t">órbita dm³ próx. sela</span>
+      <span class="chip gd">vórtice interno de Saturno</span>
+      <span class="chip pu">operador tribonacci η</span>
+    </div>
+
+    <!-- SVG: trisquélio -->
+    <div class="svg-panel">
+      <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="200" fill="rgba(249,115,22,.03)" rx="4"/>
+        <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(249,115,22,.15)" stroke-width="1" stroke-dasharray="2,3"/>
+        <g transform="translate(100,100)">
+          <path d="M0,0 C 22,-8 52,-6 62,18 C 72,42 50,70 22,64 C -6,58 -14,30 0,0"
+            fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+          <path d="M0,0 C 22,-8 52,-6 62,18 C 72,42 50,70 22,64 C -6,58 -14,30 0,0"
+            fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"
+            transform="rotate(120)"/>
+          <path d="M0,0 C 22,-8 52,-6 62,18 C 72,42 50,70 22,64 C -6,58 -14,30 0,0"
+            fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"
+            transform="rotate(240)"/>
+          <circle cx="22" cy="64" r="2.5" fill="#f97316" opacity=".6"/>
+          <path d="M 45,0 A 45,45 0 0 1 22.5,39" fill="none"
+            stroke="rgba(249,115,22,.3)" stroke-width="1"
+            marker-end="url(#tri-arr)"/>
+          <defs>
+            <marker id="tri-arr" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
+              <path d="M0,0 L5,2.5 L0,5 Z" fill="rgba(249,115,22,.5)"/>
+            </marker>
+          </defs>
+        </g>
+        <circle cx="100" cy="100" r="3.5" fill="#f97316"/>
+        <text x="100" y="192" text-anchor="middle" fill="#7a8f8d" font-size="8" font-family="monospace">trisquélio · modo de 3 braços</text>
+        <text x="172" y="100" fill="rgba(249,115,22,.55)" font-size="8" font-family="monospace">0°</text>
+        <text x="54" y="176" fill="rgba(249,115,22,.55)" font-size="8" font-family="monospace">120°</text>
+        <text x="54" y="36" fill="rgba(249,115,22,.55)" font-size="8" font-family="monospace">240°</text>
+      </svg>
+    </div>
+    <div class="svg-label">TRISQUÉLIO · órbita ressonante de 3 braços · dm³ próx. sela</div>
+
+    <p>
+      A constante tribonacci η ≈ 1,839 (operador η na escada dm³)
+      governa a recorrência trifold e aparece como taxa de crescimento
+      da variedade instável próximo a (r<sub>s</sub>, z<sub>s</sub>).
+      Veja <code>chEta-tribonacci.html</code>.
+    </p>
+  </div>
+
+  <!-- §8 Valores-chave + questões em aberto -->
+  <div class="sec">
+    <div class="sec-head re">§8 · Valores-Chave &amp; Questões em Aberto</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.2rem 0;">
+      <div class="badge">
+        <div class="v">r★ ≈ 0,776</div>
+        <div class="vl">borda interna da bacia</div>
+      </div>
+      <div class="badge gd">
+        <div class="v">m = 6</div>
+        <div class="vl">modo Rossby de Saturno</div>
+      </div>
+      <div class="badge pu">
+        <div class="v">μ = −2</div>
+        <div class="vl">taxa de contração dm³</div>
+      </div>
+      <div class="badge or">
+        <div class="v">ε₀ = 1/3</div>
+        <div class="vl">raio de estabilidade de Lyapunov</div>
+      </div>
+    </div>
+
+    <div class="thm t">
+      <div class="thm-label">Problema em Aberto · Universalidade entre Escalas</div>
+      <p>Existe uma prova de geometria de contato que mostra que a condição
+      de travamento da onda de Rossby ∂<sub>t</sub>q = 0 em m = 6 pode ser
+      derivada como condição de ressonância dm³ em uma variedade de contato 3D
+      adequada que modele as equações de águas rasas em rotação?</p>
+    </div>
+
+    <div class="thm t">
+      <div class="thm-label">Problema em Aberto · Dicionário Chladni ↔ dm³</div>
+      <p>
+        Construa um mapa explícito dos dados espectrais de Chladni (λ<sub>nm</sub>, u<sub>nm</sub>)
+        em um disco D² para os dados iniciais dm³ (r₀, z₀) tal que o ciclo-limite Γ
+        corresponda ao círculo nodal do modo (0,1).
+        O mapa deve entrelaçar o bilaplaciano de Kirchhoff–Love com o
+        laplaciano de contato dm³ Δ<sub>α</sub>.
+      </p>
+    </div>
+
+    <div class="box re" style="margin-top:.2rem;">
+      <p style="font-size:.76rem;">
+        <strong style="color:var(--re);">Nota sobre det(J).</strong>
+        O valor próprio do Jacobiano na sela satisfaz
+        det(J)|<sub>rₛ</sub> = r<sub>s</sub>²(−1−r<sub>s</sub>−2r<sub>s</sub>²) ≈ −0,364
+        onde r<sub>s</sub> = 2cos(3π/7) ≈ 0,445 é a coordenada da sela.
+        Isso é <em>distinto</em> de ε₀ = 1/3, que é o raio de estabilidade de Lyapunov
+        derivado de V = (r−1)²/2.
+        Ver TOGT Teorema B.3 e preprint de escalas gravitacionais §4.
+      </p>
+    </div>
+  </div>
+
+  <!-- Referências -->
+  <div class="sec">
+    <div class="sec-head" style="font-size:.6rem;">Referências &amp; Recursos</div>
+    <p style="font-size:.72rem;color:var(--dim);line-height:1.65;">
+      Chladni (1787) <em>Entdeckungen über die Theorie des Klanges</em> ·
+      Baines &amp; Szmytkowski (2007) Dinâmica do hexágono de Saturno ·
+      Sayanagi et al. (2010) Travamento da onda de Rossby m = 6 ·
+      Grossi (2026) <em>Teoria Geométrica de Contato das Transições Generativas</em>
+      doi:<a href="https://doi.org/10.5281/zenodo.20682934">10.5281/zenodo.20682934</a> ·
+      Grossi (2026) <em>Gravidade Através das Escalas</em>
+      doi:<a href="https://doi.org/10.5281/zenodo.20747481">10.5281/zenodo.20747481</a> ·
+      AXLE/Lean 4: <a href="https://github.com/TOTOGT/AXLE">github.com/TOTOGT/AXLE</a>
+    </p>
+    <div class="chips">
+      <span class="chip t">geometria de contato</span>
+      <span class="chip gd">cimática</span>
+      <span class="chip pu">ondas de Rossby</span>
+      <span class="chip or">trisquélio</span>
+      <span class="chip t">dm³</span>
+      <span class="chip re">Lean 4 · AXLE</span>
+    </div>
+  </div>
+
+</div><!-- fim col-r -->
+</div><!-- fim poster-body -->
+
+<!-- ════════════════ RODAPÉ ════════════════ -->
+<div class="poster-footer">
+  <span>Pablo Nogueira Grossi · G6 LLC · ORCID 0009-0000-6496-2186 · grossiatwork@gmail.com</span>
+  <span>Principia Orthogona / dm³ · ISBN 979-8-9954416-6-3 · doi:10.5281/zenodo.19117399</span>
+  <span>XII Bienal de Matemática · UFRN Natal · agosto 2026 &amp; LAW3M · outubro 2026 ·
+    <a href="https://grossi-ops.github.io/cajueiro/" target="_blank">cajueiro</a> ·
+    <a href="https://grossi-ops.github.io/Atratores/" target="_blank">Atratores</a>
+  </span>
+</div>
+
+</body>
+</html>
