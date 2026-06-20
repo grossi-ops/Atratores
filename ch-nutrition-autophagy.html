@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nutrition · Burning Calories Is Harder Than It Seems · The Case for Autophagy · Principia Orthogona</title>
+<meta name="description" content="Why the calories-in-calories-out model is incomplete, how metabolic adaptation works, and why autophagy — the cell that eats itself — is the most important discovery in nutrition science since vitamins.">
+<style>
+:root {
+  --navy:  #1a2744;
+  --gold:  #c9a84c;
+  --cream: #faf7f0;
+  --smoke: #f0ece4;
+  --mid:   #3a4f7a;
+  --rule:  #8a7340;
+  --text:  #1c1c1c;
+  --light: #e8e2d4;
+  --teal:  #1a6b5a;
+  --teal-l:#2d9e82;
+  --red:   #8a2a2a;
+  --green: #1a6b3a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: Georgia, 'Times New Roman', serif; color: var(--text); background: var(--cream); }
+
+/* ── Lang bar ── */
+.lang-bar {
+  background: var(--navy); padding: .35rem 2rem;
+  display: flex; align-items: center; gap: 1rem;
+  font-family: sans-serif; font-size: .65rem; color: #aaa;
+}
+.lang-bar a { color: var(--gold); text-decoration: none; border: 1px solid rgba(201,168,76,.35);
+  padding: .1rem .5rem; border-radius: 3px; }
+.lang-bar a.active { background: rgba(201,168,76,.15); }
+.lang-bar .note { margin-left: auto; font-style: italic; }
+
+/* ── Nav ── */
+nav { background: var(--navy); padding: .75rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--gold); }
+.nav-logo { color: var(--gold); font-weight: bold; font-size: .95rem;
+  letter-spacing: .1em; text-decoration: none; font-family: sans-serif; }
+.nav-back { color: #ccc; text-decoration: none; font-size: .85rem;
+  font-family: sans-serif; transition: color .2s; }
+.nav-back:hover { color: var(--gold); }
+
+/* ── Hero ── */
+.chapter-header { background: var(--navy); color: white;
+  padding: 4.5rem 2rem 3.5rem; text-align: center; position: relative; overflow: hidden; }
+.chapter-header::before { content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 80%, rgba(26,107,90,.28) 0%, transparent 65%); }
+.ch-eyebrow { font-family: sans-serif; font-size: .75rem; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: .8rem; position: relative; }
+.ch-letter { font-family: sans-serif; font-size: 4.5rem; font-weight: 900;
+  color: rgba(201,168,76,.18); line-height: 1; margin-bottom: -.8rem; position: relative; }
+.ch-title { font-size: clamp(1.8rem, 5vw, 2.8rem); color: white;
+  line-height: 1.2; margin-bottom: .5rem; position: relative; }
+.ch-subtitle { color: var(--gold); font-style: italic; font-size: 1.05rem;
+  margin-bottom: 1.5rem; position: relative; }
+.gold-rule { width: 60px; height: 2px; background: var(--gold); margin: 1.2rem auto; }
+.ch-meta { font-family: sans-serif; font-size: .78rem; color: #aaa;
+  letter-spacing: .08em; position: relative; }
+
+/* ── Body ── */
+.chapter-body { max-width: 700px; margin: 0 auto; padding: 3.5rem 2rem 2rem; }
+.chapter-body p { line-height: 1.88; margin-bottom: 1.25rem; font-size: 1.05rem; }
+.chapter-body h2 { font-size: 1.3rem; font-weight: bold; color: var(--navy);
+  margin: 3rem 0 .8rem; border-bottom: 1px solid var(--light); padding-bottom: .4rem; }
+.chapter-body h3 { font-size: 1.05rem; font-weight: bold; color: var(--teal);
+  margin: 2rem 0 .6rem; font-style: italic; }
+
+/* ── Pull quote ── */
+.pull-quote { border-left: 4px solid var(--gold);
+  padding: 1.2rem 1.6rem; margin: 2rem 0;
+  background: var(--smoke); font-style: italic;
+  font-size: 1.08rem; line-height: 1.75; color: #1a1a1a; }
+.pull-quote cite { display: block; margin-top: .5rem;
+  font-size: .78rem; color: var(--rule); font-style: normal;
+  font-family: sans-serif; letter-spacing: .06em; }
+
+/* ── Fact box ── */
+.fact-box { background: #e8f5f0; border-left: 4px solid var(--teal-l);
+  padding: 1.1rem 1.4rem; margin: 1.8rem 0; }
+.fact-box .fb-label { font-family: sans-serif; font-size: .62rem;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: .35rem; }
+.fact-box p { font-size: .93rem; line-height: 1.72; margin-bottom: .4rem; }
+.fact-box p:last-child { margin-bottom: 0; }
+
+/* ── Warning box ── */
+.warn-box { background: #fff7e6; border-left: 4px solid var(--gold);
+  padding: 1.1rem 1.4rem; margin: 1.8rem 0; }
+.warn-box .wb-label { font-family: sans-serif; font-size: .62rem;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--rule); margin-bottom: .35rem; }
+.warn-box p { font-size: .93rem; line-height: 1.72; margin-bottom: 0; }
+
+/* ── Science box ── */
+.science-box { background: var(--navy); color: white;
+  padding: 1.5rem 1.8rem; margin: 2rem 0; }
+.science-box .sb-label { font-family: sans-serif; font-size: .62rem;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .8rem; }
+.science-box p { font-size: .9rem; line-height: 1.78; color: rgba(255,255,255,.85); margin-bottom: .6rem; }
+.science-box p:last-child { margin-bottom: 0; }
+.science-box strong { color: var(--gold); }
+.mono { font-family: 'Courier New', monospace; font-size: .88em; }
+
+/* ── Pathway diagram ── */
+.pathway { display: flex; align-items: center; flex-wrap: wrap;
+  gap: .5rem; margin: 1.5rem 0; padding: 1rem 1.2rem;
+  background: var(--smoke); border: 1px solid var(--light); }
+.pathway .step { background: var(--navy); color: white;
+  padding: .4rem .85rem; font-family: sans-serif; font-size: .75rem;
+  letter-spacing: .06em; border-radius: 2px; white-space: nowrap; }
+.pathway .step.gold { background: var(--gold); color: var(--navy); font-weight: bold; }
+.pathway .step.teal { background: var(--teal); }
+.pathway .step.red { background: var(--red); }
+.pathway .arr { color: var(--rule); font-size: 1.1rem; }
+.pathway-label { font-family: sans-serif; font-size: .62rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--rule);
+  margin-bottom: .3rem; }
+
+/* ── Comparison table ── */
+.compare-table { width: 100%; border-collapse: collapse; margin: 1.8rem 0;
+  font-family: sans-serif; font-size: .85rem; }
+.compare-table th { background: var(--navy); color: var(--gold);
+  padding: .65rem 1rem; text-align: left; font-size: .68rem;
+  letter-spacing: .12em; text-transform: uppercase; }
+.compare-table td { padding: .65rem 1rem; border-bottom: 1px solid var(--light);
+  line-height: 1.55; vertical-align: top; }
+.compare-table tr:nth-child(even) td { background: var(--smoke); }
+.compare-table td:first-child { font-weight: bold; color: var(--navy); width: 38%; }
+.compare-table .good { color: var(--green); font-weight: bold; }
+.compare-table .bad { color: var(--red); }
+
+/* ── Key numbers ── */
+.key-numbers { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+  gap: 1rem; margin: 2rem 0; }
+.kn-cell { background: var(--smoke); border: 1px solid var(--light);
+  padding: 1rem; text-align: center; }
+.kn-val { font-family: sans-serif; font-size: 1.4rem; font-weight: bold;
+  color: var(--navy); letter-spacing: .02em; }
+.kn-val.gold { color: var(--gold); }
+.kn-val.teal { color: var(--teal); }
+.kn-label { font-family: sans-serif; font-size: .62rem; letter-spacing: .1em;
+  text-transform: uppercase; color: #666; margin-top: .3rem; line-height: 1.4; }
+
+/* ── PT section toggle ── */
+.bilingual { margin: 3rem 0 1rem; }
+.bilingual-header { background: var(--navy); color: var(--gold);
+  font-family: sans-serif; font-size: .7rem; letter-spacing: .2em;
+  text-transform: uppercase; padding: .5rem 1rem; display: flex; gap: 1rem; align-items: center; }
+.bilingual-header span.flag { font-size: .9rem; }
+.pt-block { background: rgba(201,168,76,.05); border: 1px solid rgba(201,168,76,.2);
+  padding: 1.5rem 1.8rem; margin-bottom: 1.5rem; }
+.pt-block p { font-size: 1rem; line-height: 1.85; margin-bottom: 1rem; }
+.pt-block p:last-child { margin-bottom: 0; }
+.pt-block h3 { font-size: 1rem; font-weight: bold; color: var(--teal); margin: 1.5rem 0 .5rem; font-style: italic; }
+
+/* ── Page break / end of intro ── */
+.page-break { border: none; border-top: 2px solid var(--light); margin: 3rem 0; }
+.continue-reading { background: var(--navy); padding: 3rem 2rem; text-align: center; }
+.continue-reading h2 { color: var(--gold); font-size: 1.3rem; margin-bottom: .6rem; }
+.continue-reading p { color: rgba(255,255,255,.65); font-size: .9rem; margin-bottom: 1.8rem;
+  max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+.cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.cta-btn { display: inline-block; padding: .7rem 2rem; font-family: sans-serif;
+  font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+  text-decoration: none; transition: all .2s; }
+.cta-btn.primary { background: var(--gold); color: var(--navy); font-weight: bold; }
+.cta-btn.primary:hover { background: #e0b83a; }
+.cta-btn.secondary { border: 1px solid rgba(201,168,76,.4); color: var(--gold); }
+.cta-btn.secondary:hover { background: rgba(201,168,76,.1); }
+
+/* ── Footer ── */
+footer { background: var(--navy); color: rgba(255,255,255,.35);
+  padding: 2rem; text-align: center; font-family: sans-serif; font-size: .72rem;
+  line-height: 1.9; border-top: 1px solid rgba(201,168,76,.15); }
+footer a { color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <span>Language / Idioma:</span>
+  <a class="active" href="ch-nutrition-autophagy.html">🇺🇸 English</a>
+  <a href="ch-nutricao-autofagia-pt.html">🇧🇷 Português</a>
+  <span class="note">Principia Orthogona · The Mini-Beast · Book 3</span>
+</div>
+
+<nav>
+  <a href="Lindex.html" class="nav-back">← Portfolio</a>
+  <a href="Lindex.html" class="nav-logo">PRINCIPIA ORTHOGONA · BOOK 3</a>
+  <span style="color:var(--gold);font-family:sans-serif;font-size:.82rem;">Ch. N · Nutrition</span>
+</nav>
+
+<!-- ══ HERO ══ -->
+<div class="chapter-header">
+  <div class="ch-eyebrow">Book 3 · The Mini-Beast · Chapter N</div>
+  <div class="ch-letter">N</div>
+  <h1 class="ch-title">Burning Calories Is Harder<br>Than It Seems</h1>
+  <div class="ch-subtitle">And the extraordinary case for autophagy</div>
+  <div class="gold-rule"></div>
+  <div class="ch-meta">Science of Nutrition · Metabolism · Autophagy · Yoshinori Ohsumi · Nobel 2016</div>
+</div>
+
+<!-- ══ BODY ══ -->
+<div class="chapter-body">
+
+  <p>You have probably heard the rule: <em>eat less, move more.</em> It is the most repeated piece of nutrition advice in the world. It is also — as a complete description of how the body manages energy — wrong. Not wrong in the way that flat-earth is wrong. Wrong in the way that Newtonian mechanics is wrong when you approach the speed of light: approximately correct in simple cases, fundamentally incomplete when things get interesting.</p>
+
+  <p>This chapter is about what the body actually does with energy, why "a calorie is a calorie" is a useful lie, and why a process called <strong>autophagy</strong> — discovered formally in 2016, operating in your cells right now — may be the most important lever in human metabolism that most people have never heard of.</p>
+
+  <div class="pull-quote">
+    A calorie is a unit of heat. Your body is not a furnace.
+    <cite>— the first thing to understand</cite>
+  </div>
+
+  <h2>§1 · What a Calorie Actually Is</h2>
+
+  <p>One kilocalorie (what we call a "calorie" on food labels) is the amount of heat needed to raise one kilogram of water by one degree Celsius. That definition comes from physics. Nutritionists adopted it because burning food in a device called a bomb calorimeter releases heat, and you can measure it. The Atwater system, developed in the 1880s, estimated that protein and carbohydrates yield about 4 kcal/g and fat about 9 kcal/g.</p>
+
+  <p>The problem is that your body is not a bomb calorimeter. It is an electrochemical system running hundreds of simultaneous processes — digestion, immune response, tissue repair, hormone synthesis, temperature regulation — and the efficiency of all of these varies by person, by food, by time of day, by gut microbiome, and by what you ate yesterday.</p>
+
+  <div class="fact-box">
+    <div class="fb-label">The Thermic Effect of Food</div>
+    <p>Just digesting food costs energy. This "thermic effect" is not the same for all macronutrients:</p>
+    <p><strong>Protein:</strong> 25–30% of calories burned during digestion. Eat 100 kcal of protein → net 70–75 kcal available.<br>
+    <strong>Carbohydrates:</strong> 6–8% cost.<br>
+    <strong>Fat:</strong> 2–3% cost.</p>
+    <p>Two diets identical in calorie count but different in protein content have meaningfully different net energy yields before a single step of exercise.</p>
+  </div>
+
+  <h3>The gut microbiome problem</h3>
+
+  <p>The bacteria in your gut can extract more or less energy from the same food depending on which species dominate. Studies by the Sonnenburg lab at Stanford and the Turnbaugh lab showed that germ-free mice — mice with no gut bacteria — absorb measurably fewer calories from identical food than mice with a normal microbiome. When obese humans' gut bacteria were transplanted into germ-free mice, those mice gained more weight than mice receiving lean donors' bacteria — eating the same food.</p>
+
+  <p>The label says 250 kcal. Your body may absorb 210 or 275, depending on your microbiome. The number on the label is a laboratory average. You are not a laboratory average.</p>
+
+  <h2>§2 · Why Diets Fail — Metabolic Adaptation</h2>
+
+  <p>The most uncomfortable fact in nutrition science is this: when you reduce caloric intake, your body reduces caloric expenditure. Not perfectly, not immediately, but systematically. This is called <strong>metabolic adaptation</strong>, and it is the primary reason that most caloric restriction interventions fail long-term.</p>
+
+  <div class="fact-box">
+    <div class="fb-label">The Minnesota Starvation Experiment · 1944</div>
+    <p>Physiologist Ancel Keys recruited 36 healthy young men as conscientious objectors during World War II and reduced their intake by 40% for six months. Their basal metabolic rate dropped by <strong>40%</strong> — far beyond what could be explained by the loss of metabolic tissue. Their bodies had downregulated energy expenditure to match supply.</p>
+    <p>Recovery took months even after normal eating resumed. The adaptation outlasted the restriction.</p>
+  </div>
+
+  <p>The mechanism is hormonal. <strong>Leptin</strong> — secreted by fat cells — signals satiety and upregulates metabolism. As fat mass decreases, leptin falls. A lower leptin level signals to the hypothalamus: emergency, reduce expenditure, increase hunger. <strong>Ghrelin</strong> (the hunger hormone) rises in response to caloric restriction and stays elevated for months, even years, after weight loss ends.</p>
+
+  <p>The 2016 follow-up study of <em>The Biggest Loser</em> participants found that six years after the competition, their resting metabolic rates were on average 500 kcal/day lower than expected for their body size — and their ghrelin levels were persistently elevated. They were fighting their own biology, every day, forever.</p>
+
+  <div class="key-numbers">
+    <div class="kn-cell">
+      <div class="kn-val">40%</div>
+      <div class="kn-label">Maximum BMR reduction under sustained restriction (Keys 1944)</div>
+    </div>
+    <div class="kn-cell">
+      <div class="kn-val gold">500 kcal</div>
+      <div class="kn-label">Avg daily metabolic deficit in Biggest Loser participants 6 years later</div>
+    </div>
+    <div class="kn-cell">
+      <div class="kn-val teal">95%</div>
+      <div class="kn-label">Long-term failure rate of caloric restriction diets at 5 years</div>
+    </div>
+  </div>
+
+  <h3>Set point theory</h3>
+
+  <p>The body appears to defend a weight range — a "set point" — through redundant hormonal, neural, and metabolic mechanisms. Pushing below it triggers adaptation; pushing above it triggers some (weaker) resistance. The set point is not fixed: it can drift upward over years of overeating and may be genuinely altered by early-life nutrition, stress, and sleep disruption. But in the short to medium term, it behaves like a contact manifold's attractor: the system returns to it unless you change the underlying geometry.</p>
+
+  <div class="warn-box">
+    <div class="wb-label">What this does not mean</div>
+    <p>This is not an argument that diet and exercise are useless. They are not. It is an argument that <em>caloric restriction alone</em> — the standard model — is working against a much more sophisticated biological control system than "eat less, weigh less." Durable metabolic change requires changing the system, not just the input.</p>
+  </div>
+
+  <h2>§3 · Enter Autophagy — The Cell That Eats Itself</h2>
+
+  <p>In 2016, the Nobel Prize in Physiology or Medicine was awarded to Yoshinori Ohsumi of the Tokyo Institute of Technology for his discoveries about the mechanisms of autophagy. The word comes from Greek: αὐτός (<em>autos</em>, self) + φαγεῖν (<em>phagein</em>, to eat). The cell eating itself.</p>
+
+  <p>Autophagy had been observed since the 1960s — Christian de Duve coined the term after seeing strange double-membrane vesicles in electron microscopy. But it was Ohsumi who, working with baker's yeast in the early 1990s, identified the specific genes that control it (ATG genes — autophagy-related genes), showed that it was a programmed, tightly regulated process, and proved that it was conserved across all eukaryotic life. The same gene that triggers autophagy in yeast also works in your cells.</p>
+
+  <div class="science-box">
+    <div class="sb-label">What autophagy actually does</div>
+    <p>Your cells continuously accumulate damage: misfolded proteins that can't do their job, mitochondria with leaky membranes, protein aggregates too large for normal degradation pathways. Under normal nutrient conditions, the cell manages this garbage slowly. Under stress — nutrient deprivation, oxidative stress, infection — it switches on a rapid bulk recycling programme.</p>
+    <p>A membrane called the <strong>phagophore</strong> nucleates and begins curving around a portion of cytoplasm, capturing damaged organelles and protein aggregates. It closes into a <strong>autophagosome</strong> — a double-membrane vesicle. The autophagosome fuses with a <strong>lysosome</strong>, which contains acid hydrolases that break everything down into amino acids, fatty acids, and sugars. These are exported back into the cytoplasm as raw materials. The cell has recycled its own waste into fuel and building blocks.</p>
+    <p><strong>Nothing is wasted. Nothing is burned.</strong> It is the most elegant recycling system in biology.</p>
+  </div>
+
+  <h3>The molecular switch: mTOR</h3>
+
+  <p>The master regulator of autophagy is a protein kinase complex called <strong>mTORC1</strong> (mechanistic target of rapamycin complex 1). Think of it as the cell's nutrient sensor and growth switch.</p>
+
+  <div class="pathway">
+    <div class="pathway-label" style="width:100%">mTOR pathway — the autophagy switch</div>
+    <div class="step gold">Nutrients / Insulin high</div>
+    <div class="arr">→</div>
+    <div class="step">mTORC1 active</div>
+    <div class="arr">→</div>
+    <div class="step red">Autophagy OFF · Growth ON</div>
+  </div>
+  <div class="pathway">
+    <div class="step">Fasting / Nutrient low</div>
+    <div class="arr">→</div>
+    <div class="step">mTORC1 inactive</div>
+    <div class="arr">→</div>
+    <div class="step teal">Autophagy ON · Recycling ON</div>
+  </div>
+
+  <p>When you eat — especially carbohydrates and protein — insulin rises, mTORC1 is activated, and autophagy is suppressed. The cell is in growth mode: making proteins, building structures, accumulating resources. When you fast, insulin falls, mTORC1 quiets, and autophagy switches on. The cell enters maintenance mode: recycling damaged components, clearing aggregates, producing emergency fuel.</p>
+
+  <p>The critical insight is that <strong>these two modes are mutually exclusive</strong>. You cannot be in full growth mode and full recycling mode simultaneously. Modern eating patterns — three meals plus snacks, insulin never falling — may chronically suppress autophagy, meaning the cellular garbage never gets cleared.</p>
+
+  <h2>§4 · How to Trigger Autophagy</h2>
+
+  <p>The honest answer is that we do not have precise human data on the minimum fasting duration to reach meaningful autophagy levels — most direct measurements have been done in animal models or cells. What the evidence does support:</p>
+
+  <div class="compare-table-wrapper">
+  <table class="compare-table">
+    <thead>
+      <tr><th>Intervention</th><th>Effect on Autophagy</th><th>Evidence strength</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Overnight fast (12–14 h)</td>
+        <td>mTORC1 suppression begins; early autophagy markers rise</td>
+        <td>Moderate — rodent + some human blood markers</td>
+      </tr>
+      <tr>
+        <td>Extended fast (16–24 h)</td>
+        <td>Strong autophagy induction; measurable in human muscle biopsies</td>
+        <td>Good — Mizushima et al., Vendelbo et al.</td>
+      </tr>
+      <tr>
+        <td>Caloric restriction (20–40%)</td>
+        <td>Chronic upregulation; associated with longevity in model organisms</td>
+        <td>Strong in animals; correlative in humans</td>
+      </tr>
+      <tr>
+        <td>Intense exercise</td>
+        <td>Acute autophagy in muscle; requires exercise, not just movement</td>
+        <td>Good — He et al. 2012 <em>Nature</em></td>
+      </tr>
+      <tr>
+        <td>Black coffee (no calories)</td>
+        <td>May mildly extend fasting autophagy via AMPK activation</td>
+        <td>Weak — indirect mechanism</td>
+      </tr>
+      <tr>
+        <td>Rapamycin (mTOR inhibitor)</td>
+        <td>Potent pharmacological autophagy induction</td>
+        <td>Strong — but clinical use has toxicity concerns</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>The practical upshot: a daily eating window of 8–10 hours (sometimes called time-restricted eating), combined with regular intense exercise, reliably provides the physiological conditions for autophagy to operate. Not as a supplement. Not as a protocol requiring medical supervision for healthy adults. As a return to something closer to the ancestral feeding pattern the body was designed around.</p>
+
+  <h2>§5 · Why Autophagy Changes the Calorie Equation</h2>
+
+  <p>Here is why this matters for the nutrition story we started with. Autophagy does not care about calories in or calories out in the conventional sense. It is a <em>mode</em> — a qualitative state of cellular operation triggered by the <em>absence</em> of nutrient signal, not by a specific calorie count.</p>
+
+  <p>Two people eating identical calories — one in a 12-hour window, one in a 16-hour window — are running different cellular programmes. The one with the longer fasting window is spending more time in autophagy mode: clearing damaged proteins, recycling dysfunctional mitochondria, producing ketone bodies that feed the brain cleanly. The one with continuous eating is in permanent growth mode, with the cellular garbage accumulating.</p>
+
+  <p>This may be part of why time-restricted eating shows metabolic benefits even without caloric reduction in several trials: the timing of eating affects which mode the body runs in, and the modes have very different downstream effects on insulin sensitivity, inflammatory markers, and metabolic flexibility.</p>
+
+  <div class="fact-box">
+    <div class="fb-label">Autophagy and Disease Prevention</div>
+    <p><strong>Cancer surveillance:</strong> autophagy clears pre-cancerous aggregates and damaged mitochondria that produce reactive oxygen species. Impaired autophagy is found in many early-stage tumours.</p>
+    <p><strong>Neurodegeneration:</strong> Alzheimer's (amyloid-β plaques), Parkinson's (α-synuclein aggregates), and Huntington's disease all involve protein aggregates that autophagy normally clears. Enhancing autophagy reduces aggregate load in animal models of all three.</p>
+    <p><strong>Longevity:</strong> Autophagy is required for the lifespan extension seen with caloric restriction in yeast, worms, flies, and mice. Blocking autophagy genes abolishes the longevity benefit of dietary restriction.</p>
+  </div>
+
+  <h2>§6 · The Cajueiro Parallel</h2>
+
+  <p>The dm³ framework has a name for what the cell does during autophagy: it is the <strong>Cajueiro cycle</strong> applied to the molecular scale. The same six-phase pattern that describes attractor formation in dynamical systems appears here, at the level of a single cell, under nutrient stress.</p>
+
+  <div class="pathway" style="flex-direction:column;align-items:flex-start;gap:.7rem;">
+    <div class="pathway-label">Autophagy as Cajueiro Cycle</div>
+    <div style="display:flex;align-items:center;gap:.5rem;">
+      <div class="step">Seed</div>
+      <span style="color:#666;font-size:.85rem;">Damaged proteins / organelles accumulate · mTOR still active</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;">
+      <div class="step gold">Overshoot</div>
+      <span style="color:#666;font-size:.85rem;">Nutrient withdrawal — mTOR activity drops, stress signals rise</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;">
+      <div class="step">Resistance</div>
+      <span style="color:#666;font-size:.85rem;">ULK1 / Beclin-1 compete with active mTOR — the fold threshold r★</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;">
+      <div class="step teal">Lock</div>
+      <span style="color:#666;font-size:.85rem;">Phagophore nucleates · autophagosome closes · recycling begins</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;">
+      <div class="step">Branch</div>
+      <span style="color:#666;font-size:.85rem;">Recycled amino acids / fatty acids re-enter synthesis · new proteins built</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;">
+      <div class="step gold">New seed</div>
+      <span style="color:#666;font-size:.85rem;">Nutrients return · mTOR reactivates · cell exits autophagy renewed</span>
+    </div>
+  </div>
+
+  <p>The fold threshold in the molecular system is the mTORC1 activity level at which the ULK1 complex fires irreversibly, nucleating the phagophore. In the dm³ geometry this is exactly the Whitney A₁ fold — the Jacobian of the suppression map loses rank, and the system locks into the autophagic mode. It cannot exit until the nutrient signal returns.</p>
+
+  <p>This is why you cannot "partially" do autophagy through mild caloric reduction. The fold either fires or it doesn't. The geometry is binary at the threshold, continuous on either side. A 15% caloric reduction spread across the day may never trigger the fold; a 16-hour fast reliably does.</p>
+
+  <div class="pull-quote">
+    The body is not a bank account. It is a dynamical system with at least two stable operating modes, and the transitions between them are governed by geometry, not arithmetic.
+    <cite>— dm³ · The Mini-Beast · Book 3</cite>
+  </div>
+
+  <h2>§7 · Practical Implications — Without the Noise</h2>
+
+  <p>There is an enormous industry built on nutrition confusion. This chapter does not add to it. Here is what the science actually supports, stripped of supplement marketing and biohacker mythology:</p>
+
+  <div class="compare-table-wrapper">
+  <table class="compare-table">
+    <thead>
+      <tr><th>Common advice</th><th>What the evidence says</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>"Eat 6 small meals a day to keep metabolism high"</td>
+        <td class="bad">Not supported. Meal frequency has minimal effect on total metabolic rate. Continuous eating suppresses autophagy.</td>
+      </tr>
+      <tr>
+        <td>"Calories in = calories out"</td>
+        <td>True in physics. Incomplete in biology. Thermic effects, gut microbiome, metabolic adaptation all matter.</td>
+      </tr>
+      <tr>
+        <td>"Skip breakfast"</td>
+        <td class="good">May work if it extends a fasting window to 14–16 hours. The mechanism is autophagy induction, not magic.</td>
+      </tr>
+      <tr>
+        <td>"Eat protein at every meal"</td>
+        <td class="good">Well supported. High thermic effect, satiety, muscle preservation. Does shorten autophagy window if timed poorly.</td>
+      </tr>
+      <tr>
+        <td>"Exercise burns fat"</td>
+        <td>Yes — and more importantly, intense exercise independently triggers autophagy in muscle regardless of diet.</td>
+      </tr>
+      <tr>
+        <td>"Fasting slows your metabolism"</td>
+        <td>Short-term fasting (up to 72 h) increases metabolic rate slightly via norepinephrine. Chronic severe restriction slows it.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>§8 · The Honest Summary</h2>
+
+  <p>Energy balance is real. You cannot eat 5,000 kcal/day indefinitely and maintain weight — thermodynamics applies to biology. But the body responds to sustained caloric restriction by lowering expenditure, raising hunger hormones, and defending its set point through mechanisms that persist for years. "Eat less" is not a sustainable strategy for most people because it is fighting the system rather than working with it.</p>
+
+  <p>Autophagy is the cell's answer to metabolic stress that does not involve starving: it recycles. It clears the damage that accumulates during growth mode. It produces fuel without requiring food. And it is triggered not by a calorie count but by the <em>absence of a nutrient signal</em> — a qualitatively different state, accessible through timing rather than deprivation.</p>
+
+  <p>The science here is not settled — autophagy research in humans is two decades behind the animal literature, direct measurement is hard, and individual variation is large. But the direction of the evidence is clear: the cell has two modes, the mode matters as much as the calories, and modern eating patterns may chronically suppress the one that does cellular housekeeping.</p>
+
+  <p>Yoshinori Ohsumi worked on this for thirty years before the Nobel. The yeast cells in his Tokyo lab were telling us something about human metabolism the whole time.</p>
+
+</div><!-- end chapter-body -->
+
+<!-- ══ BILINGUAL SECTION ══ -->
+<div style="max-width:700px;margin:0 auto;padding:0 2rem 2rem;">
+
+  <div class="bilingual">
+    <div class="bilingual-header">
+      <span class="flag">🇧🇷</span> Resumo em Português — Para os primos do Dave
+    </div>
+    <div class="pt-block">
+      <p>Você já ouviu: <em>coma menos, mexa-se mais.</em> É o conselho mais repetido do mundo e também o mais incompleto. Seu corpo não é uma fornalha — é um sistema eletroquímico com pelo menos dois modos de funcionamento, e o modo importa tanto quanto as calorias.</p>
+
+      <h3>Por que queimar calorias é mais difícil do que parece</h3>
+      <p>Quando você come menos, seu corpo gasta menos. Não imediatamente, não completamente — mas de forma sistemática. Chama-se <strong>adaptação metabólica</strong>. No experimento de inanição de Minnesota (1944), homens saudáveis com dieta reduzida em 40% viram seu metabolismo de repouso cair também 40%. Os hormônios da fome (<em>grelina</em>) subiram e ficaram elevados por meses depois que a dieta normal foi retomada.</p>
+      <p>Além disso, a mesma comida tem efeito calórico diferente dependendo da sua microbiota intestinal — as bactérias que vivem em você. O rótulo diz 250 kcal; seu corpo pode absorver 210 ou 275, dependendo de quem mora no seu intestino.</p>
+
+      <h3>Autofagia — a célula que come a si mesma</h3>
+      <p><strong>Autofagia</strong> (do grego αὐτός = si mesmo + φαγεῖν = comer) é o processo pelo qual a célula recicla seus próprios componentes danificados — proteínas mal dobradas, mitocôndrias com vazamentos, acúmulo de lixo molecular. Yoshinori Ohsumi ganhou o Nobel de Fisiologia em 2016 por descobrir os genes que controlam esse processo.</p>
+      <p>O interruptor é a proteína <strong>mTORC1</strong>: quando há nutrientes (você comeu), ela está ativa e a autofagia está desligada. Quando há jejum, ela se cala, e a autofagia liga. <em>Os dois modos não podem existir simultaneamente.</em> Comer o dia todo mantém a autofagia cronicamente desligada — o lixo molecular acumula.</p>
+
+      <h3>Como ativar a autofagia</h3>
+      <p>Jejum de 14–16 horas (ex: comer entre meio-dia e 20h) é suficiente para ativar a autofagia de forma mensurável. Exercício intenso também. Restrição calórica crônica — mas essa é a estratégia que falha a longo prazo por causa da adaptação metabólica.</p>
+      <p>A autofagia é a resposta da célula ao estresse que <em>não</em> envolve passar fome: ela recicla. Limpa o dano acumulado durante o modo de crescimento. Produz combustível sem precisar de comida. E é ativada pela ausência de sinal de nutriente — uma diferença qualitativa, acessível pelo <em>horário</em> de comer, não pela privação.</p>
+
+      <h3>O que a ciência realmente apoia</h3>
+      <p>"Coma 6 refeições pequenas por dia" — não tem base sólida. "Pule o café da manhã" — pode funcionar se estender o jejum para 14–16h. "Coma proteína" — bem fundamentado, alto efeito térmico, maior saciedade. "Exercício queima gordura" — sim, e mais importante: o exercício intenso ativa a autofagia no músculo independentemente da dieta.</p>
+      <p>O corpo não é uma conta bancária. É um sistema dinâmico com dois modos estáveis, e as transições entre eles são governadas por geometria — não por aritmética.</p>
+    </div>
+  </div>
+
+</div>
+
+<hr class="page-break">
+
+<div class="continue-reading">
+  <h2>Read the Full Technical Chapter</h2>
+  <p>The complete dm³ construction — autophagy as a contact manifold, the Whitney A₁ fold at the mTORC1 threshold, Lean 4 verification sketches, and four falsifiable predictions against kinetic data — is in <em>Sample Chapter A · Self-Regulation</em>.</p>
+  <div class="cta-row">
+    <a href="sample-chapter-autophagy.html" class="cta-btn primary">Read Chapter A — Full dm³ Construction</a>
+    <a href="https://grossi-ops.github.io/Atratores/" class="cta-btn secondary">Back to Portfolio</a>
+  </div>
+</div>
+
+<footer>
+  <div>Chapter N · Nutrition · Burning Calories Is Harder Than It Seems · The Case for Autophagy</div>
+  <div>Principia Orthogona · Book 3 · The Mini-Beast · G6 LLC · Newark, NJ · 2026</div>
+  <div>ISBN 979-8-9954416-6-3 · ORCID: 0009-0000-6496-2186</div>
+  <div style="margin-top:.5rem;">
+    <a href="Lindex.html">Portfolio</a> ·
+    <a href="sample-chapter-autophagy.html">Chapter A · Full Construction</a> ·
+    <a href="https://github.com/TOTOGT/AXLE" target="_blank">AXLE · Lean 4</a> ·
+    <a href="https://doi.org/10.5281/zenodo.19117400" target="_blank">Zenodo</a>
+  </div>
+</footer>
+
+</body>
+</html>
