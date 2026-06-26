@@ -1,4 +1,123 @@
 <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>O Cajueiro · AR · Principia Orthogona</title>
+<meta name="description" content="Aponte sua câmera para o QR. O cajueiro aparece. Tire selfies.">
+<style>
+:root {
+  --void: #03030a; --gold: #c9a84c; --gold2: #e8d49a;
+  --green: #2D5A27; --green2: #5cb04c;
+  --text: #e8e4d8; --dim: #9a9485; --rule: rgba(201,168,76,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  width:100%;overflow-x:hidden;
+  background:var(--void);color:var(--text);
+  font-family:Georgia,'Times New Roman',serif;
+}
+
+.container{
+  max-width:600px;margin:0 auto;padding:2rem 2rem;text-align:center;min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+}
+
+.eyebrow{
+  font-family:'Courier New',monospace;font-size:.6rem;letter-spacing:.35em;
+  text-transform:uppercase;color:var(--green2);margin-bottom:2rem;
+}
+
+h1{
+  font-size:clamp(1.5rem,5vw,2.5rem);font-weight:300;line-height:1.25;
+  margin-bottom:1.5rem;
+}
+
+h1 em{
+  font-style:italic;color:var(--gold);
+}
+
+.qr-box{
+  background:var(--text);border-radius:12px;padding:2rem;
+  margin:2rem 0;box-shadow:0 10px 40px rgba(201,168,76,.2);
+  width:100%;max-width:350px;
+}
+
+.qr-box img{
+  width:100%;height:auto;display:block;
+}
+
+.instructions{
+  font-size:.95rem;color:var(--dim);line-height:1.8;
+  margin:2rem 0;font-style:italic;max-width:500px;
+}
+
+.instructions strong{
+  color:var(--gold);font-style:normal;
+}
+
+.button-group{
+  display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+  margin-top:2rem;
+}
+
+.btn{
+  background:var(--gold);color:var(--void);
+  font-family:'Courier New',monospace;font-size:.8rem;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;padding:1rem 1.5rem;
+  border:none;border-radius:3px;cursor:pointer;transition:transform .15s;
+  box-shadow:0 6px 24px rgba(201,168,76,.4);text-decoration:none;
+  display:inline-block;
+}
+
+.btn:active{transform:scale(.97);}
+.btn.secondary{background:transparent;border:1px solid var(--gold);color:var(--gold);}
+
+.hint{
+  margin-top:2rem;font-family:'Courier New',monospace;font-size:.58rem;
+  letter-spacing:.15em;color:var(--dim);text-transform:uppercase;
+}
+
+.brand{
+  position:fixed;top:1rem;left:1rem;
+  font-family:'Courier New',monospace;font-size:.55rem;letter-spacing:.2em;
+  color:var(--gold);text-decoration:none;z-index:10;
+}
+</style>
+</head>
+<body>
+
+<a href="https://grossi-ops.github.io/" class="brand">⚜ PRINCIPIA ORTHOGONA</a>
+
+<div class="container">
+  <div class="eyebrow">⌁ Realidade Aumentada · Cajueiro ⌁</div>
+  
+  <h1>Aponte sua câmera para o QR.<br><em>O cajueiro aparece.</em></h1>
+  
+  <div class="qr-box">
+    <img src="https://raw.githubusercontent.com/grossi-ops/ar/main/qr_with_tree.png" alt="QR Code - O Cajueiro AR">
+  </div>
+  
+  <div class="instructions">
+    <strong>Como usar:</strong><br>
+    1. Imprima este código QR ou exiba na tela<br>
+    2. Clique em "Abrir AR" abaixo<br>
+    3. Permita acesso à câmera<br>
+    4. Aponte para o QR<br>
+    5. O cajueiro de Pirangi aparece em 3D<br>
+    6. Tire selfie!
+  </div>
+  
+  <div class="button-group">
+    <a href="./cajueiro-ar.html" class="btn">⌁ Abrir AR</a>
+    <a href="https://github.com/grossi-ops/ar" class="btn secondary">GitHub</a>
+  </div>
+  
+  <div class="hint">Funciona em Safari (iOS) e Chrome (Android)</div>
+</div>
+
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
