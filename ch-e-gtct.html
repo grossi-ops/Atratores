@@ -947,7 +947,7 @@ window.tog=function(){
 };
 function pCol(p){
   if(p.isRef)return'#c9a84c';
-  if(p.r<0.80)return'#e05a3a';
+  if(p.r<0.776)return'#e05a3a';
   if(Math.abs(p.r-1)<0.04)return'#c9a84c';
   return'#2dd4bf';
 }
@@ -982,7 +982,7 @@ function draw(){
   cx.beginPath();cx.moveTo(px(1),0);cx.lineTo(px(1),H);cx.stroke();cx.setLineDash([]);
   // r* escape line
   cx.strokeStyle='rgba(224,90,58,0.1)';cx.lineWidth=1;cx.setLineDash([2,5]);
-  cx.beginPath();cx.moveTo(px(0.8),0);cx.lineTo(px(0.8),H);cx.stroke();cx.setLineDash([]);
+  cx.beginPath();cx.moveTo(px(0.776),0);cx.lineTo(px(0.776),H);cx.stroke();cx.setLineDash([]);
   // labels
   cx.font='9px Courier New,monospace';
   cx.fillStyle='rgba(201,168,76,0.55)';cx.fillText('Γ* (r=1)',px(1)+4,12);

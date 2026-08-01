@@ -200,12 +200,12 @@ def table_1() -> None:
     print("  READING:")
     print("  · Outer (r(0) > 1): all runs converge; μ̂ → −2 from above as")
     print("    expected from the Jacobian eigenvalue at r = 1.")
-    print("  · Inner (r(0) < 1): converges for r(0) ≥ 0.80, collapses below.")
+    print("  · Inner (r(0) < 1): converges for r(0) ≥ 0.776, collapses below.")
     print("    The integration time t_survive drops precipitously: a robust")
     print("    numerical fingerprint of the escape to z → −∞.")
     print("  · Gronwall (Theorem 2.1) guarantees only |r(0) − 1| < 1/3, i.e.")
     print("    r(0) ∈ (2/3, 4/3) ≈ (0.667, 1.333). The numerical inner edge")
-    print("    is r⋆ ≈ 0.80, strictly stricter than Gronwall's 2/3.")
+    print("    is r⋆ ≈ 0.776, strictly stricter than Gronwall's 2/3.")
     print()
     print("═" * 74)
     print()
@@ -234,7 +234,7 @@ def plot_trajectories(out_path: str = "dm3_trajectories.png") -> None:
         ax.axvline(1.0, color="#c9a84c", lw=0.8, alpha=0.7, ls="--",
                    label="Γ at r = 1")
         ax.axvline(0.80, color="#e05a3a", lw=0.8, alpha=0.5, ls=":",
-                   label="r⋆ ≈ 0.80")
+                   label="r⋆ ≈ 0.776")
         ax.set_xlabel("r")
         ax.set_ylabel("z")
         ax.legend(fontsize=8, loc="best")

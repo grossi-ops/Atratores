@@ -83,10 +83,10 @@ MathJax = {
 </head>
 <body>
 <nav>
-  <a href="../index.html">← Vol. IV</a>
-  <a href="../chE-gtct.html">Chapter E</a>
-  <a href="../sims/helical-attractor.html">3D Sim</a>
-  <a href="../submissions/XII_BM_MINICURSO_T1_Pablo_Grossi_preview.pdf">Preview PDF</a>
+  <a href="Lindex.html">← Vol. IV</a>
+  <a href="chE-gtct.html">Chapter E</a>
+  <a href="sims/helical-attractor.html">3D Sim</a>
+  <a href="submissions/XII_BM_MINICURSO_T1_Pablo_Grossi_preview.pdf">Preview PDF</a>
   <a href="https://github.com/TOTOGT/AXLE">AXLE</a>
 </nav>
 <div class="ch-nav">
@@ -217,7 +217,7 @@ MathJax = {
   <div class="warn"><strong style="color:#f87171;">The asymmetry is not small.</strong> Gronwall said $r(0) \in (2/3,\, 4/3) = (0.667,\, 1.333)$. Reality says $r(0) \in (\,0.80\,,\, +\infty)$ for this range of $r(0) - 1$. The <em>outer</em> boundary from Gronwall is vacuous — there is no outer boundary at all in this window. The <em>inner</em> boundary is at $r_\star \approx 0.776$, which is <em>stricter</em> than the Gronwall guess of $2/3 \approx 0.667$. Gronwall would have declared $r(0) = 0.70$ safe; DOP853 says it collapses.</div>
   <h3>What goes wrong geometrically</h3>
   <p>At $r(0) &lt; 1$, the Hopf term $r(1-r^2)$ pushes $r$ upward, good. But the contact coupling $\varepsilon(r-1)e^{-z}$ has the <em>opposite</em> sign — and worse, when $r &lt; 1$ the vertical equation acquires a <em>negative</em> contribution $-\varepsilon(r-1)^2 e^{-z}$ (always negative). If $r$ starts too small, $\dot z$ can be overwhelmed; $z$ drops; $e^{-z}$ blows up; the coupling becomes a runaway. The Hopf term, bounded near $r=1$, cannot save us.</p>
-  <p>Geometrically: we lose <em>positive invariance</em> of $\{r &gt; 0.80\}$ from below. We still have positive invariance of $\{r &gt; 1\}$ from above (S1 board exercise). The ODE is asymmetric in $r=1$, and so is its basin.</p>
+  <p>Geometrically: we lose <em>positive invariance</em> of $\{r &gt; 0.776\}$ from below. We still have positive invariance of $\{r &gt; 1\}$ from above (S1 board exercise). The ODE is asymmetric in $r=1$, and so is its basin.</p>
 </div>
 <!-- ═══ §5 SIMULATOR ═══ -->
 <div class="section">
@@ -226,13 +226,13 @@ MathJax = {
   <div class="sim-wrap">
     <h3>▶ dm³ Contact Flow — Watch the inner edge</h3>
     <div class="sim-sub">Set $\varepsilon = 2$. Sweep $r_0$ from $0.85$ down to $0.75$. Somewhere between them the trajectory stops spiralling up and starts dropping. That is $r_\star$.</div>
-    <iframe class="sim-frame" src="../sims/helical-attractor.html" title="Helical Attractor 3D Simulator" loading="lazy"></iframe>
+    <iframe class="sim-frame" src="sims/helical-attractor.html" title="Helical Attractor 3D Simulator" loading="lazy"></iframe>
   </div>
   <h3>Guided demo (8 min)</h3>
   <ol>
     <li>$r_0 = 0.90$, $\varepsilon = 2$. Clean spiral up to $r = 1$. Note colour stays blue.</li>
     <li>$r_0 = 0.80$. Trajectory flattens; there is a visible moment where the orbit hovers. Colour shifts toward gold then recovers.</li>
-    <li>$r_0 = 0.70$. Trajectory drops below the $r = 0.80$ ring (gold) and turns red. The $z$ readout starts decreasing.</li>
+    <li>$r_0 = 0.70$. Trajectory drops below the $r = 0.776$ ring (gold) and turns red. The $z$ readout starts decreasing.</li>
     <li>$r_0 = 1.50$ for contrast. Converges fast. The outer basin has no problem.</li>
   </ol>
 </div>
@@ -267,7 +267,7 @@ MathJax = {
   <p>Mini-Curso · XII Bienal de Matemática 2026 · UFRN, Natal-RN</p>
   <p>Session S2 · Theorem 2.1 &amp; the Asymmetric Basin · Pablo Nogueira Grossi · G6 LLC · 2026</p>
   <p style="margin-top:.6rem;">
-    <a href="../index.html">Vol. IV Home</a> &nbsp;·&nbsp;
+    <a href="Lindex.html">Vol. IV Home</a> &nbsp;·&nbsp;
     <a href="https://doi.org/10.5281/zenodo.19117400">DOI 10.5281/zenodo.19117400</a> &nbsp;·&nbsp;
     <a href="https://github.com/TOTOGT/AXLE">AXLE (Lean 4)</a>
   </p>

@@ -172,7 +172,7 @@ MathJax = {
   <h3>Why $\varepsilon$ matters</h3>
   <p>Set $\varepsilon = 0$. The system decouples: $(r,\theta)$ follows Hopf in the plane, $z = t$ rides along. $r=1$ is a normally hyperbolic invariant manifold and standard theory gives global convergence from $r(0) > 0$. <em>Boring.</em></p>
   <p>Now set $\varepsilon = 2$. The coupling term is <em>asymmetric</em> in $r$ (linear in $r-1$) but <em>symmetric</em> in sign of deviation — and it grows <em>exponentially</em> when $z$ is negative. That asymmetry/exponential combination is the source of the pedagogical surprise we will expose in S2: the basin of attraction of $\Gamma$ is <em>not</em> a symmetric neighbourhood of $r=1$.</p>
-  <div class="warn"><strong style="color:#f87171;">Foreshadowing S2:</strong> A Gronwall estimate will give us a symmetric ball $|r-1| < 1/3$ of guaranteed convergence. The numerics will show the real inner boundary is at $r \approx 0.80$, not $r = 2/3$. The symmetric estimate is not just coarse — it <em>misclassifies</em> orbits. This is the core pedagogical contribution of the course.</div>
+  <div class="warn"><strong style="color:#f87171;">Foreshadowing S2:</strong> A Gronwall estimate will give us a symmetric ball $|r-1| < 1/3$ of guaranteed convergence. The numerics will show the real inner boundary is at $r \approx 0.776$, not $r = 2/3$. The symmetric estimate is not just coarse — it <em>misclassifies</em> orbits. This is the core pedagogical contribution of the course.</div>
 </div>
 <!-- ═══ §4 SIMULATOR ═══ -->
 <div class="section">
@@ -201,7 +201,7 @@ MathJax = {
     <li>the dm³ ODE (1) and the role of the coupling $\varepsilon(r-1)e^{-z}$;</li>
     <li>experimental evidence that a large outer basin flows into $\Gamma$ — but small $r_0$ may not.</li>
   </ul>
-  <p>In <strong style="color:var(--t);">S2</strong> we prove the exponential convergence rigorously: linearisation gives eigenvalue $-2$, Gronwall gives a symmetric ball $|r-1| < 1/3$ of guaranteed contraction, and the high-precision DOP853 integrator gives us Table 1 — which <em>corrects</em> the inner boundary to $r_* \approx 0.80$. The correction is the pedagogical heart of the course.</p>
+  <p>In <strong style="color:var(--t);">S2</strong> we prove the exponential convergence rigorously: linearisation gives eigenvalue $-2$, Gronwall gives a symmetric ball $|r-1| < 1/3$ of guaranteed contraction, and the high-precision DOP853 integrator gives us Table 1 — which <em>corrects</em> the inner boundary to $r_* \approx 0.776$. The correction is the pedagogical heart of the course.</p>
   <div class="theorem">
     <div class="thm-label">Board exercise · Take home for S2</div>
     <div class="thm-title">Verify $\{r > 1\}$ is positively invariant.</div>

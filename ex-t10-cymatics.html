@@ -156,7 +156,7 @@ em.hi{color:var(--rust);font-style:normal;font-weight:600;}
 }
 .chladni-controls button:hover{background:rgba(200,144,28,.08);border-color:var(--gold);}
 .chladni-controls button.on{background:rgba(200,144,28,.15);color:var(--gold);border-color:var(--gold);}
-canvas#chladni{display:block;width:100%;max-height:400px;background:#060608;}
+canvas#chladniCanvas{display:block;width:100%;max-height:400px;background:#060608;}
 .chladni-caption{
   padding:.6rem 1.2rem;font-family:'Space Mono',monospace;
   font-size:.65rem;color:var(--mid);
@@ -305,7 +305,7 @@ footer a:hover{color:var(--gold);}
   <a href="#coriolis">Equador</a>
   <a href="#machines">As Sete Máquinas</a>
   <a href="#program">Programa</a>
-  <a href="PO_10_Pablo_Grossi.pdf">Pôster T10</a>
+  <a href="submissions/PO_10_Pablo_Grossi.pdf">Pôster T10</a>
   <span class="spacer"></span>
   <a class="highlight" href="229-ballantine.html">Clínica livre → 229 Ballantine</a>
 </nav>
@@ -359,7 +359,7 @@ footer a:hover{color:var(--gold);}
       <button id="btnChladniSnap">Snapshot</button>
       <button id="btnChladniClear">Limpar</button>
     </div>
-    <canvas id="chladni" width="900" height="380"></canvas>
+    <canvas id="chladniCanvas" width="900" height="380"></canvas>
     <div class="chladni-caption">
       <span>Padrão:</span> sin(mπx)·sin(nπy) − sin(nπx)·sin(mπy) = 0
       <span>Modo atual:</span> <span id="chladniMode">(m,n) = (3,2)</span>
@@ -566,7 +566,7 @@ footer a:hover{color:var(--gold);}
 
 <!-- CHLADNI SIMULATOR SCRIPT -->
 <script>
-const canvas = document.getElementById('chladni');
+const canvas = document.getElementById('chladniCanvas');
 const ctx2d = canvas.getContext('2d');
 let animating = true;
 let particles = [];
