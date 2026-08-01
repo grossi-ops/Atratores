@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spectrology · The Chromatic Scale of Foods · Principia Orthogona · dm³</title>
+<meta name="description" content="Every food colour is a molecule absorbing light at a precise frequency. Spectroscopy reads that signature. The dm³ g-series maps it to a biological resonance ladder — from carotenoids to chlorophyll to anthocyanins.">
+<style>
+:root {
+  --navy:  #1a2744;
+  --gold:  #c9a84c;
+  --cream: #faf7f0;
+  --smoke: #f0ece4;
+  --mid:   #3a4f7a;
+  --rule:  #8a7340;
+  --text:  #1c1c1c;
+  --light: #e8e2d4;
+  --teal:  #1a6b5a;
+  --teal-l:#2d9e82;
+  --red:   #8a2a2a;
+  --green: #1a6b3a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: Georgia, 'Times New Roman', serif; color: var(--text); background: var(--cream); }
+
+/* ── Lang bar ── */
+.lang-bar {
+  background: var(--navy); padding: .35rem 2rem;
+  display: flex; align-items: center; gap: 1rem;
+  font-family: sans-serif; font-size: .65rem; color: #aaa;
+}
+.lang-bar a { color: var(--gold); text-decoration: none; border: 1px solid rgba(201,168,76,.35);
+  padding: .1rem .5rem; border-radius: 3px; }
+.lang-bar a.active { background: rgba(201,168,76,.15); }
+.lang-bar .note { margin-left: auto; font-style: italic; }
+
+/* ── Nav ── */
+nav { background: var(--navy); padding: .75rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--gold); }
+.nav-logo { color: var(--gold); font-weight: bold; font-size: .95rem;
+  letter-spacing: .1em; text-decoration: none; font-family: sans-serif; }
+.nav-back { color: #ccc; text-decoration: none; font-size: .85rem;
+  font-family: sans-serif; transition: color .2s; }
+.nav-back:hover { color: var(--gold); }
+
+/* ── Hero ── */
+.chapter-header { background: var(--navy); color: white;
+  padding: 4.5rem 2rem 3.5rem; text-align: center; position: relative; overflow: hidden; }
+.chapter-header::before { content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 60%, rgba(120,40,180,.18) 0%, transparent 65%); }
+.ch-eyebrow { font-family: sans-serif; font-size: .75rem; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: .8rem; position: relative; }
+.op-chain { font-family: monospace; font-size: .78rem; color: #888;
+  letter-spacing: .08em; margin-bottom: .6rem; position: relative; }
+.op-chain .active { color: var(--gold); font-weight: bold; }
+.ch-letter { font-family: sans-serif; font-size: 4.5rem; font-weight: 900;
+  color: rgba(201,168,76,.18); line-height: 1; margin-bottom: -.8rem; position: relative; }
+.ch-title { font-size: clamp(1.8rem, 5vw, 2.8rem); color: white;
+  line-height: 1.2; margin-bottom: .5rem; position: relative; }
+.ch-subtitle { color: var(--gold); font-style: italic; font-size: 1.05rem;
+  margin-bottom: 1.5rem; position: relative; }
+.ch-value { font-family: monospace; font-size: .9rem; color: rgba(255,255,255,.55);
+  letter-spacing: .15em; position: relative; }
+.gold-rule { width: 60px; height: 2px; background: var(--gold);
+  margin: 1.8rem auto .5rem; position: relative; }
+
+/* ── Main layout ── */
+.content { max-width: 780px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+h2 { color: var(--navy); font-size: 1.45rem; margin: 2.8rem 0 .8rem;
+  border-left: 4px solid var(--gold); padding-left: .8rem; }
+h3 { color: var(--mid); font-size: 1.1rem; margin: 2rem 0 .5rem; }
+p { line-height: 1.75; margin-bottom: 1rem; }
+p + p { margin-top: .2rem; }
+
+/* ── Spectrum bar ── */
+.spectrum-bar {
+  width: 100%; height: 48px; border-radius: 6px; margin: 1.8rem 0;
+  background: linear-gradient(to right,
+    #6600cc 0%,   /* violet 380 nm */
+    #4444ff 10%,  /* indigo */
+    #2266ff 18%,  /* blue */
+    #00aaaa 30%,  /* cyan */
+    #00cc44 42%,  /* green */
+    #aacc00 52%,  /* yellow-green */
+    #ffdd00 60%,  /* yellow */
+    #ff8800 72%,  /* orange */
+    #ee1111 85%,  /* red */
+    #880000 100%  /* deep red 780 nm */
+  );
+  box-shadow: 0 0 18px rgba(100,60,200,.25);
+  display: flex; align-items: flex-end;
+}
+.spectrum-bar span {
+  flex: 1; text-align: center; font-size: .55rem; font-family: monospace;
+  color: rgba(255,255,255,.8); padding-bottom: 4px; text-shadow: 0 0 3px #000;
+}
+
+/* ── Chromatic ladder ── */
+.ladder {
+  border: 1px solid var(--light); border-radius: 8px; overflow: hidden;
+  margin: 1.8rem 0; font-family: sans-serif; font-size: .88rem;
+}
+.ladder-head {
+  background: var(--navy); color: white; display: grid;
+  grid-template-columns: 48px 1fr 120px 110px 1fr;
+  padding: .5rem 1rem; font-size: .75rem; letter-spacing: .06em;
+  font-weight: bold; gap: .5rem;
+}
+.ladder-row {
+  display: grid; grid-template-columns: 48px 1fr 120px 110px 1fr;
+  padding: .55rem 1rem; gap: .5rem; align-items: center;
+  border-bottom: 1px solid var(--light);
+}
+.ladder-row:nth-child(even) { background: var(--smoke); }
+.swatch { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(0,0,0,.08); }
+.rung { font-family: monospace; font-weight: bold; font-size: .85rem; color: var(--mid); }
+.bio-note { font-size: .78rem; color: #555; line-height: 1.3; }
+
+/* ── Fact / warn / science boxes ── */
+.fact-box {
+  background: rgba(26,39,68,.06); border-left: 4px solid var(--navy);
+  border-radius: 0 6px 6px 0; padding: 1rem 1.2rem; margin: 1.6rem 0;
+}
+.fact-box strong { color: var(--navy); display: block; margin-bottom: .3rem; }
+.science-box {
+  background: rgba(26,107,90,.07); border-left: 4px solid var(--teal);
+  border-radius: 0 6px 6px 0; padding: 1rem 1.2rem; margin: 1.6rem 0;
+}
+.science-box strong { color: var(--teal); display: block; margin-bottom: .3rem; }
+.warn-box {
+  background: rgba(138,42,42,.06); border-left: 4px solid var(--red);
+  border-radius: 0 6px 6px 0; padding: 1rem 1.2rem; margin: 1.6rem 0;
+}
+.warn-box strong { color: var(--red); display: block; margin-bottom: .3rem; }
+.gold-box {
+  background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.4);
+  border-radius: 6px; padding: 1.1rem 1.3rem; margin: 1.6rem 0;
+}
+.gold-box strong { color: #7a5c00; display: block; margin-bottom: .3rem; }
+
+/* ── Kid note (bilingual) ── */
+.kid-note {
+  background: rgba(26,107,90,.08); border: 1px dashed var(--teal-l);
+  border-radius: 6px; padding: .9rem 1.1rem; margin: 1.4rem 0;
+  font-size: .93rem; line-height: 1.65;
+}
+
+/* ── g-ladder dm³ table ── */
+.g-table { width: 100%; border-collapse: collapse; margin: 1.8rem 0; font-family: sans-serif; font-size: .87rem; }
+.g-table th { background: var(--navy); color: white; padding: .5rem .7rem; text-align: left; font-weight: bold; }
+.g-table td { padding: .5rem .7rem; border-bottom: 1px solid var(--light); }
+.g-table tr:nth-child(even) td { background: var(--smoke); }
+.g-em { font-family: monospace; font-weight: bold; color: var(--mid); }
+
+/* ── SVG figure ── */
+.fig-wrap { text-align: center; margin: 2rem 0; }
+.fig-cap { font-size: .82rem; color: #666; font-style: italic; margin-top: .5rem; }
+
+/* ── Bridge diagram ── */
+.bridge {
+  display: grid; grid-template-columns: 1fr 40px 1fr;
+  gap: 0; align-items: center; margin: 2rem 0;
+}
+.bridge-col { border: 1px solid var(--light); border-radius: 8px; padding: 1rem; background: var(--smoke); }
+.bridge-col h4 { font-family: sans-serif; font-size: .8rem; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--navy); margin-bottom: .6rem; }
+.bridge-col ul { list-style: none; font-size: .86rem; }
+.bridge-col ul li { padding: .2rem 0; border-bottom: 1px solid var(--light); }
+.bridge-col ul li:last-child { border: none; }
+.bridge-arrow { text-align: center; font-size: 1.4rem; color: var(--gold); }
+
+/* ── Comparison table ── */
+.compare-table { width: 100%; border-collapse: collapse; margin: 1.8rem 0; font-size: .87rem; }
+.compare-table th { background: var(--navy); color: white; padding: .5rem .8rem; text-align: left; }
+.compare-table td { padding: .5rem .8rem; border-bottom: 1px solid var(--light); vertical-align: top; }
+.compare-table tr:nth-child(even) td { background: var(--smoke); }
+
+/* ── PT block ── */
+.pt-section { border-top: 3px solid var(--gold); margin-top: 4rem; padding-top: 2.5rem; }
+.pt-flag { font-size: 1.5rem; margin-right: .4rem; }
+.pt-block { background: rgba(26,39,68,.04); border-left: 4px solid var(--gold);
+  border-radius: 0 6px 6px 0; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+.pt-block p { font-size: .95rem; }
+
+/* ── Nav buttons ── */
+.chapter-nav { display: flex; justify-content: space-between; gap: 1rem;
+  margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--light); }
+.ch-nav-btn { text-decoration: none; background: var(--navy); color: var(--gold);
+  padding: .6rem 1.2rem; border-radius: 5px; font-family: sans-serif; font-size: .82rem;
+  transition: background .2s; }
+.ch-nav-btn:hover { background: var(--mid); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .ladder-head, .ladder-row { grid-template-columns: 36px 1fr 90px; }
+  .ladder-head span:nth-child(4), .ladder-head span:nth-child(5),
+  .ladder-row .rung, .ladder-row .bio-note { display: none; }
+  .bridge { grid-template-columns: 1fr; }
+  .bridge-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- language bar -->
+<div class="lang-bar">
+  <span>🌐 Language:</span>
+  <a href="#" class="active">🇺🇸 English</a>
+  <a href="#pt">🇧🇷 Português</a>
+  <span class="note">Para os curiosos de todas as idades</span>
+</div>
+
+<!-- nav -->
+<nav>
+  <a class="nav-logo" href="Lindex.html">Principia Orthogona · dm³</a>
+  <a class="nav-back" href="ch-nutrition-autophagy.html">← Nutrition &amp; Autophagy</a>
+</nav>
+
+<!-- hero -->
+<header class="chapter-header">
+  <div class="ch-eyebrow">Principia Orthogona · Bridge Chapter</div>
+  <div class="op-chain">
+    π · φ · μ · η · Δ · Σ · Ω ·
+    <span class="active">Σ<sub>λ</sub></span>
+    · τ
+  </div>
+  <div class="ch-letter">λ</div>
+  <h1 class="ch-title">Spectrology &amp; the Chromatic Scale of Foods</h1>
+  <div class="ch-subtitle">Every colour is a frequency. Every frequency is information. Every nutrient is a resonant mode.</div>
+  <div class="gold-rule"></div>
+  <div class="ch-value">λ — wavelength · phytonutrient spectrum · g-series biological ladder</div>
+</header>
+
+<!-- main content -->
+<main class="content">
+
+<p>
+  There is a bridge between physics and the plate that most nutrition textbooks never cross.
+  On one side: the electromagnetic spectrum, the science of light, the way molecules absorb
+  and emit photons at precise frequencies — <em>spectroscopy</em>.
+  On the other side: the food on your table, its pigments, its antioxidants, the
+  biochemical signals it sends into your cells.
+  The bridge is colour — and it is not metaphorical.
+</p>
+<p>
+  This chapter builds that bridge explicitly. Then it maps the nutrient spectrum onto the
+  dm³ g-series ladder — the same mathematical structure that describes the n-bonacci
+  recurrence constants π, φ, η, Δ, Σ, Ω converging to the embodiment threshold τ = 2.
+  The payoff: a single diagram that shows why <em>eating by colour</em> is not folk wisdom
+  but a spectroscopic protocol grounded in contact geometry.
+</p>
+
+<h2>§1 — What Spectroscopy Actually Is</h2>
+
+<p>
+  Every atom and molecule has a characteristic set of energy levels. When a photon
+  whose energy matches the gap between two levels hits a molecule, the molecule
+  absorbs it — and appears to our eyes as the complementary colour. Lycopene in a
+  tomato absorbs blue–green (around 450–490 nm) and reflects red. Chlorophyll
+  absorbs red and blue; it reflects green. Anthocyanins in blueberries absorb green
+  (510–550 nm) and reflect violet-blue.
+</p>
+
+<div class="spectrum-bar">
+  <span>380<br>nm</span>
+  <span>violet</span>
+  <span>blue</span>
+  <span>cyan</span>
+  <span>green</span>
+  <span>yel</span>
+  <span>orange</span>
+  <span>red</span>
+  <span>780<br>nm</span>
+</div>
+
+<p>
+  This is not incidental. The colour of a food is a direct read-out of its molecular
+  absorption profile — which is itself a signature of the <em>conjugated double-bond
+  system</em> inside the molecule. More alternating single–double bonds → longer
+  conjugation → lower absorption energy → longer wavelength absorbed → redder apparent
+  colour. Every step along the colour wheel is a step along a molecular-complexity ladder.
+</p>
+
+<div class="fact-box">
+  <strong>The Beer-Lambert Law</strong>
+  Absorbance A = ε · c · l, where ε is the molar absorptivity (molecule-specific),
+  c is concentration, and l is path length. A spectrophotometer measures A at
+  each wavelength λ to produce an <em>absorption spectrum</em> — a fingerprint
+  unique to each molecule. Modern food-quality labs run exactly this scan on produce,
+  olive oil, and supplements to verify authenticity.
+</div>
+
+<h3>Why This Matters for Nutrition</h3>
+<p>
+  When we eat a pigment, we are eating its conjugated electron system. That system,
+  once absorbed and metabolised, can donate or accept electrons in our own biochemistry —
+  acting as an antioxidant, a signalling molecule, or a gene-expression modulator.
+  The spectroscopic absorption frequency of the molecule is not just aesthetics; it
+  is a proxy for the molecule's <em>electron-donation capacity</em>.
+</p>
+
+<div class="science-box">
+  <strong>Phytonutrient = molecular antenna</strong>
+  Plants evolved pigments as antennae for photosynthesis and as UV-damage shields.
+  When animals eat those pigments, the same electron-handling chemistry gets
+  repurposed — quenching reactive oxygen species, activating Nrf2 (the antioxidant
+  master switch), modulating NF-κB (the inflammation master switch). The
+  absorption wavelength is the first clue about which biochemical job the molecule does.
+</div>
+
+<h2>§2 — The Chromatic Scale of Foods</h2>
+
+<p>
+  Arrange food pigments by their peak absorption wavelength and you get a chromatic
+  ladder of biological function. This is not a dietary guideline committee's invention —
+  it falls out of spectroscopy directly. Below is that ladder, from the short-wave
+  (violet, high energy) to the long-wave (red, lower energy per photon, but
+  structurally more complex molecules).
+</p>
+
+<div class="ladder">
+  <div class="ladder-head">
+    <span></span>
+    <span>Pigment family</span>
+    <span>Peak absorb.</span>
+    <span>Food examples</span>
+    <span>Primary biological action</span>
+  </div>
+
+  <!-- violet / indigo -->
+  <div class="ladder-row">
+    <div class="swatch" style="background:linear-gradient(135deg,#7700cc,#4444ff)"></div>
+    <div><strong>Anthocyanins</strong><br><span class="bio-note">cyanidin, delphinidin, pelargonidin</span></div>
+    <div class="rung">510–550 nm</div>
+    <div>blueberries, blackberries, red cabbage, açaí</div>
+    <div class="bio-note">NF-κB ↓, AMPK ↑, neuroplasticity, blood-brain barrier integrity</div>
+  </div>
+
+  <!-- blue -->
+  <div class="ladder-row">
+    <div class="swatch" style="background:#2266ff"></div>
+    <div><strong>Phycocyanins</strong><br><span class="bio-note">c-phycocyanin (spirulina)</span></div>
+    <div class="rung">615–640 nm</div>
+    <div>spirulina, blue-green algae</div>
+    <div class="bio-note">COX-2 inhibition, myeloperoxidase ↓, potent anti-inflammatory</div>
+  </div>
+
+  <!-- cyan / teal -->
+  <div class="ladder-row">
+    <div class="swatch" style="background:#00aaaa"></div>
+    <div><strong>Chlorophylls a / b</strong><br><span class="bio-note">porphyrin-Mg complex</span></div>
+    <div class="rung">430 nm &amp; 660–680 nm</div>
+    <div>spinach, kale, broccoli, matcha, chlorella</div>
+    <div class="bio-note">DNA repair (binding carcinogens), phase-II detox enzymes, CYP1A induction</div>
+  </div>
+
+  <!-- green -->
+  <div class="ladder-row">
+    <div class="swatch" style="background:#33cc55"></div>
+    <div><strong>Flavonoids (flavones, flavonols)</strong><br><span class="bio-note">quercetin, kaempferol, apigenin</span></div>
+    <div class="rung">360–380 nm (UV visible)</div>
+    <div>onion skins, capers, parsley, green tea (EGCG)</div>
+    <div class="bio-note">mTORC1 ↓ (quercetin), sirtuins ↑, senolytic activity</div>
+  </div>
+
+  <!-- yellow -->
+  <div class="ladder-row">
+    <div class="swatch" style="background:#ffdd00"></div>
+    <div><strong>Xanthophylls</strong><br><span class="bio-note">lutein, zeaxanthin</span></div>
+    <div class="rung">445–480 nm</div>
+    <div>egg yolk, corn, saffron, spinach (co-pigment)</div>
+    <div class="bio-note">Macular pigment optical density, blue-light filter, RPE protection</div>
+  </div>
+
+  <!-- orange -->
+  <div class="ladder-row">
+    <div class="swatch" style="background:#ff8800"></div>
+    <div><strong>β-carotene / α-carotene</strong><br><span class="bio-note">40-carbon polyene chain</span></div>
+    <div class="rung">450–490 nm</div>
+    <div>carrot, sweet potato, pumpkin, mango</div>
+    <div class="bio-note">Provitamin A → retinol, gap-junction communication, RAR/RXR gene activation</div>
+  </div>
+
+  <!-- red-orange -->
+  <div class="ladder-row">
+    <div class="swatch" style="background:#ee4411"></div>
+    <div><strong>Lycopene</strong><br><span class="bio-note">acyclic carotenoid, 11 conjugated bonds</span></div>
+    <div class="rung">446–506 nm</div>
+    <div>tomato (cooked &gt; raw), watermelon, pink grapefruit, guava</div>
+    <div class="bio-note">Highest singlet-oxygen quenching rate of all food carotenoids; prostate / cardiovascular</div>
+  </div>
+
+  <!-- deep red -->
+  <div class="ladder-row">
+    <div class="swatch" style="background:#aa0022"></div>
+    <div><strong>Betalains</strong><br><span class="bio-note">betacyanins (red) + betaxanthins (yellow)</span></div>
+    <div class="rung">534–542 nm</div>
+    <div>beetroot, cactus fruit, Swiss chard stems, pitaya</div>
+    <div class="bio-note">eNOS ↑ (NO production), athletic performance, phase-II detox induction</div>
+  </div>
+
+  <!-- near IR / polyphenols -->
+  <div class="ladder-row">
+    <div class="swatch" style="background:linear-gradient(135deg,#440000,#220011)"></div>
+    <div><strong>Proanthocyanidins / tannins</strong><br><span class="bio-note">oligomeric / polymeric; nearly colourless–brown</span></div>
+    <div class="rung">280 nm (UV)</div>
+    <div>dark chocolate, red wine, pomegranate, green tea, walnuts</div>
+    <div class="bio-note">Microbiome diversity ↑ (fermented to urolithins), SIRT1, insulin sensitivity</div>
+  </div>
+</div>
+
+<div class="kid-note">
+  💡 <strong>Imagine a piano keyboard.</strong> Each key plays a different note — a different frequency of sound.
+  The chromatic scale of foods is the same idea, but with <em>light</em> instead of sound.
+  Violet-blue foods (blueberries) play the "high notes" — short wavelengths, high energy.
+  Red foods (tomatoes, beetroot) play the "low notes" — longer wavelengths.
+  Each note does a different job inside your cells. A rainbow plate is literally a full chord.
+  <br><br>
+  <em>🇧🇷 Imagina um teclado de piano — veja a seção em Português no final da página.</em>
+</div>
+
+<h2>§3 — Why "Eat the Rainbow" Is a Spectroscopic Protocol</h2>
+
+<p>
+  The folk-nutrition advice "eat the rainbow" is, in hindsight, a compressed instruction
+  to sample the full chromatic ladder once per day. Each colour band corresponds to
+  a distinct class of phytochemical operating at a distinct biochemical node:
+</p>
+<p>
+  Violet–blue anthocyanins suppress NF-κB (the master inflammation switch) and upregulate
+  AMPK (the energy-sensing kinase that mimics caloric restriction). Green chlorophylls
+  drive phase-II detoxification. Orange–red carotenoids handle antioxidant and vitamin-A
+  signalling. Red betalains boost nitric-oxide synthase. Near-UV polyphenols feed the
+  microbiome which then produces short-chain fatty acids that regulate histone acetylation.
+</p>
+<p>
+  These are not redundant paths. They are orthogonal interventions — each acting at a
+  different wavelength of the metabolic spectrum, in the same sense that musical
+  harmonics are orthogonal in Fourier space. Missing one colour class is not a minor
+  deficit; it is a missing frequency in the biological signal.
+</p>
+
+<div class="warn-box">
+  <strong>The ultra-processed food problem is chromatic</strong>
+  Ultra-processed foods are optically narrow. Their colours are synthetic dyes (tartrazine,
+  allura red) whose absorption spectra do not match any biological signalling molecule —
+  the cell has no receptor for them. A diet of white, beige, and artificially coloured
+  food is a chromatic void: the cells see only the carrier (glucose, fat, amino acids)
+  with none of the spectroscopic signal.
+</div>
+
+<h2>§4 — The dm³ g-Series Bridge</h2>
+
+<p>
+  The dm³ framework is built around a recurrence-ladder of constants — the n-bonacci
+  cascade π, φ, η, Δ, Σ, Ω converging to the embodiment threshold τ = 2.
+  Each rung of this g-series corresponds to a biological timescale or structural scale
+  in living systems:
+</p>
+
+<table class="g-table">
+  <thead>
+    <tr>
+      <th>Operator</th>
+      <th>Constant (g)</th>
+      <th>Recurrence</th>
+      <th>Biological timescale / structure</th>
+      <th>Chromatic resonance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="g-em">π</td>
+      <td>2π ≈ 6.28</td>
+      <td>period T★</td>
+      <td>Circadian / ultradian cycles (~24 h, ~90 min)</td>
+      <td>Melatonin (near-UV absorption), retinal photoreceptors</td>
+    </tr>
+    <tr>
+      <td class="g-em">φ</td>
+      <td>≈ 1.618</td>
+      <td>Fibonacci 2-bonacci</td>
+      <td>Phyllotactic spacing, cardiac spiral, DNA pitch</td>
+      <td>Chlorophyll Soret band (430 nm) — the strongest absorption in biology</td>
+    </tr>
+    <tr>
+      <td class="g-em">η</td>
+      <td>≈ 1.839</td>
+      <td>Tribonacci 3-bonacci</td>
+      <td>Protein folding cooperativity, 3-helix motifs</td>
+      <td>Carotenoid 3-double-bond units; tocopherol chroman ring</td>
+    </tr>
+    <tr>
+      <td class="g-em">Δ</td>
+      <td>≈ 1.927</td>
+      <td>Tetranacci 4-bonacci</td>
+      <td>Membrane bilayer (4-layer model), tetrapyrrole porphyrins</td>
+      <td>Haem b (550–580 nm), chlorophyll Q-band (660–680 nm)</td>
+    </tr>
+    <tr>
+      <td class="g-em">Σ</td>
+      <td>≈ 1.966</td>
+      <td>Pentanacci 5-bonacci</td>
+      <td>Microtubule protofilaments (13 ≈ 13 Fibonacci), 5-fold virus capsids</td>
+      <td>Lycopene 11-conjugated-bond chain; pentacyclic triterpenes</td>
+    </tr>
+    <tr>
+      <td class="g-em">Ω</td>
+      <td>→ 2</td>
+      <td>Hexabonacci → τ</td>
+      <td>Embodiment threshold; mTORC1 / mTORC2 dimer (2-subunit catalytic core)</td>
+      <td>Full polyphenol spectrum — proanthocyanidins absorb across UV to near-red</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="gold-box">
+  <strong>The resonance principle</strong>
+  In contact geometry, the dm³ operator G = U ∘ F ∘ K ∘ C acts on sections of the
+  contact bundle to produce a fixed point at τ = 2. The conjecture bridged here is:
+  each rung g<sub>n</sub> of the ladder selects for the phytochemical class whose
+  conjugation length (electron delocalization path) matches that rung's harmonic.
+  A cell operating near rung η uses tribonacci-structured chromophores (carotenoids,
+  tocopherols) for its antioxidant budget. A cell operating near rung Δ uses tetrapyrroles
+  (haem, chlorophyll metabolites). The diet supplies the chromatic input;
+  the g-series predicts which inputs are resonant at each metabolic phase.
+</div>
+
+<h2>§5 — Spectroscopy Meets Autophagy</h2>
+
+<p>
+  The bridge to the <a href="ch-nutrition-autophagy.html">previous chapter</a> is direct.
+  Autophagy is triggered when mTORC1 is suppressed and AMPK is activated —
+  the same signalling nodes that the violet-blue anthocyanins and green flavonoids
+  target directly. This is not coincidence; it is a convergent evolutionary solution.
+</p>
+<p>
+  Quercetin (green-yellow flavonol) is a known mTORC1 inhibitor via PI3K/Akt pathway
+  interference. Resveratrol (also UV-absorbing, in red grape skins) activates SIRT1
+  which deacetylates and thus activates ULK1 — the kinase that initiates autophagy.
+  EGCG from green tea activates AMPK directly. All three are UV-to-visible-range
+  chromophores. The short-wave end of the food spectrum is the autophagy-induction end.
+</p>
+
+<div class="fig-wrap">
+  <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;border-radius:8px;">
+    <rect width="700" height="240" fill="#0d1a14" rx="8"/>
+    <!-- spectrum gradient bar -->
+    <defs>
+      <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#7700cc"/>
+        <stop offset="15%"  stop-color="#2266ff"/>
+        <stop offset="30%"  stop-color="#00aaaa"/>
+        <stop offset="45%"  stop-color="#00cc44"/>
+        <stop offset="58%"  stop-color="#ffdd00"/>
+        <stop offset="72%"  stop-color="#ff8800"/>
+        <stop offset="88%"  stop-color="#ee1111"/>
+        <stop offset="100%" stop-color="#880000"/>
+      </linearGradient>
+    </defs>
+    <rect x="30" y="28" width="640" height="22" rx="4" fill="url(#spec)" opacity="0.85"/>
+    <!-- wavelength labels -->
+    <text x="30"  y="20" fill="#aaa" font-size="9" font-family="monospace">380 nm</text>
+    <text x="640" y="20" fill="#aaa" font-size="9" font-family="monospace" text-anchor="end">780 nm</text>
+    <text x="350" y="20" fill="#aaa" font-size="9" font-family="monospace" text-anchor="middle">visible light</text>
+
+    <!-- autophagy activation zone -->
+    <rect x="30" y="58" width="260" height="70" fill="rgba(0,180,120,.12)" rx="4" stroke="#00b478" stroke-width="0.8"/>
+    <text x="160" y="78" text-anchor="middle" fill="#4ade80" font-size="10" font-family="sans-serif" font-weight="bold">AUTOPHAGY INDUCTION ZONE</text>
+    <text x="160" y="93" text-anchor="middle" fill="#86efac" font-size="8.5" font-family="sans-serif">anthocyanins · quercetin · EGCG · resveratrol</text>
+    <text x="160" y="107" text-anchor="middle" fill="#86efac" font-size="8.5" font-family="sans-serif">mTORC1↓ · AMPK↑ · SIRT1↑ · ULK1↑</text>
+    <text x="160" y="121" text-anchor="middle" fill="#c9a84c" font-size="8" font-family="monospace">g-rungs: φ → η (1.618 → 1.839)</text>
+
+    <!-- structural zone -->
+    <rect x="300" y="58" width="200" height="70" fill="rgba(201,168,76,.09)" rx="4" stroke="#c9a84c" stroke-width="0.8"/>
+    <text x="400" y="78" text-anchor="middle" fill="#c9a84c" font-size="10" font-family="sans-serif" font-weight="bold">STRUCTURAL ZONE</text>
+    <text x="400" y="93" text-anchor="middle" fill="#e5d28a" font-size="8.5" font-family="sans-serif">lutein · β-carotene · xanthophylls</text>
+    <text x="400" y="107" text-anchor="middle" fill="#e5d28a" font-size="8.5" font-family="sans-serif">membrane integrity · vitamin A · RPE</text>
+    <text x="400" y="121" text-anchor="middle" fill="#c9a84c" font-size="8" font-family="monospace">g-rungs: η → Δ (1.839 → 1.927)</text>
+
+    <!-- NO / vascular zone -->
+    <rect x="510" y="58" width="160" height="70" fill="rgba(220,60,60,.1)" rx="4" stroke="#f87171" stroke-width="0.8"/>
+    <text x="590" y="78" text-anchor="middle" fill="#fca5a5" font-size="10" font-family="sans-serif" font-weight="bold">VASCULAR ZONE</text>
+    <text x="590" y="93" text-anchor="middle" fill="#fca5a5" font-size="8.5" font-family="sans-serif">lycopene · betalains</text>
+    <text x="590" y="107" text-anchor="middle" fill="#fca5a5" font-size="8.5" font-family="sans-serif">eNOS↑ · NO · CV protection</text>
+    <text x="590" y="121" text-anchor="middle" fill="#c9a84c" font-size="8" font-family="monospace">g-rungs: Δ → Σ → Ω</text>
+
+    <!-- microbiome / UV polyphenols note -->
+    <rect x="30" y="145" width="640" height="50" fill="rgba(80,40,120,.12)" rx="4" stroke="#a855f7" stroke-width="0.8"/>
+    <text x="350" y="163" text-anchor="middle" fill="#d8b4fe" font-size="10" font-family="sans-serif" font-weight="bold">MICROBIOME LAYER (UV polyphenols — proanthocyanidins, ellagitannins)</text>
+    <text x="350" y="179" text-anchor="middle" fill="#c4b5fd" font-size="8.5" font-family="sans-serif">fermented to urolithins / equol → SIRT3, mitophagy induction · acts across all g-rungs via gut–mitochondria axis</text>
+    <text x="350" y="193" text-anchor="middle" fill="#9ca3af" font-size="8" font-family="sans-serif">dark chocolate · pomegranate · walnuts · red wine (small amounts)</text>
+
+    <!-- dm³ label -->
+    <text x="350" y="230" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="monospace" opacity="0.7">dm³ spectrology map · Principia Orthogona · grossi-ops.github.io/Atratores</text>
+  </svg>
+  <div class="fig-cap">Fig. 1 — The chromatic food spectrum mapped to three functional zones and the dm³ g-series ladder.
+  The autophagy-induction zone (violet–green, short wavelength) activates the same mTOR/AMPK nodes
+  described in the <a href="ch-nutrition-autophagy.html">Nutrition &amp; Autophagy chapter</a>.</div>
+</div>
+
+<h2>§6 — Cooking, Bioavailability, and Spectral Shift</h2>
+
+<p>
+  One underappreciated fact: cooking often <em>increases</em> the bioavailability of
+  chromatic phytochemicals rather than destroying them, because the plant cell wall
+  (cellulose) locks many pigments inside. Breaking the cell wall — by heat, pressure,
+  or fermentation — releases the chromophore into the food matrix.
+</p>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Pigment</th>
+      <th>Raw bioavailability</th>
+      <th>Cooked / processed bioavailability</th>
+      <th>Optimal preparation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Lycopene (tomato)</td>
+      <td>~2–3%</td>
+      <td>~10–35% (cooked + fat)</td>
+      <td>Tomato paste / sauce, olive oil present</td>
+    </tr>
+    <tr>
+      <td>β-carotene (carrot)</td>
+      <td>~3–4%</td>
+      <td>~15–35% (chopped + fat)</td>
+      <td>Steamed or lightly roasted, fat present</td>
+    </tr>
+    <tr>
+      <td>Sulforaphane (broccoli)</td>
+      <td>High if raw (myrosinase active)</td>
+      <td>Low if overcooked (enzyme destroyed)</td>
+      <td>Lightly steamed ≤ 3 min; or raw + mustard seed</td>
+    </tr>
+    <tr>
+      <td>Anthocyanins (berry)</td>
+      <td>Good raw</td>
+      <td>Moderate loss on heating</td>
+      <td>Raw or frozen; smoothie retains most</td>
+    </tr>
+    <tr>
+      <td>Quercetin (onion)</td>
+      <td>Moderate</td>
+      <td>Slight increase (glycoside hydrolysis)</td>
+      <td>Sautéed or fermented (pickled onion)</td>
+    </tr>
+    <tr>
+      <td>Lutein / zeaxanthin</td>
+      <td>Low</td>
+      <td>Higher (lipid matrix needed)</td>
+      <td>Spinach with egg, or olive oil dressed</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="fact-box">
+  <strong>Fat is a spectral amplifier</strong>
+  All carotenoids (orange, red, yellow pigments) and chlorophylls are fat-soluble.
+  A salad dressed only with lemon delivers essentially zero carotenoid to the bloodstream.
+  Adding even a small amount of olive oil or avocado is a spectroscopic upgrade —
+  it unlocks the entire fat-soluble band of the chromatic ladder.
+</div>
+
+<h2>§7 — Spectrology as a Practical Protocol</h2>
+
+<p>
+  The dm³ bridge suggests a simple dietary heuristic that is simultaneously folk wisdom,
+  spectroscopy, and contact-geometric prediction: construct each meal as a <em>chord</em>
+  across the visible spectrum.
+</p>
+
+<div class="bridge">
+  <div class="bridge-col">
+    <h4>🎹 Musical analogy</h4>
+    <ul>
+      <li>High notes (violet–blue): anthocyanins, indoles</li>
+      <li>Mid-range (green): chlorophylls, flavones</li>
+      <li>Lower-mid (yellow–orange): xanthophylls, carotenes</li>
+      <li>Low notes (red): lycopene, betalains</li>
+      <li>Bass / UV (invisible): polyphenols, stilbenes</li>
+    </ul>
+  </div>
+  <div class="bridge-arrow">⟷</div>
+  <div class="bridge-col">
+    <h4>🍽 Plate protocol</h4>
+    <ul>
+      <li>Violet–blue: ½ cup blueberries or red cabbage</li>
+      <li>Green: large leafy portion + broccoli</li>
+      <li>Yellow–orange: carrot, sweet potato, or mango</li>
+      <li>Red: cooked tomato or beetroot</li>
+      <li>"Bass": small square dark chocolate or walnuts</li>
+    </ul>
+  </div>
+</div>
+
+<p>
+  This is not a strict prescription — it is a <em>spectroscopic coverage check</em>.
+  If a day's meals produce no colour in the violet–green band, mTOR suppression inputs
+  are missing. If the orange–red band is absent, vitamin-A signalling and singlet-oxygen
+  quenching are reduced. The g-series predicts that partial chord coverage produces
+  partial resonance — the ladder never reaches its fixed point.
+</p>
+
+<div class="science-box">
+  <strong>ORAC is dead — spectral diversity is the right metric</strong>
+  The ORAC (oxygen radical absorbance capacity) score, once printed on supplement labels,
+  was abandoned by the USDA in 2012 because isolated antioxidant capacity in a test tube
+  does not predict bioactivity in the cell. The correct metric is chromatic diversity —
+  how many distinct spectral bands are represented in the diet — because different bands
+  access different signalling nodes. High ORAC from only one pigment family (e.g., all
+  blueberries) does not substitute for spectral breadth.
+</div>
+
+<h2>§8 — The Full Bridge: Spectrology → Autophagy → dm³</h2>
+
+<p>
+  We can now state the bridge explicitly. The contact-geometric operator chain
+  G = U ∘ F ∘ K ∘ C acts on the state space of a living cell. The inputs to G —
+  the "fuel" that allows the chain to cycle — include the chromatic phytochemical spectrum
+  delivered by food. The n-bonacci g-series provides the resonant rungs at which each
+  spectral band is preferentially "heard."
+</p>
+<p>
+  Autophagy is the cell's self-renewal mechanism — the reset switch at the end of a
+  Cajueiro cycle (seed → overshoot → resistance → lock → branch → new seed). For that
+  reset to fire cleanly, the mTOR node must receive the correct suppression signal.
+  That signal is delivered, in part, by short-wave chromophores (anthocyanins, flavones,
+  resveratrol). The chromatic protocol is therefore not separate from the autophagy
+  protocol — it is the upstream input that makes autophagy induction nutritionally
+  accessible without pharmacological intervention.
+</p>
+
+<div class="gold-box">
+  <strong>Summary bridge statement</strong>
+  <ol style="padding-left:1.2rem;margin-top:.5rem;line-height:2;">
+    <li>Every food colour is a molecular absorption frequency — spectroscopy, not metaphor.</li>
+    <li>Each spectral band activates a distinct, non-redundant biochemical node.</li>
+    <li>The dm³ g-series (φ, η, Δ, Σ, Ω → τ = 2) maps each node to a structural scale in living matter.</li>
+    <li>Short-wave chromophores (violet–green) are the primary mTOR-suppression / autophagy-activation inputs.</li>
+    <li>A full-spectrum diet is a full-chord biological signal — chromatic diversity predicts metabolic resilience.</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PORTUGUESE SECTION -->
+<div class="pt-section" id="pt">
+  <h2><span class="pt-flag">🇧🇷</span> Espectrologia · A Escala Cromática dos Alimentos</h2>
+  <p style="color:#555;font-style:italic;margin-bottom:1.5rem;">Para as crianças e famílias curiosas — tradução acessível</p>
+
+  <div class="pt-block">
+    <p><strong>O que é espectrologia?</strong><br>
+    Espectrologia é o estudo da luz e de como as moléculas absorvem diferentes cores.
+    Quando você olha para um mirtilo e vê roxo-azul, aquela cor existe porque as moléculas
+    dentro do mirtilo <em>absorvem</em> a luz verde e <em>refletem</em> o azul-roxo de volta
+    para os seus olhos. Cada molécula tem sua cor "favorita" para absorver — é como uma
+    impressão digital luminosa.</p>
+  </div>
+
+  <div class="kid-note">
+    💡 <strong>O teclado de piano da comida</strong><br>
+    Imagine um piano. Cada tecla produz uma nota — uma frequência de som diferente.
+    As teclas agudas (à direita) têm frequências altas. As graves (à esquerda), frequências baixas.<br><br>
+    A escala cromática dos alimentos funciona igual, mas com <em>luz</em> em vez de som.
+    Alimentos violeta-azuis (mirtilo, amora, repolho roxo) são como as notas agudas — ondas curtas, alta energia.
+    Alimentos vermelhos (tomate, beterraba) são como as notas graves — ondas mais longas.<br><br>
+    Um prato colorido é um <em>acorde completo</em> — e o seu corpo precisa ouvir o acorde inteiro.
+  </div>
+
+  <div class="pt-block">
+    <p><strong>Por que comer o arco-íris não é só papo de influencer?</strong><br>
+    Cada banda de cor ativa uma "tarefa" diferente nas suas células:
+    Roxo-azul: apaga a inflamação e ativa a limpeza celular (autofagia).
+    Verde: ajuda o fígado a se desintoxicar e repara DNA.
+    Laranja-amarelo: produz vitamina A e protege os olhos.
+    Vermelho: aumenta o óxido nítrico — abre os vasos, melhora a circulação.
+    "Baixo" (polifenóis invisíveis no cacau e nozes): alimenta as bactérias boas do intestino.</p>
+  </div>
+
+  <div class="pt-block">
+    <p><strong>A conexão com a autofagia</strong><br>
+    No capítulo anterior, aprendemos que a autofagia — a "célula que se come" para se renovar —
+    precisa que uma proteína chamada mTOR fique quietinha por um tempo.
+    Os pigmentos <em>azuis e roxos</em> dos alimentos fazem exatamente isso: eles suprimem o mTOR
+    e acordam o AMPK (o sensor de energia da célula). Quercetina (cebola roxa, alcaparra),
+    resveratrol (uva tinta), EGCG (chá verde) — todos absorvem luz ultravioleta a azul, todos
+    ativam a autofagia.
+    O protocolo espectral é o protocolo da autofagia. São o mesmo caminho.</p>
+  </div>
+
+  <div class="kid-note">
+    💡 <strong>Para testar em casa</strong><br>
+    Monte um prato e conte as cores: branco/bege não conta.
+    Roxo? (mirtilo, amora, repolho roxo) ✓<br>
+    Verde escuro? (espinafre, brócolis, couve) ✓<br>
+    Laranja/amarelo? (cenoura, batata-doce, manga) ✓<br>
+    Vermelho? (tomate cozido, beterraba) ✓<br>
+    "Baixo"? (cacau 70%+, nozes) ✓<br><br>
+    Se você marcou todos os cinco, você tocou o acorde completo hoje. 🎹
+  </div>
+
+  <div class="pt-block">
+    <p><strong>A gordura é um amplificador espectral</strong><br>
+    Cenoura sem azeite? Quase zero de betacaroteno chega ao sangue.
+    Espinafre sem azeite ou ovo? A luteína fica trancada.
+    Toda a banda laranja-vermelho-amarela dos alimentos é <em>solúvel em gordura</em>.
+    Uma pequena colher de azeite transforma uma salada colorida em um espectro completo absorvível.
+    Gordura é a "caixa de som" que deixa ouvir as notas baixas da escala.</p>
+  </div>
+</div>
+
+<!-- chapter nav -->
+<div class="chapter-nav">
+  <a class="ch-nav-btn" href="ch-nutrition-autophagy.html">← Nutrition &amp; Autophagy</a>
+  <a class="ch-nav-btn" href="sample-chapter-autophagy.html">Technical Version →</a>
+</div>
+
+</main>
+
+<!-- footer -->
+<footer style="background:var(--navy);color:#aaa;text-align:center;padding:2rem 1rem;font-size:.78rem;font-family:sans-serif;margin-top:3rem;">
+  <div style="margin-bottom:.4rem;">
+    <a href="https://grossi-ops.github.io/Atratores/" style="color:var(--gold);text-decoration:none;">Atratores</a> ·
+    <a href="https://grossi-ops.github.io/cajueiro/" style="color:var(--gold);text-decoration:none;">Cajueiro</a> ·
+    <a href="https://github.com/TOTOGT/AXLE" style="color:var(--gold);text-decoration:none;">AXLE · Lean 4</a> ·
+    <a href="https://zenodo.org/doi/10.5281/zenodo.19117399" style="color:var(--gold);text-decoration:none;">Zenodo (series DOI)</a>
+  </div>
+  <div>Principia Orthogona · dm³ · Pablo Nogueira Grossi · G6 LLC · Newark NJ ·
+    <a href="mailto:grossiatwork@gmail.com" style="color:var(--gold);text-decoration:none;">grossiatwork@gmail.com</a>
+  </div>
+  <div style="margin-top:.4rem;opacity:.6;">ISBN 979-8-9954416-6-3 · ORCID 0009-0000-6496-2186 · CC BY 4.0</div>
+</footer>
+
+</body>
+</html>

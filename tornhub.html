@@ -574,7 +574,7 @@ footer a{color:var(--gold);text-decoration:none;}
       <div class="ln-body">
         <div class="ln-tag">Operator Algebra · Ring 5 · Lean 4</div>
         <div class="ln-title">Generative Time Circuit Theorem</div>
-        <p class="ln-text">Establishes T as the fifth operator completing the generative circuit C→K→F→U→T→(return). Proves Theorem T1 (Spiral Return): the G⁶⁴-orbit does not return to x₀ — the circuit is generative, not periodic. Stability radius ε₀ = 1/3 (outer basin). Inner basin r* ≈ 0.773 identified by DOP853 integration. Full Lean 4 proofs, 0 sorry in Chain_updated.lean.</p>
+        <p class="ln-text">Establishes T as the fifth operator completing the generative circuit C→K→F→U→T→(return). Proves Theorem T1 (Spiral Return): the G⁶⁴-orbit does not return to x₀ — the circuit is generative, not periodic. Stability radius ε₀ = 1/3 (outer basin). Inner basin r* ≈ 0.77594059 identified by DOP853 integration. Full Lean 4 proofs, 0 sorry in Chain_updated.lean.</p>
       </div>
     </div>
     <div class="ln">
@@ -661,8 +661,8 @@ footer a{color:var(--gold);text-decoration:none;}
     <div class="mc">-- Limit cycle: Γ = {r=1}, T* = 2π</div>
     <div class="mc">-- Transverse eigenvalue: λ(z) = −2(1−e⁻ʳ) → μₘₐₓ = −2, τ = 2</div>
     <div class="mc">-- Outer basin: ε₀ = 1/3, boundary r_att + ε₀ = 4/3</div>
-    <div class="mc">-- Inner basin: r* ≈ 0.773 (DOP853, rtol=10⁻¹⁰, binary search 20 iter)</div>
-    <div class="mc">-- Hierarchy: ε₀=1/3 &lt; 2/3 &lt; r*≈0.773 &lt; κ*≈0.882 &lt; 1</div>
+    <div class="mc">-- Inner basin: r* ≈ 0.77594059 (DOP853, rtol=10⁻¹⁰, binary search 20 iter)</div>
+    <div class="mc">-- Hierarchy: ε₀=1/3 &lt; 2/3 &lt; r*≈0.77594059 &lt; κ*≈0.882 &lt; 1</div>
   </div>
 
   <!-- Operator-to-braid figure -->
@@ -755,13 +755,13 @@ footer a{color:var(--gold);text-decoration:none;}
       </tr>
       <tr>
         <td><span class="thm-name">poincare_collatz_contracting</span></td>
-        <td>G Lipschitz k&lt;1 → ∃n≥33: dist(Gⁿx, Gⁿ⁺¹x) &lt; r*≈0.773. Full proof ~60 lines.</td>
+        <td>G Lipschitz k&lt;1 → ∃n≥33: dist(Gⁿx, Gⁿ⁺¹x) &lt; r*≈0.77594059. Full proof ~60 lines.</td>
         <td><span class="proved">✓ proved</span></td>
         <td><span class="diff">★★★☆☆</span></td>
       </tr>
       <tr>
         <td><span class="thm-name">inner_basin_is_asymmetric</span></td>
-        <td>r* ≈ 0.773 ≠ r_att − ε₀ = 2/3. Symmetric Gronwall ball is wrong on inner side.</td>
+        <td>r* ≈ 0.77594059 ≠ r_att − ε₀ = 2/3. Symmetric Gronwall ball is wrong on inner side.</td>
         <td><span class="axiom">⚠ domain axiom</span></td>
         <td><span class="diff">★★★☆☆</span></td>
       </tr>

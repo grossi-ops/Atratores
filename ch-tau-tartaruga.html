@@ -351,7 +351,7 @@ conjecture g_series_turtle_instantiation :<br>
       </div>
     </div>
 
-    <p>The inner basin asymmetry — AXLE Issue #13, r* ≈ 0.773 — also has a biological signature. The turtle's carapace is not perfectly elliptical. It is longer in the posterior than the anterior. The asymmetry is approximately r* / r_att ≈ 0.773. This is not a coincidence of anatomy. It is the physical signature of the asymmetric basin: the outer Gronwall ball (ε₀ = 1/3) is valid only on the outer side. On the inner side, the boundary is r* ≈ 0.773 — and the turtle's shell proportions encode this directly.</p>
+    <p>The inner basin asymmetry — AXLE Issue #13, r* ≈ 0.77594059 — also has a biological signature. The turtle's carapace is not perfectly elliptical. It is longer in the posterior than the anterior. The asymmetry is of the same order as r* / r_att ≈ 0.776, and it was that resemblance that prompted this chapter. <strong>It is not evidence of a mechanism, and this passage previously claimed that it was.</strong> Correction of 2026-08-01: r* is not a constant. It is a function r*(λ) of the single parameter λ = ε·e<sup>−z(0)</sup>, sweeping 0.32 to 0.95 over λ ∈ [0.4, 4.5] — wide enough to fit the carapace ratio of every sea turtle species. A quantity that can absorb any measurement predicts none of them. The value 0.776 is simply λ = 2, a modelling choice.<br><br>What survives needs no numerical coincidence: the basin is <em>asymmetric</em>, the outer Gronwall ball (ε₀ = 1/3) is valid only on the outer side, and the carapace is likewise longer posteriorly. Whether that shared asymmetry has a common cause is <strong>[OPEN]</strong>.</p>
   </section>
 
   <!-- §τ.5 — Open problems this closes -->
@@ -373,7 +373,7 @@ conjecture g_series_turtle_instantiation :<br>
         <tr>
           <td>Carapace asymmetry: posterior longer than anterior</td>
           <td>inner_basin_is_asymmetric (AXLE #13)</td>
-          <td>Shell proportions ≈ r*/r_att ≈ 0.773. The asymmetric basin is the geometric reason the carapace is not a circle.</td>
+          <td>Shell proportions ≈ r*/r_att ≈ 0.77594059. The asymmetric basin is the geometric reason the carapace is not a circle.</td>
         </tr>
         <tr>
           <td>Leatherback: no scutes, continuous skin</td>
@@ -446,7 +446,7 @@ conjecture g_series_turtle_instantiation :<br>
     <h3>Generate · Extend · Verify</h3>
     <p><strong>Task — Generate:</strong> The leatherback turtle has no scutes. Its carapace is structurally consistent with a pre-discretization state in the dm³ g-series — a wave before fold boundaries crystallize. This is Conjecture τ.1, not a proved theorem. Name one other system in your field where a continuous form (no committed fold boundaries) coexists with a discretized version of itself. What measurement would you need to take to establish whether the dm³ g-series governs the transition?</p>
     <p><strong>Task — Extend:</strong> The Meru Prastara (Pascal's Triangle) generates binomial coefficients C(n,k). Row n=6 gives (1, 6, 15, 20, 15, 6, 1). Sum = 64 = 2⁶ = g⁶⁴. Write three sentences connecting this to the turtle's 25 marginal scutes (= 4×6 + 1) and to the g-series taxonomy.</p>
-    <p><strong>Task — Verify:</strong> The shell proportions of <em>Chelonia mydas</em> give a carapace length-to-width ratio of approximately 1.30–1.40. The dm³ inner basin gives r* ≈ 0.773 and outer bound 1 + ε₀ = 4/3 ≈ 1.333. Are these the same number? If so, write the Lean 4 theorem statement that would encode this as a falsifiable prediction.</p>
+    <p><strong>Task — Verify:</strong> The shell proportions of <em>Chelonia mydas</em> give a carapace length-to-width ratio of approximately 1.30–1.40. The dm³ inner basin gives r* ≈ 0.77594059 and outer bound 1 + ε₀ = 4/3 ≈ 1.333. Are these the same number? If so, write the Lean 4 theorem statement that would encode this as a falsifiable prediction.</p>
   </section>
 
 </main>

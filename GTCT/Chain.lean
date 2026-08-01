@@ -175,7 +175,7 @@ theorem gronwall_outer
 -- ================================================================
 
 /-- The inner basin boundary ρ* satisfies ρ* > 2/3.
-    Numerical value: ρ* ≈ 0.773 (dm3_simulation.py, DOP853, rtol=1e-9).
+    Numerical value: ρ* ≈ 0.77594059 (dm3_simulation.py, DOP853, rtol=1e-9).
 
     **Proof strategy** (open):
     Show that z_eq(ρ) = log(2ρ²) < log(2) for ρ < 1, so the
@@ -184,7 +184,7 @@ theorem gronwall_outer
     locates the inner boundary above 2/3. -/
 theorem inner_basin_is_asymmetric :
     ∃ ρ_star : ℝ, ρ_star ∈ Ioo (2/3 : ℝ) 1 := by
-  exact ⟨0.773, by norm_num, by norm_num⟩  -- witnesses the interval;
+  exact ⟨0.77594059, by norm_num, by norm_num⟩  -- witnesses the interval;
   -- the proof that ρ_star IS the inner basin boundary is sorry.
 
 -- ================================================================
