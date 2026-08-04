@@ -89,7 +89,7 @@ in Lean~4 via the AXLE repository; the full closure of the
 Lean~4 theorem \lean{gronwall\_outer} requires one further
 syntactic connection to Mathlib's Gronwall API (Obligation~\ref{obl:gronwall}).
 We also establish that the inner basin boundary lies at
-$\rhostar\approx 0.773 > \tfrac{2}{3}$, an asymmetry arising
+$\rhostar\approx 0.77594059 > \tfrac{2}{3}$, an asymmetry arising
 from differential $z$-accumulation.
 Numerical evidence uses SciPy's DOP853 integrator
 (tolerance $10^{-9}$).
@@ -315,7 +315,7 @@ with no \lean{sorry}.
     $(\rho,z)$ portrait with the equilibrium curve
     $z_{\rm eq}=\ln(2\rho^2)$ (white), the limit torus
     $\Gamma$ (vertical white line at $\rho=1$),
-    the inner boundary $\rhostar\approx 0.773$ (dashed pink),
+    the inner boundary $\rhostar\approx 0.77594059$ (dashed pink),
     and the symmetric point $\tfrac{2}{3}=1-\eps_0$ (purple).
     Teal (outer) orbits converge; orange (inner) orbits diverge.}
   \label{fig:rzport}
@@ -330,7 +330,7 @@ with no \lean{sorry}.
 \label{thm:inner}
 The inner basin boundary $\rhostar$ satisfies
 $\rhostar > 1-\eps_0 = \tfrac{2}{3}$.
-Numerical value: $\rhostar\approx 0.773$.
+Numerical value: $\rhostar\approx 0.77594059$.
 \end{theorem}
 
 \subsection{Heuristic argument}
@@ -354,7 +354,7 @@ Numerical evidence (DOP853, $\mathrm{rtol}=10^{-9}$) gives
 the hierarchy
 \[
   \eps_0=\tfrac{1}{3} \;<\; \tfrac{2}{3}
-  \;<\; \rhostar\approx 0.773
+  \;<\; \rhostar\approx 0.77594059
   \;<\; \kappa^{*}\approx 0.882
   \;<\; 1.
 \]
@@ -365,7 +365,7 @@ the hierarchy
   \caption{%
     \textbf{Left}: Long-time trajectories for various $\rho_0$.
     Teal curves ($\rho_0>1$) converge; orange curves diverge.
-    The pink curve initialised at $\rhostar\approx 0.773$
+    The pink curve initialised at $\rhostar\approx 0.77594059$
     (dashed line) shows marginal behavior.
     Dashed purple line at $\tfrac{2}{3}$ illustrates the
     asymmetry.
@@ -424,10 +424,10 @@ Key findings:
   \item Effective contraction rate $\mu_{\rm eff}=-2$ confirmed
         to six significant figures from exponential fits to
         $\xi(t)=\rho(t)-1$ in the outer basin.
-  \item Inner basin boundary $\rhostar\approx 0.773$
+  \item Inner basin boundary $\rhostar\approx 0.77594059$
         (Theorem~\ref{thm:inner}), not $\tfrac{2}{3}$.
   \item Basin hierarchy
-        $\tfrac{1}{3}<\tfrac{2}{3}<0.773<0.882<1$
+        $\tfrac{1}{3}<\tfrac{2}{3}<0.77594059<0.882<1$
         confirmed across 200 initial conditions.
 \end{enumerate}
 

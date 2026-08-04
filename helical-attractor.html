@@ -200,7 +200,7 @@ let gridOn=true;
 const grid=new THREE.GridHelper(6,12,0x2dd4bf,0x1a3a38);
 grid.material.opacity=.15;grid.material.transparent=true;
 scene.add(grid);
-// Basin warning rings at r=1 and r=0.776
+// Basin warning rings at r=1 and r=0.77594059
 function ring(r,y,col,op){
   const pts=[];
   for(let i=0;i<=64;i++){const t=(i/64)*Math.PI*2;pts.push(new THREE.Vector3(r*Math.cos(t),y,r*Math.sin(t)));}
@@ -209,7 +209,7 @@ function ring(r,y,col,op){
 }
 for(let y=0;y<=12;y+=2){
   const r1=ring(1,y,0xc9a84c,.35);r1.computeLineDistances();scene.add(r1);
-  const r2=ring(0.776,y,0xe05a3a,.2);r2.computeLineDistances();scene.add(r2);
+  const r2=ring(0.77594059,y,0xe05a3a,.2);r2.computeLineDistances();scene.add(r2);
 }
 // Labels — HTML overlays are cheaper; keep minimal
 // ───────── Particle system ─────────
@@ -218,7 +218,7 @@ const DT=0.01;
 let state={r0:1.8,eps:2,N:6,spread:0.4,speed:1,play:true,frame:0};
 function makeLineMat(col){return new THREE.LineBasicMaterial({color:col,transparent:true,opacity:.85});}
 function particleColor(r){
-  if(r<0.776)return 0xe05a3a;
+  if(r<0.77594059)return 0xe05a3a;
   if(Math.abs(r-1)<0.05)return 0xc9a84c;
   return 0x4a9eff;
 }

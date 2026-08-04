@@ -98,7 +98,7 @@ MathJax = {
   <div class="op-badge">MINI-CURSO · SESSION S2 · 60 MIN</div>
   <div class="hero-letter">S2</div>
   <h1>Theorem 2.1 &amp; the Asymmetric Basin</h1>
-  <div class="sub">Linearisation gives eigenvalue $-2$. Gronwall gives a symmetric ball $|r-1|&lt;1/3$. DOP853 says the real inner edge is $r_\star \approx 0.776$. The gap is the course.</div>
+  <div class="sub">Linearisation gives eigenvalue $-2$. Gronwall gives a symmetric ball $|r-1|&lt;1/3$. DOP853 says the real inner edge is $r_\star \approx 0.77594059$. The gap is the course.</div>
   <div class="meta-row">
     <span>Objective:</span> prove exponential contraction and expose the asymmetry
     <span>|</span>
@@ -123,7 +123,7 @@ MathJax = {
     <li><strong style="color:#cffaf6;">0 – 10 min</strong> — Recap S1. Statement of Theorem 2.1.</li>
     <li><strong style="color:#cffaf6;">10 – 25 min</strong> — Linearisation at $r=1$. The eigenvalue $\mu = -2$.</li>
     <li><strong style="color:#cffaf6;">25 – 40 min</strong> — The Gronwall sketch. Why $\varepsilon_0 = 1/3$ is what the estimate permits.</li>
-    <li><strong style="color:#cffaf6;">40 – 52 min</strong> — Table 1. DOP853 numerics. The real inner edge at $r_\star \approx 0.776$.</li>
+    <li><strong style="color:#cffaf6;">40 – 52 min</strong> — Table 1. DOP853 numerics. The real inner edge at $r_\star \approx 0.77594059$.</li>
     <li><strong style="color:#cffaf6;">52 – 60 min</strong> — Why the gap. Hand-off to S3: what Lean 4 can and cannot close.</li>
   </ol>
 </div>
@@ -186,10 +186,10 @@ MathJax = {
 <div class="section">
   <div class="slabel">§4 · What the Numerics Actually Say</div>
   <h2>Table 1 — DOP853 @ rtol $10^{-10}$, atol $10^{-12}$</h2>
-  <p>We integrate (1) with initial $\theta(0) = 0$, $z(0) = 0$, and vary $r(0)$. For each run we record the empirical contraction rate $\hat\mu$, defined as the slope of $\log|r(t) - 1|$ over $t \in [5, 20]$ (a window safely inside the linear regime once the trajectory has had time to approach $\Gamma$).</p>
+  <p>We integrate (1) with initial $\theta(0) = 0$, $z(0) = 0$, and vary $r(0)$. For each run we record the empirical contraction rate $\hat\mu$, defined as the slope of $\log|r(t) - 1|$ over $t \in [0.5, 5]$ (a window safely inside the linear regime once the trajectory has had time to approach $\Gamma$).</p>
   <div class="tbl-wrap">
     <table class="t1">
-      <caption>Table 1 — Outer basin (left): $r(0) &gt; 1$. Inner basin (right): $r(0) &lt; 1$. All runs $\varepsilon = 2$, $t \in [0, 30]$.</caption>
+      <caption>Table 1 — Outer basin (left): $r(0) &gt; 1$. Inner basin (right): $r(0) &lt; 1$. All runs $\varepsilon = 2$, $t \in [0, 30]$, integration terminated at $r &lt; 10^{-3}$. Inner column regenerated against the certified boundary $r_\star = 0.77594059$ (<code>certify_rstar.py</code>, DOP853 @ rtol $10^{-12}$, atol $10^{-14}$).</caption>
       <thead>
         <tr>
           <th>$r(0) - 1$</th>
@@ -201,23 +201,23 @@ MathJax = {
         </tr>
       </thead>
       <tbody>
-        <tr><td>$+0.10$</td><td class="num pass">$-1.849$</td><td>—</td><td>$0.90$</td><td class="num pass">$+0.15$</td><td class="pass">converges</td></tr>
-        <tr><td>$+0.33$</td><td class="num pass">$-1.890$</td><td>—</td><td>$0.80$</td><td class="num edge">$-0.02$</td><td class="edge">limiar · edge of basin</td></tr>
-        <tr><td>$+0.50$</td><td class="num pass">$-1.907$</td><td>—</td><td>$0.70$</td><td class="num fail">$-0.18$</td><td class="fail">collapses</td></tr>
-        <tr><td>$+1.00$</td><td class="num pass">$-1.932$</td><td>—</td><td>$0.50$</td><td class="num fail">$-0.48$</td><td class="fail">collapses</td></tr>
-        <tr><td>$+1.50$</td><td class="num pass">$-1.959$</td><td>—</td><td>$0.30$</td><td class="num fail">$-0.93$</td><td class="fail">collapses</td></tr>
+        <tr><td>$+0.10$</td><td class="num pass">$-1.849$</td><td>—</td><td>$0.90$</td><td class="num pass">$+0.786$</td><td class="pass">converges</td></tr>
+        <tr><td>$+0.33$</td><td class="num pass">$-1.890$</td><td>—</td><td>$0.80$</td><td class="num pass">$+0.477$</td><td class="pass">converges</td></tr>
+        <tr><td>$+0.50$</td><td class="num pass">$-1.907$</td><td>—</td><td>$0.77594059$</td><td class="num edge">$+0.031$</td><td class="edge">limiar · edge of basin $= r_\star$</td></tr>
+        <tr><td>$+1.00$</td><td class="num pass">$-1.932$</td><td>—</td><td>$0.775$</td><td class="num fail">$-1.618$</td><td class="fail">collapses</td></tr>
+        <tr><td>$+1.50$</td><td class="num pass">$-1.959$</td><td>—</td><td>$0.70$</td><td class="num fail">$-2.810$</td><td class="fail">collapses</td></tr>
       </tbody>
     </table>
   </div>
   <h3>Read the table.</h3>
   <ul>
     <li><strong style="color:#8af0c0;">Outer column.</strong> Every $r(0) &gt; 1$ converges. $\hat\mu$ is close to $-2$ and <em>monotonically</em> approaches it from above as $r(0) - 1$ grows (because the trajectory spends less time in the $e^{-z}$-perturbed regime). No value of $r(0) - 1$ up to $1.5$ misbehaves.</li>
-    <li><strong style="color:#f0a090;">Inner column.</strong> $r(0) = 0.90$ converges. $r(0) = 0.80$ is on the edge — $\dot z$ brushes zero but the orbit survives. Below $r(0) = 0.80$ the trajectory drops vertically (negative $\dot z$), $e^{-z}$ explodes, the coupling term dominates, and $r$ leaves every neighbourhood of $1$ in finite time.</li>
+    <li><strong style="color:#f0a090;">Inner column.</strong> $r(0) = 0.90$ and $r(0) = 0.80$ both converge comfortably. $r(0) = r_\star = 0.77594059$ is the edge — $\dot z$ brushes zero ($+0.031$) but the orbit survives. Just below it, at $r(0) = 0.775$, the trajectory drops vertically (negative $\dot z$), $e^{-z}$ explodes, the coupling term dominates, and $r$ leaves every neighbourhood of $1$ in finite time.</li>
   </ul>
-  <div class="warn"><strong style="color:#f87171;">The asymmetry is not small.</strong> Gronwall said $r(0) \in (2/3,\, 4/3) = (0.667,\, 1.333)$. Reality says $r(0) \in (\,0.80\,,\, +\infty)$ for this range of $r(0) - 1$. The <em>outer</em> boundary from Gronwall is vacuous — there is no outer boundary at all in this window. The <em>inner</em> boundary is at $r_\star \approx 0.776$, which is <em>stricter</em> than the Gronwall guess of $2/3 \approx 0.667$. Gronwall would have declared $r(0) = 0.70$ safe; DOP853 says it collapses.</div>
+  <div class="warn"><strong style="color:#f87171;">The asymmetry is not small.</strong> Gronwall said $r(0) \in (2/3,\, 4/3) = (0.667,\, 1.333)$. Reality says $r(0) \in (\,0.77594059\,,\, +\infty)$ for this range of $r(0) - 1$. The <em>outer</em> boundary from Gronwall is vacuous — there is no outer boundary at all in this window. The <em>inner</em> boundary is at $r_\star \approx 0.77594059$, which is <em>stricter</em> than the Gronwall guess of $2/3 \approx 0.667$. Gronwall would have declared $r(0) = 0.70$ safe; DOP853 says it collapses.</div>
   <h3>What goes wrong geometrically</h3>
   <p>At $r(0) &lt; 1$, the Hopf term $r(1-r^2)$ pushes $r$ upward, good. But the contact coupling $\varepsilon(r-1)e^{-z}$ has the <em>opposite</em> sign — and worse, when $r &lt; 1$ the vertical equation acquires a <em>negative</em> contribution $-\varepsilon(r-1)^2 e^{-z}$ (always negative). If $r$ starts too small, $\dot z$ can be overwhelmed; $z$ drops; $e^{-z}$ blows up; the coupling becomes a runaway. The Hopf term, bounded near $r=1$, cannot save us.</p>
-  <p>Geometrically: we lose <em>positive invariance</em> of $\{r &gt; 0.776\}$ from below. We still have positive invariance of $\{r &gt; 1\}$ from above (S1 board exercise). The ODE is asymmetric in $r=1$, and so is its basin.</p>
+  <p>Geometrically: we lose <em>positive invariance</em> of $\{r &gt; 0.77594059\}$ from below. We still have positive invariance of $\{r &gt; 1\}$ from above (S1 board exercise). The ODE is asymmetric in $r=1$, and so is its basin.</p>
 </div>
 <!-- ═══ §5 SIMULATOR ═══ -->
 <div class="section">
@@ -231,8 +231,8 @@ MathJax = {
   <h3>Guided demo (8 min)</h3>
   <ol>
     <li>$r_0 = 0.90$, $\varepsilon = 2$. Clean spiral up to $r = 1$. Note colour stays blue.</li>
-    <li>$r_0 = 0.80$. Trajectory flattens; there is a visible moment where the orbit hovers. Colour shifts toward gold then recovers.</li>
-    <li>$r_0 = 0.70$. Trajectory drops below the $r = 0.776$ ring (gold) and turns red. The $z$ readout starts decreasing.</li>
+    <li>$r_0 = 0.776$. Trajectory flattens; there is a visible moment where the orbit hovers just above the $r_\star$ ring. Colour shifts toward gold then recovers. This is the edge.</li>
+    <li>$r_0 = 0.775$. One thousandth lower, and the trajectory drops below the $r = 0.77594059$ ring (gold) and turns red. The $z$ readout starts decreasing. Collapse by $t \approx 3.6$.</li>
     <li>$r_0 = 1.50$ for contrast. Converges fast. The outer basin has no problem.</li>
   </ol>
 </div>
@@ -243,7 +243,7 @@ MathJax = {
   <p>We now have two numbers in tension:</p>
   <ul>
     <li>$\varepsilon_0 = 1/3$ — what the textbook Gronwall inequality permits;</li>
-    <li>$r_\star \approx 0.776$ — what the actual flow does.</li>
+    <li>$r_\star \approx 0.77594059$ — what the actual flow does.</li>
   </ul>
   <p>In <strong style="color:var(--t);">S3</strong> we translate the proof of Theorem 2.1 — the symmetric version — into Lean 4 / Mathlib 4. The formal skeleton is in AXLE (<code>Chain.lean</code>, <code>SpiralReturn</code>). The open obligation is the Lipschitz estimate on the coupling, tracked as AXLE Issue #12. We will walk the class through the statement, identify what is done, what is missing, and what a Lean-native sharper basin argument would look like. The sharp constant $r_\star$ is not in the Lean codebase — yet.</p>
   <div class="theorem">
