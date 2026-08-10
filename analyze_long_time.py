@@ -32,7 +32,7 @@ Author
     Pablo Nogueira Grossi  |  ORCID: 0009-0000-6496-2186
     G6 LLC, Newark NJ  |  GitHub: https://github.com/TOTOGT/AXLE
 
-License: MIT
+License: MIT (see DNLS/LICENSE-CODE)
 """
 
 from __future__ import annotations

@@ -21,6 +21,7 @@ Usage
   python generate_figures.py
 
 Dependencies: numpy, scipy, matplotlib
+License: MIT (see DNLS/LICENSE-CODE)
 """
 
 import numpy as np
