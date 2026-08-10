@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import os
 import sys
 from collections import defaultdict
 
@@ -228,6 +229,8 @@ def plot_ipr_vs_t(
     ax.legend(ncol=2, fontsize=8, loc="best")
     plt.tight_layout()
     plt.savefig(out_path, dpi=140)
+    # fig9 is the deposit-facing name; provenance: see DNLS/V4_DESCRIPTION.md
+    plt.savefig(os.path.join("DNLS", "figures", "fig9_T1e6_saturation.pdf"))
     plt.close()
     print(f"  -> {out_path}")
 
@@ -380,6 +383,7 @@ def main() -> int:
     sanity_report(data)
 
     if not args.no_plots:
+        os.makedirs("DNLS/figures", exist_ok=True)
         print("\nGenerating figures ...")
         plot_ipr_vs_t(data)
         plot_lambda0_check(data)
