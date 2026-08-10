@@ -257,17 +257,18 @@ def evolve_dnls(
 
 
 # ---------------------------------------------------------------------------
-# 3. Sweep constants  (defaults match the paper: N=500, lambda includes 0)
+# 3. Sweep constants  (N=2000, T=10^5 run for alpha-convergence study)
 # ---------------------------------------------------------------------------
 
-N_SITES = 500         # chain length, matching Table 1 of the paper
-T_END = 1000000.0     # final time for T = 10^6 run
-N_CHECKPOINTS = 450   # number of log-spaced checkpoints in (1, T_END]; ~75/decade over 6 decades
-NORM_TOL = 1e-5       # tight threshold; DOP853 at rtol=1e-8 should clear it easily
-LAMBDAS = [0.0, 1.0, 2.0, 4.0, 8.0, 10.0]   # lambda=0 is the linear-limit sanity check
-RTOL = 1e-8
-ATOL = 1e-10
-OUT_CSV = "ipr_vs_time.csv"
+N_SITES = 2000        # chain length for N=2000 convergence run
+T_END = 100000.0      # 10^5
+N_CHECKPOINTS = 500   # log-spaced
+NORM_TOL = 5e-5       # accept up to 5e-5; flag in log if exceeded
+LAMBDAS = [0.5, 1.0, 1.5, 2.0]
+INTEGRATOR = "DOP853"
+RTOL = 1e-9           # tighter than before to clear norm-leak flag
+ATOL = 1e-11
+OUT_CSV = "data/ipr_N2000_T1e5.csv"
 
 CHAINS: dict[str, Callable[[int], list[int]]] = {
     "fibonacci": fibonacci_word,
@@ -291,6 +292,9 @@ def run_sweep(
     """
     Sweep over chains x lambdas, integrate DNLS to t_end, and write CSV.
 
+    Rows are flushed to disk immediately after each (chain, lambda) pair
+    completes, so partial results survive an interruption.
+
     Output CSV columns
     ------------------
     time    - checkpoint time
@@ -299,69 +303,73 @@ def run_sweep(
     IPR     - inverse participation ratio at that time
     norm    - L2-norm at that time (should remain ~ 1.0 if tolerances are met)
     """
+    import os
     if lambdas is None:
         lambdas = LAMBDAS
 
-    rows: list[dict] = []
+    os.makedirs(os.path.dirname(out_csv) if os.path.dirname(out_csv) else ".", exist_ok=True)
+
+    fieldnames = ["time", "lambda", "chain", "IPR", "norm"]
     n_runs = len(CHAINS) * len(lambdas)
     run_idx = 0
-
-    for chain_name, word_fn in CHAINS.items():
-        word = word_fn(n)
-        H, hoppings = build_hamiltonian(word, n)
-        psi0, E0 = mid_gap_state(H)
-
-        if verbose:
-            print(f"\nchain={chain_name}  N={n}  mid-gap eigenvalue E0={E0:.6f}")
-
-        for lam in lambdas:
-            run_idx += 1
-            t_wall = _time.perf_counter()
-
-            if verbose:
-                print(
-                    f"  [{run_idx}/{n_runs}] lambda={lam:.1f}  T={t_end:.0f} ...",
-                    end=" ",
-                    flush=True,
-                )
-
-            t_arr, ipr_arr, norm_arr, norm_ok = evolve_dnls(
-                psi0,
-                lam,
-                hoppings,
-                t_end=t_end,
-                n_checkpoints=n_checkpoints,
-                norm_tol=norm_tol,
-                rtol=RTOL,
-                atol=ATOL,
-            )
-
-            elapsed = _time.perf_counter() - t_wall
-            flag = "" if norm_ok else "  *** NORM LEAK ***"
-
-            if verbose:
-                print(f"done in {elapsed:.1f}s{flag}")
-
-            for t_k, ipr_k, norm_k in zip(t_arr, ipr_arr, norm_arr):
-                rows.append(
-                    {
-                        "time": t_k,
-                        "lambda": lam,
-                        "chain": chain_name,
-                        "IPR": ipr_k,
-                        "norm": norm_k,
-                    }
-                )
+    total_rows = 0
 
     with open(out_csv, "w", newline="") as fh:
-        writer = csv.DictWriter(
-            fh, fieldnames=["time", "lambda", "chain", "IPR", "norm"]
-        )
+        writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(rows)
+
+        for chain_name, word_fn in CHAINS.items():
+            word = word_fn(n)
+            H, hoppings = build_hamiltonian(word, n)
+            psi0, E0 = mid_gap_state(H)
+
+            if verbose:
+                print(f"\nchain={chain_name}  N={n}  mid-gap eigenvalue E0={E0:.6f}")
+
+            for lam in lambdas:
+                run_idx += 1
+                t_wall = _time.perf_counter()
+
+                if verbose:
+                    print(
+                        f"  [{run_idx}/{n_runs}] lambda={lam:.1f}  T={t_end:.0f} ...",
+                        end=" ",
+                        flush=True,
+                    )
+
+                t_arr, ipr_arr, norm_arr, norm_ok = evolve_dnls(
+                    psi0,
+                    lam,
+                    hoppings,
+                    t_end=t_end,
+                    n_checkpoints=n_checkpoints,
+                    norm_tol=norm_tol,
+                    rtol=RTOL,
+                    atol=ATOL,
+                )
+
+                elapsed = _time.perf_counter() - t_wall
+                flag = "" if norm_ok else "  *** NORM LEAK ***"
+
+                if verbose:
+                    print(f"done in {elapsed:.1f}s{flag}")
+
+                for t_k, ipr_k, norm_k in zip(t_arr, ipr_arr, norm_arr):
+                    writer.writerow(
+                        {
+                            "time": t_k,
+                            "lambda": lam,
+                            "chain": chain_name,
+                            "IPR": ipr_k,
+                            "norm": norm_k,
+                        }
+                    )
+                    total_rows += 1
+                # flush after each pair so partial results survive interruption
+                fh.flush()
 
     if verbose:
-        print(f"\nWrote {len(rows)} rows -> {out_csv}")
+        print(f"\nWrote {total_rows} rows -> {out_csv}")
 
 
 # ---------------------------------------------------------------------------
@@ -398,7 +406,7 @@ def main() -> int:
     ap.add_argument(
         "--lambdas",
         type=float, nargs="+", default=LAMBDAS,
-        help="nonlinearity values to sweep (default: 0.0 1.0 2.0 4.0 8.0 10.0)",
+        help="nonlinearity values to sweep (default: 0.5 1.0 1.5 2.0)",
     )
     ap.add_argument(
         "--out",
