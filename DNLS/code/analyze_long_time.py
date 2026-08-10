@@ -42,9 +42,20 @@ import csv
 import os
 import sys
 from collections import defaultdict
+from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
+
+
+DNLS_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = DNLS_DIR / 'data'
+FIGURES_DIR = DNLS_DIR / 'figures'
+DEFAULT_CSV = DATA_DIR / 'ipr_vs_time.csv'
+DEFAULT_SPREADING_CSV = DATA_DIR / 'spreading_exponents.csv'
+DEFAULT_IPR_FIG = FIGURES_DIR / 'fig_long_ipr_vs_t.png'
+DEFAULT_LAMBDA0_FIG = FIGURES_DIR / 'fig_long_lambda0_check.png'
+DEFAULT_ALPHA_FIG = FIGURES_DIR / 'fig_long_alpha_fit.png'
 
 
 # ---------------------------------------------------------------------------
@@ -192,7 +203,7 @@ def sanity_report(data: dict[tuple[str, float], dict[str, np.ndarray]]) -> dict:
 
 def plot_ipr_vs_t(
     data: dict[tuple[str, float], dict[str, np.ndarray]],
-    out_path: str = "fig_long_ipr_vs_t.png",
+    out_path: str | os.PathLike[str] = DEFAULT_IPR_FIG,
 ) -> None:
     """
     Log-log IPR(t) for both chains, all lambdas. Solid = tribonacci, dashed = fibonacci.
@@ -230,14 +241,14 @@ def plot_ipr_vs_t(
     plt.tight_layout()
     plt.savefig(out_path, dpi=140)
     # fig9 is the deposit-facing name; provenance: see DNLS/V4_DESCRIPTION.md
-    plt.savefig(os.path.join("DNLS", "figures", "fig9_T1e6_saturation.pdf"))
+    plt.savefig(FIGURES_DIR / "fig9_T1e6_saturation.pdf")
     plt.close()
     print(f"  -> {out_path}")
 
 
 def plot_lambda0_check(
     data: dict[tuple[str, float], dict[str, np.ndarray]],
-    out_path: str = "fig_long_lambda0_check.png",
+    out_path: str | os.PathLike[str] = DEFAULT_LAMBDA0_FIG,
 ) -> None:
     """
     Linear-limit sanity plot: IPR(t) at lambda=0 should be visually flat.
@@ -297,8 +308,8 @@ def fit_alpha(t: np.ndarray, ipr: np.ndarray, late_frac: float = 0.3
 
 def alpha_table_and_plot(
     data: dict[tuple[str, float], dict[str, np.ndarray]],
-    csv_out: str = "spreading_exponents.csv",
-    fig_out: str = "fig_long_alpha_fit.png",
+    csv_out: str | os.PathLike[str] = DEFAULT_SPREADING_CSV,
+    fig_out: str | os.PathLike[str] = DEFAULT_ALPHA_FIG,
 ) -> None:
     """
     Fit alpha for each (chain, lambda) with lambda > 0; write CSV; plot
@@ -369,8 +380,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(
         description="Analyze long-time DNLS output (ipr_vs_time.csv)."
     )
-    ap.add_argument("--csv", default="ipr_vs_time.csv",
-                    help="input CSV path (default: ipr_vs_time.csv)")
+    ap.add_argument("--csv", default=str(DEFAULT_CSV),
+                    help=f"input CSV path (default: {DEFAULT_CSV})")
     ap.add_argument("--no-plots", action="store_true",
                     help="skip plotting (sanity report + alpha CSV only)")
     args = ap.parse_args()
@@ -383,7 +394,7 @@ def main() -> int:
     sanity_report(data)
 
     if not args.no_plots:
-        os.makedirs("DNLS/figures", exist_ok=True)
+        FIGURES_DIR.mkdir(parents=True, exist_ok=True)
         print("\nGenerating figures ...")
         plot_ipr_vs_t(data)
         plot_lambda0_check(data)

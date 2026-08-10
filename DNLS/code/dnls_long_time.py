@@ -50,11 +50,16 @@ import argparse
 import csv
 import sys
 import time as _time
+from pathlib import Path
 from typing import Callable
 
 import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.linalg import eigh
+
+
+DNLS_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = DNLS_DIR / 'data'
 
 
 # ---------------------------------------------------------------------------
@@ -267,7 +272,7 @@ NORM_TOL = 1e-5       # tight threshold; DOP853 at rtol=1e-8 should clear it eas
 LAMBDAS = [0.0, 1.0, 2.0, 4.0, 8.0, 10.0]   # lambda=0 is the linear-limit sanity check
 RTOL = 1e-8
 ATOL = 1e-10
-OUT_CSV = "ipr_vs_time.csv"
+OUT_CSV = str(DATA_DIR / "ipr_vs_time.csv")
 
 CHAINS: dict[str, Callable[[int], list[int]]] = {
     "fibonacci": fibonacci_word,
